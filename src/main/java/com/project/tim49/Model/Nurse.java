@@ -4,27 +4,19 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class Nurse
  ***********************************************************************/
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/** @pdOid eef85ca3-15c2-485a-9074-d91c27da1a21 */
+@Entity
 public class Nurse extends User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    @Column(name = "shiftStart", nullable = false)
     private String shiftStart;
-    /** @pdOid 80368039-ebd0-4125-ab78-e15bf4157463 */
+
+    @Column(name = "shiftEnd", nullable = false)
     private String shiftEnd;
-    public Clinic clinic;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    //public Clinic clinic;
 
     public String getShiftStart() {
         return shiftStart;
@@ -42,11 +34,11 @@ public class Nurse extends User {
         this.shiftEnd = shiftEnd;
     }
 
-    public Clinic getClinic() {
-        return clinic;
-    }
-
-    public void setClinic(Clinic clinic) {
-        this.clinic = clinic;
-    }
+//    public Clinic getClinic() {
+//        return clinic;
+//    }
+//
+//    public void setClinic(Clinic clinic) {
+//        this.clinic = clinic;
+//    }
 }

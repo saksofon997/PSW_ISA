@@ -14,12 +14,15 @@ public class ExaminationReport {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
    /** @pdOid 622ea920-6b05-4e68-adb4-e5e9aa3bdfb3 */
    private Doctor performs;
    /** @pdOid 39196a72-21d9-4de6-a546-302aeaebc5fa */
 
    private String reportDescription;
+
    private Clinic clinic;
+
    private long dateAndTime;
 
    /** @pdRoleInfo migr=no name=DiagnosisDictionary assc=association21 coll=java.util.Collection impl=java.util.HashSet mult=0..* */

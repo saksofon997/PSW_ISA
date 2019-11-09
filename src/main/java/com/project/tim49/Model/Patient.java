@@ -1,23 +1,25 @@
 package com.project.tim49.Model;
 
+import javax.persistence.*;
+
 /***********************************************************************
  * Module:  Patient.java
  * Author:  TIM 49
  * Purpose: Defines the Class Patient
  ***********************************************************************/
 
-//@Entity
-//@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
+@Entity
 public class Patient extends User {
 
-   /** @pdRoleInfo migr=no name=MedicalRecord assc=association10 mult=1..1 */
-   public String medicalRecord;
+   @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "medicalRecord_id", referencedColumnName = "id")
+   public MedicalRecord medicalRecord;
 
-   public String getMedicalRecord() {
+   public MedicalRecord getMedicalRecord() {
       return medicalRecord;
    }
 
-   public void setMedicalRecord(String medicalRecord) {
+   public void setMedicalRecord(MedicalRecord medicalRecord) {
       this.medicalRecord = medicalRecord;
    }
 }

@@ -12,6 +12,7 @@ public class ClinicAdministrator extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Clinic clinic;
 
     public Clinic getClinic() {

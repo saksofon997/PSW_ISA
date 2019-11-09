@@ -1,15 +1,21 @@
 package com.project.tim49.Model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
 public class Prescription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medication_id", referencedColumnName = "id")
     private MedicationDictionary medication;
+
+    @Column(name = "approves", nullable = false)
     private Nurse approves;
+
+    @Column(name = "performs", nullable = false)
     private Doctor performs;
 
     public Long getId() {

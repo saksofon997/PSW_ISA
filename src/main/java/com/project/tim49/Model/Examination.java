@@ -1,13 +1,23 @@
-package com.project.tim49.Model; /***********************************************************************
+package com.project.tim49.Model;
+
+import javax.persistence.*;
+
+/***********************************************************************
  * Module:  Examination.java
  * Author:  TIM 49
  * Purpose: Defines the Class Examination
  ***********************************************************************/
 
-/** @pdOid 1440f74b-fc67-4a46-8bff-b34f2236d970 */
+@Entity
+@DiscriminatorValue("EX")
 public class Examination extends Appointment {
-   /** @pdRoleInfo migr=no name=Doctor assc=association12 mult=1..1 */
+
+   @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "doctor_id", referencedColumnName = "id")
    public Doctor doctor;
+
+   @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "typeOfExamination_id", referencedColumnName = "id")
    public TypeOfExamination typeOfExamination;
 
    public Doctor getDoctor() {

@@ -5,23 +5,36 @@ package com.project.tim49.Model;
  * Purpose: Defines the Class AppointmentRequest
  ***********************************************************************/
 
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
+@Entity
 public class AppointmentRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "approved", nullable = false)
     private boolean approved;
+
+    @Column(name = "startingDateAndTime", nullable = false)
     private long startingDateAndTime;
+
+    @Column(name = "duration", nullable = false)
     private long duration;
+
+    @Column(name = "price", nullable = false)
     private double price;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
     public Patient patient;
-    /** @pdRoleInfo migr=no name=Ordination assc=association4 mult=1..1 */
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ordination_id", referencedColumnName = "id")
     public Ordination ordination;
-    /** @pdRoleInfo migr=no name=TypeOfExamination assc=association19 mult=1..1 */
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "typeOfExamination_id", referencedColumnName = "id")
     public TypeOfExamination typeOfExamination;
 
     public Long getId() {

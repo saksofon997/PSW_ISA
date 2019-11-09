@@ -4,26 +4,32 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class Doctor
  ***********************************************************************/
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
+@Entity
 public class Doctor extends User {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
-   /** @pdOid 8049250d-f41c-441d-b8f8-ff4d71acc29f */
+
+   @Column(name = "shiftStart", nullable = false)
    private String shiftStart;
-   /** @pdOid 80368039-ebd0-4125-ab78-e15bf4157463 */
+
+   @Column(name = "shiftEnd", nullable = false)
    private String shiftEnd;
-       /*  NADAMO SE DA MOZE DA SE POVEZE KROZ SPRING JPA -update: moze*/
-   public Clinic clinic;
-   /** @pdRoleInfo migr=no name=Appointment assc=association14 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   public ArrayList<Appointment> appointments;
-   /** @pdOid 00bb8b9d-3196-4bc8-866a-37f505e4840f */
+
+   /*  NADAMO SE DA MOZE DA SE POVEZE KROZ SPRING JPA -update: moze*/
+   //public Clinic clinic;
+
+   @OneToMany(fetch = FetchType.LAZY)
+   public List<Appointment> appointments;
+
+   @Column(name = "numberOfStars", nullable = false)
    private int numberOfStars;
-   /** @pdOid 48edbe96-7b57-453f-86c6-e7baa808c09f */
+
+   @Column(name = "numberOfReviews", nullable = false)
    private int numberOfReviews;
 
    public Long getId() {
@@ -34,13 +40,13 @@ public class Doctor extends User {
       this.id = id;
    }
 
-   public ArrayList<Appointment> getAppointment() {
-      return appointments;
-   }
-
-   public void setAppointment(ArrayList<Appointment> appointment) {
-      this.appointments = appointment;
-   }
+//   public List<Appointment> getAppointment() {
+//      return appointments;
+//   }
+//
+//   public void setAppointment(List<Appointment> appointment) {
+//      this.appointments = appointment;
+//   }
 
    public int getNumberOfStars() {
       return numberOfStars;

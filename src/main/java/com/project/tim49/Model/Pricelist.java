@@ -4,28 +4,24 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class Pricelist
  ***********************************************************************/
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/**
- * @pdOid 055f0e6f-f58f-4dc8-baf0-3b984077cd56
- */
+@Entity
 public class Pricelist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @Column(name = "price", nullable = false)
     private float price;
-    /**
-     * @pdRoleInfo migr=no name=TypeOfExamination assc=association16 coll=java.util.Collection impl=java.util.HashSet mult=0..*
-     */
+
+    @ManyToOne
+    @JoinColumn(name = "typeOfExamination", referencedColumnName = "id")
     private TypeOfExamination typeOfExamination;
-    /**
-     * @pdRoleInfo migr=no name=Clinic assc=association18 mult=1..1
-     */
-    private Clinic clinic;
+
+//    @ManyToOne
+//    @JoinColumn(name = "clinic", referencedColumnName = "id")
+//    private Clinic clinic;
 
    /**
     *  https://stackoverflow.com/questions/23837561/jpa-2-0-many-to-many-with-extra-column?fbclid=IwAR1Eo96O9VIpgUuuq19iR9aW5uk0qHlqa0lTOkZ6vzhWVFXbmDnxKdmVcQ8
@@ -54,11 +50,11 @@ public class Pricelist {
       this.typeOfExamination = typeOfExamination;
    }
 
-   public Clinic getClinic() {
-      return clinic;
-   }
-
-   public void setClinic(Clinic clinic) {
-      this.clinic = clinic;
-   }
+//   public Clinic getClinic() {
+//      return clinic;
+//   }
+//
+//   public void setClinic(Clinic clinic) {
+//      this.clinic = clinic;
+//   }
 }

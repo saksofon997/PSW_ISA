@@ -5,11 +5,15 @@ package com.project.tim49.Model; /**********************************************
  ***********************************************************************/
 
 import javax.persistence.*;
+import java.util.List;
 
-//@Entity
+@Entity
+@Table
+@Inheritance( strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="appointment_type")
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "startingDateAndTime", nullable = false)
@@ -22,15 +26,15 @@ public class Appointment {
     private double price;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ordinationID")
+    @JoinColumn(name = "ordination_id")
     public Ordination ordination;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clinicID")
-    public Clinic clinic;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "clinicID")
+//    public Clinic clinic;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patientID")
+    @JoinColumn(name = "patient_id")
     public Patient patient;
 
     public Long getId() {
@@ -73,13 +77,13 @@ public class Appointment {
         this.ordination = ordination;
     }
 
-    public Clinic getClinic() {
-        return clinic;
-    }
-
-    public void setClinic(Clinic clinic) {
-        this.clinic = clinic;
-    }
+//    public Clinic getClinic() {
+//        return clinic;
+//    }
+//
+//    public void setClinic(Clinic clinic) {
+//        this.clinic = clinic;
+//    }
 
     public Patient getPatient() {
         return patient;

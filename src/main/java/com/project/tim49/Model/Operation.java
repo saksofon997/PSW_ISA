@@ -4,18 +4,23 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class Operation
  ***********************************************************************/
 
+import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
-/** @pdOid 2a77022b-54ad-4bd4-b6ad-40cf64fa9443 */
+@Entity
+@DiscriminatorValue("OP")
 public class Operation extends Appointment {
-   /** @pdRoleInfo migr=no name=Doctor assc=association13 coll=java.util.Collection impl=java.util.HashSet mult=1..* */
-   public Collection<Doctor> doctor;
 
-   public Collection<Doctor> getDoctor() {
-      return doctor;
+   @ManyToMany
+   @JoinTable(name = "operation_doctors", joinColumns = @JoinColumn(name = "operation_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
+   public List<Doctor> doctors;
+
+   public List<Doctor> getDoctors() {
+      return doctors;
    }
 
-   public void setDoctor(Collection<Doctor> doctor) {
-      this.doctor = doctor;
+   public void setDoctors(List<Doctor> doctors) {
+      this.doctors = doctors;
    }
 }
