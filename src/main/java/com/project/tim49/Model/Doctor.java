@@ -7,9 +7,8 @@ package com.project.tim49.Model; /**********************************************
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Collection;
+import java.util.ArrayList;
 
-/** @pdOid 5f5e1a4a-5758-49fd-b75e-b6c8683b4f9d */
 public class Doctor extends User {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +20,7 @@ public class Doctor extends User {
        /*  NADAMO SE DA MOZE DA SE POVEZE KROZ SPRING JPA -update: moze*/
    public Clinic clinic;
    /** @pdRoleInfo migr=no name=Appointment assc=association14 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   public Collection<Appointment> appointments;
+   public ArrayList<Appointment> appointments;
    /** @pdOid 00bb8b9d-3196-4bc8-866a-37f505e4840f */
    private int numberOfStars;
    /** @pdOid 48edbe96-7b57-453f-86c6-e7baa808c09f */
@@ -35,11 +34,11 @@ public class Doctor extends User {
       this.id = id;
    }
 
-   public Collection<Appointment> getAppointment() {
+   public ArrayList<Appointment> getAppointment() {
       return appointments;
    }
 
-   public void setAppointment(Collection<Appointment> appointment) {
+   public void setAppointment(ArrayList<Appointment> appointment) {
       this.appointments = appointment;
    }
 

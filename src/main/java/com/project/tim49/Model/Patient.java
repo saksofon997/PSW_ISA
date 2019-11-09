@@ -1,20 +1,23 @@
-package com.project.tim49.Model; /***********************************************************************
+package com.project.tim49.Model;
+
+/***********************************************************************
  * Module:  Patient.java
  * Author:  TIM 49
  * Purpose: Defines the Class Patient
  ***********************************************************************/
 
-/** @pdOid 436ca8d4-e370-4eda-b5ea-ff5f0534f3b9 */
+//@Entity
+//@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
 public class Patient extends User {
 
    /** @pdRoleInfo migr=no name=MedicalRecord assc=association10 mult=1..1 */
-   public MedicalRecord medicalRecord;
+   public String medicalRecord;
 
-   public MedicalRecord getMedicalRecord() {
+   public String getMedicalRecord() {
       return medicalRecord;
    }
 
-   public void setMedicalRecord(MedicalRecord medicalRecord) {
+   public void setMedicalRecord(String medicalRecord) {
       this.medicalRecord = medicalRecord;
    }
 }

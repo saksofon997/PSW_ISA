@@ -4,16 +4,14 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class DiagnosisDictionary
  ***********************************************************************/
 
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
-/** @pdOid fe840b40-19f9-4269-8d42-5b3de7fc97f7 */
+@Entity
 public class DiagnosisDictionary {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
-   /** @pdOid fbe043fd-48d9-4069-bee6-ee8718ac37d9 */
+   @Column(name = "code", nullable = false)
    private String code;
 
    public Long getId() {

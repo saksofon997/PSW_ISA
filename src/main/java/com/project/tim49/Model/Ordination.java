@@ -4,16 +4,18 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class Ordination
  ***********************************************************************/
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/** @pdOid 246d995a-eae6-4901-8f06-371153eda557 */
+@Entity
 public class Ordination {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "labelNum", nullable = false)
     private String labelNum;
 
     public Long getId() {

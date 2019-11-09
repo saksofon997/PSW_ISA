@@ -15,6 +15,8 @@ public class Pricelist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     private float price;
     /**
      * @pdRoleInfo migr=no name=TypeOfExamination assc=association16 coll=java.util.Collection impl=java.util.HashSet mult=0..*

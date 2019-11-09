@@ -4,19 +4,24 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class VacationRequest
  ***********************************************************************/
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/** @pdOid e420bd8b-eaf4-4f90-9054-a9588d5c8489 */
+@Entity
 public class VacationRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medicalStaff_id", referencedColumnName = "id")
     private User medicalStaff;
-    /**
-     * NE ZNAMO KAKO CEMO OVO - ZAVISI OD TEHNIKA KOJE CEMO KORISTITI U BAZI
-     */
+
+    @Column(name = "startDate", nullable = false)
+    private Long startDate;
+
+    @Column(name = "endDate", nullable = false)
+    private Long endDate;
+
     public Long getId() {
         return id;
     }
@@ -31,5 +36,21 @@ public class VacationRequest {
 
     public void setMedicalStaff(User medicalStaff) {
         this.medicalStaff = medicalStaff;
+    }
+
+    public Long getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Long startDate) {
+        this.startDate = startDate;
+    }
+
+    public Long getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Long endDate) {
+        this.endDate = endDate;
     }
 }

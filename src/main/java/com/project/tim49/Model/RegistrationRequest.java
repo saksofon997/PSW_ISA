@@ -4,31 +4,39 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class RegistrationRequest
  ***********************************************************************/
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/** @pdOid 4355985e-4832-45cf-85ee-3ff79d778700 */
+@Entity
 public class RegistrationRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "email", nullable = false)
     private String email;
-    /** @pdOid fa194ceb-09da-4302-ba7b-bb7ef7d93442 */
+
+    @Column(name = "password", nullable = false)
     private String password;
-    /** @pdOid 1ee086fd-3ea7-4464-bd89-39b7fbde56c9 */
+
+    @Column(name = "name", nullable = false)
     private String name;
-    /** @pdOid f65a9b10-7eb4-440c-a609-7a0333103fd2 */
+
+    @Column(name = "surname", nullable = false)
     private String surname;
-    /** @pdOid 2bf887fb-1ba6-4526-b509-f25fe7d83923 */
+
+    @Column(name = "address", nullable = false)
     private String address;
-    /** @pdOid 50580283-13ac-4365-84a3-4f1fb7043878 */
+
+    @Column(name = "city", nullable = false)
     private String city;
-    /** @pdOid 2aedf211-1f4d-465e-9d59-eee19ccc07c9 */
+
+    @Column(name = "state", nullable = false)
     private String state;
-    /** @pdOid df6b2be9-90a1-4c0e-acc9-dd758d15f141 */
+
+    @Column(name = "phoneNumber", nullable = false)
     private String phoneNumber;
-    /** @pdOid 0699881a-a759-4e06-bd90-94c9b9f69a02 */
+
+    @Column(name = "upin", nullable = false)
     private String upin;
 
     public Long getId() {

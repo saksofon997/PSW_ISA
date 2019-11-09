@@ -4,16 +4,15 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class MedicationDictionary
  ***********************************************************************/
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/** @pdOid f70382a2-02e4-4f41-8f08-4267892a1d30 */
+@Entity
 public class MedicationDictionary {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
-   /** @pdOid 03bd0c41-45f1-4735-b227-fd80550b27e2 */
+
+   @Column(name = "code", nullable = false)
    private String code;
 
    public Long getId() {

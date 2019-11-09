@@ -4,16 +4,15 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class TypeOfExamination
  ***********************************************************************/
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/** @pdOid c5e62d0c-c40b-4891-86d5-8d9fcc4c6fee */
+@Entity
 public class TypeOfExamination {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
-   /** @pdOid 68999b6c-e980-4cdd-8b6c-9c17ccc883bb */
+
+   @Column(name = "name", nullable = false)
    private String name;
 
    public Long getId() {
