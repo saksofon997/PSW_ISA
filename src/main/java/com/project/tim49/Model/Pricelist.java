@@ -19,9 +19,9 @@ public class Pricelist {
     @JoinColumn(name = "typeOfExamination", referencedColumnName = "id")
     private TypeOfExamination typeOfExamination;
 
-//    @ManyToOne
-//    @JoinColumn(name = "clinic", referencedColumnName = "id")
-//    private Clinic clinic;
+    @ManyToOne
+    @JoinColumn(name = "clinic", referencedColumnName = "id")
+    private Clinic clinic;
 
    /**
     *  https://stackoverflow.com/questions/23837561/jpa-2-0-many-to-many-with-extra-column?fbclid=IwAR1Eo96O9VIpgUuuq19iR9aW5uk0qHlqa0lTOkZ6vzhWVFXbmDnxKdmVcQ8
@@ -50,11 +50,11 @@ public class Pricelist {
       this.typeOfExamination = typeOfExamination;
    }
 
-//   public Clinic getClinic() {
-//      return clinic;
-//   }
-//
-//   public void setClinic(Clinic clinic) {
-//      this.clinic = clinic;
-//   }
+   public Clinic getClinic() {
+      return clinic;
+   }
+
+   public void setClinic(Clinic clinic) {
+      this.clinic = clinic;
+   }
 }

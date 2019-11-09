@@ -12,10 +12,12 @@ public class Prescription {
     @JoinColumn(name = "medication_id", referencedColumnName = "id")
     private MedicationDictionary medication;
 
-    @Column(name = "approves", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nurse_id", referencedColumnName = "id")
     private Nurse approves;
 
-    @Column(name = "performs", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor performs;
 
     public Long getId() {

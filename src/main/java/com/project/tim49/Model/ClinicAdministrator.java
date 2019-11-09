@@ -4,16 +4,24 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class ClinicAdministrator
  ***********************************************************************/
 
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
+@Entity
 public class ClinicAdministrator extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Clinic clinic;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Clinic getClinic() {
         return clinic;
@@ -23,11 +31,4 @@ public class ClinicAdministrator extends User {
         this.clinic = clinic;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

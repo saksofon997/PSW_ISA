@@ -18,6 +18,9 @@ public class Ordination {
     @Column(name = "labelNum", nullable = false)
     private String labelNum;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Clinic clinic;
+
     public Long getId() {
         return id;
     }
@@ -40,5 +43,13 @@ public class Ordination {
 
     public void setLabelNum(String labelNum) {
         this.labelNum = labelNum;
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
     }
 }

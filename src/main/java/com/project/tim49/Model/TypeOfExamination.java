@@ -15,6 +15,7 @@ public class TypeOfExamination {
    @Column(name = "name", nullable = false)
    private String name;
 
+
    public Long getId() {
       return id;
    }

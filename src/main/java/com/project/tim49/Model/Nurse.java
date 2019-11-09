@@ -15,8 +15,8 @@ public class Nurse extends User {
     @Column(name = "shiftEnd", nullable = false)
     private String shiftEnd;
 
-
-    //public Clinic clinic;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Clinic clinic;
 
     public String getShiftStart() {
         return shiftStart;
@@ -34,11 +34,11 @@ public class Nurse extends User {
         this.shiftEnd = shiftEnd;
     }
 
-//    public Clinic getClinic() {
-//        return clinic;
-//    }
-//
-//    public void setClinic(Clinic clinic) {
-//        this.clinic = clinic;
-//    }
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
 }

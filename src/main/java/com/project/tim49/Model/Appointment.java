@@ -29,9 +29,9 @@ public class Appointment {
     @JoinColumn(name = "ordination_id")
     public Ordination ordination;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "clinicID")
-//    public Clinic clinic;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clinic_id")
+    public Clinic clinic;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
@@ -77,13 +77,13 @@ public class Appointment {
         this.ordination = ordination;
     }
 
-//    public Clinic getClinic() {
-//        return clinic;
-//    }
-//
-//    public void setClinic(Clinic clinic) {
-//        this.clinic = clinic;
-//    }
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
 
     public Patient getPatient() {
         return patient;

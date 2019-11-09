@@ -6,6 +6,7 @@ package com.project.tim49.Model; /**********************************************
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class MedicalRecord {
@@ -13,8 +14,8 @@ public class MedicalRecord {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   /** @pdRoleInfo migr=no name=ExaminationReport assc=association22 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   //public List<ExaminationReport> examinationReport;
+   @OneToMany(mappedBy = "medicalRecord", fetch = FetchType.LAZY)
+   public List<ExaminationReport> examinationReport;
 
    @Column(name = "bloodType", nullable = false)
    private String bloodType;
@@ -40,13 +41,13 @@ public class MedicalRecord {
       this.id = id;
    }
 
-//   public List<ExaminationReport> getExaminationReport() {
-//      return examinationReport;
-//   }
-//
-//   public void setExaminationReport(List<ExaminationReport> examinationReport) {
-//      this.examinationReport = examinationReport;
-//   }
+   public List<ExaminationReport> getExaminationReport() {
+      return examinationReport;
+   }
+
+   public void setExaminationReport(List<ExaminationReport> examinationReport) {
+      this.examinationReport = examinationReport;
+   }
 
    public String getBloodType() {
       return bloodType;

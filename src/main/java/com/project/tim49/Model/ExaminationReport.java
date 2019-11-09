@@ -4,84 +4,94 @@ package com.project.tim49.Model; /**********************************************
  * Purpose: Defines the Class ExaminationReport
  ***********************************************************************/
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Collection;
+import javax.persistence.*;
+import java.util.List;
 
-/** @pdOid 32e6f23f-547f-4d0a-aadd-55fe4e22d375 */
+@Entity
 public class ExaminationReport {
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-   /** @pdOid 622ea920-6b05-4e68-adb4-e5e9aa3bdfb3 */
-   private Doctor performs;
-   /** @pdOid 39196a72-21d9-4de6-a546-302aeaebc5fa */
+    @Column(name = "reportDescription", nullable = false)
+    private String reportDescription;
 
-   private String reportDescription;
+    @Column(name = "dateAndTime", nullable = false)
+    private long dateAndTime;
 
-   private Clinic clinic;
+   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private MedicalRecord medicalRecord;
 
-   private long dateAndTime;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id")
+    private Doctor performs;
 
-   /** @pdRoleInfo migr=no name=DiagnosisDictionary assc=association21 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   public Collection<DiagnosisDictionary> diagnosis;
-   public Collection<Prescription> prescription;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clinic_id")
+    private Clinic clinic;
 
-   public long getDateAndTime() {
-      return dateAndTime;
-   }
+    @ManyToMany
+    @JoinTable(name = "examinationReports_diagnosis", joinColumns = @JoinColumn(name = "examinationReports_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "diagnosis_id", referencedColumnName = "id"))
+    public List<DiagnosisDictionary> diagnosis;
 
-   public void setDateAndTime(long dateAndTime) {
-      this.dateAndTime = dateAndTime;
-   }
+    @ManyToMany
+    @JoinTable(name = "examinationReports_prescriptions", joinColumns = @JoinColumn(name = "examinationReports_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
+    public List<Prescription> prescription;
 
-   public Collection<Prescription> getPrescription() {
-      return prescription;
-   }
+    public long getDateAndTime() {
+        return dateAndTime;
+    }
 
-   public void setPrescription(Collection<Prescription> prescription) {
-      this.prescription = prescription;
-   }
+    public void setDateAndTime(long dateAndTime) {
+        this.dateAndTime = dateAndTime;
+    }
 
-   public Long getId() {
-      return id;
-   }
+    public List<Prescription> getPrescription() {
+        return prescription;
+    }
 
-   public void setId(Long id) {
-      this.id = id;
-   }
+    public void setPrescription(List<Prescription> prescription) {
+        this.prescription = prescription;
+    }
 
-   public Doctor getPerforms() {
-      return performs;
-   }
+    public Long getId() {
+        return id;
+    }
 
-   public void setPerforms(Doctor performs) {
-      this.performs = performs;
-   }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-   public Collection<DiagnosisDictionary> getDiagnosis() {
-      return diagnosis;
-   }
+    public Doctor getPerforms() {
+        return performs;
+    }
 
-   public void setDiagnosis(Collection<DiagnosisDictionary> diagnosis) {
-      this.diagnosis = diagnosis;
-   }
-   public String getReportDescription() {
-      return reportDescription;
-   }
+    public void setPerforms(Doctor performs) {
+        this.performs = performs;
+    }
 
-   public void setReportDescription(String reportDescription) {
-      this.reportDescription = reportDescription;
-   }
+    public List<DiagnosisDictionary> getDiagnosis() {
+        return diagnosis;
+    }
 
-   public Clinic getClinic() {
-      return clinic;
-   }
+    public void setDiagnosis(List<DiagnosisDictionary> diagnosis) {
+        this.diagnosis = diagnosis;
+    }
 
-   public void setClinic(Clinic clinic) {
-      this.clinic = clinic;
-   }
+    public String getReportDescription() {
+        return reportDescription;
+    }
+
+    public void setReportDescription(String reportDescription) {
+        this.reportDescription = reportDescription;
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
 
 }
