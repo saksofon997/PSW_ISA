@@ -1,9 +1,13 @@
 package com.project.tim49.Controller;
 
 import com.project.tim49.Dto.LoginDTO;
+import com.project.tim49.Dto.UserDTO;
 import com.project.tim49.Model.User;
 import com.project.tim49.Service.LoginService;
+import net.minidev.json.JSONObject;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,21 +29,28 @@ public class LoginController {
     }
 
     /*
-    Pronalazi korisnika po emailu i vraća ga ukoliko postoji.
-    - Ne znam kako se upravlja spring security-jem.
+    Pronalazi korisnika po emailu i vraća ga ukoliko postoji - izmena 1.
     - Treba doraditi.
      */
-    @PostMapping(consumes = "application/json")
-    public ResponseEntity<LoginDTO> loginUser(@RequestBody LoginDTO loginDTO) {
+    @PostMapping(consumes = "application/json", produces= "application/json")
+    public ResponseEntity<UserDTO> loginUser(@RequestBody LoginDTO loginDTO) {
 
         User temp = loginService.findOne(loginDTO.getEmail());
 
-        if(temp == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else if(temp.getPassword().equals(loginDTO.getPassword()))
-            return new ResponseEntity<>(new LoginDTO(temp), HttpStatus.OK);
+        HttpHeaders hdr = new HttpHeaders();
 
-        return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+        if(temp != null) {
+            if (temp.getPassword().equals(loginDTO.getPassword())) {
+                UserDTO userDTO = new UserDTO(temp);
+                return new ResponseEntity<>(userDTO, HttpStatus.OK);
+            } else {
+                hdr.set("Response", "Password does not match!");
+                return new ResponseEntity<>(null, hdr, HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        hdr.set("Response", "User does not exist!");
+        return new ResponseEntity<UserDTO>(null, hdr,
+                HttpStatus.BAD_REQUEST);
     }
 }
