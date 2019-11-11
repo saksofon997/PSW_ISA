@@ -6,10 +6,11 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import { ClinicFormComponent} from './clinic-form/clinic-form.component'
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ClinicFormComponent
   ],
   imports: [
     BrowserModule,
