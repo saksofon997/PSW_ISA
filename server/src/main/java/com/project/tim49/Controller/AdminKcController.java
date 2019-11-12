@@ -4,6 +4,7 @@ import com.project.tim49.Model.Clinic;
 import com.project.tim49.Service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,18 +15,20 @@ import org.springframework.web.bind.annotation.*;
  *
  */
 @RestController
-@RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AdminKcController {
 
     @Autowired
     private ClinicService clinicService;
 
-    @GetMapping("/hello-world")
+    @GetMapping("/admin/show")
     public ResponseEntity<String> get() {
+        System.out.println("ovde je dosao sad");
         return ResponseEntity.ok("Hello World!");
-    }
 
-    @PostMapping(consumes = "application/json")
+    }
+    @PostMapping(path="/admin/addClinic" ,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ClinicDTO> saveClinic(@RequestBody ClinicDTO clinicDTO) {
 
         Clinic clinic = new Clinic();
@@ -34,8 +37,9 @@ public class AdminKcController {
         clinic.setCity(clinicDTO.getCity());
         clinic.setState(clinicDTO.getState());
         clinic.setDescription(clinicDTO.getDescription());
-
+        System.out.println("stigloSAD");
         clinic = clinicService.save(clinic);
+
         return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.CREATED);
     }
 

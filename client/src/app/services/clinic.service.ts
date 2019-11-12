@@ -1,4 +1,10 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { map, catchError } from 'rxjs/operators'
+import { throwError } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,23 +17,23 @@ export class ClinicService {
 
     addClinic(name: string, address: string, city : string, state:string, description: string){
       var clinic = {
-        name: String,
-        address: String,
-        city: String,
-        state: String,
-        description: String,
-        submitted: String
+        name,
+        address,
+        city,
+        state,
+        description,
       }
-      return this.http.post('http://localhost:8080/api/login', user, {observe: 'response'})
-        .pipe(
-          map((response) => {
-            const user = response.body;
-            this.setUser(user);
-                      return user;
-                  }),
-                  catchError((response) => {
-                      return throwError(JSON.parse(response.body));
-                  })
-        );
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+      return this.http.post('http://localhost:8080/admin/addClinic', JSON.stringify(clinic), {headers: headers}).subscribe(
+        (data) => {
+
+        }
+      );
+    }
+
+    showError(){
+      console.log('greska')
     }
 }

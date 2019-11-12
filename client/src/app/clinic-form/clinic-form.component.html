@@ -1,4 +1,4 @@
-<form>
+<form >
         <div class="form-row">
             <label for="inputClinicName">Name</label>
             <input type="text" class="form-control" name="name" [(ngModel)]='name' placeholder="Clinic Name">
@@ -19,8 +19,7 @@
         </div>
         <div class="form-group">
             <label for="inputClinicDescription">Description</label>
-            <textarea class="form-control" name="name" [(ngModel)]='name' rows="3"placeholder="Clinic description"></textarea>
+            <textarea class="form-control" name="name" [(ngModel)]='description' rows="3"placeholder="Clinic description"></textarea>
         </div>
-        <label name="name" >{{name}} nova</label>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+        <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
+</form>
