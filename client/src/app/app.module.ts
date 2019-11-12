@@ -9,8 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClinicFormComponent} from './components/clinic-form/clinic-form.component'
 import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
+import { HeaderComponent } from './components/header/header.component';
+
 @NgModule({
   declarations: [
+    AppComponent,
+    HeaderComponent,
     AppComponent,
     ClinicFormComponent,
     AdminProfileComponent
@@ -19,10 +23,10 @@ import { AdminProfileComponent } from './components/admin-profile/admin-profile.
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    HttpModule
   ],
-  providers: [CookieService],
+  providers: [CookieService], //UserService, AuthGuardService
   bootstrap: [AppComponent]
 })
 export class AppModule { }

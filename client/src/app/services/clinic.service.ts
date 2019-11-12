@@ -32,7 +32,14 @@ export class ClinicService {
         }
       );
     }
-
+    getClinics(){
+      return this.http.get('http://localhost:8080/admin/getClinics',{observe: 'response'})
+      .pipe(
+        map(response=>{
+          return response.body;
+        })
+      );
+    }
     showError(){
       console.log('greska')
     }

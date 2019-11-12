@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * ExampleController
  *
@@ -41,6 +43,11 @@ public class AdminKcController {
         clinic = clinicService.save(clinic);
 
         return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.CREATED);
+    }
+    @GetMapping(path="/admin/getClinics" ,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Clinic>> getClinic() {
+        return new ResponseEntity<List<Clinic>>(clinicService.findAll(), HttpStatus.OK);
     }
 
 }
