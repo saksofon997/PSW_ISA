@@ -7,11 +7,13 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ClinicFormComponent} from './clinic-form/clinic-form.component'
+import { ClinicFormComponent} from './components/clinic-form/clinic-form.component'
+import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ClinicFormComponent
+    ClinicFormComponent,
+    AdminProfileComponent
   ],
   imports: [
     BrowserModule,

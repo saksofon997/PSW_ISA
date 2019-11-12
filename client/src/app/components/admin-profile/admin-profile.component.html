@@ -1,0 +1,58 @@
+<div class="row">
+
+    <div class="col-3">
+        <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
+          <li class="nav-item">
+            <a class="nav-link active"  data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-home" aria-selected="true">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" (click)="loadClinics()" href="#v-pills-clinics" role="tab" aria-controls="v-pills-home" aria-selected="true">Clinics</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"data-toggle="pill" href="#v-pills-cadmins" role="tab" aria-controls="v-pills-home" aria-selected="true">Clinic administrators</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#v-pills-requests" role="tab" aria-controls="v-pills-home" aria-selected="true">Registration requests</a>
+          </li>
+        </ul>
+    </div>
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active " id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-home-tab">
+      </div>
+
+      <div class="tab-pane fade show " id="v-pills-clinics" role="tabpanel" aria-labelledby="v-pills-home-tab">
+          <div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
+              <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+                <h3 class="display-8">Clinics</h3>
+                <p class="lead">Here you can see a list of existing clinics, change them, or add a new one.</p>
+              </div>
+          </div>
+          <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">City</th>
+                  <th scope="col">State</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">
+                    <button type="button" class="btn btn-light">Add</button>
+                  </th>
+                </tr>
+                <tr *ngFor='let clinic of clinics'>
+                  <td>{{clinic.name}}</td>
+                  <td>{{clinic.address}}</td>
+                  <td>{{clinic.city}}</td>
+                  <td>{{clinic.state}}</td>
+                  <td>{{clinic.description}}</td>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+      </div>
+      <div class="tab-pane fade show" id="v-pills-cadmins" role="tabpanel" aria-labelledby="v-pills-messages-tab"></div>
+      <div class="tab-pane fade show" id="v-pills-requests" role="tabpanel" aria-labelledby="v-pills-settings-tab"></div>
+    </div>
+</div>
+    
