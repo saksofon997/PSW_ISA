@@ -2,10 +2,15 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuardService } from './guards/auth-guard.service'
+import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
 
 
 const routes: Routes = [
-	// {
+	{
+		path: 'profile',
+		component: AdminProfileComponent
+	}
+	//{
 	// 	path: '',
 	// 	component: HomeComponent,
 	// 	canActivate: [AuthGuardService]

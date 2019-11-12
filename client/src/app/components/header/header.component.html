@@ -11,8 +11,8 @@
                     <li class="nav-item active">
                         <a class="nav-link" routerLink="/">Home</a>
                     </li>
-                    <li class="nav-item" *ngIf="userService.user">
-                        <a class="nav-link" routerLink="/profile" (click)="showProfilePage()">My profile</a>
+                    <li class="nav-item" > <!-- *ngIf="userService.user" -->
+                        <a class="nav-link" routerLink="/profile" >My profile</a>
                     </li>
                     <li class="nav-item" *ngIf="!userService.user">
                         <a class="nav-link" routerLink="/login">Login</a>

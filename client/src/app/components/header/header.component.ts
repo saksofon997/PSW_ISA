@@ -10,10 +10,11 @@ import { UserService } from '../../services/user.service';
 })
 export class HeaderComponent implements OnInit {
 
-	constructor(private userService: UserService,
+	constructor(public userService: UserService,
 		private router: Router) { }
 
 	ngOnInit() {
+		
 	}
 
 	logout() {

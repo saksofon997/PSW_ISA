@@ -28,10 +28,10 @@ public class Clinic {
    @Column(name = "description", nullable = false)
    private String description;
 
-   @Column(name = "numberOfStars", nullable = false)
+   @Column(name = "numberOfStars", nullable = true)
    private int numberOfStars;
 
-   @Column(name = "numberOfReviews", nullable = false)
+   @Column(name = "numberOfReviews", nullable = true)
    private int numberOfReviews;
 
    @OneToMany(mappedBy = "clinic")
