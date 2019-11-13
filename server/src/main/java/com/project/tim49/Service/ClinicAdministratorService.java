@@ -39,4 +39,10 @@ public class ClinicAdministratorService {
     public void remove(Long id) {
         clinicAdministratorRepository.deleteById(id);
     }
+
+    // Returns reference to update entity
+    public ClinicAdministrator getReference(Long id){
+        return clinicAdministratorRepository.getOne(id);
+    }
+
 }
