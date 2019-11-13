@@ -35,15 +35,15 @@ public class LoginController {
         if(temp != null) {
             if (temp.getPassword().equals(loginDTO.getPassword())) {
                 UserDTO userDTO = new UserDTO(temp);
-                return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+                return new ResponseEntity<>(userDTO, HttpStatus.OK);
             } else {
                 hdr.set("Response", "Password does not match!");
-                return new ResponseEntity<>(null, hdr, HttpStatus.CREATED);
+                return new ResponseEntity<>(null, hdr, HttpStatus.UNAUTHORIZED);
             }
         }
 
         hdr.set("Response", "User does not exist!");
         return new ResponseEntity<UserDTO>(null, hdr,
-                HttpStatus.CREATED);
+                HttpStatus.BAD_REQUEST);
     }
 }
