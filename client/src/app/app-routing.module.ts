@@ -3,12 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuardService } from './guards/auth-guard.service'
 import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 const routes: Routes = [
 	{
 		path: 'profile',
 		component: AdminProfileComponent
+	},
+	{
+		path: 'login',
+		component: LoginComponent
 	}
 	//{
 	// 	path: '',
