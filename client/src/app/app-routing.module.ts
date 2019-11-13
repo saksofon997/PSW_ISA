@@ -1,9 +1,11 @@
-import { ShowListingComponent } from './components/show-listing/show-listing.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuardService } from './guards/auth-guard.service'
 import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
+import { ClinicListingComponent } from './components/clinic-listing/clinic-listing.component';
+import { ClinicAdministratorsListingComponent } from './components/clinic-administrators-listing/clinic-administrators-listing.component';
+import { ClinicFormComponent } from './components/clinic-form/clinic-form.component';
 
 
 const routes: Routes = [
@@ -11,10 +13,9 @@ const routes: Routes = [
 		path: 'profile',
 		component: AdminProfileComponent,
 		children:[
-			{path: 'clinics', component: ShowListingComponent,
-				children:[{path: 'clinicAdmins', component: ShowListingComponent}]
-			},
-			
+			{path: 'clinics', component: ClinicListingComponent},
+			{path: 'clinicAdmins', component: ClinicAdministratorsListingComponent},
+			{path: 'addClinic', component: ClinicFormComponent}
 		]
 	}
 	//{

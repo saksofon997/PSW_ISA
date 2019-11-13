@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClientModule } from '@angular/common/http';
-import { MatTabsModule } from '@angular/material/tabs'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClinicFormComponent} from './components/clinic-form/clinic-form.component'
 import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
 import { HeaderComponent } from './components/header/header.component';
-import { ShowListingComponent } from './components/show-listing/show-listing.component';
+import { ClinicListingComponent } from './components/clinic-listing/clinic-listing.component';
+import { ClinicAdministratorsListingComponent } from './components/clinic-administrators-listing/clinic-administrators-listing.component';
 
 @NgModule({
   declarations: [
@@ -19,15 +19,15 @@ import { ShowListingComponent } from './components/show-listing/show-listing.com
     AppComponent,
     ClinicFormComponent,
     AdminProfileComponent,
-    ShowListingComponent
+    ClinicListingComponent,
+    ClinicAdministratorsListingComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    HttpModule,
-    MatTabsModule
+    HttpModule
   ],
   providers: [CookieService], //UserService, AuthGuardService
   bootstrap: [AppComponent]
