@@ -25,8 +25,7 @@ public class AdminKcController {
 
     @GetMapping("/admin/show")
     public ResponseEntity<String> get() {
-        System.out.println("ovde je dosao sad");
-        return ResponseEntity.ok("Hello World!");
+        return ResponseEntity.ok("AdminKcController");
 
     }
     @PostMapping(path="/admin/addClinic" ,
@@ -39,7 +38,6 @@ public class AdminKcController {
         clinic.setCity(clinicDTO.getCity());
         clinic.setState(clinicDTO.getState());
         clinic.setDescription(clinicDTO.getDescription());
-        System.out.println("stigloSAD");
         clinic = clinicService.save(clinic);
 
         return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.CREATED);

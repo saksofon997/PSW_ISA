@@ -19,19 +19,12 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    /*
-    Tester metoda.
-     */
     @GetMapping
     public ResponseEntity<String> getTest() {
 
         return ResponseEntity.ok("LoginController");
     }
 
-    /*
-    Pronalazi korisnika po emailu i vraća ga ukoliko postoji - izmena 1.
-    - Treba doraditi.
-     */
     @PostMapping(consumes = "application/json", produces= "application/json")
     public ResponseEntity<UserDTO> loginUser(@RequestBody LoginDTO loginDTO) {
 
@@ -42,15 +35,15 @@ public class LoginController {
         if(temp != null) {
             if (temp.getPassword().equals(loginDTO.getPassword())) {
                 UserDTO userDTO = new UserDTO(temp);
-                return new ResponseEntity<>(userDTO, HttpStatus.OK);
+                return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
             } else {
                 hdr.set("Response", "Password does not match!");
-                return new ResponseEntity<>(null, hdr, HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(null, hdr, HttpStatus.CREATED);
             }
         }
 
         hdr.set("Response", "User does not exist!");
         return new ResponseEntity<UserDTO>(null, hdr,
-                HttpStatus.BAD_REQUEST);
+                HttpStatus.CREATED);
     }
 }

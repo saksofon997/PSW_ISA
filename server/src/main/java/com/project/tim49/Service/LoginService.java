@@ -16,7 +16,7 @@ public class LoginService {
     private LoginRepository loginRepository;
 
     public User findOne(String email) {
-        return loginRepository.findOneByEmailIgnoringCase(email);
+        return loginRepository.findOneByEmail(email);
     }
 
     public List<User> findAll() {

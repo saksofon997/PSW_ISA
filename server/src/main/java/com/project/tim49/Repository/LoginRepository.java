@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LoginRepository extends JpaRepository<User, Long> {
 
-    User findOneByEmailIgnoringCase(String email);
+    User findOneByEmail(String email);
 
     Page<User> findAll(Pageable pageable);
 

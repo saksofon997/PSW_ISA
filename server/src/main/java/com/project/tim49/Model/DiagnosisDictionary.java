@@ -15,6 +15,9 @@ public class DiagnosisDictionary {
    @Column(name = "code", nullable = false)
    private String code;
 
+   @Column(name = "description")
+   private String description;
+
    public Long getId() {
       return id;
    }
@@ -29,5 +32,13 @@ public class DiagnosisDictionary {
 
    public void setCode(String code) {
       this.code = code;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
    }
 }
