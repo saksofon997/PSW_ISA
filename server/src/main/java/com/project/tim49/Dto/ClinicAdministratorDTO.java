@@ -16,12 +16,12 @@ public class ClinicAdministratorDTO {
     private String phoneNumber;
     private String upin;
     private String role;
-    private Clinic clinic;
+    private Long clinic_id;
 
     public ClinicAdministratorDTO() {
 
     }
-
+    // PODESI KONSTRUKTORE
     public ClinicAdministratorDTO(ClinicAdministrator user) {
         this.id = user.getId();
         this.email = user.getEmail();
@@ -33,10 +33,10 @@ public class ClinicAdministratorDTO {
         this.phoneNumber = user.getPhoneNumber();
         this.upin = user.getUpin();
         this.role = user.getRole();
-        this.clinic = clinic;
+        this.clinic_id = clinic_id;
     }
 
-    public ClinicAdministratorDTO(Long id, String email, String name, String surname, String address, String city, String state, String phoneNumber, String upin, String role, Clinic clinic) {
+    public ClinicAdministratorDTO(Long id, String email, String name, String surname, String address, String city, String state, String phoneNumber, String upin, String role, Long clinic_id) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -47,7 +47,7 @@ public class ClinicAdministratorDTO {
         this.phoneNumber = phoneNumber;
         this.upin = upin;
         this.role = role;
-        this.clinic = clinic;
+        this.clinic_id = clinic_id;
     }
 
     public Long getId() {
@@ -130,11 +130,11 @@ public class ClinicAdministratorDTO {
         this.role = role;
     }
 
-    public Clinic getClinic() {
-        return clinic;
+    public Long getClinic_id() {
+        return clinic_id;
     }
 
-    public void setClinic(Clinic clinic) {
-        this.clinic = clinic;
+    public void setClinic_id(Long clinic_id) {
+        this.clinic_id = clinic_id;
     }
 }

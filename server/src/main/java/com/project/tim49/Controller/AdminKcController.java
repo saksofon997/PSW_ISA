@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +57,25 @@ public class AdminKcController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Clinic>> getClinic() {
         return new ResponseEntity<List<Clinic>>(clinicService.findAll(), HttpStatus.OK);
+    }
+    @GetMapping(path="/getClinicAdmins/{id}" ,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ClinicAdministrator>> getClinicAdmins(@PathVariable Long id) {
+        Clinic clinic = clinicService.findOne(id);
+
+        if (clinic == null){
+            HttpHeaders hdr = new HttpHeaders();
+            hdr.set("ErrorText", "No clinic with this id");
+            return new ResponseEntity<>(null, hdr, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        List<ClinicAdministrator> admins = clinic.getClinicAdministrator();
+        if (admins != null) {
+            return new ResponseEntity<>(admins, HttpStatus.OK);
+        } else {
+            admins = new ArrayList<>();
+            return new ResponseEntity<>(admins, HttpStatus.OK);
+        }
     }
 
 }
