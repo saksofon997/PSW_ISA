@@ -14,31 +14,31 @@ public class User {
    @GeneratedValue(strategy = GenerationType.AUTO)
    private Long id;
 
-   @Column(name = "email", nullable = false)
+   @Column(name = "email", nullable = false, unique = true)
    private String email;
 
    @Column(name = "password", nullable = false)
    private String password;
 
-   @Column(name = "name", nullable = false)
+   @Column(name = "name")
    private String name;
 
-   @Column(name = "surname", nullable = false)
+   @Column(name = "surname")
    private String surname;
 
-   @Column(name = "address", nullable = false)
+   @Column(name = "address")
    private String address;
 
-   @Column(name = "city", nullable = false)
+   @Column(name = "city")
    private String city;
 
-   @Column(name = "state", nullable = false)
+   @Column(name = "state")
    private String state;
 
-   @Column(name = "phoneNumber", nullable = false)
+   @Column(name = "phoneNumber")
    private String phoneNumber;
 
-   @Column(name = "upin", nullable = false)
+   @Column(name = "upin")
    private String upin;
 
    @Column(name = "role", nullable = false)
