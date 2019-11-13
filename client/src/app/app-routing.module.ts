@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuardService } from './guards/auth-guard.service'
 import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
+import { LoginComponent } from './components/login/login.component';
 import { ClinicListingComponent } from './components/clinic-listing/clinic-listing.component';
 import { ClinicAdministratorsListingComponent } from './components/clinic-administrators-listing/clinic-administrators-listing.component';
 import { ClinicFormComponent } from './components/clinic-form/clinic-form.component';
@@ -17,6 +18,10 @@ const routes: Routes = [
 			{path: 'clinicAdmins', component: ClinicAdministratorsListingComponent},
 			{path: 'addClinic', component: ClinicFormComponent}
 		]
+	},
+	{
+		path: 'login',
+		component: LoginComponent
 	}
 	//{
 	// 	path: '',

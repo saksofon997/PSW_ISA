@@ -19,19 +19,12 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    /*
-    Tester metoda.
-     */
     @GetMapping
     public ResponseEntity<String> getTest() {
 
         return ResponseEntity.ok("LoginController");
     }
 
-    /*
-    Pronalazi korisnika po emailu i vraća ga ukoliko postoji - izmena 1.
-    - Treba doraditi.
-     */
     @PostMapping(consumes = "application/json", produces= "application/json")
     public ResponseEntity<UserDTO> loginUser(@RequestBody LoginDTO loginDTO) {
 

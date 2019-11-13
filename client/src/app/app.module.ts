@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClientModule } from '@angular/common/http';
@@ -11,6 +11,7 @@ import { AdminProfileComponent } from './components/admin-profile/admin-profile.
 import { HeaderComponent } from './components/header/header.component';
 import { ClinicListingComponent } from './components/clinic-listing/clinic-listing.component';
 import { ClinicAdministratorsListingComponent } from './components/clinic-administrators-listing/clinic-administrators-listing.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ClinicAdministratorsListingComponent } from './components/clinic-admini
     AppComponent,
     ClinicFormComponent,
     AdminProfileComponent,
+    LoginComponent,
     ClinicListingComponent,
     ClinicAdministratorsListingComponent
   ],
@@ -27,6 +29,7 @@ import { ClinicAdministratorsListingComponent } from './components/clinic-admini
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     HttpModule
   ],
   providers: [CookieService], //UserService, AuthGuardService
