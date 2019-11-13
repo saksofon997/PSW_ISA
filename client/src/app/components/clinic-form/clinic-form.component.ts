@@ -15,14 +15,13 @@ export class ClinicFormComponent implements OnInit {
   description: string;
   submitted: string;
 
-  constructor(private router: Router, 
-    private clinicService: ClinicService) { }
-  
+  constructor(private router: Router,
+              private clinicService: ClinicService) { }
+
   ngOnInit() {
   }
   public onSubmit(){
-    this.clinicService.addClinic(this.name,this.address,this.city,this.state,this.description);
-    
+    this.clinicService.addClinic(this.name, this.address, this.city, this.state, this.description);
   }
 
 }

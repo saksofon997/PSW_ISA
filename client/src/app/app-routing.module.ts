@@ -1,3 +1,4 @@
+import { ShowListingComponent } from './components/show-listing/show-listing.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -8,7 +9,13 @@ import { AdminProfileComponent } from './components/admin-profile/admin-profile.
 const routes: Routes = [
 	{
 		path: 'profile',
-		component: AdminProfileComponent
+		component: AdminProfileComponent,
+		children:[
+			{path: 'clinics', component: ShowListingComponent,
+				children:[{path: 'clinicAdmins', component: ShowListingComponent}]
+			},
+			
+		]
 	}
 	//{
 	// 	path: '',
