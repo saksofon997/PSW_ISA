@@ -22,18 +22,18 @@ public class ClinicAdministratorDTO {
 
     }
     // PODESI KONSTRUKTORE
-    public ClinicAdministratorDTO(ClinicAdministrator user) {
-        this.id = user.getId();
-        this.email = user.getEmail();
-        this.name = user.getName();
-        this.surname = user.getSurname();
-        this.address = user.getAddress();
-        this.city = user.getCity();
-        this.state = user.getState();
-        this.phoneNumber = user.getPhoneNumber();
-        this.upin = user.getUpin();
-        this.role = user.getRole();
-        this.clinic_id = clinic_id;
+    public ClinicAdministratorDTO(ClinicAdministrator admin) {
+        this.id = admin.getId();
+        this.email = admin.getEmail();
+        this.name = admin.getName();
+        this.surname = admin.getSurname();
+        this.address = admin.getAddress();
+        this.city = admin.getCity();
+        this.state = admin.getState();
+        this.phoneNumber = admin.getPhoneNumber();
+        this.upin = admin.getUpin();
+        this.role = admin.getRole();
+        this.clinic_id = admin.getClinic().getId();
     }
 
     public ClinicAdministratorDTO(Long id, String email, String name, String surname, String address, String city, String state, String phoneNumber, String upin, String role, Long clinic_id) {

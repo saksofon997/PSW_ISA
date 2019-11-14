@@ -40,8 +40,8 @@ export class ClinicService {
         })
       );
     }
-    getClinicAdmins(){
-      return this.http.get('http://localhost:8080/clinicAdmin',{observe: 'response'})
+    getClinicAdmins(id: any){
+      return this.http.get(`http://localhost:8080/admin/getClinicAdmins/${id}`,{observe: 'response'})
       .pipe(
         map(response=>{
           return response.body;

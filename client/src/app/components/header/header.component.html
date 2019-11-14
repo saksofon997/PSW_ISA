@@ -8,10 +8,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item active" *ngIf="userService.user">
                         <a class="nav-link" routerLink="/">Home</a>
                     </li>
-                    <li class="nav-item" > <!-- *ngIf="userService.user" -->
+                    <li class="nav-item" *ngIf="userService.user" > <!-- *ngIf="userService.user" -->
                         <a class="nav-link" routerLink="/profile" >My profile</a>
                     </li>
                     <li class="nav-item" *ngIf="!userService.user">
@@ -20,12 +20,12 @@
                     <li class="nav-item" *ngIf="!userService.user">
                         <a class="nav-link" routerLink="/register">Register</a>
                     </li>
-                    <li class="nav-item dropdown" *ngIf="userService.user">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    <li class="nav-item dropdown" *ngIf="userService.user"> 
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" style="cursor: pointer;"
                             aria-haspopup="true" aria-expanded="false">
                             {{userService.user.name}}
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="cursor: pointer;">
                             <a class="dropdown-item" (click)="logout()">Logout</a>
                         </div>
                     </li>

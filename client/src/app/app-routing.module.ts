@@ -17,7 +17,9 @@ const routes: Routes = [
 			{path: 'clinics', component: ClinicListingComponent},
 			{path: 'clinicAdmins', component: ClinicAdministratorsListingComponent},
 			{path: 'addClinic', component: ClinicFormComponent}
-		]
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ["ADMINCC"]}
 	},
 	{
 		path: 'login',
@@ -47,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes)],
+	imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
 	exports: [RouterModule]
 })
 export class AppRoutingModule { }

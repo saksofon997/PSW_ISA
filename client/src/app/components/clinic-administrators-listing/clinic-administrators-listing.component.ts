@@ -22,12 +22,14 @@ export class ClinicAdministratorsListingComponent implements OnInit {
 		this.activatedRoute.params.subscribe((params)=> {
 			this.clinicID = params.id;
 			this.clinicName = params.name;
+
+			this.getClinicAdministrators();
 		});
-		this.getClinics();
+		
 	}
 
-	getClinics() {
-		this.clinicService.getClinics().subscribe((data) => {
+	getClinicAdministrators() {
+		this.clinicService.getClinicAdmins(this.clinicID).subscribe((data) => {
 			this.admins = data;
 		});
 	}

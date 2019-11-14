@@ -6,6 +6,7 @@ import javax.persistence.Column;
 
 public class ClinicDTO {
 
+    private Long id;
     private String name;
     private String address;
     private String city;
@@ -17,11 +18,20 @@ public class ClinicDTO {
     }
 
     public ClinicDTO(Clinic clinic) {
+        this.id = clinic.getId();
         this.name = clinic.getName();
         this.address = clinic.getAddress();
         this.city = clinic.getCity();
         this.state = clinic.getState();
         this.description = clinic.getDescription();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
