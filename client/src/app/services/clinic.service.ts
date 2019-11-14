@@ -40,6 +40,14 @@ export class ClinicService {
         })
       );
     }
+    getClinicAdmins(id: any){
+      return this.http.get(`http://localhost:8080/admin/getClinicAdmins/${id}`,{observe: 'response'})
+      .pipe(
+        map(response=>{
+          return response.body;
+        })
+      );
+    }
     showError(){
       console.log('greska')
     }

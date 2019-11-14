@@ -8,14 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminProfileComponent implements OnInit {
   clinics: any;
-  constructor(private clinicService: ClinicService) { }
+  clinicHeaders = ['Name','Address','City','State','Description'];
+  constructor() { }
 
   ngOnInit() {
   }
   loadClinics(){
-    this.clinicService.getClinics().subscribe((data)=>{
-      this.clinics=data;
-    });
+    
   }
 }
 

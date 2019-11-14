@@ -13,13 +13,13 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
-  returnUrl: string;
-  userService: UserService;
+  returnUrl: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private userService: UserService
     // private authenticationService: AuthenticationService,
   ) { }
 

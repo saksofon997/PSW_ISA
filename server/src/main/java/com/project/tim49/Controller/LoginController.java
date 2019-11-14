@@ -13,7 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/login")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping(value = "api")
 public class LoginController {
 
     @Autowired
@@ -25,7 +26,7 @@ public class LoginController {
         return ResponseEntity.ok("LoginController");
     }
 
-    @PostMapping(consumes = "application/json", produces= "application/json")
+    @PostMapping(path = "/login", consumes = "application/json", produces= "application/json")
     public ResponseEntity<UserDTO> loginUser(@RequestBody LoginDTO loginDTO) {
 
         User temp = loginService.findOne(loginDTO.getEmail());

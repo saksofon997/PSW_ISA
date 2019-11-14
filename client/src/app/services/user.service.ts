@@ -73,13 +73,15 @@ export class UserService {
 	*  Prints error to console 
 	*/
 	logout(){
-        return this.http.delete('http://localhost:8080/api/logout')
-			.subscribe(
-				(data: any) => {
-					this.removeUser();
-					this.router.navigate(['/login']);
-				},
-				(error) => alert(error)
-			);
+        // return this.http.delete('http://localhost:8080/api/logout')
+		// 	.subscribe(
+		// 		(data: any) => {
+		// 			this.removeUser();
+		// 			this.router.navigate(['/login']);
+		// 		},
+		// 		(error) => alert(error)
+		// 	);
+		this.removeUser();
+		this.router.navigate(['/login']); 
 	}
 }

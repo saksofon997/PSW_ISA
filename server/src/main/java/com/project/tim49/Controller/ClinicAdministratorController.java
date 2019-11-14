@@ -4,6 +4,7 @@ import com.project.tim49.Dto.ClinicAdministratorDTO;
 import com.project.tim49.Model.Clinic;
 import com.project.tim49.Model.ClinicAdministrator;
 import com.project.tim49.Service.ClinicAdministratorService;
+import com.project.tim49.Service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ public class ClinicAdministratorController {
 
     @Autowired
     private ClinicAdministratorService clinicAdministratorService;
+    @Autowired
+    private ClinicService clinicService;
 
     @GetMapping(path="" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,6 +35,7 @@ public class ClinicAdministratorController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ClinicAdministratorDTO> addClinicAdministrator(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
 
+        System.out.println(clinicAdministratorDTO.getClinic_id());
         ClinicAdministrator check = clinicAdministratorService.findOneByEmail(clinicAdministratorDTO.getEmail());
         if (check != null) {
             HttpHeaders hdr = new HttpHeaders();
@@ -48,7 +52,10 @@ public class ClinicAdministratorController {
         admin.setState(clinicAdministratorDTO.getState());
         admin.setPhoneNumber(clinicAdministratorDTO.getPhoneNumber());
         admin.setUpin(clinicAdministratorDTO.getUpin());
-        admin.setClinic(clinicAdministratorDTO.getClinic());
+
+
+        admin.setClinic( clinicService.findOne(clinicAdministratorDTO.getClinic_id()) );
+
         admin.setRole("ClinicAdmin");
         admin.setPassword("ClinicalCenterDefaultPassword");
 
@@ -94,7 +101,7 @@ public class ClinicAdministratorController {
         admin.setState(clinicAdministratorDTO.getState());
         admin.setPhoneNumber(clinicAdministratorDTO.getPhoneNumber());
         admin.setUpin(clinicAdministratorDTO.getUpin());
-        admin.setClinic(clinicAdministratorDTO.getClinic());
+        admin.setClinic( clinicService.findOne(clinicAdministratorDTO.getClinic_id()) );
 
         clinicAdministratorService.save(admin);
 

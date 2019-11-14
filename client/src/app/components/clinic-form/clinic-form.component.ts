@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {ClinicService} from '../../services/clinic.service'
 
 @Component({
@@ -15,14 +15,16 @@ export class ClinicFormComponent implements OnInit {
   description: string;
   submitted: string;
 
-  constructor(private router: Router, 
-    private clinicService: ClinicService) { }
-  
+  constructor(private router: Router,
+              private clinicService: ClinicService,
+              private activatedRoute: ActivatedRoute) { }
+
   ngOnInit() {
   }
   public onSubmit(){
-    this.clinicService.addClinic(this.name,this.address,this.city,this.state,this.description);
-    
+    this.clinicService.addClinic(this.name, this.address, this.city, this.state, this.description);
+
+    this.router.navigate(['../clinics'], { relativeTo: this.activatedRoute });
   }
 
 }

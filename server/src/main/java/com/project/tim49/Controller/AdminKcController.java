@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +32,6 @@ public class AdminKcController {
     @Autowired
     private ClinicService clinicService;
 
-    @GetMapping("/show")
-    public ResponseEntity<String> get() {
-        return ResponseEntity.ok("AdminKcController");
-
-    }
     @PostMapping(path="/addClinic" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ClinicDTO> saveClinic(@RequestBody ClinicDTO clinicDTO) {
@@ -52,8 +48,39 @@ public class AdminKcController {
     }
     @GetMapping(path="/getClinics" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Clinic>> getClinic() {
-        return new ResponseEntity<List<Clinic>>(clinicService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<ClinicDTO>> getClinic() {
+        List<Clinic> clinics = clinicService.findAll();
+
+        List<ClinicDTO> clinicsDTO = new ArrayList<>();
+        for (Clinic clinic: clinics ) {
+            clinicsDTO.add( new ClinicDTO(clinic));
+        }
+        return new ResponseEntity<List<ClinicDTO>>(clinicsDTO, HttpStatus.OK);
+    }
+    @GetMapping(path="/getClinicAdmins/{id}" ,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ClinicAdministratorDTO>> getClinicAdmins(@PathVariable Long id) {
+        Clinic clinic = clinicService.findOne(id);
+
+        if (clinic == null){
+            HttpHeaders hdr = new HttpHeaders();
+            hdr.set("ErrorText", "No clinic with this id");
+            return new ResponseEntity<>(null, hdr, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        List<ClinicAdministrator> admins = clinic.getClinicAdministrator();
+
+        List<ClinicAdministratorDTO> adminsDTO = new ArrayList<>();
+        for (ClinicAdministrator admin: admins ) {
+            adminsDTO.add( new ClinicAdministratorDTO(admin));
+        }
+
+        if (admins != null) {
+            return new ResponseEntity<>(adminsDTO, HttpStatus.OK);
+        } else {
+            admins = new ArrayList<>();
+            return new ResponseEntity<>(adminsDTO, HttpStatus.OK);
+        }
     }
 
 }
