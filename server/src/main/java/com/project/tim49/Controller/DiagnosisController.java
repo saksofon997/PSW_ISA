@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(value = "api/diagnosis")
 public class DiagnosisController {
 
@@ -26,13 +27,11 @@ public class DiagnosisController {
 
         List<DiagnosisDictionary> lista = diagnosisService.findAll();
 
-        return new ResponseEntity<>(lista, HttpStatus.CREATED);
+        return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json", produces= "application/json")
-    public ResponseEntity<DiagnosisDTO> addDiagnosis(DiagnosisDTO diagnosisDTO) {
-
-        HttpHeaders hdr = new HttpHeaders();
+    public ResponseEntity addDiagnosis(DiagnosisDTO diagnosisDTO) {
 
         if(diagnosisDTO != null) {
             DiagnosisDictionary temp =
@@ -45,17 +44,13 @@ public class DiagnosisController {
 
                 return new ResponseEntity<>(diagnosisDTO, HttpStatus.CREATED);
             }
-            hdr.set("ErrorText", "Diagnosis already exists");
-            return new ResponseEntity<>(null, hdr, HttpStatus.CREATED);
+            return new ResponseEntity<>("Diagnosis already exists", HttpStatus.CONFLICT);
         }
-        hdr.set("ErrorText", "Bad request");
-        return new ResponseEntity<>(null, hdr, HttpStatus.CREATED);
+        return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(path="/change/{code}", consumes = "application/json", produces= "application/json")
-    public ResponseEntity<DiagnosisDTO> modifyDiagnosis(DiagnosisDTO diagnosisDTO, @PathVariable("code") String code) {
-
-        HttpHeaders hdr = new HttpHeaders();
+    public ResponseEntity modifyDiagnosis(DiagnosisDTO diagnosisDTO, @PathVariable("code") String code) {
 
         if(diagnosisDTO != null) {
             DiagnosisDictionary temp = diagnosisService.findOne(code);
@@ -69,11 +64,9 @@ public class DiagnosisController {
 
                 return new ResponseEntity<>(diagnosisDTO, HttpStatus.CREATED);
             }
-            hdr.set("ErrorText", "Diagnosis doesn't exist");
-            return new ResponseEntity<>(null, hdr, HttpStatus.CREATED);
+            return new ResponseEntity<>("Diagnosis doesn't exist", HttpStatus.NOT_FOUND);
         }
-        hdr.set("ErrorText", "Bad request");
-        return new ResponseEntity<>(null, hdr, HttpStatus.CREATED);
+        return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(path="/delete/{code}")
@@ -81,15 +74,11 @@ public class DiagnosisController {
 
         DiagnosisDictionary temp = diagnosisService.findOne(code);
 
-        HttpHeaders hdr = new HttpHeaders();
-
         if(temp != null) {
             diagnosisService.remove(temp.getId());
-            hdr.set("SuccessText", "Diagnosis deleted");
 
-            return new ResponseEntity<>(null, hdr, HttpStatus.CREATED);
+            return new ResponseEntity<>("Diagnosis deleted", HttpStatus.OK);
         }
-        hdr.set("ErrorText", "Diagnosis doesn't exist");
-        return new ResponseEntity<>(null, hdr, HttpStatus.CREATED);
+        return new ResponseEntity<>("Diagnosis doesn't exist", HttpStatus.NOT_FOUND);
     }
 }

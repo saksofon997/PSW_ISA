@@ -33,14 +33,12 @@ public class ClinicAdministratorController {
 
     @PostMapping(path="/add" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ClinicAdministratorDTO> addClinicAdministrator(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
+    public ResponseEntity addClinicAdministrator(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
 
         System.out.println(clinicAdministratorDTO.getClinic_id());
         ClinicAdministrator check = clinicAdministratorService.findOneByEmail(clinicAdministratorDTO.getEmail());
         if (check != null) {
-            HttpHeaders hdr = new HttpHeaders();
-            hdr.set("ErrorText", "User with this email already exists!");
-            return new ResponseEntity<>(null, hdr, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("User with this email already exists!", HttpStatus.CONFLICT);
         }
 
         ClinicAdministrator admin = new ClinicAdministrator();
@@ -56,16 +54,14 @@ public class ClinicAdministratorController {
 
         admin.setClinic( clinicService.findOne(clinicAdministratorDTO.getClinic_id()) );
 
-        admin.setRole("ClinicAdmin");
+        admin.setRole("ADMINC");
         admin.setPassword("ClinicalCenterDefaultPassword");
 
         admin = clinicAdministratorService.save(admin);
         if (admin != null){
             return new ResponseEntity<>(new ClinicAdministratorDTO(admin), HttpStatus.CREATED);
         } else {
-            HttpHeaders hdr = new HttpHeaders();
-            hdr.set("ErrorText", "Invalid data for clinical center administrator");
-            return new ResponseEntity<>(null, hdr, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Invalid data for clinical center administrator", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -82,15 +78,13 @@ public class ClinicAdministratorController {
     }
 
     @PutMapping(path="/change" )
-    public ResponseEntity<ClinicAdministratorDTO> changeClinicAdministratorInformation(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
+    public ResponseEntity changeClinicAdministratorInformation(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
 
         ClinicAdministrator admin = clinicAdministratorService.getReference(clinicAdministratorDTO.getId());
         try {
             admin.setEmail(clinicAdministratorDTO.getEmail());
         } catch (EntityNotFoundException e) {
-            HttpHeaders hdr = new HttpHeaders();
-            hdr.set("ErrorText", "This user does not exists!");
-            return new ResponseEntity<>(null, hdr, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("This user does not exists!", HttpStatus.NOT_FOUND);
         }
 
         admin.setEmail(clinicAdministratorDTO.getEmail());

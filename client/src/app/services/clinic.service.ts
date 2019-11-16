@@ -7,48 +7,54 @@ import { throwError } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ClinicService {
 
-  constructor(private cookieService: CookieService,
+	constructor(private cookieService: CookieService,
 		private http: HttpClient,
 		private router: Router) { }
 
-    addClinic(name: string, address: string, city : string, state:string, description: string){
-      var clinic = {
-        name,
-        address,
-        city,
-        state,
-        description,
-      }
-      let headers = new HttpHeaders({
-        'Content-Type': 'application/json'
-      });
-      return this.http.post('http://localhost:8080/admin/addClinic', JSON.stringify(clinic), {headers: headers}).subscribe(
-        (data) => {
+	addClinic(name: string, address: string, city: string, state: string, description: string) {
+		var clinic = {
+			name,
+			address,
+			city,
+			state,
+			description,
+		}
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json'
+		});
+		return this.http.post('http://localhost:8080/admin/addClinic', JSON.stringify(clinic), { headers: headers }).subscribe(
+			(data) => {
 
-        }
-      );
-    }
-    getClinics(){
-      return this.http.get('http://localhost:8080/admin/getClinics',{observe: 'response'})
-      .pipe(
-        map(response=>{
-          return response.body;
-        })
-      );
-    }
-    getClinicAdmins(id: any){
-      return this.http.get(`http://localhost:8080/admin/getClinicAdmins/${id}`,{observe: 'response'})
-      .pipe(
-        map(response=>{
-          return response.body;
-        })
-      );
-    }
-    showError(){
-      console.log('greska')
-    }
+			}
+		);
+	}
+	getClinics() {
+		return this.http.get('http://localhost:8080/admin/getClinics', { observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+                catchError((response) => {
+                    return throwError(response.error);
+                })
+			);
+	}
+	getClinicAdmins(id: any) {
+		return this.http.get(`http://localhost:8080/admin/getClinicAdmins/${id}`, { observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+                catchError((response) => {
+                    return throwError(response.error);
+                })
+			);
+	}
+	showError() {
+		console.log('greska')
+	}
 }

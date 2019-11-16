@@ -27,24 +27,19 @@ public class LoginController {
     }
 
     @PostMapping(path = "/login", consumes = "application/json", produces= "application/json")
-    public ResponseEntity<UserDTO> loginUser(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity loginUser(@RequestBody LoginDTO loginDTO) {
 
         User temp = loginService.findOne(loginDTO.getEmail());
-
-        HttpHeaders hdr = new HttpHeaders();
 
         if(temp != null) {
             if (temp.getPassword().equals(loginDTO.getPassword())) {
                 UserDTO userDTO = new UserDTO(temp);
                 return new ResponseEntity<>(userDTO, HttpStatus.OK);
             } else {
-                hdr.set("Response", "Password does not match!");
-                return new ResponseEntity<>(null, hdr, HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>("Wrong password!", HttpStatus.UNAUTHORIZED);
             }
         }
 
-        hdr.set("Response", "User does not exist!");
-        return new ResponseEntity<UserDTO>(null, hdr,
-                HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Wrong email!", HttpStatus.BAD_REQUEST);
     }
 }
