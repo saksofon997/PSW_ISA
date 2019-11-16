@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {ClinicService} from '../../services/clinic.service'
+import {ClinicService} from '../../../services/clinic.service'
 
 @Component({
   selector: 'app-clinic-form',

@@ -31,7 +31,7 @@ public class DiagnosisController {
     }
 
     @PostMapping(consumes = "application/json", produces= "application/json")
-    public ResponseEntity addDiagnosis(DiagnosisDTO diagnosisDTO) {
+    public ResponseEntity addDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO) {
 
         if(diagnosisDTO != null) {
             DiagnosisDictionary temp =
@@ -50,7 +50,7 @@ public class DiagnosisController {
     }
 
     @PutMapping(path="/change/{code}", consumes = "application/json", produces= "application/json")
-    public ResponseEntity modifyDiagnosis(DiagnosisDTO diagnosisDTO, @PathVariable("code") String code) {
+    public ResponseEntity modifyDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO, @PathVariable("code") String code) {
 
         if(diagnosisDTO != null) {
             DiagnosisDictionary temp = diagnosisService.findOne(code);

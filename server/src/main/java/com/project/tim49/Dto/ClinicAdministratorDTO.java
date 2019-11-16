@@ -1,8 +1,6 @@
 package com.project.tim49.Dto;
 
-import com.project.tim49.Model.Clinic;
 import com.project.tim49.Model.ClinicAdministrator;
-import com.project.tim49.Model.User;
 
 public class ClinicAdministratorDTO {
 

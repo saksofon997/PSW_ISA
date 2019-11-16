@@ -28,11 +28,16 @@ public class MedicationController {
     }
 
     @PostMapping(consumes = "application/json", produces= "application/json")
-    public ResponseEntity addMedication(MedicationDTO medicationDTO) {
+    public ResponseEntity addMedication(@RequestBody MedicationDTO medicationDTO) {
+        System.out.println(medicationDTO.getCode());
+
+        if (medicationDTO.getCode() == null || medicationDTO.getName() == null || medicationDTO.getCode().length() != 4){
+            return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
 
         if(medicationDTO != null) {
             MedicationDictionary medication =
-                    medicationService.findOne(medicationDTO.getCode());
+                    medicationService.findOneByCode(medicationDTO.getCode());
 
             if (medication == null) {
                 medication = new MedicationDictionary();
@@ -42,39 +47,44 @@ public class MedicationController {
 
                 return new ResponseEntity<>(medicationDTO, HttpStatus.CREATED);
             }
-            return new ResponseEntity<>("Medication already exists", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Medication with this code already exists", HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(path="/change/{id}", consumes = "application/json", produces= "application/json")
-    public ResponseEntity modifyDiagnosis(MedicationDTO medicationDTO, @PathVariable("id") Long id) {
+    public ResponseEntity modifyMedication(@RequestBody MedicationDTO medicationDTO, @PathVariable("id") Long id) {
 
         if(medicationDTO != null) {
-            MedicationDictionary medication = medicationService.getReference(id);
+            MedicationDictionary codeCheck = medicationService.findOneByCode(medicationDTO.getCode());
 
-            try {
-                medication.setCode(medicationDTO.getCode());
-                medication.setName(medicationDTO.getName());
-                medicationService.save(medication);
+            if (codeCheck == null){
+                MedicationDictionary medication = medicationService.getReference(id);
+                try {
+                    medication.setCode(medicationDTO.getCode());
+                    medication.setName(medicationDTO.getName());
+                    medicationService.save(medication);
 
-                return new ResponseEntity<>(medicationDTO, HttpStatus.CREATED);
-            } catch (EntityNotFoundException e) {
-                return new ResponseEntity<>("Medication doesn't exist", HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(medicationDTO, HttpStatus.CREATED);
+                } catch (EntityNotFoundException e) {
+                    return new ResponseEntity<>("Medication doesn't exist", HttpStatus.NOT_FOUND);
+                }
             }
+
+            return new ResponseEntity<>("Medication with this code already exists", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(path="/delete/{id}")
-    public ResponseEntity deleteDiagnosis(@PathVariable("id") Long id) {
+    public ResponseEntity deleteMedication(@PathVariable("id") Long id) {
 
         MedicationDictionary medication = medicationService.findById(id);
 
         if(medication != null) {
             medicationService.remove(medication.getId());
 
-            return new ResponseEntity<>("Medication deleted", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>("Medication doesn't exist", HttpStatus.NOT_FOUND);
     }

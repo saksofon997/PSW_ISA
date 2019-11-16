@@ -21,7 +21,7 @@ public class MedicationService {
         return medicationRepository.findAll();
     }
 
-    public MedicationDictionary findOne(String code) {
+    public MedicationDictionary findOneByCode(String code) {
         return medicationRepository.findOneByCode(code);
     }
 
