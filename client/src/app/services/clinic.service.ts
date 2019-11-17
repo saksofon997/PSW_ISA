@@ -10,6 +10,8 @@ import { HttpHeaders } from '@angular/common/http';
 	providedIn: 'root'
 })
 export class ClinicService {
+  
+	
 
 	constructor(private cookieService: CookieService,
 		private http: HttpClient,
@@ -54,8 +56,23 @@ export class ClinicService {
                 })
 			);
 	}
-	showError() {
+	addDoctor(doctor) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json'
+		});
+		return this.http.post('http://localhost:8080/api/doctor', JSON.stringify(doctor), { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+  	}
+
+
+	showError(desc) {
 		// Izmeniti ubuduce
-		console.log('greska')
+		console.log(desc)
 	}
 }

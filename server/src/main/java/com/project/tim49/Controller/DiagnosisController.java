@@ -1,6 +1,7 @@
 package com.project.tim49.Controller;
 
 import com.project.tim49.Dto.DiagnosisDTO;
+import com.project.tim49.Model.Clinic;
 import com.project.tim49.Model.DiagnosisDictionary;
 import com.project.tim49.Service.ClinicService;
 import com.project.tim49.Service.DiagnosisService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ValidationException;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,22 +53,19 @@ public class DiagnosisController {
 
     @PutMapping(path="/change/{code}", consumes = "application/json", produces= "application/json")
     public ResponseEntity modifyDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO, @PathVariable("code") String code) {
-
-        if(diagnosisDTO != null) {
-            DiagnosisDictionary temp = diagnosisService.findOne(code);
-
-            if (temp != null) {
-                diagnosisService.remove(temp.getId());
-                DiagnosisDictionary tba = new DiagnosisDictionary();
-                tba.setCode(diagnosisDTO.getCode());
-                tba.setDescription(diagnosisDTO.getCode());
-                diagnosisService.save(tba);
-
-                return new ResponseEntity<>(diagnosisDTO, HttpStatus.CREATED);
+        if (diagnosisDTO != null) {
+            try {
+                diagnosisService.changeDiagnosisData(diagnosisDTO);
+                return new ResponseEntity<>(diagnosisDTO,
+                        HttpStatus.OK);
+            } catch (ValidationException e) {
+                return new ResponseEntity<>(e.getMessage(),
+                        HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>("Diagnosis doesn't exist", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>("Invalid request data!",
+                    HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(path="/delete/{code}")
