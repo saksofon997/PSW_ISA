@@ -8,4 +8,6 @@ import java.util.List;
 public interface DiagnosisRepository extends JpaRepository<DiagnosisDictionary, Long> {
 
     DiagnosisDictionary findOneByCode(String code);
+
+    DiagnosisDictionary getOneByCode(String code);
 }

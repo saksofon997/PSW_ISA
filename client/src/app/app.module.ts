@@ -14,6 +14,7 @@ import { ClinicAdministratorsListingComponent } from './components/admin-profile
 import { LoginComponent } from './components/login/login.component';
 import { MedicationListingComponent } from './components/admin-profile/medication-listing/medication-listing.component';
 import { MedicationFormComponent } from './components/admin-profile/medication-form/medication-form.component';
+import { DoctorFormComponent } from './components/admin-profile/doctor-form/doctor-form.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { MedicationFormComponent } from './components/admin-profile/medication-f
     ClinicListingComponent,
     ClinicAdministratorsListingComponent,
     MedicationListingComponent,
-    MedicationFormComponent
+    MedicationFormComponent,
+    DoctorFormComponent
   ],
   imports: [
     BrowserModule,

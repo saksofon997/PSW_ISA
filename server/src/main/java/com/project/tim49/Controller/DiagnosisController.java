@@ -1,6 +1,7 @@
 package com.project.tim49.Controller;
 
 import com.project.tim49.Dto.DiagnosisDTO;
+import com.project.tim49.Model.Clinic;
 import com.project.tim49.Model.DiagnosisDictionary;
 import com.project.tim49.Service.ClinicService;
 import com.project.tim49.Service.DiagnosisService;
@@ -52,21 +53,27 @@ public class DiagnosisController {
     @PutMapping(path="/change/{code}", consumes = "application/json", produces= "application/json")
     public ResponseEntity modifyDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO, @PathVariable("code") String code) {
 
-        if(diagnosisDTO != null) {
-            DiagnosisDictionary temp = diagnosisService.findOne(code);
+        if (diagnosisDTO != null) {
 
-            if (temp != null) {
-                diagnosisService.remove(temp.getId());
-                DiagnosisDictionary tba = new DiagnosisDictionary();
-                tba.setCode(diagnosisDTO.getCode());
-                tba.setDescription(diagnosisDTO.getCode());
-                diagnosisService.save(tba);
+            DiagnosisDictionary zaIzmenu =
+                    diagnosisService.getReference(diagnosisDTO.getCode());
 
-                return new ResponseEntity<>(diagnosisDTO, HttpStatus.CREATED);
+            if(zaIzmenu != null) {
+                boolean uspeh = diagnosisService.changeDiagnosisData(zaIzmenu,
+                        diagnosisDTO);
+                if(uspeh)
+                    return new ResponseEntity<>("Diagnosis edit successful",
+                            HttpStatus.OK);
+                else
+                    return new ResponseEntity<>("Diagnosis edit NOT " +
+                            "successful!",
+                            HttpStatus.OK);
             }
-            return new ResponseEntity<>("Diagnosis doesn't exist", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Diagnosis not found!",
+                    HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Request has null value!",
+                HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(path="/delete/{code}")

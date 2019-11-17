@@ -31,4 +31,19 @@ public class DiagnosisService {
     public void remove(Long id) {
         diagnosisRepository.deleteById(id);
     }
+
+    public DiagnosisDictionary getReference(String code) {
+        return diagnosisRepository.getOneByCode(code);
+    }
+
+    public boolean changeDiagnosisData(DiagnosisDictionary zaIzmenu, DiagnosisDTO diagnosisDTO) {
+        if(zaIzmenu != null && diagnosisDTO != null) {
+
+            zaIzmenu.setDescription(diagnosisDTO.getDescription());
+            zaIzmenu.setCode(diagnosisDTO.getCode());
+            return true;
+        }
+        else
+            return false;
+    }
 }

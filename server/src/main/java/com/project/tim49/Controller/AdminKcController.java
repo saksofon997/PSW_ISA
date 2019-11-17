@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.xml.bind.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,9 +47,47 @@ public class AdminKcController {
 
         return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.CREATED);
     }
+
+    @PutMapping(path = "/editClinic/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity editClinic(@RequestBody ClinicDTO clinicDTO, @PathVariable Long id) {
+
+        if (clinicDTO != null) {
+
+            Clinic zaIzmenu = clinicService.getReference(clinicDTO.getId());
+
+            if(zaIzmenu != null) {
+                boolean uspeh = clinicService.changeClinicInfo(zaIzmenu,
+                        clinicDTO);
+                if(uspeh)
+                    return new ResponseEntity<>("Clinic edit successful",
+                        HttpStatus.OK);
+                else
+                    return new ResponseEntity<>("Clinic edit NOT successful!",
+                            HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Clinic not found!",
+                    HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Request has null value!",
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping(path="/deleteClinic/{id}")
+    public ResponseEntity deleteClinic(@PathVariable Long id) {
+
+        if(clinicService.deleteClinic(id))
+            return new ResponseEntity<>("Clinic deletion successful!",
+                    HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Clinic deletion NOT successful!",
+                    HttpStatus.BAD_REQUEST);
+
+    }
+
     @GetMapping(path="/getClinics" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ClinicDTO>> getClinic() {
+
         List<Clinic> clinics = clinicService.findAll();
 
         List<ClinicDTO> clinicsDTO = new ArrayList<>();
@@ -60,6 +99,7 @@ public class AdminKcController {
     @GetMapping(path="/getClinicAdmins/{id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getClinicAdmins(@PathVariable Long id) {
+
         Clinic clinic = clinicService.findOne(id);
 
         if (clinic == null){
