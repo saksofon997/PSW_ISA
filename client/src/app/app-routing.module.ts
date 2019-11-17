@@ -1,4 +1,3 @@
-import { AdminPersonalProfileComponent } from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -10,7 +9,8 @@ import { ClinicAdministratorsListingComponent } from './components/adminCC-dashb
 import { ClinicFormComponent } from './components/adminCC-dashboard/clinic-form/clinic-form.component';
 import { MedicationListingComponent } from './components/adminCC-dashboard/medication-listing/medication-listing.component';
 import { MedicationFormComponent } from './components/adminCC-dashboard/medication-form/medication-form.component';
-
+import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
+import { AdminPersonalProfileComponent} from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
 
 const routes: Routes = [
 	{
@@ -23,10 +23,11 @@ const routes: Routes = [
 			{path: 'clinicAdmins', component: ClinicAdministratorsListingComponent},
 			{path: 'addClinic', component: ClinicFormComponent},
 			{path: 'medications', component: MedicationListingComponent},
-			{path: 'medication_info', component: MedicationFormComponent}
+			{path: 'medication_info', component: MedicationFormComponent},
+			{path: 'addDoctor', component: DoctorFormComponent},
 		],
 		canActivate: [AuthGuardService],
-		data: { roles: ["ADMINCC"]}
+		data: { roles: ['ADMINCC']}
 	},
 	{
 		path: 'login',

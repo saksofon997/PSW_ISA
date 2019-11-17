@@ -55,31 +55,65 @@ public class AdminKcController {
 
         return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.CREATED);
     }
-    @GetMapping(path="/getClinics" ,
+
+    @PutMapping(path = "/editClinic/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity editClinic(@RequestBody ClinicDTO clinicDTO, @PathVariable Long id) {
+        if (clinicDTO != null) {
+            try {
+                clinicService.changeClinicInfo(clinicDTO);
+                return new ResponseEntity<>(clinicDTO,
+                        HttpStatus.OK);
+            } catch (ValidationException e) {
+                return new ResponseEntity<>(e.getMessage(),
+                        HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>("Invalid request data!",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @DeleteMapping(path = "/deleteClinic/{id}")
+    public ResponseEntity deleteClinic(@PathVariable Long id) {
+        boolean deleted = clinicService.deleteClinic(id);
+        if (deleted){
+            return new ResponseEntity<>("Clinic deletion successful!",
+                    HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Clinic deletion NOT successful!",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
+
+    @GetMapping(path = "/getClinics",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ClinicDTO>> getClinic() {
         List<Clinic> clinics = clinicService.findAll();
 
         List<ClinicDTO> clinicsDTO = new ArrayList<>();
-        for (Clinic clinic: clinics ) {
-            clinicsDTO.add( new ClinicDTO(clinic));
+        for (Clinic clinic : clinics) {
+            clinicsDTO.add(new ClinicDTO(clinic));
         }
         return new ResponseEntity<List<ClinicDTO>>(clinicsDTO, HttpStatus.OK);
     }
-    @GetMapping(path="/getClinicAdmins/{id}" ,
+
+    @GetMapping(path = "/getClinicAdmins/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getClinicAdmins(@PathVariable Long id) {
         Clinic clinic = clinicService.findOne(id);
 
-        if (clinic == null){
+        if (clinic == null) {
             return new ResponseEntity<>("No clinic with this id", HttpStatus.NOT_ACCEPTABLE);
         }
 
         List<ClinicAdministrator> admins = clinic.getClinicAdministrator();
 
         List<ClinicAdministratorDTO> adminsDTO = new ArrayList<>();
-        for (ClinicAdministrator admin: admins ) {
-            adminsDTO.add( new ClinicAdministratorDTO(admin));
+        for (ClinicAdministrator admin : admins) {
+            adminsDTO.add(new ClinicAdministratorDTO(admin));
         }
 
         if (admins != null) {
