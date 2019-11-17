@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping(value = "clinicAdmin")
+@RequestMapping(value = "api/clinicAdmin")
 public class ClinicAdministratorController {
 
     @Autowired
@@ -27,8 +27,8 @@ public class ClinicAdministratorController {
 
     @GetMapping(path="" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ClinicAdministrator>> getClinic() {
-        return new ResponseEntity<List<ClinicAdministrator>>(clinicAdministratorService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<ClinicAdministratorDTO>> getClinicAdmins() {
+        return new ResponseEntity<List<ClinicAdministratorDTO>>(clinicAdministratorService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping(path="/add" ,
@@ -66,7 +66,7 @@ public class ClinicAdministratorController {
     @DeleteMapping(path="/delete/{id}" )
     public ResponseEntity<Void> deleteClinicAdministrator(@PathVariable Long id){
         ClinicAdministrator admin = clinicAdministratorService.findById(id);
-
+        System.out.println("ODJE SAM");
         if (admin != null) {
             clinicAdministratorService.remove(id);
             return new ResponseEntity<>(HttpStatus.OK);

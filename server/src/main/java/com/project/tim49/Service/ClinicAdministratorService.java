@@ -1,5 +1,6 @@
 package com.project.tim49.Service;
 
+import com.project.tim49.Dto.ClinicAdministratorDTO;
 import com.project.tim49.Model.ClinicAdministrator;
 import com.project.tim49.Repository.ClinicAdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +26,13 @@ public class ClinicAdministratorService {
         return clinicAdministratorRepository.findOneByEmail(email);
     }
 
-    public List<ClinicAdministrator> findAll() {
-        return clinicAdministratorRepository.findAll();
+    public List<ClinicAdministratorDTO> findAll() {
+        List<ClinicAdministrator> clinicAdmins =  clinicAdministratorRepository.findAll();
+        List<ClinicAdministratorDTO> clinicAdminsDTO = new ArrayList<ClinicAdministratorDTO>();
+        for (ClinicAdministrator admin : clinicAdmins) {
+            clinicAdminsDTO.add(new ClinicAdministratorDTO(admin));
+        }
+        return clinicAdminsDTO;
     }
 
     public Page<ClinicAdministrator> findAll(Pageable page) {
