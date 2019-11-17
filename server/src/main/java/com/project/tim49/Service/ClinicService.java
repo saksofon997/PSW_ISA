@@ -6,6 +6,7 @@ import com.project.tim49.Repository.ClinicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
 import java.util.List;
 
@@ -31,35 +32,30 @@ public class ClinicService {
         return clinicRepository.save(course);
     }
 
-    public void remove(Long id) {
-        clinicRepository.deleteById(id);
-    }
-
     public Clinic getReference(Long id) {
         return clinicRepository.getOne(id);
     }
 
-    public boolean changeClinicInfo(Clinic zaIzmenu, ClinicDTO clinicDTO) {
-        if(zaIzmenu != null && clinicDTO != null) {
-
-            zaIzmenu.setAddress(clinicDTO.getAddress());
-            zaIzmenu.setCity(clinicDTO.getCity());
-            zaIzmenu.setDescription(clinicDTO.getDescription());
-            zaIzmenu.setName(clinicDTO.getName());
-            zaIzmenu.setState(clinicDTO.getState());
-
-            return true;
+    public void changeClinicInfo(ClinicDTO clinicDTO) {
+        Clinic forChange = getReference(clinicDTO.getId());
+        try{
+            forChange.setAddress(clinicDTO.getAddress());
+            forChange.setCity(clinicDTO.getCity());
+            forChange.setDescription(clinicDTO.getDescription());
+            forChange.setName(clinicDTO.getName());
+            forChange.setState(clinicDTO.getState());
+            clinicRepository.save(forChange);
+        }catch(EntityNotFoundException e){
+            throw new ValidationException("Clinic does not exist!");
         }
-        else
-            return false;
     }
 
     public boolean deleteClinic(Long id) {
         if (id != null) {
-            Clinic zaBrisanje = findOne(id);
+            Clinic forDelete = findOne(id);
 
-            if(zaBrisanje != null) {
-                remove(id);
+            if(forDelete != null) {
+                clinicRepository.deleteById(id);
                 return true;
             }
             throw new ValidationException("Clinic does not exist!");

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ValidationException;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,28 +53,19 @@ public class DiagnosisController {
 
     @PutMapping(path="/change/{code}", consumes = "application/json", produces= "application/json")
     public ResponseEntity modifyDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO, @PathVariable("code") String code) {
-
         if (diagnosisDTO != null) {
-
-            DiagnosisDictionary zaIzmenu =
-                    diagnosisService.getReference(diagnosisDTO.getCode());
-
-            if(zaIzmenu != null) {
-                boolean uspeh = diagnosisService.changeDiagnosisData(zaIzmenu,
-                        diagnosisDTO);
-                if(uspeh)
-                    return new ResponseEntity<>("Diagnosis edit successful",
-                            HttpStatus.OK);
-                else
-                    return new ResponseEntity<>("Diagnosis edit NOT " +
-                            "successful!",
-                            HttpStatus.OK);
+            try {
+                diagnosisService.changeDiagnosisData(diagnosisDTO);
+                return new ResponseEntity<>(diagnosisDTO,
+                        HttpStatus.OK);
+            } catch (ValidationException e) {
+                return new ResponseEntity<>(e.getMessage(),
+                        HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>("Diagnosis not found!",
+        } else {
+            return new ResponseEntity<>("Invalid request data!",
                     HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Request has null value!",
-                HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(path="/delete/{code}")
