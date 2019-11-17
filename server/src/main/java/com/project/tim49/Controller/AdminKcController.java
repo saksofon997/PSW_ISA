@@ -59,13 +59,11 @@ public class AdminKcController {
     }
     @GetMapping(path="/getClinicAdmins/{id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ClinicAdministratorDTO>> getClinicAdmins(@PathVariable Long id) {
+    public ResponseEntity getClinicAdmins(@PathVariable Long id) {
         Clinic clinic = clinicService.findOne(id);
 
         if (clinic == null){
-            HttpHeaders hdr = new HttpHeaders();
-            hdr.set("ErrorText", "No clinic with this id");
-            return new ResponseEntity<>(null, hdr, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("No clinic with this id", HttpStatus.NOT_ACCEPTABLE);
         }
 
         List<ClinicAdministrator> admins = clinic.getClinicAdministrator();
@@ -78,7 +76,6 @@ public class AdminKcController {
         if (admins != null) {
             return new ResponseEntity<>(adminsDTO, HttpStatus.OK);
         } else {
-            admins = new ArrayList<>();
             return new ResponseEntity<>(adminsDTO, HttpStatus.OK);
         }
     }

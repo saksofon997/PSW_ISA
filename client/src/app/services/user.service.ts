@@ -62,7 +62,7 @@ export class UserService {
                     return user;
                 }),
                 catchError((response) => {
-                    return throwError(JSON.parse(response.body));
+                    return throwError(response.error);
                 })
 			);
 	}

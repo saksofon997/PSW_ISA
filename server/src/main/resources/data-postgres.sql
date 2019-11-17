@@ -39,3 +39,15 @@ INSERT INTO public.clinic_administrator(
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, role, state, surname, upin, clinic_id)
 	VALUES (5, 'Ulica5', 'Grad5', 'adminc5@kcv.rs', 'ImeAdmina5', '123456', '067/123', 'ADMINC', 'Srbija', 'Prezime5', '25', '3');
+
+INSERT INTO public.medication_dictionary(
+	id, code, name)
+	VALUES (nextval('medication_dictionary_id_seq'), '0001', 'Acetaminophen');
+INSERT INTO public.medication_dictionary(
+	id, code, name)
+	VALUES (nextval('medication_dictionary_id_seq'), '0002', 'Adderall');
+INSERT INTO public.medication_dictionary(
+	id, code, name)
+	VALUES (nextval('medication_dictionary_id_seq'), '0003', 'Alprazolam');
+
+

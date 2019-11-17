@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClinicService } from 'src/app/services/clinic.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
 	selector: 'app-clinic-listing',
@@ -10,13 +10,19 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class ClinicListingComponent implements OnInit {
 	clinics: any;
 	clinicHeaders = ['Name', 'Address', 'City', 'State', 'Description'];
+	navigationSubscription: any;
 
 	constructor(private clinicService: ClinicService,
 		private router: Router,
-		private activatedRoute: ActivatedRoute) { }
+		private activatedRoute: ActivatedRoute) {
+		this.navigationSubscription = this.router.events.subscribe((e: any) => {
+			if (e instanceof NavigationEnd) {
+				this.getClinics();
+			}
+		});
+	}
 
 	ngOnInit() {
-		this.getClinics();
 	}
 
 	getClinics() {
@@ -25,12 +31,18 @@ export class ClinicListingComponent implements OnInit {
 		});
 	}
 
-	showClinicAdmins(clinic) {
-		this.router.navigate(['../clinicAdmins', { id: clinic.id, name:clinic.name }], { relativeTo: this.activatedRoute });
+	showClinicAdmins(clinic: any) {
+		this.router.navigate(['../clinicAdmins', { id: clinic.id, name: clinic.name }], { relativeTo: this.activatedRoute });
 	}
 
-	showNewClinicForm(){
+	showNewClinicForm() {
 		this.router.navigate(['../addClinic'], { relativeTo: this.activatedRoute });
+	}
+
+	ngOnDestroy() {
+		if (this.navigationSubscription) {
+			this.navigationSubscription.unsubscribe();
+		}
 	}
 
 }

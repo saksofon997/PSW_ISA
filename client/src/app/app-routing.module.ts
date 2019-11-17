@@ -4,9 +4,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from './guards/auth-guard.service'
 import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
 import { LoginComponent } from './components/login/login.component';
-import { ClinicListingComponent } from './components/clinic-listing/clinic-listing.component';
-import { ClinicAdministratorsListingComponent } from './components/clinic-administrators-listing/clinic-administrators-listing.component';
-import { ClinicFormComponent } from './components/clinic-form/clinic-form.component';
+import { ClinicListingComponent } from './components/admin-profile/clinic-listing/clinic-listing.component';
+import { ClinicAdministratorsListingComponent } from './components/admin-profile/clinic-administrators-listing/clinic-administrators-listing.component';
+import { ClinicFormComponent } from './components/admin-profile/clinic-form/clinic-form.component';
+import { MedicationListingComponent } from './components/admin-profile/medication-listing/medication-listing.component';
+import { MedicationFormComponent } from './components/admin-profile/medication-form/medication-form.component';
 
 
 const routes: Routes = [
@@ -14,9 +16,12 @@ const routes: Routes = [
 		path: 'profile',
 		component: AdminProfileComponent,
 		children:[
+			{path: '', component: ClinicListingComponent},
 			{path: 'clinics', component: ClinicListingComponent},
 			{path: 'clinicAdmins', component: ClinicAdministratorsListingComponent},
-			{path: 'addClinic', component: ClinicFormComponent}
+			{path: 'addClinic', component: ClinicFormComponent},
+			{path: 'medications', component: MedicationListingComponent},
+			{path: 'medication_info', component: MedicationFormComponent}
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ["ADMINCC"]}
