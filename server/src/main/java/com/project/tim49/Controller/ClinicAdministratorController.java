@@ -97,6 +97,5 @@ public class ClinicAdministratorController {
         clinicAdministratorService.save(admin);
 
         return new ResponseEntity<>(new ClinicAdministratorDTO(admin), HttpStatus.OK);
-
     }
 }

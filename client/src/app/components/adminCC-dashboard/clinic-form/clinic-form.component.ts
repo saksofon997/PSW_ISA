@@ -14,12 +14,13 @@ export class ClinicFormComponent implements OnInit {
   state: string;
   description: string;
   submitted: string;
-
+  test: boolean;
   constructor(private router: Router,
               private clinicService: ClinicService,
               private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.test=true;
   }
   public onSubmit(){
     this.clinicService.addClinic(this.name, this.address, this.city, this.state, this.description);
