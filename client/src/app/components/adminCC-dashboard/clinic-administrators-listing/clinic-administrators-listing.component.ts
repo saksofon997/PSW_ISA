@@ -1,6 +1,7 @@
+import { ClinicCenterAdminService } from './../../../services/clinic-center-admin.service';
 import { Component, OnInit } from '@angular/core';
 import { ClinicService } from 'src/app/services/clinic.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-clinic-administrators-listing',
@@ -15,8 +16,10 @@ export class ClinicAdministratorsListingComponent implements OnInit {
 	clinicAdminHeaders = ['Name','Surname','E-mail','Address','City','State','Phone Number'];
 
   constructor(private clinicService: ClinicService,
+	private clinicCenterAdminService: ClinicCenterAdminService,
 		private router: Router,
-		private activatedRoute: ActivatedRoute) { }
+		private activatedRoute: ActivatedRoute) { 
+		}
 
 	ngOnInit() {
 		this.activatedRoute.params.subscribe((params)=> {
@@ -32,5 +35,11 @@ export class ClinicAdministratorsListingComponent implements OnInit {
 		this.clinicService.getClinicAdmins(this.clinicID).subscribe((data) => {
 			this.admins = data;
 		});
+	}
+	deleteAdmin(admin){
+		this.clinicCenterAdminService.deleteClinicAdmin(admin).subscribe(
+			(data) => {this.getClinicAdministrators();}, // Dodati feedback za uspesno brisanje
+			(error)=> {alert(error);}
+		)
 	}
 }

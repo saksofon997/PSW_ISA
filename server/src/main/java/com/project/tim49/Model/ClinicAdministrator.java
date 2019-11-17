@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 public class ClinicAdministrator extends User {
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Clinic clinic;
 
 
