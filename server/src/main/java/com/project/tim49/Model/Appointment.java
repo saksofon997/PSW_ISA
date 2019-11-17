@@ -37,6 +37,9 @@ public class Appointment {
     @JoinColumn(name = "patient_id")
     public Patient patient;
 
+    @Column(name = "completed", nullable = false)
+    private boolean completed;
+
     public Long getId() {
         return id;
     }
@@ -93,4 +96,11 @@ public class Appointment {
         this.patient = patient;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 }

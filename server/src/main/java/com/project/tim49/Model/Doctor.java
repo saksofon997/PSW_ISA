@@ -10,42 +10,54 @@ import java.util.List;
 
 @Entity
 public class Doctor extends User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "shiftStart", nullable = false)
     private String shiftStart;
 
     @Column(name = "shiftEnd", nullable = false)
     private String shiftEnd;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public Clinic clinic;
 
     @OneToMany(fetch = FetchType.LAZY)
     public List<Appointment> appointments = new ArrayList<Appointment>();
 
-    @Column(name = "numberOfStars", nullable = false)
+    @Column(name = "numberOfStars")
     private int numberOfStars;
 
-    @Column(name = "numberOfReviews", nullable = false)
+    @Column(name = "numberOfReviews")
     private int numberOfReviews;
 
-    public Long getId() {
-        return id;
+    public String getShiftStart() {
+        return shiftStart;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setShiftStart(String shiftStart) {
+        this.shiftStart = shiftStart;
     }
 
-    public List<Appointment> getAppointment() {
+    public String getShiftEnd() {
+        return shiftEnd;
+    }
+
+    public void setShiftEnd(String shiftEnd) {
+        this.shiftEnd = shiftEnd;
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
+
+    public List<Appointment> getAppointments() {
         return appointments;
     }
 
-    public void setAppointment(List<Appointment> appointment) {
-        this.appointments = appointment;
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 
     public int getNumberOfStars() {
