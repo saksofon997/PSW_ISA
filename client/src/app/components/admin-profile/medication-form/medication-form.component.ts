@@ -50,8 +50,6 @@ export class MedicationFormComponent implements OnInit {
 			name: this.loginForm.controls.name.value
 		}
 
-		console.log(medication);
-
 		if (this.medication_id){
 			this.clinicalCenterService.editMedication(this.medication_id, medication).subscribe(
 				(data) => {this.router.navigate(['../medications'], { relativeTo: this.activatedRoute });},

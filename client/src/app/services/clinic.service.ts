@@ -55,6 +55,7 @@ export class ClinicService {
 			);
 	}
 	showError() {
+		// Izmeniti ubuduce
 		console.log('greska')
 	}
 }

@@ -76,7 +76,6 @@ public class AdminKcController {
         if (admins != null) {
             return new ResponseEntity<>(adminsDTO, HttpStatus.OK);
         } else {
-            admins = new ArrayList<>();
             return new ResponseEntity<>(adminsDTO, HttpStatus.OK);
         }
     }

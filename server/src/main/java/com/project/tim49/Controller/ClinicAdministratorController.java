@@ -34,8 +34,6 @@ public class ClinicAdministratorController {
     @PostMapping(path="/add" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addClinicAdministrator(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
-
-        System.out.println(clinicAdministratorDTO.getClinic_id());
         ClinicAdministrator check = clinicAdministratorService.findOneByEmail(clinicAdministratorDTO.getEmail());
         if (check != null) {
             return new ResponseEntity<>("User with this email already exists!", HttpStatus.CONFLICT);
@@ -87,7 +85,6 @@ public class ClinicAdministratorController {
             return new ResponseEntity<>("This user does not exists!", HttpStatus.NOT_FOUND);
         }
 
-        admin.setEmail(clinicAdministratorDTO.getEmail());
         admin.setName(clinicAdministratorDTO.getName());
         admin.setSurname(clinicAdministratorDTO.getSurname());
         admin.setAddress(clinicAdministratorDTO.getAddress());

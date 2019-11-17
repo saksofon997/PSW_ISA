@@ -29,7 +29,6 @@ public class MedicationController {
 
     @PostMapping(consumes = "application/json", produces= "application/json")
     public ResponseEntity addMedication(@RequestBody MedicationDTO medicationDTO) {
-        System.out.println(medicationDTO.getCode());
 
         if (medicationDTO.getCode() == null || medicationDTO.getName() == null || medicationDTO.getCode().length() != 4){
             return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
