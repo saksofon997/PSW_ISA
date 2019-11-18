@@ -69,7 +69,16 @@ export class ClinicService {
 			})
 		);
   	}
-
+	deleteClinic(clinic){
+		return this.http.delete(`http://localhost:8080/admin/deleteClinic/${clinic.id}`, { observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
 
 	showError(desc) {
 		// Izmeniti ubuduce
