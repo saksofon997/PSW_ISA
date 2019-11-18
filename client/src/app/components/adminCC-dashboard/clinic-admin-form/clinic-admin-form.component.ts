@@ -21,15 +21,16 @@ export class ClinicAdminFormComponent implements OnInit {
               private cookieService: CookieService) { }
 
   ngOnInit() {
+    
     this.form = this.formBuilder.group({
-      name: [this.admin.name, [Validators.required, ]],
-      surname: [this.admin.surname, [Validators.required]],
-      email:  [this.admin.email,[Validators.required, Validators.email]],
-      address:  [this.admin.address,[Validators.required]],
-      city:  [this.admin.city,[Validators.required]],
-      state:  [this.admin.state,[Validators.required]],
-      phoneNumber:  [this.admin.phoneNumber,[Validators.required]],
-      upin:  [this.admin.upin,[Validators.required,Validators.minLength(13),Validators.maxLength(13)]]
+      name: ['', [Validators.required, ]],
+      surname: ['', [Validators.required]],
+      email:  ['',[Validators.required, Validators.email]],
+      address:  ['',[Validators.required]],
+      city:  ['',[Validators.required]],
+      state:  ['',[Validators.required]],
+      phoneNumber:  ['',[Validators.required]],
+      upin:  ['',[Validators.required,Validators.minLength(13),Validators.maxLength(13)]]
     });
     this.activatedRoute.params.subscribe((params)=> {
       this.clinicID = params.id;
@@ -37,6 +38,7 @@ export class ClinicAdminFormComponent implements OnInit {
 		});
   }
   public onSubmit(){
+
     var adminC = {
       id: JSON.parse(this.cookieService.get('user'))['id'],
 			email: this.form.controls.email.value,
@@ -46,10 +48,14 @@ export class ClinicAdminFormComponent implements OnInit {
       city: this.form.controls.city.value,
       state: this.form.controls.state.value,
       phoneNumber: this.form.controls.phoneNumber.value,
-      upin: this.form.controls.upin.value
+      upin: this.form.controls.upin.value,
+      clinic_id: this.clinicID
 		}
 
-    this.clinicService.addAdmin(adminC);
-    this.router.navigate(['../clinicAdmins', { id: this.clinicID, name: this.clinicName }], { relativeTo: this.activatedRoute });
+    this.clinicService.addAdmin(adminC).subscribe(
+      (data) => {this.router.navigate(['../clinicAdmins', { id: this.clinicID, name: this.clinicName }], { relativeTo: this.activatedRoute });},
+      (error)=>{alert(error)}
+    );
+    
   }
 }
