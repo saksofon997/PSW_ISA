@@ -41,7 +41,7 @@ public class UserController {
     @RequestMapping("/whoami")
     @PreAuthorize("hasRole('USER')")
     public User user(Principal user) {
-        return this.userService.findByUsername(user.getName());
+        return this.userService.findByEmail(user.getName());
     }
 
     @RequestMapping( method = GET, value= "/foo")

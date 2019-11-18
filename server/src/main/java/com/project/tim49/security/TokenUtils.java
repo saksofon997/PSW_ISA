@@ -40,10 +40,10 @@ public class TokenUtils {
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
     // Funkcija za generisanje JWT token
-    public String generateToken(String username) {
+    public String generateToken(String email) {
         return Jwts.builder()
                 .setIssuer(APP_NAME)
-                .setSubject(username)
+                .setSubject(email)
                 .setAudience(generateAudience())
                 .setIssuedAt(timeProvider.now())
                 .setExpiration(generateExpirationDate())
@@ -85,30 +85,29 @@ public class TokenUtils {
         return refreshedToken;
     }
 
-    public Boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {
+    public Boolean canTokenBeRefreshed(String token) {
         final Date created = this.getIssuedAtDateFromToken(token);
-        return (!(this.isCreatedBeforeLastPasswordReset(created, lastPasswordReset))
-                && (!(this.isTokenExpired(token)) || this.ignoreTokenExpiration(token)));
+        return ((!(this.isTokenExpired(token)) || this.ignoreTokenExpiration(token)));
     }
 
     // Funkcija za validaciju JWT tokena
     public Boolean validateToken(String token, UserDetails userDetails) {
         User user = (User) userDetails;
-        final String username = getUsernameFromToken(token);
+        final String email = getEmailFromToken(token);
         final Date created = getIssuedAtDateFromToken(token);
 
-        return (username != null && username.equals(userDetails.getUsername()));
+        return (email != null && email.equals(((User) userDetails).getEmail()));
     }
 
-    public String getUsernameFromToken(String token) {
-        String username;
+    public String getEmailFromToken(String token) {
+        String email;
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
-            username = claims.getSubject();
+            email = claims.getSubject();
         } catch (Exception e) {
-            username = null;
+            email = null;
         }
-        return username;
+        return email;
     }
 
     public Date getIssuedAtDateFromToken(String token) {
@@ -163,9 +162,9 @@ public class TokenUtils {
         return request.getHeader(AUTH_HEADER);
     }
 
-    private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-        return (lastPasswordReset != null && created.before(lastPasswordReset));
-    }
+//    private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
+//        return (lastPasswordReset != null && created.before(lastPasswordReset));
+//    }
 
     private Boolean isTokenExpired(String token) {
         final Date expiration = this.getExpirationDateFromToken(token);

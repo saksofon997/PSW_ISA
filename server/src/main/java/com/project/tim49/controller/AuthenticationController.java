@@ -5,7 +5,8 @@ import com.project.tim49.model.UserRequest;
 import com.project.tim49.model.UserTokenState;
 import com.project.tim49.security.TokenUtils;
 import com.project.tim49.security.auth.JwtAuthenticationRequest;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import com.project.tim49.service.UserService;
+import com.project.tim49.service.impl.CustomUserDetailsService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,8 +15,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.project.tim49.service.UserService;
-import com.project.tim49.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
 
-    private static final RequestMethod POST = ;
     @Autowired
     TokenUtils tokenUtils;
 
@@ -55,7 +53,7 @@ public class AuthenticationController {
                                                        HttpServletResponse response) throws AuthenticationException, IOException {
 
         final Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
+                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
                         authenticationRequest.getPassword()));
 
         // Ubaci username + password u kontext
@@ -63,21 +61,22 @@ public class AuthenticationController {
 
         // Kreiraj token
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
+        String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
         // Vrati token kao odgovor na uspesno autentifikaciju
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
     }
 
+    // Prepraviti da radi sa nasim RegistrationRequest i cuvanjem u bazi
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
     public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
 
         //prepraviti na email!!!
-        User existUser = this.userService.findByUsername(userRequest.getUsername());
+        User existUser = this.userService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
             //naci dependency
-            throw new ResourceConflictException(userRequest.getId(), "Username already exists");
+            new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
         }
 
         User user = this.userService.save(userRequest);
@@ -90,11 +89,11 @@ public class AuthenticationController {
     public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request) {
 
         String token = tokenUtils.getToken(request);
-        String username = this.tokenUtils.getUsernameFromToken(token);
-        User user = (User) this.userDetailsService.loadUserByUsername(username);
+        String email = this.tokenUtils.getEmailFromToken(token);
+        User user = (User) this.userDetailsService.loadUserByUsername(email); //loadUserByUsername zbog interfejsa
 
         //izbacili smo last pass reset date
-        if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
+        if (this.tokenUtils.canTokenBeRefreshed(token)) {
             String refreshedToken = tokenUtils.refreshToken(token);
             int expiresIn = tokenUtils.getExpiredIn();
 

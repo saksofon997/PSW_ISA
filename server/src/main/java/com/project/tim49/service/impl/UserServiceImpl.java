@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
     private AuthorityService authService;
 
     @Override
-    public User findByUsername(String username) throws UsernameNotFoundException {
-        User u = userRepository.findByUsername(username);
+    public User findByEmail(String email) throws UsernameNotFoundException {
+        User u = userRepository.findByEmail(email);
         return u;
     }
 
