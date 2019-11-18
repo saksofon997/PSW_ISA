@@ -70,7 +70,9 @@ export class ClinicService {
 		);
   	}
 
+	addAdmin(admin){
 
+	}
 	showError(desc) {
 		// Izmeniti ubuduce
 		console.log(desc)

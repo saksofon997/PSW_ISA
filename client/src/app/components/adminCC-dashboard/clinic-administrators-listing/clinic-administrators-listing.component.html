@@ -9,7 +9,7 @@
         <tr>
             <th scope="col" *ngFor='let param of clinicAdminHeaders'>{{param}}</th>
             <th scope="col">
-                <button type="button" class="btn btn-light">Add</button>
+                <button type="button" class="btn btn-light" (click)='addAdministrator()'>Add</button>
             </th>
         </tr>
     </thead>
