@@ -23,7 +23,14 @@ export class ClinicFormComponent implements OnInit {
     this.test=true;
   }
   public onSubmit(){
-    this.clinicService.addClinic(this.name, this.address, this.city, this.state, this.description);
+    var clinic = {
+      name : this.name,
+      address : this.address,
+      city : this.city,
+      state : this.state,
+      description : this.description
+    }
+    this.clinicService.addClinic(clinic);
 
     this.router.navigate(['../clinics'], { relativeTo: this.activatedRoute });
   }

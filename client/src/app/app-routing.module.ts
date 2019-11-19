@@ -12,6 +12,7 @@ import { MedicationListingComponent } from './components/adminCC-dashboard/medic
 import { MedicationFormComponent } from './components/adminCC-dashboard/medication-form/medication-form.component';
 import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
 import { AdminPersonalProfileComponent} from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
+import { ClinicProfileInfoComponent } from './components/clinic-profile/clinic-profile-info/clinic-profile-info.component';
 
 const routes: Routes = [
 	{
@@ -26,7 +27,8 @@ const routes: Routes = [
 			{path: 'medications', component: MedicationListingComponent},
 			{path: 'medication_info', component: MedicationFormComponent},
 			{path: 'addDoctor', component: DoctorFormComponent},
-			{path: 'addClinicAdmin', component: ClinicAdminFormComponent}
+			{path: 'addClinicAdmin', component: ClinicAdminFormComponent},
+			{path: 'showClinicInfo', component: ClinicProfileInfoComponent}
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINCC']}
