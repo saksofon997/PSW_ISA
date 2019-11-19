@@ -78,7 +78,7 @@ public class AdminKcController {
     public ResponseEntity deleteClinic(@PathVariable Long id) {
         boolean deleted = clinicService.deleteClinic(id);
         if (deleted){
-            return new ResponseEntity<>("Clinic deletion successful!",
+            return new ResponseEntity<>(id,
                     HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Clinic deletion NOT successful!",
