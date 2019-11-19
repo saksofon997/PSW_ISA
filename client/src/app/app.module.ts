@@ -18,33 +18,35 @@ import { AdminPersonalProfileComponent } from './components/adminCC-dashboard/ad
 import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ClinicAdminFormComponent } from './components/adminCC-dashboard/clinic-admin-form/clinic-admin-form.component';
+import { DoctorListingComponent } from './components/clinic-profile/doctor-listing/doctor-listing.component';
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		HeaderComponent,
-		AppComponent,
-		ClinicFormComponent,
-		AdminProfileComponent,
-		LoginComponent,
-		ClinicListingComponent,
-		ClinicAdministratorsListingComponent,
-		MedicationListingComponent,
-		MedicationFormComponent,
-		AdminPersonalProfileComponent,
-		DoctorFormComponent,
-		ChangePasswordComponent,
-    ClinicAdminFormComponent
-	],
-	imports: [
-		BrowserModule,
-		AppRoutingModule,
-		FormsModule,
-		HttpClientModule,
-		ReactiveFormsModule,
-		HttpModule
-	],
-	providers: [CookieService], //UserService, AuthGuardService
-	bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    AppComponent,
+    ClinicFormComponent,
+    AdminProfileComponent,
+    LoginComponent,
+    ClinicListingComponent,
+    ClinicAdministratorsListingComponent,
+    MedicationListingComponent,
+    MedicationFormComponent,
+    AdminPersonalProfileComponent,
+    DoctorFormComponent,
+    ClinicAdminFormComponent,
+    ChangePasswordComponent,
+    DoctorListingComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    HttpModule
+  ],
+  providers: [CookieService], //UserService, AuthGuardService
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
