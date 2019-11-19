@@ -36,7 +36,7 @@ public class DoctorService {
         if (clinic== null){
             throw new ValidationException("Clinic does not exist!");
         }
-        List<Doctor> doctors = clinic.getDoctor();
+        List<Doctor> doctors = clinic.getDoctors();
         List<DoctorDTO> doctorDTOS = new ArrayList<>();
 
         for (Doctor doctor: doctors) {
@@ -48,7 +48,6 @@ public class DoctorService {
     }
 
     public void createNewDoctor(DoctorDTO doctorDTO){
-
         if (doctorDTO.getClinic_id() == null){
             throw new ValidationException("Invalid clinic ID!");
         }
@@ -64,10 +63,10 @@ public class DoctorService {
         }
 
         Doctor doctor = docDTOtoReal(doctorDTO);
-        doctor.setEmail(doctorDTO.getEmail());
         doctor.setClinic(clinic.get());
-        doctor.setPassword("TEMPPASS");
         doctor.setAuthorities( authorityService.findByname("DOCTOR") );
+        doctor.setPassword("TEMPPASS");
+        doctor.setPasswordChanged(false);
 
         doctorRepository.save(doctor);
     }
@@ -103,6 +102,7 @@ public class DoctorService {
 
     public Doctor docDTOtoReal(DoctorDTO dto){
         Doctor real = new Doctor();
+        real.setEmail(dto.getEmail());
         real.setName(dto.getName());
         real.setSurname(dto.getSurname());
         real.setAddress(dto.getAddress());

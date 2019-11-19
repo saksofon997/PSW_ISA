@@ -49,16 +49,16 @@ public class Clinic {
 
    @ManyToMany
    @JoinTable(name = "clinics_patients", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
-   public List<Patient> patient;
+   public List<Patient> patients;
 
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
-   public List<Doctor> doctor;
+   public List<Doctor> doctors;
 
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
-   public List<Nurse> nurse;
+   public List<Nurse> nurses;
 
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
-   public List<Appointment> appointment;
+   public List<Appointment> appointments;
 
    @ManyToMany
    @JoinTable(name = "clinics_typesOfExamination", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "typeOfExamination_id", referencedColumnName = "id"))
@@ -152,36 +152,36 @@ public class Clinic {
       this.clinicAdministrator = clinicAdministrator;
    }
 
-   public List<Patient> getPatient() {
-      return patient;
+   public List<Patient> getPatients() {
+      return patients;
    }
 
-   public void setPatient(List<Patient> patient) {
-      this.patient = patient;
+   public void setPatients(List<Patient> patients) {
+      this.patients = patients;
    }
 
-   public List<Doctor> getDoctor() {
-      return doctor;
+   public List<Doctor> getDoctors() {
+      return doctors;
    }
 
-   public void setDoctor(List<Doctor> doctor) {
-      this.doctor = doctor;
+   public void setDoctors(List<Doctor> doctors) {
+      this.doctors = doctors;
    }
 
-   public List<Nurse> getNurse() {
-      return nurse;
+   public List<Nurse> getNurses() {
+      return nurses;
    }
 
-   public void setNurse(List<Nurse> nurse) {
-      this.nurse = nurse;
+   public void setNurses(List<Nurse> nurses) {
+      this.nurses = nurses;
    }
 
    public List<Appointment> getAppointment() {
-      return appointment;
+      return appointments;
    }
 
-   public void setAppointment(List<Appointment> appointment) {
-      this.appointment = appointment;
+   public void setAppointment(List<Appointment> appointments) {
+      this.appointments = appointments;
    }
 
    public List<TypeOfExamination> getTypeOfExamination() {
