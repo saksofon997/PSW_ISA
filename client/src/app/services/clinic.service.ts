@@ -98,4 +98,15 @@ export class ClinicService {
 		// Izmeniti ubuduce
 		console.log(desc)
 	}
+	getDoctors(clinic){
+		return this.http.get(`http://localhost:8080/api/doctor/getDoctors/${clinic.id}`, { observe: 'response' })
+		.pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
 }

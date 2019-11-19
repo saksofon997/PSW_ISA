@@ -1,6 +1,7 @@
 package com.project.tim49.Controller;
 
 import com.project.tim49.Dto.DoctorDTO;
+import com.project.tim49.Service.ClinicService;
 import com.project.tim49.Service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,14 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @GetMapping
-    public ResponseEntity getDoctors() {
-        List<DoctorDTO> doctors = doctorService.getDoctors();
-        return new ResponseEntity<>(doctors, HttpStatus.OK);
+    @GetMapping(path="/getDoctors/{id}")
+    public ResponseEntity getDoctors(@PathVariable Long id) {
+        try{
+            List<DoctorDTO> doctors = doctorService.getDoctors(id);
+            return new ResponseEntity<>(doctors, HttpStatus.OK);
+        }catch(ValidationException e) {
+            return new ResponseEntity<>("Clinic not found!", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
