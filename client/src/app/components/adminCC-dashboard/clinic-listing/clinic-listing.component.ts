@@ -38,7 +38,16 @@ export class ClinicListingComponent implements OnInit {
 	showNewClinicForm() {
 		this.router.navigate(['../addClinic'], { relativeTo: this.activatedRoute });
 	}
-
+	deleteClinic(clinic){
+		this.clinicService.deleteClinic(clinic).subscribe(
+			(data) => {
+				this.router.navigate(['../clinics'], { relativeTo: this.activatedRoute });
+			},
+			(error)=>{
+				alert(error);
+			}
+		);
+	}
 	ngOnDestroy() {
 		if (this.navigationSubscription) {
 			this.navigationSubscription.unsubscribe();

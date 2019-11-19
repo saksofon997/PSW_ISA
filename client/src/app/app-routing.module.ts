@@ -1,3 +1,4 @@
+import { ClinicAdminFormComponent } from './components/adminCC-dashboard/clinic-admin-form/clinic-admin-form.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -27,6 +28,7 @@ const routes: Routes = [
 			{path: 'medications', component: MedicationListingComponent},
 			{path: 'medication_info', component: MedicationFormComponent},
 			{path: 'addDoctor', component: DoctorFormComponent},
+			{path: 'addClinicAdmin', component: ClinicAdminFormComponent}
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINCC']}

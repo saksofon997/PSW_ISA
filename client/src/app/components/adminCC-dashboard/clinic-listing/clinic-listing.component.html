@@ -29,7 +29,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicAdmins(clinic)" >Show administrators</a> <!-- [routerLink]="['./clinicAdmins']" -->
                         <a class="dropdown-item" style="cursor: pointer;">Change</a>
-                        <a class="dropdown-item" style="cursor: pointer;">Delete</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="deleteClinic(clinic)">Delete</a>
 
                     </div>
                 </div>

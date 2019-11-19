@@ -66,7 +66,6 @@ public class ClinicAdministratorController {
     @DeleteMapping(path="/delete/{id}" )
     public ResponseEntity<Void> deleteClinicAdministrator(@PathVariable Long id){
         ClinicAdministrator admin = clinicAdministratorService.findById(id);
-        System.out.println("ODJE SAM");
         if (admin != null) {
             clinicAdministratorService.remove(id);
             return new ResponseEntity<>(HttpStatus.OK);

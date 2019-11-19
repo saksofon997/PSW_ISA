@@ -4,6 +4,9 @@ package com.project.tim49.model; /**********************************************
  * Purpose: Defines the Class Clinic
  ***********************************************************************/
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -40,6 +43,7 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Ordination> ordination;
 
+   @OnDelete(action = OnDeleteAction.CASCADE)
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<ClinicAdministrator> clinicAdministrator;
 

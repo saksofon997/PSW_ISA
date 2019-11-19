@@ -12,9 +12,9 @@ import { UserService } from './user.service';
 export class ClinicCenterAdminService {
 
   constructor(private cookieService: CookieService,
-    private userService: UserService,
-    private http: HttpClient,
-    private router: Router) { }
+              private userService: UserService,
+              private http: HttpClient,
+              private router: Router) { }
 
   getAdminKc() {
     let user = JSON.parse(this.cookieService.get('user'));

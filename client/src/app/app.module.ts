@@ -17,6 +17,7 @@ import { MedicationFormComponent } from './components/adminCC-dashboard/medicati
 import { AdminPersonalProfileComponent } from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
 import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ClinicAdminFormComponent } from './components/adminCC-dashboard/clinic-admin-form/clinic-admin-form.component';
 
 @NgModule({
 	declarations: [
@@ -32,7 +33,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 		MedicationFormComponent,
 		AdminPersonalProfileComponent,
 		DoctorFormComponent,
-		ChangePasswordComponent
+		ChangePasswordComponent,
+    ClinicAdminFormComponent
 	],
 	imports: [
 		BrowserModule,

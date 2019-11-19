@@ -42,4 +42,7 @@ export class ClinicAdministratorsListingComponent implements OnInit {
 			(error)=> {alert(error);}
 		)
 	}
+	addAdministrator(){
+		this.router.navigate(['../addClinicAdmin', { id: this.clinicID, name: this.clinicName }], { relativeTo: this.activatedRoute });
+	}
 }
