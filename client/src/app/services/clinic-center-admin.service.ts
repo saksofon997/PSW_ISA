@@ -43,7 +43,6 @@ export class ClinicCenterAdminService {
   }
 
   deleteClinicAdmin(admin){
-    console.log(admin.id);
     return this.http.delete(`http://localhost:8080/api/clinicAdmin/delete/${admin.id}`, { observe: 'response' })
     .pipe(
       map(response => {

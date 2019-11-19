@@ -70,7 +70,19 @@ export class ClinicService {
 		);
   	}
 
-
+	addAdmin(admin){
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json'
+		});
+		return this.http.post('http://localhost:8080/api/clinicAdmin/add', JSON.stringify(admin), { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
 	showError(desc) {
 		// Izmeniti ubuduce
 		console.log(desc)
