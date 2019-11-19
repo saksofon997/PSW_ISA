@@ -34,6 +34,9 @@ public class ClinicAdministratorController {
     @PostMapping(path="/add" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addClinicAdministrator(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
+
+
+
         ClinicAdministrator check = clinicAdministratorService.findOneByEmail(clinicAdministratorDTO.getEmail());
         if (check != null) {
             return new ResponseEntity<>("User with this email already exists!", HttpStatus.CONFLICT);
@@ -66,7 +69,6 @@ public class ClinicAdministratorController {
     @DeleteMapping(path="/delete/{id}" )
     public ResponseEntity<Void> deleteClinicAdministrator(@PathVariable Long id){
         ClinicAdministrator admin = clinicAdministratorService.findById(id);
-        System.out.println("ODJE SAM");
         if (admin != null) {
             clinicAdministratorService.remove(id);
             return new ResponseEntity<>(HttpStatus.OK);
