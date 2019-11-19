@@ -62,7 +62,10 @@ export class UserService {
 		this.token = null;
 		this.cookieService.delete('token');
 	}
-
+	
+	tokenIsPresent() {
+		return this.token != undefined && this.token != null;
+	}
 	/* 
 	*  Sends http request to server
 	*  Calls setUser to store it in memory and cookieservice
@@ -121,10 +124,6 @@ export class UserService {
 				return throwError(response.error);
 			})
 		);
-	}
-
-	tokenIsPresent() {
-		return this.token != undefined && this.token != null;
 	}
 
 }
