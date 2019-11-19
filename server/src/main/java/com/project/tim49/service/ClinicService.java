@@ -1,14 +1,18 @@
 package com.project.tim49.service;
 
 import com.project.tim49.dto.ClinicDTO;
+import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.model.Clinic;
+import com.project.tim49.model.Doctor;
 import com.project.tim49.repository.ClinicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ClinicService {
@@ -18,6 +22,24 @@ public class ClinicService {
 
     public Clinic findOne(Long id) {
         return clinicRepository.findById(id).orElseGet(null);
+    }
+
+    public List<DoctorDTO> getClinicDoctors(Long id){
+        Clinic clinic = clinicRepository.findById(id).orElseGet(null);
+
+        if (clinic == null){
+            throw new NoSuchElementException();
+        }
+
+        List<Doctor> doctors = clinic.getDoctors();
+        List<DoctorDTO> doctorDTOS = new ArrayList<>();
+
+        for (Doctor doctor: doctors) {
+            DoctorDTO doctorDTO = new DoctorDTO(doctor);
+            doctorDTOS.add(doctorDTO);
+        }
+
+        return doctorDTOS;
     }
 
     public List<Clinic> findAll() {

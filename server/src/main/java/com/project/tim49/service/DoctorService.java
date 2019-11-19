@@ -25,6 +25,8 @@ public class DoctorService {
     private ClinicRepository clinicRepository;
     @Autowired
     private LoginRepository userRepository;
+    @Autowired
+    private AuthorityService authorityService;
 
     public List<DoctorDTO> getDoctors(){
         List<Doctor> doctors = doctorRepository.findAll();
@@ -54,10 +56,10 @@ public class DoctorService {
         }
 
         Doctor doctor = docDTOtoReal(doctorDTO);
-        doctor.setEmail(doctorDTO.getEmail());
         doctor.setClinic(clinic.get());
+        doctor.setAuthorities( authorityService.findByname("DOCTOR") );
         doctor.setPassword("TEMPPASS");
-        doctor.setRole("DOCTOR");
+        doctor.setPasswordChanged(false);
 
         doctorRepository.save(doctor);
     }
@@ -93,6 +95,7 @@ public class DoctorService {
 
     public Doctor docDTOtoReal(DoctorDTO dto){
         Doctor real = new Doctor();
+        real.setEmail(dto.getEmail());
         real.setName(dto.getName());
         real.setSurname(dto.getSurname());
         real.setAddress(dto.getAddress());

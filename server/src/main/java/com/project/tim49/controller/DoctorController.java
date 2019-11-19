@@ -1,6 +1,8 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.dto.ClinicDTO;
 import com.project.tim49.dto.DoctorDTO;
+import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -18,11 +21,18 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private ClinicService clinicService;
 
-    @GetMapping
-    public ResponseEntity getDoctors() {
-        List<DoctorDTO> doctors = doctorService.getDoctors();
-        return new ResponseEntity<>(doctors, HttpStatus.OK);
+    @GetMapping(path = "/getClinicDoctors/{clinic_id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getClinicDoctors(@PathVariable Long clinic_id) {
+        try {
+            List<DoctorDTO> doctors = clinicService.getClinicDoctors(clinic_id);
+            return new ResponseEntity<>(doctors, HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>("No clinic with this id", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -46,6 +56,10 @@ public class DoctorController {
 
     @DeleteMapping(path="/delete/{id}")
     public ResponseEntity deleteDoctor(@PathVariable Long id) {
+        if (id == null){
+            return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);
+        }
+
         try {
             boolean hasActiveAppointments = doctorService.hasActiveAppointments(id);
 

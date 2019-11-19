@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -30,61 +32,49 @@ public class MedicationController {
     @PostMapping(consumes = "application/json", produces= "application/json")
     public ResponseEntity addMedication(@RequestBody MedicationDTO medicationDTO) {
 
-        if (medicationDTO.getCode() == null || medicationDTO.getName() == null || medicationDTO.getCode().length() != 4){
+        if (medicationDTO == null || medicationDTO.getCode() == null || medicationDTO.getName() == null || medicationDTO.getCode().length() != 4){
             return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        if(medicationDTO != null) {
-            MedicationDictionary medication =
-                    medicationService.findOneByCode(medicationDTO.getCode());
+        try {
+            MedicationDTO created = medicationService.createNewMedication(medicationDTO);
+            return new ResponseEntity<>(created ,HttpStatus.OK);
 
-            if (medication == null) {
-                medication = new MedicationDictionary();
-                medication.setCode(medicationDTO.getCode());
-                medication.setName(medicationDTO.getName());
-                medicationService.save(medication);
-
-                return new ResponseEntity<>(medicationDTO, HttpStatus.CREATED);
-            }
-            return new ResponseEntity<>("Medication with this code already exists", HttpStatus.CONFLICT);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(path="/change/{id}", consumes = "application/json", produces= "application/json")
     public ResponseEntity modifyMedication(@RequestBody MedicationDTO medicationDTO, @PathVariable("id") Long id) {
 
-        if(medicationDTO != null) {
-            MedicationDictionary codeCheck = medicationService.findOneByCode(medicationDTO.getCode());
-
-            if (codeCheck == null){
-                MedicationDictionary medication = medicationService.getReference(id);
-                try {
-                    medication.setCode(medicationDTO.getCode());
-                    medication.setName(medicationDTO.getName());
-                    medicationService.save(medication);
-
-                    return new ResponseEntity<>(medicationDTO, HttpStatus.CREATED);
-                } catch (EntityNotFoundException e) {
-                    return new ResponseEntity<>("Medication doesn't exist", HttpStatus.NOT_FOUND);
-                }
-            }
-
-            return new ResponseEntity<>("Medication with this code already exists", HttpStatus.NOT_FOUND);
+        if (medicationDTO == null || medicationDTO.getId() == null){
+            return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
+
+        try {
+            MedicationDTO changed = medicationService.changeMedicationData(medicationDTO);
+            return new ResponseEntity<>(changed, HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>("This medication does not exists!", HttpStatus.NOT_FOUND);
+        } catch (ValidationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @DeleteMapping(path="/delete/{id}")
     public ResponseEntity deleteMedication(@PathVariable("id") Long id) {
-
-        MedicationDictionary medication = medicationService.findById(id);
-
-        if(medication != null) {
-            medicationService.remove(medication.getId());
-
-            return new ResponseEntity<>(HttpStatus.OK);
+        if (id == null){
+            return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Medication doesn't exist", HttpStatus.NOT_FOUND);
+
+        try{
+            medicationService.deleteMedication(id);
+            return new ResponseEntity<>("Medication deleted", HttpStatus.OK);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 }

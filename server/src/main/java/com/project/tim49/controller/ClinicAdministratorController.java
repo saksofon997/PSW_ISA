@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -26,75 +28,53 @@ public class ClinicAdministratorController {
     @Autowired
     private AuthorityServiceImpl authorityService;
 
-    @GetMapping(path="" ,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ClinicAdministratorDTO>> getClinicAdmins() {
-        return new ResponseEntity<List<ClinicAdministratorDTO>>(clinicAdministratorService.findAll(), HttpStatus.OK);
-    }
-
     @PostMapping(path="/add" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addClinicAdministrator(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
-        ClinicAdministrator check = clinicAdministratorService.findOneByEmail(clinicAdministratorDTO.getEmail());
-        if (check != null) {
-            return new ResponseEntity<>("User with this email already exists!", HttpStatus.CONFLICT);
+
+        if (clinicAdministratorDTO.getEmail() == null || clinicAdministratorDTO.getEmail().equals("")){
+            return new ResponseEntity<>("Invalid email", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        ClinicAdministrator admin = new ClinicAdministrator();
-        admin.setEmail(clinicAdministratorDTO.getEmail());
-        admin.setName(clinicAdministratorDTO.getName());
-        admin.setSurname(clinicAdministratorDTO.getSurname());
-        admin.setAddress(clinicAdministratorDTO.getAddress());
-        admin.setCity(clinicAdministratorDTO.getCity());
-        admin.setState(clinicAdministratorDTO.getState());
-        admin.setPhoneNumber(clinicAdministratorDTO.getPhoneNumber());
-        admin.setUpin(clinicAdministratorDTO.getUpin());
-        admin.setPasswordChanged(false);
-        admin.setAuthorities( authorityService.findByname("ADMINCC") );
-        admin.setClinic( clinicService.findOne(clinicAdministratorDTO.getClinic_id()) );
-
-        admin.setPassword("ClinicalCenterDefaultPassword");
-
-        admin = clinicAdministratorService.save(admin);
-        if (admin != null){
-            return new ResponseEntity<>(new ClinicAdministratorDTO(admin), HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("Invalid data for clinical center administrator", HttpStatus.NOT_ACCEPTABLE);
+        try {
+            clinicAdministratorService.createNewClinicAdministrator(clinicAdministratorDTO);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path="/delete/{id}" )
-    public ResponseEntity<Void> deleteClinicAdministrator(@PathVariable Long id){
-        ClinicAdministrator admin = clinicAdministratorService.findById(id);
-        if (admin != null) {
-            clinicAdministratorService.remove(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity deleteClinicAdministrator(@PathVariable Long id){
+        if (id == null){
+            return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);
+        }
+
+        try{
+            clinicAdministratorService.deleteClinicAdministrator(id);
+            return new ResponseEntity<>("Clinic administrator deleted", HttpStatus.OK);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     @PutMapping(path="/change" )
     public ResponseEntity changeClinicAdministratorInformation(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
 
-        ClinicAdministrator admin = clinicAdministratorService.getReference(clinicAdministratorDTO.getId());
-        try {
-            admin.setEmail(clinicAdministratorDTO.getEmail());
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>("This user does not exists!", HttpStatus.NOT_FOUND);
+        if (clinicAdministratorDTO == null || clinicAdministratorDTO.getId() == null){
+            return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        admin.setName(clinicAdministratorDTO.getName());
-        admin.setSurname(clinicAdministratorDTO.getSurname());
-        admin.setAddress(clinicAdministratorDTO.getAddress());
-        admin.setCity(clinicAdministratorDTO.getCity());
-        admin.setState(clinicAdministratorDTO.getState());
-        admin.setPhoneNumber(clinicAdministratorDTO.getPhoneNumber());
-        admin.setUpin(clinicAdministratorDTO.getUpin());
-        admin.setClinic( clinicService.findOne(clinicAdministratorDTO.getClinic_id()) );
-
-        clinicAdministratorService.save(admin);
-
-        return new ResponseEntity<>(new ClinicAdministratorDTO(admin), HttpStatus.OK);
+        try {
+            ClinicAdministratorDTO clinicDTO = clinicAdministratorService.changeClinicAdministratorData(clinicAdministratorDTO);
+            return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>("This user does not exists!", HttpStatus.NOT_FOUND);
+        } catch (ValidationException e){
+            return new ResponseEntity<>("Clinic does not exists!", HttpStatus.NOT_FOUND);
+        }
     }
 }
