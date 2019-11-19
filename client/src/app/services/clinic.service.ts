@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { map, catchError } from 'rxjs/operators'
 import { throwError } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
+import { UserService } from './user.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,6 +15,7 @@ export class ClinicService {
 	
 
 	constructor(private cookieService: CookieService,
+		private userService: UserService,
 		private http: HttpClient,
 		private router: Router) { }
 
@@ -26,7 +28,8 @@ export class ClinicService {
 			description,
 		}
 		let headers = new HttpHeaders({
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.post('http://localhost:8080/admin/addClinic', JSON.stringify(clinic), { headers: headers }).subscribe(
 			(data) => {
@@ -35,7 +38,10 @@ export class ClinicService {
 		);
 	}
 	getClinics() {
-		return this.http.get('http://localhost:8080/admin/getClinics', { observe: 'response' })
+		let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get('http://localhost:8080/admin/getClinics', { headers: headers,observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -46,7 +52,10 @@ export class ClinicService {
 			);
 	}
 	getClinicAdmins(id: any) {
-		return this.http.get(`http://localhost:8080/admin/getClinicAdmins/${id}`, { observe: 'response' })
+		let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get(`http://localhost:8080/admin/getClinicAdmins/${id}`, { headers: headers,observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -58,7 +67,8 @@ export class ClinicService {
 	}
 	addDoctor(doctor) {
 		let headers = new HttpHeaders({
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.post('http://localhost:8080/api/doctor', JSON.stringify(doctor), { headers: headers, observe: 'response' }).pipe(
 			map(response => {

@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @RequestMapping("/whoami")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMINCC') or hasRole('ADMINC') or hasRole('DOCTOR') or hasRole('NURSE') or hasRole('PATIENT')")
     public User user(Principal user) {
         return this.userService.findByEmail(user.getName());
     }

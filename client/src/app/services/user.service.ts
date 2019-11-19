@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { map, catchError } from 'rxjs/operators'
@@ -10,8 +10,9 @@ import { throwError } from 'rxjs';
 	providedIn: 'root'
 })
 export class UserService {
-	user: any;
-	//token: any;
+	private user: any = null;
+	private token: any = null;
+	passwordChanged = true;
 
 	constructor(private cookieService: CookieService,
 		private http: HttpClient,
@@ -23,7 +24,7 @@ export class UserService {
 	checkLoggedIn() {
 		if (this.cookieService.get('user')) {
 			this.user = JSON.parse(this.cookieService.get('user'));
-			//this.token = JSON.parse(this.cookieService.get('token'));
+			this.token = JSON.parse(this.cookieService.get('token'));
 		}
 		return this.user;
 	}
@@ -36,52 +37,94 @@ export class UserService {
 		this.cookieService.set('user', JSON.stringify(user));
 	}
 
+	setToken(token: any) {
+		this.token = token;
+		this.cookieService.set('token', JSON.stringify(token));
+	}
+
+	getToken() {
+		return JSON.parse(this.cookieService.get('token')).accessToken;
+	}
+
+	getUser() {
+		return JSON.parse(this.cookieService.get('user'));
+	}
+
 	/*
 	*  Removes user from memory and cookieservice
 	*/
 	removeUser() {
-        this.user = null;
-        this.cookieService.delete('user');
+		this.user = null;
+		this.cookieService.delete('user');
 	}
-	
+
+	removeToken() {
+		this.token = null;
+		this.cookieService.delete('token');
+	}
+
 	/* 
 	*  Sends http request to server
 	*  Calls setUser to store it in memory and cookieservice
 	*  Prints error to console 
 	*/
-	login(email: string, password: string){
+	login(email: string, password: string) {
 		var user = {
 			email,
 			password
 		}
-		return this.http.post('http://localhost:8080/api/login', user, {observe: 'response'})
+		const headers = new HttpHeaders({
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		});
+		return this.http.post('http://localhost:8080/auth/login', user, { headers, observe: 'response' })
 			.pipe(
 				map((response) => {
-					const user = response.body;
-					this.setUser(user);
-                    return user;
-                }),
-                catchError((response) => {
-                    return throwError(response.error);
-                })
+					const userState = response.body;
+					this.setUser(userState['user']);
+					this.setToken(userState['token']);
+					this.passwordChanged = userState['passwordChanged'];
+					if (!this.passwordChanged){
+						this.router.navigate(['/change-password']);
+					} else {
+						this.router.navigate(['/']);
+					}
+					
+					return this.user;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
 			);
 	}
 
-	/* 
-	*  Sends http request to server
-	*  Calls removeUser to remove it in memory and cookieservice
-	*  Prints error to console 
-	*/
-	logout(){
-        // return this.http.delete('http://localhost:8080/api/logout')
-		// 	.subscribe(
-		// 		(data: any) => {
-		// 			this.removeUser();
-		// 			this.router.navigate(['/login']);
-		// 		},
-		// 		(error) => alert(error)
-		// 	);
+	logout() {
+		this.user = null;
 		this.removeUser();
-		this.router.navigate(['/login']); 
+		this.token = null;
+		this.removeToken();
+		this.router.navigate(['/login']);
 	}
+
+	changePassowrd(passwordChanger) {
+		const headers = new HttpHeaders({
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.getToken()}`
+		});
+		return this.http.post('http://localhost:8080/auth/change-password', JSON.stringify(passwordChanger), { headers, observe: 'response' })
+		.pipe(
+			map((response) => {
+				this.passwordChanged = true;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
+	tokenIsPresent() {
+		return this.token != undefined && this.token != null;
+	}
+
 }

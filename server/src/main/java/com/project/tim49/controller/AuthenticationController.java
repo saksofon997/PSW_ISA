@@ -1,5 +1,6 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.User;
 import com.project.tim49.model.UserRequest;
 import com.project.tim49.model.UserTokenState;
@@ -64,8 +65,14 @@ public class AuthenticationController {
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
+        // Provera promene passworda pri prvom loginu
+        UserState userState = new UserState();
+        userState.token = new UserTokenState(jwt, expiresIn);
+        userState.passwordChanged = user.isPasswordChanged();
+        userState.user = new UserDTO(user);
+
         // Vrati token kao odgovor na uspesno autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        return ResponseEntity.ok(userState);
     }
 
     // Prepraviti da radi sa nasim RegistrationRequest i cuvanjem u bazi
@@ -90,6 +97,7 @@ public class AuthenticationController {
 
         String token = tokenUtils.getToken(request);
         String email = this.tokenUtils.getEmailFromToken(token);
+
         User user = (User) this.userDetailsService.loadUserByUsername(email); //loadUserByUsername zbog interfejsa
 
         //izbacili smo last pass reset date
@@ -105,7 +113,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
 
@@ -117,5 +125,11 @@ public class AuthenticationController {
     static class PasswordChanger {
         public String oldPassword;
         public String newPassword;
+    }
+
+    static class UserState {
+        public UserTokenState token;
+        public boolean passwordChanged;
+        public UserDTO user;
     }
 }

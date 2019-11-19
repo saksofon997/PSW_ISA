@@ -52,6 +52,9 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private boolean enabled;
 
+    @Column(name = "passwordchanged")
+    private boolean passwordChanged;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -183,4 +186,12 @@ public class User implements UserDetails {
    public void setRole(String role) {
       this.role = role;
    }
+
+    public boolean isPasswordChanged() {
+        return passwordChanged;
+    }
+
+    public void setPasswordChanged(boolean passwordChanged) {
+        this.passwordChanged = passwordChanged;
+    }
 }

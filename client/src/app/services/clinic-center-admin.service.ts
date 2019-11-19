@@ -5,19 +5,24 @@ import { CookieService } from 'ngx-cookie-service';
 import { map, catchError } from 'rxjs/operators'
 import { throwError } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
+import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
 export class ClinicCenterAdminService {
 
   constructor(private cookieService: CookieService,
+    private userService: UserService,
     private http: HttpClient,
     private router: Router) { }
 
   getAdminKc() {
     let user = JSON.parse(this.cookieService.get('user'));
     let id = user["id"];
-    return this.http.get(`http://localhost:8080/admin/getAdminKc/${id}`, { observe: 'response' })
+    let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+    return this.http.get(`http://localhost:8080/admin/getAdminKc/${id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -29,7 +34,8 @@ export class ClinicCenterAdminService {
   }
   changeAdminKc(admin) {
     let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.userService.getToken()}`
     });
     return this.http.put(`http://localhost:8080/admin/change`, JSON.stringify(admin), { headers: headers, observe: 'response' })
       .pipe(
@@ -43,8 +49,10 @@ export class ClinicCenterAdminService {
   }
 
   deleteClinicAdmin(admin){
-    console.log(admin.id);
-    return this.http.delete(`http://localhost:8080/api/clinicAdmin/delete/${admin.id}`, { observe: 'response' })
+    let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+    return this.http.delete(`http://localhost:8080/api/clinicAdmin/delete/${admin.id}`, { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
         return response.body;
