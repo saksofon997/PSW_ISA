@@ -1,3 +1,4 @@
+import { DoctorListingComponent } from './components/clinic-profile/doctor-listing/doctor-listing.component';
 import { ClinicAdminFormComponent } from './components/adminCC-dashboard/clinic-admin-form/clinic-admin-form.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -13,6 +14,8 @@ import { MedicationFormComponent } from './components/adminCC-dashboard/medicati
 import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
 import { AdminPersonalProfileComponent} from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
 import { ClinicProfileInfoComponent } from './components/clinic-profile/clinic-profile-info/clinic-profile-info.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ChangePasswordDeactivateService } from './guards/change-password-deactivate.service';
 
 const routes: Routes = [
 	{
@@ -36,6 +39,11 @@ const routes: Routes = [
 	{
 		path: 'login',
 		component: LoginComponent
+	},
+	{
+		path: 'change-password',
+		component: ChangePasswordComponent,
+		canDeactivate: [ChangePasswordDeactivateService]
 	}
 	//{
 	// 	path: '',

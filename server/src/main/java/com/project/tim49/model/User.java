@@ -4,12 +4,17 @@ package com.project.tim49.model; /**********************************************
  * Purpose: Defines the Class User
  ***********************************************************************/
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 
 @Entity(name ="users")
 @Table
 @Inheritance( strategy = InheritanceType.TABLE_PER_CLASS )
-public class User {
+public class User implements UserDetails {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
    private Long id;
@@ -41,13 +46,44 @@ public class User {
    @Column(name = "upin")
    private String upin;
 
-   @Column(name = "role", nullable = false)
-   private String role;
 
-   public Long getId() {
+    @Column(name = "enabled")
+    private boolean enabled;
+
+    @Column(name = "passwordchanged")
+    private boolean passwordChanged;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private List<Authority> authorities;
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Long getId() {
       return id;
    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
    public String getEmail() {
       return email;
    }
@@ -60,7 +96,27 @@ public class User {
       return password;
    }
 
-   public void setPassword(String password) {
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    public void setPassword(String password) {
       this.password = password;
    }
 
@@ -120,11 +176,11 @@ public class User {
       this.upin = upin;
    }
 
-   public String getRole() {
-      return role;
-   }
+    public boolean isPasswordChanged() {
+        return passwordChanged;
+    }
 
-   public void setRole(String role) {
-      this.role = role;
-   }
+    public void setPasswordChanged(boolean passwordChanged) {
+        this.passwordChanged = passwordChanged;
+    }
 }

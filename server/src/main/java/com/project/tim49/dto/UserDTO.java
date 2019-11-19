@@ -1,6 +1,10 @@
 package com.project.tim49.dto;
 
 import com.project.tim49.model.User;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class UserDTO {
 
@@ -14,7 +18,7 @@ public class UserDTO {
     private String state;
     private String phoneNumber;
     private String upin;
-    private String role;
+    private ArrayList<String> roles = new ArrayList<>();
 
     public UserDTO() {
 
@@ -31,21 +35,9 @@ public class UserDTO {
         this.state = user.getState();
         this.phoneNumber = user.getPhoneNumber();
         this.upin = user.getUpin();
-        this.role = user.getRole();
-    }
-
-    public UserDTO(Long id, String email, String name, String surname, String address, String city, String state, String phoneNumber, String upin, String role) {
-        this.id = id;
-        this.email = email;
-        //this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.phoneNumber = phoneNumber;
-        this.upin = upin;
-        this.role = role;
+        for (GrantedAuthority auth: user.getAuthorities()) {
+            this.roles.add(auth.getAuthority());
+        }
     }
 
     public Long getId() {
@@ -84,7 +76,11 @@ public class UserDTO {
         return upin;
     }
 
-    public String getRole() {
-        return role;
+    public ArrayList<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<String>  roles) {
+        this.roles = roles;
     }
 }

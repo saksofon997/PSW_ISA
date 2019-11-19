@@ -25,9 +25,18 @@ public class DoctorService {
     private ClinicRepository clinicRepository;
     @Autowired
     private LoginRepository userRepository;
+    @Autowired
+    private AuthorityService authorityService;
 
-    public List<DoctorDTO> getDoctors(){
-        List<Doctor> doctors = doctorRepository.findAll();
+    public List<DoctorDTO> getDoctors(Long id){
+        if (id == null) {
+            throw new ValidationException("Invalid clinic ID!");
+        }
+        Clinic clinic = clinicRepository.getOne(id);
+        if (clinic== null){
+            throw new ValidationException("Clinic does not exist!");
+        }
+        List<Doctor> doctors = clinic.getDoctor();
         List<DoctorDTO> doctorDTOS = new ArrayList<>();
 
         for (Doctor doctor: doctors) {
@@ -39,6 +48,7 @@ public class DoctorService {
     }
 
     public void createNewDoctor(DoctorDTO doctorDTO){
+
         if (doctorDTO.getClinic_id() == null){
             throw new ValidationException("Invalid clinic ID!");
         }
@@ -57,7 +67,7 @@ public class DoctorService {
         doctor.setEmail(doctorDTO.getEmail());
         doctor.setClinic(clinic.get());
         doctor.setPassword("TEMPPASS");
-        doctor.setRole("DOCTOR");
+        doctor.setAuthorities( authorityService.findByname("DOCTOR") );
 
         doctorRepository.save(doctor);
     }

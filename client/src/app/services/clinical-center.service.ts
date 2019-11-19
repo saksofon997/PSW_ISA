@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { map, catchError } from 'rxjs/operators'
 import { throwError } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
+import { UserService } from './user.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,12 +13,16 @@ import { HttpHeaders } from '@angular/common/http';
 export class ClinicalCenterService {
 
 	constructor(private cookieService: CookieService,
+		private userService: UserService,
 		private http: HttpClient,
 		private router: Router) { }
 
 
 	getMedications(){
-		return this.http.get('http://localhost:8080/api/medication', { observe: 'response' })
+		let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get('http://localhost:8080/api/medication', { headers: headers,observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -30,7 +35,8 @@ export class ClinicalCenterService {
 
 	addMedication(medication){
 		let headers = new HttpHeaders({
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.post('http://localhost:8080/api/medication', medication, { headers: headers, observe: 'response' })
 			.pipe(
@@ -45,7 +51,8 @@ export class ClinicalCenterService {
 
 	editMedication(id, changedMedication) {
 		let headers = new HttpHeaders({
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.put(`http://localhost:8080/api/medication/change/${id}`, changedMedication, { headers: headers, observe: 'response' })
 			.pipe(
@@ -59,7 +66,10 @@ export class ClinicalCenterService {
 	}
 
 	delete(id) {
-		return this.http.delete(`http://localhost:8080/api/medication/delete/${id}`, { observe: 'response' })
+		let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.delete(`http://localhost:8080/api/medication/delete/${id}`, { headers: headers,observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;

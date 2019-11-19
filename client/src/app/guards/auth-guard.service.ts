@@ -17,12 +17,17 @@ export class AuthGuardService implements CanActivate {
 		const currentUser = this.userService.checkLoggedIn();
         if (currentUser) {
             // check if route is restricted by role
-            if (route.data.roles && route.data.roles.indexOf(currentUser.role) === -1) {
-                // role not authorised so redirect to home page
-                alert('Not authorised!')
-                this.router.navigate(['/']);
-                return false;
+            if (route.data.roles){
+                currentUser.roles.forEach(role => {
+                    if (route.data.roles.indexOf(role) === -1) {
+                        // role not authorised so redirect to home page
+                        alert('Not authorised!')
+                        this.router.navigate(['/']);
+                        return false;
+                    }
+                });
             }
+            
 
             // authorised so return true
             return true;
