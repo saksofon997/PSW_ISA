@@ -1,6 +1,7 @@
 package com.project.tim49.controller;
 
 import com.project.tim49.dto.ClinicAdministratorDTO;
+import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.ClinicAdministrator;
 import com.project.tim49.service.ClinicAdministratorService;
 import com.project.tim49.service.ClinicService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,6 +29,18 @@ public class ClinicAdministratorController {
     private ClinicService clinicService;
     @Autowired
     private AuthorityServiceImpl authorityService;
+
+    @GetMapping(path="/getAdminC/{id}" ,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINC')")
+    public ResponseEntity getAdminKc(@PathVariable Long id) {
+        ClinicAdministratorDTO adminDTO=clinicAdministratorService.findById(id);
+        if (adminDTO != null){
+            return new ResponseEntity<>(adminDTO,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Clinic admin with id: "+id+" not found!",HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping(path="/add" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)

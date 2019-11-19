@@ -1,0 +1,30 @@
+<div class='row'>
+    <ul class="nav nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="pill" [routerLink]="['./profile']" href="#v-pills-profile" role="tab"
+          aria-controls="v-pills-home" aria-selected="true">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" [routerLink]="['./clinics']" role="tab" aria-controls="v-pills-home"
+          aria-selected="true">Clinic info</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" [routerLink]="['./medications']" role="tab" aria-controls="v-pills-home"
+          aria-selected="true">Doctors</a>
+      </li>
+      <!-- (click)="loadClinics()" href="#v-pills-clinics" -->
+      <!-- <li class="nav-item">
+              <a class="nav-link"data-toggle="pill" [routerLink]="['./clinicAdmins']"
+              [queryParams]="{params:clinicAdminHeaders | json ,title:'Clinic administrator',jumboText:'clinic administraor'}"  role="tab" aria-controls="v-pills-home" aria-selected="true">Clinic administrators</a>
+            </li> -->
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#v-pills-requests" role="tab" aria-controls="v-pills-home"
+          aria-selected="true">Appointment requests</a>
+      </li>
+    </ul>
+  
+    <div class="tab-content" style='width: 100%;' id="v-pills-tabContent">
+      <router-outlet></router-outlet>
+    </div>
+  
+  </div>

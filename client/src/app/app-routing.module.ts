@@ -1,4 +1,4 @@
-import { DoctorListingComponent } from './components/clinic-profile/doctor-listing/doctor-listing.component';
+import { DoctorListingComponent } from './components/adminC-dashboard/doctor-listing/doctor-listing.component';
 import { ClinicAdminFormComponent } from './components/adminCC-dashboard/clinic-admin-form/clinic-admin-form.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -13,13 +13,15 @@ import { MedicationListingComponent } from './components/adminCC-dashboard/medic
 import { MedicationFormComponent } from './components/adminCC-dashboard/medication-form/medication-form.component';
 import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
 import { AdminPersonalProfileComponent} from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
-import { ClinicProfileInfoComponent } from './components/clinic-profile/clinic-profile-info/clinic-profile-info.component';
+import { ClinicProfileInfoComponent } from './components/adminC-dashboard/clinic-profile-info/clinic-profile-info.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ChangePasswordDeactivateService } from './guards/change-password-deactivate.service';
+import { AdminCPersonalProfileComponent } from './components/adminC-dashboard/adminC-personal-profile/adminC-personal-profile.component';
+import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-dashboard.component';
 
 const routes: Routes = [
 	{
-		path: 'profile',
+		path: 'adminCCdashboard',
 		component: AdminProfileComponent,
 		children:[
 			{path: '', component: AdminPersonalProfileComponent},
@@ -35,6 +37,16 @@ const routes: Routes = [
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINCC']}
+	},
+	{
+		path: 'adminCdashboard',
+		component: AdminCDashboardComponent,
+		children:[
+			{path: '', component: AdminCPersonalProfileComponent},
+			{path: 'profile', component: AdminCPersonalProfileComponent}
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ['ADMINC']}
 	},
 	{
 		path: 'login',

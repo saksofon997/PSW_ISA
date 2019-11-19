@@ -122,4 +122,13 @@ public class ClinicAdministratorService {
         return clinicAdministratorRepository.getOne(id);
     }
 
+    public ClinicAdministratorDTO findById(Long id){
+        ClinicAdministrator adminC = clinicAdministratorRepository.findById(id).orElse(null);
+        ClinicAdministratorDTO adminCDTO = null;
+        if(adminC != null ){
+            adminCDTO = new ClinicAdministratorDTO(adminC);
+        }
+        return adminCDTO;
+    }
+
 }
