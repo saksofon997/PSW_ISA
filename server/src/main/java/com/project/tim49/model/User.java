@@ -46,8 +46,6 @@ public class User implements UserDetails {
    @Column(name = "upin")
    private String upin;
 
-   @Column(name = "role", nullable = false)
-   private String role;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -176,14 +174,6 @@ public class User implements UserDetails {
 
    public void setUpin(String upin) {
       this.upin = upin;
-   }
-
-   public String getRole() {
-      return role;
-   }
-
-   public void setRole(String role) {
-      this.role = role;
    }
 
     public boolean isPasswordChanged() {

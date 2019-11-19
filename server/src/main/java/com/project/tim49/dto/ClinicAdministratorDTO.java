@@ -30,7 +30,6 @@ public class ClinicAdministratorDTO {
         this.state = admin.getState();
         this.phoneNumber = admin.getPhoneNumber();
         this.upin = admin.getUpin();
-        this.role = admin.getRole();
         this.clinic_id = admin.getClinic().getId();
     }
 

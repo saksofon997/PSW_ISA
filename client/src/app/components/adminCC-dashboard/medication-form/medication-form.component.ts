@@ -12,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class MedicationFormComponent implements OnInit {
 	loginForm: FormGroup;
 	medication_id: any;
-
+	change: string;
 	submitted = false;
 
 	constructor(private formBuilder: FormBuilder,
@@ -24,11 +24,13 @@ export class MedicationFormComponent implements OnInit {
 		var medication = history.state.data;
 		var code = "";
 		var name = "";
-
+		this.change='Add';
+		
 		if (medication){
 			this.medication_id = medication.id;
 			code = medication.code;
 			name = medication.name;
+			this.change = 'Change';
 		}
 
 		this.loginForm = this.formBuilder.group({

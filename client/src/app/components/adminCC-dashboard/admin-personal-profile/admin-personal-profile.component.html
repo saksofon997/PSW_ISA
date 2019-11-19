@@ -1,4 +1,4 @@
-<div class="jumbotron jumbotron-fluid col-lg-12 col-sm-12"
+<div class="jumbotron jumbotron-fluid col-lg-8 col-sm-8"
   style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
   <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
     <h3 class="display-8">Personal page</h3>
@@ -13,7 +13,7 @@
         <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && loginForm.controls.name.errors }" 
         id="Name" formControlName="name" style="border: 0;" />
         <div *ngIf="submitted && loginForm.controls.name.errors" class="invalid-feedback">
-          <div *ngIf="loginForm.controls.name.errors.required">Code is required</div>
+          <div *ngIf="loginForm.controls.name.errors.required">Name is required</div>
         </div>
       </div>
 
@@ -24,7 +24,7 @@
         <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && loginForm.controls.surname.errors }" 
         id="Surname" formControlName="surname" style="border: 0;" />
         <div *ngIf="submitted && loginForm.controls.surname.errors" class="invalid-feedback">
-          <div *ngIf="loginForm.controls.surname.errors.required">Code is required</div>
+          <div *ngIf="loginForm.controls.surname.errors.required">Surname is required</div>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
         <input type="email" class="form-control"  [ngClass]="{ 'is-invalid': submitted && loginForm.controls.email.errors }" 
         id="Email" formControlName="email" style="border: 0;" />
         <div *ngIf="submitted && loginForm.controls.email.errors" class="invalid-feedback">
-          <div *ngIf="loginForm.controls.email.errors.required">Code is required</div>
+          <div *ngIf="loginForm.controls.email.errors.required">E-mail is required</div>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
         <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && loginForm.controls.address.errors }" 
         id="Address" formControlName="address" style="border: 0;" />
         <div *ngIf="submitted && loginForm.controls.address.errors" class="invalid-feedback">
-          <div *ngIf="loginForm.controls.address.errors.required">Code is required</div>
+          <div *ngIf="loginForm.controls.address.errors.required">Address is required</div>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
         <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && loginForm.controls.city.errors }" 
         id="City" formControlName="city" style="border: 0;" />
         <div *ngIf="submitted && loginForm.controls.city.errors" class="invalid-feedback">
-          <div *ngIf="loginForm.controls.city.errors.required">Code is required</div>
+          <div *ngIf="loginForm.controls.city.errors.required">City is required</div>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
         <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && loginForm.controls.state.errors }"
          id="State" formControlName="state" style="border: 0;" />
         <div *ngIf="submitted && loginForm.controls.state.errors" class="invalid-feedback">
-          <div *ngIf="loginForm.controls.state.errors.required">Code is required</div>
+          <div *ngIf="loginForm.controls.state.errors.required">State is required</div>
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@
         <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && loginForm.controls.phoneNumber.errors }" 
         id="PhoneNumber" formControlName="phoneNumber" style="border: 0;" />
         <div *ngIf="submitted && loginForm.controls.phoneNumber.errors" class="invalid-feedback">
-          <div *ngIf="loginForm.controls.phoneNumber.errors.required">Code is required</div>
+          <div *ngIf="loginForm.controls.phoneNumber.errors.required">Phone number is required</div>
         </div>
       </div>
     </div>

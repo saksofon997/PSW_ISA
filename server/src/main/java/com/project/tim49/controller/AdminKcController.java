@@ -50,8 +50,8 @@ public class AdminKcController {
         return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/editClinic/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity editClinic(@RequestBody ClinicDTO clinicDTO, @PathVariable Long id) {
+    @PutMapping(path = "/editClinic", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity editClinic(@RequestBody ClinicDTO clinicDTO) {
         if (clinicDTO != null) {
             try {
                 clinicService.changeClinicInfo(clinicDTO);
@@ -65,7 +65,6 @@ public class AdminKcController {
             return new ResponseEntity<>("Invalid request data!",
                     HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @DeleteMapping(path = "/deleteClinic/{id}")
@@ -79,8 +78,6 @@ public class AdminKcController {
             return new ResponseEntity<>("Clinic deletion NOT successful!",
                     HttpStatus.BAD_REQUEST);
         }
-
-
     }
 
     @GetMapping(path = "/getClinics",
@@ -93,6 +90,20 @@ public class AdminKcController {
             clinicsDTO.add(new ClinicDTO(clinic));
         }
         return new ResponseEntity<List<ClinicDTO>>(clinicsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getClinic/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getClinicById(@PathVariable Long id) {
+        if(id != null) {
+            ClinicDTO dto = clinicService.findOneDTO(id);
+            if (dto != null) {
+                return new ResponseEntity<>(dto, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("No clinic with this id", HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>("ID is null!",
+                HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @GetMapping(path = "/getClinicAdmins/{id}",

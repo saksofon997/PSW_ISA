@@ -42,30 +42,30 @@ INSERT INTO public.clinic(
 	VALUES (nextval('clinic_id_seq'), 'Ulica/broj5', 'Grad5', 'Opis klinike 5', 'Klinika5', 3, 14, 'Srbija');
 
 INSERT INTO public.clinic_center_administrator(
-	id, address, city, email, name, password, phone_number, role, state, surname, upin, enabled, passwordchanged)
-	VALUES (1, 'AdresaKcAdmina1', 'Grad1', 'adminkc1@kcv.rs', 'ImeKcAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123', 'ADMINCC', 'Srbija', 'Prezime1', '1', true, true);
+	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
+	VALUES (1, 'AdresaKcAdmina1', 'Grad1', 'adminkc1@kcv.rs', 'ImeKcAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1', true, true);
 INSERT INTO public.clinic_center_administrator(
-	id, address, city, email, name, password, phone_number, role, state, surname, upin, enabled, passwordchanged)
-	VALUES (2, 'AdresaKcAdmina3', 'Grad2', 'adminkc2@kcv.rs', 'ImeKcAdmina2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123', 'ADMINCC', 'Srbija', 'Prezime2', '2', true, false);
+	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
+	VALUES (2, 'AdresaKcAdmina3', 'Grad2', 'adminkc2@kcv.rs', 'ImeKcAdmina2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '2', true, false);
 INSERT INTO public.clinic_center_administrator(
-	id, address, city, email, name, password, phone_number, role, state, surname, upin)
-	VALUES (3, 'AdresaKcAdmina3', 'Grad2', 'adminkc3@kcv.rs', 'ImeKcAdmina3', '123456', '067/123', 'ADMINCC', 'Srbija', 'Prezime3', '3');
+	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
+	VALUES (3, 'AdresaKcAdmina3', 'Grad2', 'adminkc3@kcv.rs', 'ImeKcAdmina3', '123456', '067/123',  'Srbija', 'Prezime3', '3', true, false);
 
 INSERT INTO public.clinic_administrator(
-	id, address, city, email, name, password, phone_number, role, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (4, 'Ulica1', 'Grad1', 'adminc1@kcv.rs', 'ImeAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123', 'ADMINC', 'Srbija', 'Prezime1', '21', '1', true, false);
+	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
+	VALUES (4, 'Ulica1', 'Grad1', 'adminc1@kcv.rs', 'ImeAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '21', '1', true, false);
 INSERT INTO public.clinic_administrator(
-	id, address, city, email, name, password, phone_number, role, state, surname, upin, clinic_id)
-	VALUES (5, 'Ulica2', 'Grad2', 'adminc2@kcv.rs', 'ImeAdmina2', '123456', '067/123', 'ADMINC', 'Srbija', 'Prezime2', '22', '1');
+	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
+	VALUES (5, 'Ulica2', 'Grad2', 'adminc2@kcv.rs', 'ImeAdmina2', '123456', '067/123',  'Srbija', 'Prezime2', '22', '1', true, false);
 INSERT INTO public.clinic_administrator(
-	id, address, city, email, name, password, phone_number, role, state, surname, upin, clinic_id)
-	VALUES (6, 'Ulica3', 'Grad3', 'adminc3@kcv.rs', 'ImeAdmina3', '123456', '067/123', 'ADMINC', 'Srbija', 'Prezime3', '23', '4');
+	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
+	VALUES (6, 'Ulica3', 'Grad3', 'adminc3@kcv.rs', 'ImeAdmina3', '123456', '067/123',  'Srbija', 'Prezime3', '23', '4', true, false);
 INSERT INTO public.clinic_administrator(
-	id, address, city, email, name, password, phone_number, role, state, surname, upin, clinic_id)
-	VALUES (7, 'Ulica4', 'Grad4', 'adminc4@kcv.rs', 'ImeAdmina4', '123456', '067/123', 'ADMINC', 'Srbija', 'Prezime4', '24', '5');
+	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
+	VALUES (7, 'Ulica4', 'Grad4', 'adminc4@kcv.rs', 'ImeAdmina4', '123456', '067/123',  'Srbija', 'Prezime4', '24', '5', true, false);
 INSERT INTO public.clinic_administrator(
-	id, address, city, email, name, password, phone_number, role, state, surname, upin, clinic_id)
-	VALUES (8, 'Ulica5', 'Grad5', 'adminc5@kcv.rs', 'ImeAdmina5', '123456', '067/123', 'ADMINC', 'Srbija', 'Prezime5', '25', '3');
+	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
+	VALUES (8, 'Ulica5', 'Grad5', 'adminc5@kcv.rs', 'ImeAdmina5', '123456', '067/123',  'Srbija', 'Prezime5', '25', '3', true, false);
 
 INSERT INTO public.medication_dictionary(
 	id, code, name)

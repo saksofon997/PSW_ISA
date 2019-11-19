@@ -31,6 +31,10 @@ export class ClinicListingComponent implements OnInit {
 		});
 	}
 
+	showClinicInfo(clinic: any) {
+		this.router.navigate(['../showClinicInfo'], { relativeTo: this.activatedRoute, state: {data: clinic}});
+	}
+
 	showClinicAdmins(clinic: any) {
 		this.router.navigate(['../clinicAdmins', { id: clinic.id, name: clinic.name }], { relativeTo: this.activatedRoute });
 	}

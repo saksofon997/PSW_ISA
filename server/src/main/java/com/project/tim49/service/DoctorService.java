@@ -28,8 +28,15 @@ public class DoctorService {
     @Autowired
     private AuthorityService authorityService;
 
-    public List<DoctorDTO> getDoctors(){
-        List<Doctor> doctors = doctorRepository.findAll();
+    public List<DoctorDTO> getDoctors(Long id){
+        if (id == null) {
+            throw new ValidationException("Invalid clinic ID!");
+        }
+        Clinic clinic = clinicRepository.getOne(id);
+        if (clinic== null){
+            throw new ValidationException("Clinic does not exist!");
+        }
+        List<Doctor> doctors = clinic.getDoctors();
         List<DoctorDTO> doctorDTOS = new ArrayList<>();
 
         for (Doctor doctor: doctors) {
