@@ -25,16 +25,7 @@ public class ClinicCenterAdminService {
         User user = clinicCenterAdminRepository.findById(id).orElse(null);
         UserDTO userDTO=null;
         if(user!= null){
-            userDTO = new UserDTO(user.getId(),
-                                user.getEmail(),
-                                user.getName(),
-                                user.getSurname(),
-                                user.getAddress(),
-                                user.getCity(),
-                                user.getState(),
-                                user.getPhoneNumber(),
-                                user.getUpin(),
-                                user.getRole());
+            userDTO = new UserDTO(user);
         }
         return userDTO;
     }

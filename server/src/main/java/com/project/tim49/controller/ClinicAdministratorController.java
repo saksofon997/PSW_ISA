@@ -4,6 +4,7 @@ import com.project.tim49.dto.ClinicAdministratorDTO;
 import com.project.tim49.model.ClinicAdministrator;
 import com.project.tim49.service.ClinicAdministratorService;
 import com.project.tim49.service.ClinicService;
+import com.project.tim49.service.impl.AuthorityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +23,8 @@ public class ClinicAdministratorController {
     private ClinicAdministratorService clinicAdministratorService;
     @Autowired
     private ClinicService clinicService;
+    @Autowired
+    private AuthorityServiceImpl authorityService;
 
     @GetMapping(path="" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,9 +35,6 @@ public class ClinicAdministratorController {
     @PostMapping(path="/add" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addClinicAdministrator(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
-
-
-
         ClinicAdministrator check = clinicAdministratorService.findOneByEmail(clinicAdministratorDTO.getEmail());
         if (check != null) {
             return new ResponseEntity<>("User with this email already exists!", HttpStatus.CONFLICT);
@@ -49,11 +49,10 @@ public class ClinicAdministratorController {
         admin.setState(clinicAdministratorDTO.getState());
         admin.setPhoneNumber(clinicAdministratorDTO.getPhoneNumber());
         admin.setUpin(clinicAdministratorDTO.getUpin());
-
-
+        admin.setPasswordChanged(false);
+        admin.setAuthorities( authorityService.findByname("ADMINCC") );
         admin.setClinic( clinicService.findOne(clinicAdministratorDTO.getClinic_id()) );
 
-        admin.setRole("ADMINC");
         admin.setPassword("ClinicalCenterDefaultPassword");
 
         admin = clinicAdministratorService.save(admin);

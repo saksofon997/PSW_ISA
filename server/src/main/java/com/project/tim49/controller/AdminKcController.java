@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
@@ -35,6 +36,7 @@ public class AdminKcController {
 
     @PostMapping(path="/addClinic" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity<ClinicDTO> saveClinic(@RequestBody ClinicDTO clinicDTO) {
 
         Clinic clinic = new Clinic();
@@ -67,6 +69,7 @@ public class AdminKcController {
     }
 
     @DeleteMapping(path = "/deleteClinic/{id}")
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity deleteClinic(@PathVariable Long id) {
         boolean deleted = clinicService.deleteClinic(id);
         if (deleted){
@@ -94,6 +97,7 @@ public class AdminKcController {
 
     @GetMapping(path = "/getClinicAdmins/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity getClinicAdmins(@PathVariable Long id) {
         Clinic clinic = clinicService.findOne(id);
 
@@ -116,12 +120,14 @@ public class AdminKcController {
     }
     @GetMapping(path="/getAdminKc/{id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity getAdminKc(@PathVariable Long id) {
         UserDTO admin=clinicCenterAdminService.findById(id);
        return new ResponseEntity<>(admin,HttpStatus.OK);
 
     }
     @PutMapping(path="/change", consumes = "application/json", produces= "application/json")
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity modifyAdminKc(@RequestBody UserDTO userDTO) {
         if(userDTO!= null){
             try {
