@@ -13,6 +13,8 @@ import { MedicationListingComponent } from './components/adminCC-dashboard/medic
 import { MedicationFormComponent } from './components/adminCC-dashboard/medication-form/medication-form.component';
 import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
 import { AdminPersonalProfileComponent} from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ChangePasswordDeactivateService } from './guards/change-password-deactivate.service';
 
 const routes: Routes = [
 	{
@@ -37,8 +39,9 @@ const routes: Routes = [
 		component: LoginComponent
 	},
 	{
-		path: 'doctorsListing',
-		component: DoctorListingComponent
+		path: 'change-password',
+		component: ChangePasswordComponent,
+		canDeactivate: [ChangePasswordDeactivateService]
 	}
 	//{
 	// 	path: '',

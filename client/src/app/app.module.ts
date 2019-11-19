@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ClinicFormComponent} from './components/adminCC-dashboard/clinic-form/clinic-form.component'
+import { ClinicFormComponent } from './components/adminCC-dashboard/clinic-form/clinic-form.component'
 import { AdminProfileComponent } from './components/adminCC-dashboard/admin-profile.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ClinicListingComponent } from './components/adminCC-dashboard/clinic-listing/clinic-listing.component';
@@ -16,6 +16,7 @@ import { MedicationListingComponent } from './components/adminCC-dashboard/medic
 import { MedicationFormComponent } from './components/adminCC-dashboard/medication-form/medication-form.component';
 import { AdminPersonalProfileComponent } from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
 import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ClinicAdminFormComponent } from './components/adminCC-dashboard/clinic-admin-form/clinic-admin-form.component';
 import { DoctorListingComponent } from './components/clinic-profile/doctor-listing/doctor-listing.component';
 
@@ -34,6 +35,7 @@ import { DoctorListingComponent } from './components/clinic-profile/doctor-listi
     AdminPersonalProfileComponent,
     DoctorFormComponent,
     ClinicAdminFormComponent,
+    ChangePasswordComponent,
     DoctorListingComponent
   ],
   imports: [
