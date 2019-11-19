@@ -18,6 +18,7 @@ import { AdminPersonalProfileComponent } from './components/adminCC-dashboard/ad
 import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ClinicAdminFormComponent } from './components/adminCC-dashboard/clinic-admin-form/clinic-admin-form.component';
+import { ClinicProfileInfoComponent } from './components/clinic-profile/clinic-profile-info/clinic-profile-info.component';
 import { DoctorListingComponent } from './components/clinic-profile/doctor-listing/doctor-listing.component';
 
 @NgModule({
@@ -35,6 +36,7 @@ import { DoctorListingComponent } from './components/clinic-profile/doctor-listi
     AdminPersonalProfileComponent,
     DoctorFormComponent,
     ClinicAdminFormComponent,
+    ClinicProfileInfoComponent,
     ChangePasswordComponent,
     DoctorListingComponent
   ],

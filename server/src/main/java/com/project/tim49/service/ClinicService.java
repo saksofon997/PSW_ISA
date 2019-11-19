@@ -16,7 +16,20 @@ public class ClinicService {
     @Autowired
     private ClinicRepository clinicRepository;
 
+    public ClinicDTO findOneDTO(Long id) {
+
+        Clinic c = clinicRepository.findById(id).orElseGet(null);
+
+        if(c != null) {
+            ClinicDTO dto = new ClinicDTO(c);
+            return dto;
+        }
+        else
+            throw new ValidationException("Clinic does not exist!");
+    }
+
     public Clinic findOne(Long id) {
+
         return clinicRepository.findById(id).orElseGet(null);
     }
 
