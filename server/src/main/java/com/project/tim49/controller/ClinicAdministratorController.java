@@ -33,8 +33,8 @@ public class ClinicAdministratorController {
     @GetMapping(path="/getAdminC/{id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ADMINC')")
-    public ResponseEntity getAdminKc(@PathVariable Long id) {
-        ClinicAdministratorDTO adminDTO=clinicAdministratorService.findById(id);
+    public ResponseEntity getAdminC(@PathVariable Long id) {
+        ClinicAdministratorDTO adminDTO = clinicAdministratorService.findById(id);
         if (adminDTO != null){
             return new ResponseEntity<>(adminDTO,HttpStatus.OK);
         }else{

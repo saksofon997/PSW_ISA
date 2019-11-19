@@ -43,7 +43,10 @@ const routes: Routes = [
 		component: AdminCDashboardComponent,
 		children:[
 			{path: '', component: AdminCPersonalProfileComponent},
-			{path: 'profile', component: AdminCPersonalProfileComponent}
+			{path: 'profile', component: AdminCPersonalProfileComponent},
+			{path: 'clinic', component: ClinicProfileInfoComponent},
+			{path: 'doctors', component: DoctorListingComponent}
+			
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINC']}

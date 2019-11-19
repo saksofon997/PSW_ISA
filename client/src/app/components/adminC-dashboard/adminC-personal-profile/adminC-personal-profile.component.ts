@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,7 +19,8 @@ export class AdminCPersonalProfileComponent implements OnInit {
               private formBuilder: FormBuilder,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private cookieService: CookieService) { }
+              private cookieService: CookieService,
+              private userService: UserService) { }
 
   ngOnInit() {
       this.getAdminInfo();

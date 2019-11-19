@@ -12,41 +12,56 @@ import { throwError } from 'rxjs';
 })
 export class ClinicAdminService {
 
-constructor(private cookieService: CookieService,
-  private userService: UserService,
-  private http: HttpClient,
-  private router: Router) { }
+  constructor(private cookieService: CookieService,
+    private userService: UserService,
+    private http: HttpClient,
+    private router: Router) { }
 
-getAdminC() {
-  let user = JSON.parse(this.cookieService.get('user'));
-  let id = user["id"];
-  let headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.userService.getToken()}`
-  });
-  return this.http.get(`http://localhost:8080/api/clinicAdmin/getAdminC/${id}`, { headers: headers, observe: 'response' })
-    .pipe(
-      map(response => {
-        return response.body;
-      }),
-      catchError((response) => {
-        return throwError(response.error);
-      })
-    );
-}
-changeAdminC(adminC){
-  let headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${this.userService.getToken()}`
-  });
-  console.log(adminC.id)
-  return this.http.put(`http://localhost:8080/api/clinicAdmin/change`, JSON.stringify(adminC), { headers: headers, observe: 'response' })
-    .pipe(
-      map(response => {
-        return response.body;
-      }),
-      catchError((response) => {
-        return throwError(response.error);
-      })
-    );
-}
+  getAdminC() {
+    let user = JSON.parse(this.cookieService.get('user'));
+    let id = user["id"];
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    return this.http.get(`http://localhost:8080/api/clinicAdmin/getAdminC/${id}`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
+  changeAdminC(adminC){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    console.log(adminC.id)
+    return this.http.put(`http://localhost:8080/api/clinicAdmin/change`, JSON.stringify(adminC), { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
+  getClinic(clinicID){
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    return this.http.get(`http://localhost:8080/admin/getClinic/${clinicID}`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
+
 }
