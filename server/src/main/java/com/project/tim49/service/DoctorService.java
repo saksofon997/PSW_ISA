@@ -25,6 +25,8 @@ public class DoctorService {
     private ClinicRepository clinicRepository;
     @Autowired
     private LoginRepository userRepository;
+    @Autowired
+    private AuthorityService authorityService;
 
     public List<DoctorDTO> getDoctors(){
         List<Doctor> doctors = doctorRepository.findAll();
@@ -39,6 +41,7 @@ public class DoctorService {
     }
 
     public void createNewDoctor(DoctorDTO doctorDTO){
+
         if (doctorDTO.getClinic_id() == null){
             throw new ValidationException("Invalid clinic ID!");
         }
@@ -57,7 +60,7 @@ public class DoctorService {
         doctor.setEmail(doctorDTO.getEmail());
         doctor.setClinic(clinic.get());
         doctor.setPassword("TEMPPASS");
-        doctor.setRole("DOCTOR");
+        doctor.setAuthorities( authorityService.findByname("DOCTOR") );
 
         doctorRepository.save(doctor);
     }

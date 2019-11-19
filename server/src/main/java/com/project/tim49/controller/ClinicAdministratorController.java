@@ -52,7 +52,6 @@ public class ClinicAdministratorController {
         admin.setPasswordChanged(false);
         admin.setAuthorities( authorityService.findByname("ADMINCC") );
         admin.setClinic( clinicService.findOne(clinicAdministratorDTO.getClinic_id()) );
-
         admin.setPassword("ClinicalCenterDefaultPassword");
 
         admin = clinicAdministratorService.save(admin);
