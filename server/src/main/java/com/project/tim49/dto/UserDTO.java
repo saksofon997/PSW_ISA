@@ -8,17 +8,17 @@ import java.util.Collection;
 
 public class UserDTO {
 
-    private Long id;
-    private String email;
+    protected Long id;
+    protected String email;
     //private String password;
-    private String name;
-    private String surname;
-    private String address;
-    private String city;
-    private String state;
-    private String phoneNumber;
-    private String upin;
-    private ArrayList<String> roles = new ArrayList<>();
+    protected String name;
+    protected String surname;
+    protected String address;
+    protected String city;
+    protected String state;
+    protected String phoneNumber;
+    protected String upin;
+    protected ArrayList<String> roles = new ArrayList<>();
 
     public UserDTO() {
 

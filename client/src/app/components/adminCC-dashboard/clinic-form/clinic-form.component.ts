@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {ClinicService} from '../../../services/clinic.service'
+import { ClinicService } from '../../../services/clinic.service'
 
 @Component({
   selector: 'app-clinic-form',
@@ -16,21 +16,24 @@ export class ClinicFormComponent implements OnInit {
   submitted: string;
   test: boolean;
   constructor(private router: Router,
-              private clinicService: ClinicService,
-              private activatedRoute: ActivatedRoute) { }
+    private clinicService: ClinicService,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.test=true;
+    this.test = true;
   }
-  public onSubmit(){
+  public onSubmit() {
     var clinic = {
-      name : this.name,
-      address : this.address,
-      city : this.city,
-      state : this.state,
-      description : this.description
+      name: this.name,
+      address: this.address,
+      city: this.city,
+      state: this.state,
+      description: this.description
     }
-    this.clinicService.addClinic(clinic);
+    this.clinicService.addClinic(clinic).subscribe(
+      (data) => { },
+      (error) => alert(error)
+    );
 
     this.router.navigate(['../clinics'], { relativeTo: this.activatedRoute });
   }

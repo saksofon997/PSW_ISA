@@ -1,8 +1,9 @@
 package com.project.tim49.dto;
 
 import com.project.tim49.model.Doctor;
+import org.springframework.security.core.GrantedAuthority;
 
-public class DoctorDTO {
+public class DoctorDTO extends UserDTO{
 
     private Long id;
     private String email;
@@ -38,6 +39,9 @@ public class DoctorDTO {
         this.clinic_id = doctor.getClinic().getId();
         this.numberOfStars = doctor.getNumberOfStars();
         this.numberOfReviews = doctor.getNumberOfReviews();
+        for (GrantedAuthority auth: doctor.getAuthorities()) {
+            this.roles.add(auth.getAuthority());
+        }
     }
 
     public Long getId() {

@@ -1,9 +1,9 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.dto.ClinicAdministratorDTO;
+import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.dto.UserDTO;
-import com.project.tim49.model.User;
-import com.project.tim49.model.UserRequest;
-import com.project.tim49.model.UserTokenState;
+import com.project.tim49.model.*;
 import com.project.tim49.security.TokenUtils;
 import com.project.tim49.security.auth.JwtAuthenticationRequest;
 import com.project.tim49.service.UserService;
@@ -53,9 +53,14 @@ public class AuthenticationController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
                                                        HttpServletResponse response) throws AuthenticationException, IOException {
 
-        final Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
-                        authenticationRequest.getPassword()));
+        Authentication authentication = null;
+        try {
+            authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+                            authenticationRequest.getPassword()));
+        } catch (Exception e){
+            return new ResponseEntity<>("Wrong password", HttpStatus.BAD_REQUEST);
+        }
 
         // Ubaci username + password u kontext
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -69,7 +74,14 @@ public class AuthenticationController {
         UserState userState = new UserState();
         userState.token = new UserTokenState(jwt, expiresIn);
         userState.passwordChanged = user.isPasswordChanged();
-        userState.user = new UserDTO(user);
+
+        if (user instanceof ClinicAdministrator){
+            userState.user = new ClinicAdministratorDTO((ClinicAdministrator) user);
+        } else if (user instanceof Doctor){
+            userState.user = new DoctorDTO((Doctor)user);
+        } else {
+            userState.user = new UserDTO(user);
+        }
 
         // Vrati token kao odgovor na uspesno autentifikaciju
         return ResponseEntity.ok(userState);

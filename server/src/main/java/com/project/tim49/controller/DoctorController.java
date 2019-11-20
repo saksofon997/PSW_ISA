@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
@@ -26,6 +27,7 @@ public class DoctorController {
 
     @GetMapping(path = "/getClinicDoctors/{clinic_id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINC')")
     public ResponseEntity getClinicDoctors(@PathVariable Long clinic_id) {
         try {
             List<DoctorDTO> doctors = clinicService.getClinicDoctors(clinic_id);
@@ -51,7 +53,7 @@ public class DoctorController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(path="/delete/{id}")
@@ -72,7 +74,7 @@ public class DoctorController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
 }

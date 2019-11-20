@@ -28,7 +28,7 @@ export class AdminCDashboardComponent implements OnInit {
     console.log(clinicID);
     this.clinicAdminService.getClinic(clinicID).subscribe(
       (data)=>{
-        this.router.navigate(['../clinic'], { relativeTo: this.activatedRoute, state: {data: data}});
+        this.router.navigate(['clinic'], { relativeTo: this.activatedRoute, state: {data: data}});
       },
       (error) => {
         alert(error);

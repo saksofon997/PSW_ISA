@@ -44,6 +44,7 @@ public class ClinicAdministratorController {
 
     @PostMapping(path="/add" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity addClinicAdministrator(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
 
         if (clinicAdministratorDTO.getEmail() == null || clinicAdministratorDTO.getEmail().equals("")){
@@ -52,13 +53,13 @@ public class ClinicAdministratorController {
 
         try {
             clinicAdministratorService.createNewClinicAdministrator(clinicAdministratorDTO);
+
+            return new ResponseEntity<>(clinicAdministratorDTO, HttpStatus.OK);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path="/delete/{id}" )
@@ -69,7 +70,7 @@ public class ClinicAdministratorController {
 
         try{
             clinicAdministratorService.deleteClinicAdministrator(id);
-            return new ResponseEntity<>("Clinic administrator deleted", HttpStatus.OK);
+            return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }

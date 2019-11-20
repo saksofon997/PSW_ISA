@@ -47,7 +47,11 @@ export class ClinicService {
 			);
 	}
 	getClinic(id: any) {
-		return this.http.get(`http://localhost:8080/admin/getClinic/${id}`, { observe: 'response' })
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get(`http://localhost:8080/admin/getClinic/${id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -60,7 +64,8 @@ export class ClinicService {
 	
 	changeClinicInfo(changedClinic: any) {
 		let headers = new HttpHeaders({
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.put(`http://localhost:8080/admin/editClinic`, changedClinic, { headers: headers, observe: 'response' })
 			.pipe(
@@ -131,12 +136,12 @@ export class ClinicService {
 		);
 	}
 
-	showError(desc) {
-		// Izmeniti ubuduce
-		console.log(desc)
-	}
-	getDoctors(clinic){
-		return this.http.get(`http://localhost:8080/api/doctor/getDoctors/${clinic.id}`, { observe: 'response' })
+	getDoctors(clinic_id){
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get(`http://localhost:8080/api/doctor/getClinicDoctors/${clinic_id}`, { headers:headers, observe: 'response' })
 		.pipe(
 			map(response => {
 				return response.body;

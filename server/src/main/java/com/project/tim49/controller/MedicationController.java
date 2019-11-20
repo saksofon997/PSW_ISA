@@ -47,8 +47,8 @@ public class MedicationController {
         }
     }
 
-    @PutMapping(path="/change/{id}", consumes = "application/json", produces= "application/json")
-    public ResponseEntity modifyMedication(@RequestBody MedicationDTO medicationDTO, @PathVariable("id") Long id) {
+    @PutMapping(path="/change", consumes = "application/json", produces= "application/json")
+    public ResponseEntity modifyMedication(@RequestBody MedicationDTO medicationDTO) {
 
         if (medicationDTO == null || medicationDTO.getId() == null){
             return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -72,7 +72,7 @@ public class MedicationController {
 
         try{
             medicationService.deleteMedication(id);
-            return new ResponseEntity<>("Medication deleted", HttpStatus.OK);
+            return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }

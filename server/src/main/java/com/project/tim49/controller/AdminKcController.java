@@ -53,6 +53,8 @@ public class AdminKcController {
     }
 
     @PutMapping(path = "/editClinic", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC')")
+
     public ResponseEntity editClinic(@RequestBody ClinicDTO clinicDTO) {
         if (clinicDTO != null) {
             try {

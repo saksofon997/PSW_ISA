@@ -71,7 +71,7 @@ public class DiagnosisController {
         if(temp != null) {
             diagnosisService.remove(temp.getId());
 
-            return new ResponseEntity<>("Diagnosis deleted", HttpStatus.OK);
+            return new ResponseEntity<>(code, HttpStatus.OK);
         }
         return new ResponseEntity<>("Diagnosis doesn't exist", HttpStatus.NOT_FOUND);
     }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-doctor-listing',
@@ -14,44 +15,46 @@ export class DoctorListingComponent implements OnInit {
   clinicID: any;
   clinicName: any;
   constructor(private clinicService: ClinicService,
-		private router: Router,
+    private router: Router,
     private activatedRoute: ActivatedRoute,
-    ) {
-      this.navigationSubscription = this.router.events.subscribe((e: any) => {
-        if (e instanceof NavigationEnd) {
-          this.getDoctors();
-        }
-      });
-     }
+    private userService: UserService
+  ) {
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd) {
+        this.clinicID = this.userService.getUser().clinic_id;
+        this.getDoctors();
+      }
+    });
+  }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe((params)=> {
-			this.clinicID = params.id;
-			this.clinicName = params.name;
-		});
+    this.activatedRoute.params.subscribe((params) => {
+      this.clinicID = params.id;
+      this.clinicName = params.name;
+    });
   }
-  getDoctors(){
+  getDoctors() {
     this.clinicService.getDoctors(this.clinicID).subscribe(
       (data) => {
-        this.doctors=data;
+        this.doctors = data;
       },
       (error) => {
         alert(error);
-      } 
+      }
     )
   }
-  showDoctor(){
+  showDoctor() {
 
   }
-  addNewDoctor(){
+  addNewDoctor() {
 
   }
-  deleteDoctor(){
+  deleteDoctor() {
 
   }
   ngOnDestroy() {
-		if (this.navigationSubscription) {
-			this.navigationSubscription.unsubscribe();
-		}
-	}
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
+  }
 }
