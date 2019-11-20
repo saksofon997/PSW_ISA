@@ -47,13 +47,13 @@ export class MedicationFormComponent implements OnInit {
 		}
 		
 		var medication = {
-			id: null,
+			id: this.medication_id,
 			code: this.loginForm.controls.code.value,
 			name: this.loginForm.controls.name.value
 		}
 
 		if (this.medication_id){
-			this.clinicalCenterService.editMedication(this.medication_id, medication).subscribe(
+			this.clinicalCenterService.editMedication(medication).subscribe(
 				(data) => {this.router.navigate(['../medications'], { relativeTo: this.activatedRoute });},
 				(error) => { alert(error); return;}
 			);

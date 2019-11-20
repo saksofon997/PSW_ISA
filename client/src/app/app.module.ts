@@ -15,11 +15,13 @@ import { LoginComponent } from './components/login/login.component';
 import { MedicationListingComponent } from './components/adminCC-dashboard/medication-listing/medication-listing.component';
 import { MedicationFormComponent } from './components/adminCC-dashboard/medication-form/medication-form.component';
 import { AdminPersonalProfileComponent } from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
-import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
+import { DoctorFormComponent } from './components/adminC-dashboard/doctor-form/doctor-form.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ClinicAdminFormComponent } from './components/adminCC-dashboard/clinic-admin-form/clinic-admin-form.component';
-import { ClinicProfileInfoComponent } from './components/clinic-profile/clinic-profile-info/clinic-profile-info.component';
-import { DoctorListingComponent } from './components/clinic-profile/doctor-listing/doctor-listing.component';
+import { DoctorListingComponent } from './components/adminC-dashboard/doctor-listing/doctor-listing.component';
+import { ClinicProfileInfoComponent } from './components/adminC-dashboard/clinic-profile-info/clinic-profile-info.component';
+import { AdminCPersonalProfileComponent } from './components/adminC-dashboard/adminC-personal-profile/adminC-personal-profile.component';
+import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { DoctorListingComponent } from './components/clinic-profile/doctor-listi
     ClinicAdminFormComponent,
     ClinicProfileInfoComponent,
     ChangePasswordComponent,
-    DoctorListingComponent
+    DoctorListingComponent,
+    AdminCPersonalProfileComponent,
+    AdminCDashboardComponent
   ],
   imports: [
     BrowserModule,

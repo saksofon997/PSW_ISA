@@ -36,6 +36,14 @@ export class UserService {
 		this.user = user;
 		this.cookieService.set('user', JSON.stringify(user));
 	}
+	// 1. Mogucnost: nadklasa za sve DTO...
+	// 2. u zavisnosti od role 4 pomocne alternate funkcije za usera na frontu
+	// alternateUser(toAdd){
+	// 	toAdd.forEach(element => {
+			
+	// 	});
+	// 	this.user = user;
+	// }
 
 	setToken(token: any) {
 		this.token = token;

@@ -41,7 +41,7 @@ export class MedicationListingComponent implements OnInit {
 	}
 
 	deleteMedication(medication: any) {
-		this.clinicalCenterService.delete(medication.id).subscribe(
+		this.clinicalCenterService.deleteMedication(medication.id).subscribe(
 			(data) => this.getMedications(),
 			(error) => alert(error)
 		);

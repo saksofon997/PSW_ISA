@@ -1,8 +1,9 @@
 package com.project.tim49.dto;
 
 import com.project.tim49.model.ClinicAdministrator;
+import org.springframework.security.core.GrantedAuthority;
 
-public class ClinicAdministratorDTO {
+public class ClinicAdministratorDTO extends UserDTO{
 
     private Long id;
     private String email;
@@ -31,6 +32,9 @@ public class ClinicAdministratorDTO {
         this.phoneNumber = admin.getPhoneNumber();
         this.upin = admin.getUpin();
         this.clinic_id = admin.getClinic().getId();
+        for (GrantedAuthority auth: admin.getAuthorities()) {
+            this.roles.add(auth.getAuthority());
+        }
     }
 
     public ClinicAdministratorDTO(Long id, String email, String name, String surname, String address, String city, String state, String phoneNumber, String upin, String role, Long clinic_id) {

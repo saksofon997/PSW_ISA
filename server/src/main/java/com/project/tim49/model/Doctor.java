@@ -10,10 +10,10 @@ import java.util.List;
 
 @Entity
 public class Doctor extends User {
-    @Column(name = "shiftStart", nullable = false)
+    @Column(name = "shift_start", nullable = false)
     private String shiftStart;
 
-    @Column(name = "shiftEnd", nullable = false)
+    @Column(name = "shift_end", nullable = false)
     private String shiftEnd;
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
@@ -22,10 +22,10 @@ public class Doctor extends User {
     @OneToMany(fetch = FetchType.LAZY)
     public List<Appointment> appointments = new ArrayList<Appointment>();
 
-    @Column(name = "numberOfStars")
+    @Column(name = "number_of_stars")
     private int numberOfStars;
 
-    @Column(name = "numberOfReviews")
+    @Column(name = "number_of_reviews")
     private int numberOfReviews;
 
     public String getShiftStart() {

@@ -68,15 +68,13 @@ public class ClinicAdministratorService {
     }
 
     public ClinicAdministratorDTO changeClinicAdministratorData(ClinicAdministratorDTO dto){
-        ClinicAdministrator admin = getReference(dto.getClinic_id());
+        ClinicAdministrator admin = getReference(dto.getId());
         try {
             admin.setName(dto.getName());
         } catch (Exception e){
             throw new NoSuchElementException();
         }
-
         adminDTOtoReal(admin, dto);
-
         Clinic clinic = clinicService.findOne(dto.getClinic_id());
         if (clinic == null){
             throw new ValidationException();
@@ -120,6 +118,15 @@ public class ClinicAdministratorService {
     // Returns reference to update entity
     public ClinicAdministrator getReference(Long id){
         return clinicAdministratorRepository.getOne(id);
+    }
+
+    public ClinicAdministratorDTO findById(Long id){
+        ClinicAdministrator adminC = clinicAdministratorRepository.findById(id).orElse(null);
+        ClinicAdministratorDTO adminCDTO = null;
+        if(adminC != null ){
+            adminCDTO = new ClinicAdministratorDTO(adminC);
+        }
+        return adminCDTO;
     }
 
 }

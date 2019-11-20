@@ -1,6 +1,7 @@
 package com.project.tim49.controller;
 
 import com.project.tim49.dto.ClinicAdministratorDTO;
+import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.ClinicAdministrator;
 import com.project.tim49.service.ClinicAdministratorService;
 import com.project.tim49.service.ClinicService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -28,8 +30,21 @@ public class ClinicAdministratorController {
     @Autowired
     private AuthorityServiceImpl authorityService;
 
+    @GetMapping(path="/getAdminC/{id}" ,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINC')")
+    public ResponseEntity getAdminC(@PathVariable Long id) {
+        ClinicAdministratorDTO adminDTO = clinicAdministratorService.findById(id);
+        if (adminDTO != null){
+            return new ResponseEntity<>(adminDTO,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Clinic admin with id: "+id+" not found!",HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping(path="/add" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity addClinicAdministrator(@RequestBody ClinicAdministratorDTO clinicAdministratorDTO){
 
         if (clinicAdministratorDTO.getEmail() == null || clinicAdministratorDTO.getEmail().equals("")){
@@ -38,16 +53,17 @@ public class ClinicAdministratorController {
 
         try {
             clinicAdministratorService.createNewClinicAdministrator(clinicAdministratorDTO);
+
+            return new ResponseEntity<>(clinicAdministratorDTO, HttpStatus.OK);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path="/delete/{id}" )
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity deleteClinicAdministrator(@PathVariable Long id){
         if (id == null){
             return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);
@@ -55,7 +71,7 @@ public class ClinicAdministratorController {
 
         try{
             clinicAdministratorService.deleteClinicAdministrator(id);
-            return new ResponseEntity<>("Clinic administrator deleted", HttpStatus.OK);
+            return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }

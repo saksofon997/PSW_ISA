@@ -40,7 +40,7 @@ export class ClinicAdminFormComponent implements OnInit {
   public onSubmit(){
 
     var adminC = {
-      id: JSON.parse(this.cookieService.get('user'))['id'],
+      id: null,
 			email: this.form.controls.email.value,
       name: this.form.controls.name.value,
       surname: this.form.controls.surname.value,

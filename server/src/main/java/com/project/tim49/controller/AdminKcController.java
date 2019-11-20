@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.server.UnicastRef2;
+import sun.text.normalizer.UTF16;
 
 import javax.validation.ValidationException;
 import java.util.ArrayList;
@@ -51,6 +53,8 @@ public class AdminKcController {
     }
 
     @PutMapping(path = "/editClinic", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC')")
+
     public ResponseEntity editClinic(@RequestBody ClinicDTO clinicDTO) {
         if (clinicDTO != null) {
             try {
@@ -135,8 +139,8 @@ public class AdminKcController {
     public ResponseEntity getAdminKc(@PathVariable Long id) {
         UserDTO admin=clinicCenterAdminService.findById(id);
        return new ResponseEntity<>(admin,HttpStatus.OK);
-
     }
+
     @PutMapping(path="/change", consumes = "application/json", produces= "application/json")
     @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity modifyAdminKc(@RequestBody UserDTO userDTO) {

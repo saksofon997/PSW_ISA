@@ -32,24 +32,24 @@ public class MedicationService {
     }
 
     public void deleteMedication(Long id){
-        Optional<MedicationDictionary> admin = medicationRepository.findById(id);
-        if (!admin.isPresent()){
+        Optional<MedicationDictionary> medication = medicationRepository.findById(id);
+        if (!medication.isPresent()){
             throw new ValidationException("No medication with that ID!");
         }
 
-        medicationRepository.delete(admin.get());
+        medicationRepository.delete(medication.get());
     }
 
     public MedicationDTO changeMedicationData(MedicationDTO dto){
+        MedicationDictionary codeCheck = medicationRepository.findOneByCode(dto.getCode());
+        if (codeCheck != null && codeCheck.getId() != dto.getId()){
+            throw new ValidationException("Medication with this code already exists!");
+        }
+
         MedicationDictionary medication = getReference(dto.getId());
         try {
-            MedicationDictionary codeCheck = medicationRepository.findOneByCode(dto.getCode());
-            if (medication != null){
-                throw new ValidationException("Medication with this code already exists!");
-            }
-
-            medication.setCode(dto.getCode());
             medication.setName(dto.getName());
+            medication.setCode(dto.getCode());
 
             medicationRepository.save(medication);
 
