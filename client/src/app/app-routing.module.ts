@@ -11,7 +11,7 @@ import { ClinicAdministratorsListingComponent } from './components/adminCC-dashb
 import { ClinicFormComponent } from './components/adminCC-dashboard/clinic-form/clinic-form.component';
 import { MedicationListingComponent } from './components/adminCC-dashboard/medication-listing/medication-listing.component';
 import { MedicationFormComponent } from './components/adminCC-dashboard/medication-form/medication-form.component';
-import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
+import { DoctorFormComponent } from './components/adminC-dashboard/doctor-form/doctor-form.component';
 import { AdminPersonalProfileComponent} from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
 import { ClinicProfileInfoComponent } from './components/adminC-dashboard/clinic-profile-info/clinic-profile-info.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
@@ -31,7 +31,6 @@ const routes: Routes = [
 			{path: 'addClinic', component: ClinicFormComponent},
 			{path: 'medications', component: MedicationListingComponent},
 			{path: 'medication_info', component: MedicationFormComponent},
-			{path: 'addDoctor', component: DoctorFormComponent},
 			{path: 'addClinicAdmin', component: ClinicAdminFormComponent},
 			{path: 'showClinicInfo', component: ClinicProfileInfoComponent}
 		],
@@ -45,7 +44,8 @@ const routes: Routes = [
 			{path: '', component: AdminCPersonalProfileComponent},
 			{path: 'profile', component: AdminCPersonalProfileComponent},
 			{path: 'clinic', component: ClinicProfileInfoComponent},
-			{path: 'doctors', component: DoctorListingComponent}
+			{path: 'doctors', component: DoctorListingComponent},
+			{path: 'doctor', component: DoctorFormComponent},
 			
 		],
 		canActivate: [AuthGuardService],

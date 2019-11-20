@@ -34,6 +34,7 @@ export class DoctorListingComponent implements OnInit {
     });
   }
   getDoctors() {
+    this.clinicID = this.userService.getUser().clinic_id;
     this.clinicService.getDoctors(this.clinicID).subscribe(
       (data) => {
         this.doctors = data;
@@ -47,10 +48,18 @@ export class DoctorListingComponent implements OnInit {
 
   }
   addNewDoctor() {
-
+      this.router.navigate(['../doctor'], { relativeTo: this.activatedRoute });
   }
-  deleteDoctor() {
 
+  deleteDoctor(doctor) {
+    this.clinicService.deleteDoctor(doctor.id).subscribe(
+      (data) => {
+        this.getDoctors();
+      },
+      (error) => {
+        alert(error);
+      }
+    )
   }
   ngOnDestroy() {
     if (this.navigationSubscription) {

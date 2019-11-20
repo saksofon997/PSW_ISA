@@ -15,7 +15,7 @@ import { LoginComponent } from './components/login/login.component';
 import { MedicationListingComponent } from './components/adminCC-dashboard/medication-listing/medication-listing.component';
 import { MedicationFormComponent } from './components/adminCC-dashboard/medication-form/medication-form.component';
 import { AdminPersonalProfileComponent } from './components/adminCC-dashboard/admin-personal-profile/admin-personal-profile.component';
-import { DoctorFormComponent } from './components/adminCC-dashboard/doctor-form/doctor-form.component';
+import { DoctorFormComponent } from './components/adminC-dashboard/doctor-form/doctor-form.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ClinicAdminFormComponent } from './components/adminCC-dashboard/clinic-admin-form/clinic-admin-form.component';
 import { DoctorListingComponent } from './components/adminC-dashboard/doctor-listing/doctor-listing.component';

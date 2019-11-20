@@ -59,7 +59,7 @@ public class AuthenticationController {
                     .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
                             authenticationRequest.getPassword()));
         } catch (Exception e){
-            return new ResponseEntity<>("Wrong password", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Bad credentials", HttpStatus.BAD_REQUEST);
         }
 
         // Ubaci username + password u kontext

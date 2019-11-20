@@ -38,6 +38,7 @@ public class DoctorController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINC')")
     public ResponseEntity addDoctor(@RequestBody DoctorDTO doctorDTO){
         if (doctorDTO.getEmail() == null || doctorDTO.getEmail().equals("")){
             return new ResponseEntity<>("Invalid email", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -57,6 +58,7 @@ public class DoctorController {
     }
 
     @DeleteMapping(path="/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMINC')")
     public ResponseEntity deleteDoctor(@PathVariable Long id) {
         if (id == null){
             return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);

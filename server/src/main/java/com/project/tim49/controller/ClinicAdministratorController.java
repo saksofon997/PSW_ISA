@@ -63,6 +63,7 @@ public class ClinicAdministratorController {
     }
 
     @DeleteMapping(path="/delete/{id}" )
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity deleteClinicAdministrator(@PathVariable Long id){
         if (id == null){
             return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);

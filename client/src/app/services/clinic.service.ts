@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 	providedIn: 'root'
 })
 export class ClinicService {
-	
+
 	constructor(private cookieService: CookieService,
 		private userService: UserService,
 		private http: HttpClient,
@@ -23,14 +23,14 @@ export class ClinicService {
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.post('http://localhost:8080/admin/addClinic', JSON.stringify(clinic), { headers: headers, observe: 'response' })
-		.pipe(
-			map(response => {
-				return response.body;
-			}),
-			catchError((response) => {
-				return throwError(response.error);
-			})
-		);
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
 	}
 	getClinics() {
 		let headers = new HttpHeaders({
@@ -41,9 +41,9 @@ export class ClinicService {
 				map(response => {
 					return response.body;
 				}),
-                catchError((response) => {
-                    return throwError(response.error);
-                })
+				catchError((response) => {
+					return throwError(response.error);
+				})
 			);
 	}
 	getClinic(id: any) {
@@ -56,12 +56,12 @@ export class ClinicService {
 				map(response => {
 					return response.body;
 				}),
-                catchError((response) => {
-                    return throwError(response.error);
-                })
+				catchError((response) => {
+					return throwError(response.error);
+				})
 			);
 	}
-	
+
 	changeClinicInfo(changedClinic: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
@@ -72,9 +72,9 @@ export class ClinicService {
 				map(response => {
 					return response.body;
 				}),
-                catchError((response) => {
-                    return throwError(response.error);
-                })
+				catchError((response) => {
+					return throwError(response.error);
+				})
 			);
 	}
 
@@ -87,9 +87,9 @@ export class ClinicService {
 				map(response => {
 					return response.body;
 				}),
-                catchError((response) => {
-                    return throwError(response.error);
-                })
+				catchError((response) => {
+					return throwError(response.error);
+				})
 			);
 	}
 	addDoctor(doctor) {
@@ -105,9 +105,24 @@ export class ClinicService {
 				return throwError(response.error);
 			})
 		);
-  	}
+	}
 
-	addAdmin(admin){
+	deleteDoctor(id) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.delete(`http://localhost:8080/api/doctor/delete/${id}`, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
+	addAdmin(admin) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
@@ -121,12 +136,12 @@ export class ClinicService {
 			})
 		);
 	}
-	deleteClinic(clinic){
+	deleteClinic(clinic) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/admin/deleteClinic/${clinic.id}`, { headers:headers, observe: 'response' }).pipe(
+		return this.http.delete(`http://localhost:8080/admin/deleteClinic/${clinic.id}`, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -136,19 +151,19 @@ export class ClinicService {
 		);
 	}
 
-	getDoctors(clinic_id){
+	getDoctors(clinic_id) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/doctor/getClinicDoctors/${clinic_id}`, { headers:headers, observe: 'response' })
-		.pipe(
-			map(response => {
-				return response.body;
-			}),
-			catchError((response) => {
-				return throwError(response.error);
-			})
-		);
+		return this.http.get(`http://localhost:8080/api/doctor/getClinicDoctors/${clinic_id}`, { headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
 	}
 }

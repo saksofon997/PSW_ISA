@@ -42,7 +42,7 @@ public class MedicationService {
 
     public MedicationDTO changeMedicationData(MedicationDTO dto){
         MedicationDictionary codeCheck = medicationRepository.findOneByCode(dto.getCode());
-        if (codeCheck != null){
+        if (codeCheck != null && codeCheck.getId() != dto.getId()){
             throw new ValidationException("Medication with this code already exists!");
         }
 

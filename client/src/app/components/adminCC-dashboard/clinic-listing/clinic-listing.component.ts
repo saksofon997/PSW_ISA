@@ -28,6 +28,7 @@ export class ClinicListingComponent implements OnInit {
 	getClinics() {
 		this.clinicService.getClinics().subscribe((data) => {
 			this.clinics = data;
+			this.clinics.sort((a, b) => (a.id > b.id) ? 1 : -1)
 		});
 	}
 

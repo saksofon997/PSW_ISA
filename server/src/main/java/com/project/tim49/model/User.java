@@ -16,7 +16,8 @@ import java.util.List;
 @Inheritance( strategy = InheritanceType.TABLE_PER_CLASS )
 public class User implements UserDetails {
    @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
+   @SequenceGenerator(name="users_id_seq",sequenceName="users_id_seq", allocationSize=1)
+   @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="users_id_seq")
    private Long id;
 
    @Column(name = "email", nullable = false, unique = true)
@@ -53,7 +54,7 @@ public class User implements UserDetails {
     @Column(name = "passwordchanged")
     private boolean passwordChanged;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
