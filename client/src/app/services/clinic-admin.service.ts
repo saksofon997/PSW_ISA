@@ -53,7 +53,7 @@ export class ClinicAdminService {
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/admin/getClinic/${clinicID}`, { headers: headers, observe: 'response' })
+    return this.http.get(`http://localhost:8080/api/admin/getClinic/${clinicID}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;

@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping(value = "admin")
+@RequestMapping(value = "api/admin")
 public class AdminKcController {
 
     @Autowired
@@ -39,22 +39,21 @@ public class AdminKcController {
     @PostMapping(path="/addClinic" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ADMINCC')")
-    public ResponseEntity<ClinicDTO> saveClinic(@RequestBody ClinicDTO clinicDTO) {
-
-        Clinic clinic = new Clinic();
-        clinic.setName(clinicDTO.getName());
-        clinic.setAddress(clinicDTO.getAddress());
-        clinic.setCity(clinicDTO.getCity());
-        clinic.setState(clinicDTO.getState());
-        clinic.setDescription(clinicDTO.getDescription());
-        clinic = clinicService.save(clinic);
-
-        return new ResponseEntity<>(new ClinicDTO(clinic), HttpStatus.CREATED);
+    public ResponseEntity saveClinic(@RequestBody ClinicDTO clinicDTO) {
+        if(clinicDTO!= null){
+            try {
+                clinicService.save(clinicDTO);
+            } catch (ValidationException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+        }else{
+            return new ResponseEntity<>("Invalid clinic", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity<>(clinicDTO, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/editClinic", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC')")
-
     public ResponseEntity editClinic(@RequestBody ClinicDTO clinicDTO) {
         if (clinicDTO != null) {
             try {
@@ -86,18 +85,14 @@ public class AdminKcController {
 
     @GetMapping(path = "/getClinics",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC')")
     public ResponseEntity<List<ClinicDTO>> getClinic() {
-        List<Clinic> clinics = clinicService.findAll();
-
-        List<ClinicDTO> clinicsDTO = new ArrayList<>();
-        for (Clinic clinic : clinics) {
-            clinicsDTO.add(new ClinicDTO(clinic));
-        }
-        return new ResponseEntity<List<ClinicDTO>>(clinicsDTO, HttpStatus.OK);
+        return new ResponseEntity<List<ClinicDTO>>(clinicService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/getClinic/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC')")
     public ResponseEntity getClinicById(@PathVariable Long id) {
         if(id != null) {
             ClinicDTO dto = clinicService.findOneDTO(id);

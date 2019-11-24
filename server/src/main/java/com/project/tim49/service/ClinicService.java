@@ -55,16 +55,34 @@ public class ClinicService {
         return doctorDTOS;
     }
 
-    public List<Clinic> findAll() {
-        return clinicRepository.findAll();
+    public List<ClinicDTO> findAll() {
+        List<ClinicDTO> clinicsDTO = new ArrayList<>();
+        List<Clinic> clinics = clinicRepository.findAll();
+        for (Clinic clinic : clinics) {
+            clinicsDTO.add(new ClinicDTO(clinic));
+        }
+        return clinicsDTO;
     }
 
 //    public Page<Clinic> findAll(Pageable page) {
 //        return clinicRepository.findAll(page);
 //    }
 
-    public Clinic save(Clinic course) {
-        return clinicRepository.save(course);
+    public ClinicDTO save(ClinicDTO clinicDTO) {
+        Clinic clinic = new Clinic();
+        if(!clinicDTO.getName().equals("") || !clinicDTO.getAddress().equals("") || !clinicDTO.getCity().equals("")){
+            clinic.setName(clinicDTO.getName());
+            clinic.setAddress(clinicDTO.getAddress());
+            clinic.setCity(clinicDTO.getCity());
+            clinic.setState(clinicDTO.getState());
+            clinic.setDescription(clinicDTO.getDescription());
+            clinic.setNumberOfReviews(0);
+            clinic.setNumberOfStars(0);
+            clinicRepository.save(clinic);
+        }else{
+            throw new ValidationException("Clinic information not valid!");
+        }
+        return clinicDTO;
     }
 
     public Clinic getReference(Long id) {
