@@ -6,6 +6,7 @@ import com.project.tim49.service.DiagnosisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
@@ -20,6 +21,7 @@ public class DiagnosisController {
     private DiagnosisService diagnosisService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('DOCTOR') or hasAuthority('NURSE')")
     public ResponseEntity<List<DiagnosisDictionary>> getDiagnosis() {
 
         List<DiagnosisDictionary> lista = diagnosisService.findAll();
@@ -28,6 +30,7 @@ public class DiagnosisController {
     }
 
     @PostMapping(consumes = "application/json", produces= "application/json")
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity addDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO) {
 
         if(diagnosisDTO != null) {
@@ -47,6 +50,7 @@ public class DiagnosisController {
     }
 
     @PutMapping(path="/change/{code}", consumes = "application/json", produces= "application/json")
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity modifyDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO, @PathVariable("code") String code) {
         if (diagnosisDTO != null) {
             try {
@@ -64,6 +68,7 @@ public class DiagnosisController {
     }
 
     @DeleteMapping(path="/delete/{code}")
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity deleteDiagnosis(@PathVariable("code") String code) {
 
         DiagnosisDictionary temp = diagnosisService.findOne(code);

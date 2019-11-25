@@ -6,6 +6,7 @@ import com.project.tim49.service.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,6 +23,7 @@ public class MedicationController {
     private MedicationService medicationService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('DOCTOR') or hasAuthority('NURSE')")
     public ResponseEntity<List<MedicationDictionary>> getMedications() {
 
         List<MedicationDictionary> medications = medicationService.findAll();
@@ -30,9 +32,10 @@ public class MedicationController {
     }
 
     @PostMapping(consumes = "application/json", produces= "application/json")
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity addMedication(@RequestBody MedicationDTO medicationDTO) {
 
-        if (medicationDTO == null || medicationDTO.getCode() == null || medicationDTO.getName() == null || medicationDTO.getCode().length() != 4){
+        if (medicationDTO == null || medicationDTO.getCode() == null || medicationDTO.getName() == null){
             return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -48,6 +51,7 @@ public class MedicationController {
     }
 
     @PutMapping(path="/change", consumes = "application/json", produces= "application/json")
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity modifyMedication(@RequestBody MedicationDTO medicationDTO) {
 
         if (medicationDTO == null || medicationDTO.getId() == null){
@@ -65,6 +69,7 @@ public class MedicationController {
     }
 
     @DeleteMapping(path="/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity deleteMedication(@PathVariable("id") Long id) {
         if (id == null){
             return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);
