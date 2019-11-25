@@ -18,6 +18,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { ChangePasswordDeactivateService } from './guards/change-password-deactivate.service';
 import { AdminCPersonalProfileComponent } from './components/adminC-dashboard/adminC-personal-profile/adminC-personal-profile.component';
 import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-dashboard.component';
+import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
+import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
 
 const routes: Routes = [
 	{
@@ -46,6 +48,8 @@ const routes: Routes = [
 			{path: 'clinic', component: ClinicProfileInfoComponent},
 			{path: 'doctors', component: DoctorListingComponent},
 			{path: 'doctor', component: DoctorFormComponent},
+			{path: 'types_of_examination', component: TypeOfExaminationListingComponent},
+			{path: 'type_of_examination_info', component: TypeOfExaminationFormComponent},
 			
 		],
 		canActivate: [AuthGuardService],

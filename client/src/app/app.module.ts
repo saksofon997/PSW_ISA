@@ -22,6 +22,8 @@ import { DoctorListingComponent } from './components/adminC-dashboard/doctor-lis
 import { ClinicProfileInfoComponent } from './components/adminC-dashboard/clinic-profile-info/clinic-profile-info.component';
 import { AdminCPersonalProfileComponent } from './components/adminC-dashboard/adminC-personal-profile/adminC-personal-profile.component';
 import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-dashboard.component';
+import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
+import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-d
     ChangePasswordComponent,
     DoctorListingComponent,
     AdminCPersonalProfileComponent,
-    AdminCDashboardComponent
+    AdminCDashboardComponent,
+    TypeOfExaminationListingComponent,
+    TypeOfExaminationFormComponent
   ],
   imports: [
     BrowserModule,

@@ -4,13 +4,13 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-doctor-listing',
-  templateUrl: './doctor-listing.component.html',
-  styleUrls: ['./doctor-listing.component.css']
+  selector: 'app-type-of-examination-listing',
+  templateUrl: './type-of-examination-listing.component.html',
+  styleUrls: ['./type-of-examination-listing.component.css']
 })
-export class DoctorListingComponent implements OnInit {
-  doctorsHeaders = ['Name', 'Surname', 'Phone Number', 'Shift starts', 'Shift ends', 'Stars', 'Reviews'];
-  doctors: any;
+export class TypeOfExaminationListingComponent implements OnInit {
+  typeOfExaminationHeaders = ['Name'];
+  typesOfExamination: any;
   navigationSubscription: any;
   clinicID: any;
   clinicName: any;
@@ -22,7 +22,7 @@ export class DoctorListingComponent implements OnInit {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
         this.clinicID = this.userService.getUser().clinic_id;
-        this.getDoctors();
+        this.getTypesOfExamination();
       }
     });
   }
@@ -33,34 +33,34 @@ export class DoctorListingComponent implements OnInit {
       this.clinicName = params.name;
     });
   }
-
-  getDoctors() {
+  getTypesOfExamination() {
     this.clinicID = this.userService.getUser().clinic_id;
-    this.clinicService.getDoctors(this.clinicID).subscribe(
+    this.clinicService.getTypesOfExamination(this.clinicID).subscribe(
       (data) => {
-        this.doctors = data;
+        this.typesOfExamination = data;
       },
       (error) => {
         alert(error);
       }
     )
   }
-
-  addNewDoctor() {
-      this.router.navigate(['../doctor'], { relativeTo: this.activatedRoute });
+  changeTypeOfExamination(typeOfExamination) {
+    this.router.navigate(['../type_of_examination_info'], { relativeTo: this.activatedRoute, state: { data: typeOfExamination } });
+  }
+  addNewTypeOfExamination() {
+    this.router.navigate(['../type_of_examination_info'], { relativeTo: this.activatedRoute });
   }
 
-  deleteDoctor(doctor) {
-    this.clinicService.deleteDoctor(doctor.id).subscribe(
+  deleteTypeOfExamination(typeOfExamination) {
+    this.clinicService.deleteTypeOfExamination(typeOfExamination.id, this.clinicID).subscribe(
       (data) => {
-        this.getDoctors();
+        this.getTypesOfExamination();
       },
       (error) => {
         alert(error);
       }
     )
   }
-  
   ngOnDestroy() {
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
