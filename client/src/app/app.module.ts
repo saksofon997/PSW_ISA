@@ -24,6 +24,7 @@ import { AdminCPersonalProfileComponent } from './components/adminC-dashboard/ad
 import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-dashboard.component';
 import { DiagnosisListingComponent } from './components/adminCC-dashboard/diagnosis-listing/diagnosis-listing.component';
 import { DiagnosisFormComponent } from './components/adminCC-dashboard/diagnosis-form/diagnosis-form.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { DiagnosisFormComponent } from './components/adminCC-dashboard/diagnosis
     AdminCPersonalProfileComponent,
     AdminCDashboardComponent,
     DiagnosisListingComponent,
-    DiagnosisFormComponent
+    DiagnosisFormComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

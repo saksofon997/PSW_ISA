@@ -109,6 +109,33 @@ export class UserService {
 			);
 	}
 
+	register(registerRequest: any) {
+		const headers = new HttpHeaders({
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		});
+		return this.http.post('http://localhost:8080/auth/signup', registerRequest, { headers, observe: 'response' })
+			.pipe(
+				map((response) => {
+					const userState = response.body;
+					//this.setUser(userState['user']);
+					//this.setToken(userState['token']);
+					//this.passwordChanged = userState['passwordChanged'];
+					//if (!this.passwordChanged){
+					//	this.router.navigate(['/change-password']);
+					//} else {
+						alert("Your request has been sent. Check your email.")
+						this.router.navigate(['/']);
+					//}
+					
+					return this.user;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	logout() {
 		this.user = null;
 		this.removeUser();
