@@ -24,6 +24,8 @@ import { AdminCPersonalProfileComponent } from './components/adminC-dashboard/ad
 import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-dashboard.component';
 import { DiagnosisListingComponent } from './components/adminCC-dashboard/diagnosis-listing/diagnosis-listing.component';
 import { DiagnosisFormComponent } from './components/adminCC-dashboard/diagnosis-form/diagnosis-form.component';
+import { OrdinationListingComponent } from './components/adminC-dashboard/ordination-listing/ordination-listing.component';
+import { AvailableAppointmentListingComponent } from './components/adminC-dashboard/available-appointment-listing/available-appointment-listing.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { DiagnosisFormComponent } from './components/adminCC-dashboard/diagnosis
     AdminCPersonalProfileComponent,
     AdminCDashboardComponent,
     DiagnosisListingComponent,
-    DiagnosisFormComponent
+    DiagnosisFormComponent,
+    OrdinationListingComponent,
+    AvailableAppointmentListingComponent
   ],
   imports: [
     BrowserModule,
