@@ -1,5 +1,6 @@
 package com.project.tim49.service;
 
+import com.project.tim49.dto.RegistrationDTO;
 import com.project.tim49.model.User;
 import com.project.tim49.model.UserRequest;
 
@@ -10,4 +11,5 @@ public interface UserService {
     User findByEmail(String email);
     List<User> findAll ();
     User save(UserRequest userRequest);
+    RegistrationDTO createRegistrationRequest(RegistrationDTO registrationDTO);
 }

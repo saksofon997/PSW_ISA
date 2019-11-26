@@ -2,9 +2,12 @@ package com.project.tim49.service.impl;
 
 import java.util.List;
 
+import com.project.tim49.dto.RegistrationDTO;
 import com.project.tim49.model.Authority;
+import com.project.tim49.model.RegistrationRequest;
 import com.project.tim49.model.User;
 import com.project.tim49.model.UserRequest;
+import com.project.tim49.repository.RegistrationRequestRepository;
 import com.project.tim49.repository.UserRepository;
 import com.project.tim49.service.AuthorityService;
 import com.project.tim49.service.UserService;
@@ -25,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AuthorityService authService;
+
+    @Autowired
+    private RegistrationRequestRepository registrationRequestRepository;
 
     @Override
     public User findByEmail(String email) throws UsernameNotFoundException {
@@ -60,6 +66,23 @@ public class UserServiceImpl implements UserService {
 
         u = this.userRepository.save(u);
         return u;
+    }
+
+    public RegistrationDTO createRegistrationRequest(RegistrationDTO registrationDTO){
+        RegistrationRequest request = new RegistrationRequest();
+
+        request.setEmail(registrationDTO.getEmail());
+        request.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
+        request.setName(registrationDTO.getName());
+        request.setSurname(registrationDTO.getSurname());
+        request.setAddress(registrationDTO.getAddress());
+        request.setCity(registrationDTO.getCity());
+        request.setState(registrationDTO.getState());
+        request.setPhoneNumber(registrationDTO.getPhoneNumber());
+        request.setUpin(registrationDTO.getUpin());
+
+        RegistrationRequest saved = this.registrationRequestRepository.save(request);
+        return new RegistrationDTO(saved);
     }
 
 }

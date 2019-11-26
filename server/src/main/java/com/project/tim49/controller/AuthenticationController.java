@@ -2,6 +2,7 @@ package com.project.tim49.controller;
 
 import com.project.tim49.dto.ClinicAdministratorDTO;
 import com.project.tim49.dto.DoctorDTO;
+import com.project.tim49.dto.RegistrationDTO;
 import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.*;
 import com.project.tim49.security.TokenUtils;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -87,21 +90,25 @@ public class AuthenticationController {
         return ResponseEntity.ok(userState);
     }
 
-    // Prepraviti da radi sa nasim RegistrationRequest i cuvanjem u bazi
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity addUser(@RequestBody RegistrationDTO registrationDTO, UriComponentsBuilder ucBuilder) {
 
-        //prepraviti na email!!!
-        User existUser = this.userService.findByEmail(userRequest.getEmail());
-        if (existUser != null) {
-            //naci dependency
-            new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
+        if(!isValidEmailAddress(registrationDTO.getEmail())){
+            return new ResponseEntity<>("Email is not valid", HttpStatus.BAD_REQUEST);
+        }
+        if(registrationDTO.getUpin().length() != 13){
+            return new ResponseEntity<>("Upin is not valid", HttpStatus.BAD_REQUEST);
         }
 
-        User user = this.userService.save(userRequest);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+        User existUser = this.userService.findByEmail(registrationDTO.getEmail());
+        if (existUser != null) {
+            new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+        }
+
+        RegistrationDTO created = this.userService.createRegistrationRequest(registrationDTO);
+        //HttpHeaders headers = new HttpHeaders();
+        //headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<RegistrationDTO>(created , HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
@@ -143,5 +150,10 @@ public class AuthenticationController {
         public UserTokenState token;
         public boolean passwordChanged;
         public UserDTO user;
+    }
+
+    public static boolean isValidEmailAddress(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
     }
 }
