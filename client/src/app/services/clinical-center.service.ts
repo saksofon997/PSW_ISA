@@ -116,7 +116,7 @@ export class ClinicalCenterService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.put(`http://localhost:8080/api/diagnosis/change/${changedDiagnosis.code}`, changedDiagnosis, { headers: headers, observe: 'response' })
+		return this.http.put(`http://localhost:8080/api/diagnosis/change`, changedDiagnosis, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -127,11 +127,11 @@ export class ClinicalCenterService {
 			);
 	}
 
-	deleteDiagnosis(code) {
+	deleteDiagnosis(id) {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/diagnosis/delete/${code}`, { headers: headers, observe: 'response' })
+		return this.http.delete(`http://localhost:8080/api/diagnosis/delete/${id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;

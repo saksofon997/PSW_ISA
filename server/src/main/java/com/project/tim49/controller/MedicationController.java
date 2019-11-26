@@ -2,12 +2,12 @@ package com.project.tim49.controller;
 
 import com.project.tim49.dto.MedicationDTO;
 import com.project.tim49.model.MedicationDictionary;
-import com.project.tim49.service.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.project.tim49.service.MedicationService;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;

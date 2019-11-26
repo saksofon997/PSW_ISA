@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class DiagnosisFormComponent implements OnInit {
 	form: FormGroup;
-	//diagnosis_id: any;
+	diagnosis_id: any;
 	change: string;
 	submitted = false;
 
@@ -26,7 +26,7 @@ export class DiagnosisFormComponent implements OnInit {
 		this.change='Add';
 		
 		if (diagnosis){
-			//this.diagnosis_id = medication.id;
+			this.diagnosis_id = diagnosis.id;
 			code = diagnosis.code;
 			description = diagnosis.description;
 			this.change = 'Change';
@@ -46,12 +46,12 @@ export class DiagnosisFormComponent implements OnInit {
 		}
 		
 		var diagnosis = {
-			//id: this.diagnosis_id,
+			id: this.diagnosis_id,
 			code: this.form.controls.code.value,
 			description: this.form.controls.description.value
     }
 
-		if (this.change === 'Change'){
+		if (this.diagnosis_id){
 			this.clinicalCenterService.editDiagnosis(diagnosis).subscribe(
 				(data) => {this.router.navigate(['../diagnoses'], { relativeTo: this.activatedRoute });},
 				(error) => { alert(error); return;}

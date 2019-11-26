@@ -40,7 +40,7 @@ export class DiagnosisListingComponent implements OnInit {
 	}
 
 	deleteDiagnosis(diagnosis: any) {
-		this.clinicalCenterService.deleteDiagnosis(diagnosis.code).subscribe(
+		this.clinicalCenterService.deleteDiagnosis(diagnosis.id).subscribe(
 			(data) => this.getDiagnosis(),
 			(error) => alert(error)
 		);

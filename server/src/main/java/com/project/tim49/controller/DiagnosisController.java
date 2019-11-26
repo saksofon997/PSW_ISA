@@ -24,60 +24,58 @@ public class DiagnosisController {
     @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('DOCTOR') or hasAuthority('NURSE')")
     public ResponseEntity<List<DiagnosisDictionary>> getDiagnosis() {
 
-        List<DiagnosisDictionary> lista = diagnosisService.findAll();
+        List<DiagnosisDictionary> diagnosis = diagnosisService.findAll();
 
-        return new ResponseEntity<>(lista, HttpStatus.OK);
+        return new ResponseEntity<>(diagnosis, HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json", produces= "application/json")
     @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity addDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO) {
 
-        if(diagnosisDTO != null) {
-            DiagnosisDictionary temp =
-                    diagnosisService.findOne(diagnosisDTO.getCode());
+        if(diagnosisDTO == null || diagnosisDTO.getCode() == null || diagnosisDTO.getDescription() == null)
+            return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
 
-            if (temp == null) {
-                DiagnosisDictionary tba = new DiagnosisDictionary();
-                tba.setCode(diagnosisDTO.getCode());
-                diagnosisService.save(tba);
+        try{
+            DiagnosisDTO newDiagnosis =
+                    diagnosisService.createNewDiagnosis(diagnosisDTO);
+            return new ResponseEntity<>(newDiagnosis, HttpStatus.CREATED);
 
-                return new ResponseEntity<>(diagnosisDTO, HttpStatus.CREATED);
-            }
-            return new ResponseEntity<>("Diagnosis already exists", HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
-    }
-
-    @PutMapping(path="/change/{code}", consumes = "application/json", produces= "application/json")
-    @PreAuthorize("hasAuthority('ADMINCC')")
-    public ResponseEntity modifyDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO, @PathVariable("code") String code) {
-        if (diagnosisDTO != null) {
-            try {
-                diagnosisService.changeDiagnosisData(diagnosisDTO);
-                return new ResponseEntity<>(diagnosisDTO,
-                        HttpStatus.OK);
-            } catch (ValidationException e) {
-                return new ResponseEntity<>(e.getMessage(),
-                        HttpStatus.BAD_REQUEST);
-            }
-        } else {
-            return new ResponseEntity<>("Invalid request data!",
-                    HttpStatus.BAD_REQUEST);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
-    @DeleteMapping(path="/delete/{code}")
+    @PutMapping(path="/change", consumes = "application/json", produces=
+            "application/json")
     @PreAuthorize("hasAuthority('ADMINCC')")
-    public ResponseEntity deleteDiagnosis(@PathVariable("code") String code) {
+    public ResponseEntity modifyDiagnosis(@RequestBody DiagnosisDTO diagnosisDTO) {
 
-        DiagnosisDictionary temp = diagnosisService.findOne(code);
+        if(diagnosisDTO == null || diagnosisDTO.getId() == null)
+            return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
 
-        if(temp != null) {
-            diagnosisService.remove(temp.getId());
+        try{
+            DiagnosisDTO editDiagnosis =
+                    diagnosisService.changeDiagnosisData(diagnosisDTO);
+            return new ResponseEntity<>(editDiagnosis, HttpStatus.CREATED);
 
-            return new ResponseEntity<>(code, HttpStatus.OK);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>("Diagnosis doesn't exist", HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping(path="/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMINCC')")
+    public ResponseEntity deleteDiagnosis(@PathVariable("id") Long id) {
+
+        if (id == null)
+            return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);
+
+        try{
+            diagnosisService.deleteDiagnosis(id);
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 }
