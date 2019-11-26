@@ -1,0 +1,34 @@
+<div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
+    <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+        <h3 class="display-8">Ordinations</h3>
+        <p class="lead">Here you can see a list of clinic ordinations.</p>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col" *ngFor='let param of ordinationsHeaders'>{{param}}</th>
+            <th scope="col">
+                <button type="button" class="btn btn-light" (click)="addNewOrdination()">Add</button>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor='let ordination of ordinations'>
+            <td> {{ordination.name}} </td>
+            <td> {{ordination.number}} </td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Options
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="changeOrdination(ordination)">Change</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="deleteOrdination(ordination)">Delete</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
