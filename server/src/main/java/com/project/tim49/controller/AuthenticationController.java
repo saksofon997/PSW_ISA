@@ -2,6 +2,7 @@ package com.project.tim49.controller;
 
 import com.project.tim49.dto.ClinicAdministratorDTO;
 import com.project.tim49.dto.DoctorDTO;
+import com.project.tim49.dto.RegistrationDTO;
 import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.*;
 import com.project.tim49.security.TokenUtils;
@@ -10,8 +11,11 @@ import com.project.tim49.service.UserService;
 import com.project.tim49.service.impl.CustomUserDetailsService;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,10 +31,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -87,21 +88,45 @@ public class AuthenticationController {
         return ResponseEntity.ok(userState);
     }
 
-    // Prepraviti da radi sa nasim RegistrationRequest i cuvanjem u bazi
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity addUser(@RequestBody RegistrationDTO registrationDTO, UriComponentsBuilder ucBuilder) {
 
-        //prepraviti na email!!!
-        User existUser = this.userService.findByEmail(userRequest.getEmail());
-        if (existUser != null) {
-            //naci dependency
-            new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
+        if(!isValidEmailAddress(registrationDTO.getEmail())){
+            return new ResponseEntity<>("Email is not valid", HttpStatus.BAD_REQUEST);
+        }
+        if(registrationDTO.getUpin().length() != 13){
+            return new ResponseEntity<>("Upin is not valid", HttpStatus.BAD_REQUEST);
         }
 
-        User user = this.userService.save(userRequest);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+        User existUser = this.userService.findByEmail(registrationDTO.getEmail());
+        if (existUser != null) {
+            new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+        }
+
+        RegistrationDTO created = this.userService.createRegistrationRequest(registrationDTO);
+        //HttpHeaders headers = new HttpHeaders();
+        //headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<RegistrationDTO>(created , HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/confirm_registration/{id}")
+    public ResponseEntity confirmRegistration(@PathVariable Long id, UriComponentsBuilder ucBuilder) {
+
+        try {
+            UserDTO userDTO = this.userService.createPatient(id);
+
+            String myUrl = "http://localhost:4200/login";
+            URI myURI = new URI(myUrl);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(myURI);
+            return new ResponseEntity<>("MORE" , headers, HttpStatus.CREATED);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Registration request not found" , HttpStatus.NOT_FOUND);
+        } catch (SecurityException e) {
+            return new ResponseEntity<>("Registration request not approved" , HttpStatus.FORBIDDEN);
+        } catch (URISyntaxException e) {
+            return new ResponseEntity<>("Uri not valid" , HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
@@ -143,5 +168,10 @@ public class AuthenticationController {
         public UserTokenState token;
         public boolean passwordChanged;
         public UserDTO user;
+    }
+
+    public static boolean isValidEmailAddress(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
     }
 }

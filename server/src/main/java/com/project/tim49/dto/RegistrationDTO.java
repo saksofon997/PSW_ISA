@@ -1,53 +1,33 @@
-package com.project.tim49.model; /***********************************************************************
- * Module:  RegistrationRequest.java
- * Author:  TIM 49
- * Purpose: Defines the Class RegistrationRequest
- ***********************************************************************/
+package com.project.tim49.dto;
 
-import javax.persistence.*;
+import com.project.tim49.model.RegistrationRequest;
 
-@Entity
-public class RegistrationRequest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class RegistrationDTO {
 
-    @Column(name = "email", nullable = false)
     private String email;
-
-    @Column(name = "password", nullable = false)
     private String password;
-
-    @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "surname", nullable = false)
     private String surname;
-
-    @Column(name = "address", nullable = false)
     private String address;
-
-    @Column(name = "city", nullable = false)
     private String city;
-
-    @Column(name = "state", nullable = false)
     private String state;
-
-    @Column(name = "phoneNumber", nullable = false)
     private String phoneNumber;
-
-    @Column(name = "upin", nullable = false)
     private String upin;
 
-    @Column(name = "approved", nullable = false)
-    private boolean approved;
+    public RegistrationDTO(){
 
-    public Long getId() {
-        return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public RegistrationDTO(RegistrationRequest request) {
+        this.email = request.getEmail();
+        this.password = request.getPassword();
+        this.name = request.getName();
+        this.surname = request.getSurname();
+        this.address = request.getAddress();
+        this.city = request.getCity();
+        this.state = request.getState();
+        this.phoneNumber = request.getPhoneNumber();
+        this.upin = request.getUpin();
     }
 
     public String getEmail() {
@@ -120,13 +100,5 @@ public class RegistrationRequest {
 
     public void setUpin(String upin) {
         this.upin = upin;
-    }
-
-    public boolean isApproved() {
-        return approved;
-    }
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
     }
 }
