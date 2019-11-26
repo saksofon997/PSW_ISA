@@ -39,6 +39,9 @@ public class RegistrationRequest {
     @Column(name = "upin", nullable = false)
     private String upin;
 
+    @Column(name = "approved", nullable = false)
+    private boolean approved;
+
     public Long getId() {
         return id;
     }
@@ -117,5 +120,13 @@ public class RegistrationRequest {
 
     public void setUpin(String upin) {
         this.upin = upin;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 }

@@ -11,11 +11,12 @@ import com.project.tim49.service.UserService;
 import com.project.tim49.service.impl.CustomUserDetailsService;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,10 +31,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -109,6 +107,26 @@ public class AuthenticationController {
         //HttpHeaders headers = new HttpHeaders();
         //headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<RegistrationDTO>(created , HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/confirm_registration/{id}")
+    public ResponseEntity confirmRegistration(@PathVariable Long id, UriComponentsBuilder ucBuilder) {
+
+        try {
+            UserDTO userDTO = this.userService.createPatient(id);
+
+            String myUrl = "http://localhost:4200/login";
+            URI myURI = new URI(myUrl);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(myURI);
+            return new ResponseEntity<>("MORE" , headers, HttpStatus.CREATED);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Registration request not found" , HttpStatus.NOT_FOUND);
+        } catch (SecurityException e) {
+            return new ResponseEntity<>("Registration request not approved" , HttpStatus.FORBIDDEN);
+        } catch (URISyntaxException e) {
+            return new ResponseEntity<>("Uri not valid" , HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
