@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -58,7 +59,8 @@ import { AvailableAppointmentListingComponent } from './components/adminC-dashbo
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    NgHttpLoaderModule.forRoot()
   ],
   providers: [CookieService], //UserService, AuthGuardService
   bootstrap: [AppComponent]
