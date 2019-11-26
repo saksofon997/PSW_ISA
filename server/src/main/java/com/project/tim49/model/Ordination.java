@@ -15,8 +15,8 @@ public class Ordination {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "labelNum", nullable = false)
-    private String labelNum;
+    @Column(name = "number", nullable = false)
+    private String number;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Clinic clinic;
@@ -37,12 +37,12 @@ public class Ordination {
         this.name = name;
     }
 
-    public String getLabelNum() {
-        return labelNum;
+    public String getNumber() {
+        return number;
     }
 
-    public void setLabelNum(String labelNum) {
-        this.labelNum = labelNum;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public Clinic getClinic() {

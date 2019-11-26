@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +26,8 @@ import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-d
 import { DiagnosisListingComponent } from './components/adminCC-dashboard/diagnosis-listing/diagnosis-listing.component';
 import { DiagnosisFormComponent } from './components/adminCC-dashboard/diagnosis-form/diagnosis-form.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { OrdinationListingComponent } from './components/adminC-dashboard/ordination-listing/ordination-listing.component';
+import { AvailableAppointmentListingComponent } from './components/adminC-dashboard/available-appointment-listing/available-appointment-listing.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,9 @@ import { RegistrationComponent } from './components/registration/registration.co
     DiagnosisListingComponent,
     DiagnosisFormComponent,
     RegistrationComponent
+    DiagnosisFormComponent,
+    OrdinationListingComponent,
+    AvailableAppointmentListingComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +62,8 @@ import { RegistrationComponent } from './components/registration/registration.co
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    NgHttpLoaderModule.forRoot()
   ],
   providers: [CookieService], //UserService, AuthGuardService
   bootstrap: [AppComponent]
