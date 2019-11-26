@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<div class="modal-body">
+  {{ message }}
+
+<div class="form-group row" *ngIf="userInput" style=" padding: 1em;">
+  <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+    <textarea class="form-control" name="name" rows="3"
+      [ngClass]="{ 'is-invalid': submitted && form.controls.explanation.errors }" formControlName="explanation"
+      placeholder="Explanation..." style="border: 0;"></textarea>
+    <div *ngIf="submitted && form.controls.explanation.errors" class="invalid-feedback">
+      <div *ngIf="form.controls.explanation.errors.required">Explanation is required</div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+  <button type="button" *ngIf="!userInput" class="btn btn-primary" (click)="accept()">{{ btnOkText }}</button>
+
+  <button type="submit" class="btn btn-primary" *ngIf='userInput'>{{ btnOkText }}</button>
+</div>
+</form>

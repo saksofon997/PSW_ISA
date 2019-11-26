@@ -4,6 +4,7 @@ import com.project.tim49.model.RegistrationRequest;
 
 public class RegistrationDTO {
 
+    private Long id;
     private String email;
     private String password;
     private String name;
@@ -13,7 +14,6 @@ public class RegistrationDTO {
     private String state;
     private String phoneNumber;
     private String upin;
-
     public RegistrationDTO(){
 
     }
@@ -28,6 +28,7 @@ public class RegistrationDTO {
         this.state = request.getState();
         this.phoneNumber = request.getPhoneNumber();
         this.upin = request.getUpin();
+        this.id = request.getId();
     }
 
     public String getEmail() {
@@ -100,5 +101,9 @@ public class RegistrationDTO {
 
     public void setUpin(String upin) {
         this.upin = upin;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

@@ -23,6 +23,7 @@ import { DiagnosisFormComponent } from './components/adminCC-dashboard/diagnosis
 import { RegistrationComponent } from './components/registration/registration.component';
 import { OrdinationListingComponent } from './components/adminC-dashboard/ordination-listing/ordination-listing.component';
 import { AvailableAppointmentListingComponent } from './components/adminC-dashboard/available-appointment-listing/available-appointment-listing.component';
+import { RegistrationListingComponent } from './components/adminCC-dashboard/registration-listing/registration-listing.component';
 
 const routes: Routes = [
 	{
@@ -39,7 +40,8 @@ const routes: Routes = [
 			{path: 'diagnoses', component: DiagnosisListingComponent},
 			{path: 'diagnosis_info', component: DiagnosisFormComponent},
 			{path: 'addClinicAdmin', component: ClinicAdminFormComponent},
-			{path: 'showClinicInfo', component: ClinicProfileInfoComponent}
+			{path: 'showClinicInfo', component: ClinicProfileInfoComponent},
+			{path: 'registrationRequests', component: RegistrationListingComponent}
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINCC']}

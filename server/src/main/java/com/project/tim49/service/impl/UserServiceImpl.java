@@ -1,9 +1,11 @@
 package com.project.tim49.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import com.project.tim49.dto.ClinicDTO;
 import com.project.tim49.dto.RegistrationDTO;
 import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.*;
@@ -18,6 +20,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.MethodNotAllowedException;
+
+import javax.validation.ValidationException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -57,10 +61,10 @@ public class UserServiceImpl implements UserService {
     public UserDTO createPatient(Long registration_request_id) {
         Optional<RegistrationRequest> request = registrationRequestRepository.findById(registration_request_id);
 
-        if(!request.isPresent()){
+        if (!request.isPresent()) {
             throw new NoSuchElementException();
         }
-        if(!request.get().isApproved()){
+        if (!request.get().isApproved()) {
             throw new SecurityException();
         }
 
@@ -90,22 +94,68 @@ public class UserServiceImpl implements UserService {
         return patientDto;
     }
 
-    public RegistrationDTO createRegistrationRequest(RegistrationDTO registrationDTO){
-        RegistrationRequest request = new RegistrationRequest();
+    public RegistrationDTO createRegistrationRequest(RegistrationDTO registrationDTO) {
 
-        request.setEmail(registrationDTO.getEmail());
-        request.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
-        request.setName(registrationDTO.getName());
-        request.setSurname(registrationDTO.getSurname());
-        request.setAddress(registrationDTO.getAddress());
-        request.setCity(registrationDTO.getCity());
-        request.setState(registrationDTO.getState());
-        request.setPhoneNumber(registrationDTO.getPhoneNumber());
-        request.setUpin(registrationDTO.getUpin());
-        request.setApproved(false);
+        RegistrationRequest request = this.registrationRequestRepository.findOneByEmail(registrationDTO.getEmail());
+        if (request == null) {
+            request = new RegistrationRequest();
 
-        RegistrationRequest saved = this.registrationRequestRepository.save(request);
-        return new RegistrationDTO(saved);
+            request.setEmail(registrationDTO.getEmail());
+            request.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
+            request.setName(registrationDTO.getName());
+            request.setSurname(registrationDTO.getSurname());
+            request.setAddress(registrationDTO.getAddress());
+            request.setCity(registrationDTO.getCity());
+            request.setState(registrationDTO.getState());
+            request.setPhoneNumber(registrationDTO.getPhoneNumber());
+            request.setUpin(registrationDTO.getUpin());
+            request.setApproved(false);
+
+            RegistrationRequest saved = this.registrationRequestRepository.save(request);
+            return new RegistrationDTO(saved);
+        }
+        throw new ValidationException("Registration with this e-mail already " +
+                "exists!");
+    }
+
+    @Override
+    public List<RegistrationDTO> getRegistrationRequests() {
+        List<RegistrationDTO> registrationDTOS = new ArrayList<>();
+        List<RegistrationRequest> registrationRequests = this.registrationRequestRepository.findAll();
+        for (RegistrationRequest rreq : registrationRequests) {
+            if (!rreq.isApproved()) {
+                registrationDTOS.add(new RegistrationDTO(rreq));
+            }
+        }
+        return registrationDTOS;
+    }
+
+    @Override
+    public RegistrationDTO approveRegistrationRequest(RegistrationDTO registrationDTO) {
+        RegistrationRequest request = this.registrationRequestRepository.findOneByEmail(registrationDTO.getEmail());
+        if (request != null) {
+            request.setApproved(true);
+            RegistrationRequest saved=this.registrationRequestRepository.save(request);
+            return new RegistrationDTO(saved);
+        }
+        throw new ValidationException("Registration request with provided e-mail does not " +
+                "exist!");
+    }
+
+    @Override
+    public RegistrationDTO deleteRegistrationRequest(Long id) {
+        Optional<RegistrationRequest> request = registrationRequestRepository.findById(id);
+        if (!request.isPresent()) {
+            throw new NoSuchElementException();
+        }
+        if (request.get().isApproved()) {
+            throw new SecurityException();
+        }
+
+        RegistrationRequest req = request.get();
+        registrationRequestRepository.delete(req);
+        RegistrationDTO requestDto = new RegistrationDTO(req);
+        return requestDto;
     }
 
 }

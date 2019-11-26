@@ -28,6 +28,10 @@ import { DiagnosisFormComponent } from './components/adminCC-dashboard/diagnosis
 import { RegistrationComponent } from './components/registration/registration.component';
 import { OrdinationListingComponent } from './components/adminC-dashboard/ordination-listing/ordination-listing.component';
 import { AvailableAppointmentListingComponent } from './components/adminC-dashboard/available-appointment-listing/available-appointment-listing.component';
+import { RegistrationListingComponent } from './components/adminCC-dashboard/registration-listing/registration-listing.component';
+import { DialogComponent } from './components/helperComponents/dialog/dialog.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -51,10 +55,12 @@ import { AvailableAppointmentListingComponent } from './components/adminC-dashbo
     AdminCDashboardComponent,
     DiagnosisListingComponent,
     DiagnosisFormComponent,
-    RegistrationComponent
+    RegistrationComponent,
     DiagnosisFormComponent,
     OrdinationListingComponent,
-    AvailableAppointmentListingComponent
+    AvailableAppointmentListingComponent,
+    RegistrationListingComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -63,9 +69,11 @@ import { AvailableAppointmentListingComponent } from './components/adminC-dashbo
     HttpClientModule,
     ReactiveFormsModule,
     HttpModule,
-    NgHttpLoaderModule.forRoot()
+    NgHttpLoaderModule.forRoot(), 
+    NgbModule
   ],
   providers: [CookieService], //UserService, AuthGuardService
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ DialogComponent ],
 })
 export class AppModule { }
