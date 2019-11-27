@@ -203,7 +203,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.put(`http://localhost:8080/api/typesOfExamination/change`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
+		return this.http.put(`http://localhost:8080/api/examinationTypes/change`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -218,7 +218,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post(`http://localhost:8080/api/typesOfExamination/${clinic_id}`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
+		return this.http.post(`http://localhost:8080/api/examinationTypes/${clinic_id}`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
