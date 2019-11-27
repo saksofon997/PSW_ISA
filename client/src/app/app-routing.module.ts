@@ -26,6 +26,8 @@ import { AvailableAppointmentListingComponent } from './components/adminC-dashbo
 import { RegistrationListingComponent } from './components/adminCC-dashboard/registration-listing/registration-listing.component';
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
+import { PatientHomeComponent } from './components/patient-home/patient-home/patient-home.component';
+import { PatientPersonalProfileComponent } from './components/patient-home/patient-personal-profile/patient-personal-profile.component';
 
 const routes: Routes = [
 	{
@@ -65,6 +67,16 @@ const routes: Routes = [
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINC']}
+	},
+	{
+		path: 'patientHome',
+		component: PatientHomeComponent,
+		children:[
+			{path: '', component: PatientPersonalProfileComponent},
+
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ['PATIENT']}
 	},
 	{
 		path: 'login',

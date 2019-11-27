@@ -1,0 +1,26 @@
+<div class='row'>
+	<ul class="nav nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+		<li class="nav-item">
+			<a class="nav-link active" data-toggle="pill" [routerLink]="['./profile']" href="#v-pills-profile" role="tab"
+				aria-controls="v-pills-home" aria-selected="true">Personal profile</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="pill" [routerLink]="['./clinics']" role="tab" aria-controls="v-pills-home"
+				aria-selected="true">Clinics</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="pill" [routerLink]="['./medications']" role="tab" aria-controls="v-pills-home"
+				aria-selected="true">History</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="pill" [routerLink]="['./diagnoses']" role="tab" aria-controls="v-pills-home"
+				aria-selected="true">Medical record</a>
+		</li>
+
+	</ul>
+
+	<div class="tab-content" style='width: 100%;' id="v-pills-tabContent">
+		<router-outlet></router-outlet>
+	</div>
+
+</div>

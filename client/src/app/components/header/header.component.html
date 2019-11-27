@@ -14,6 +14,7 @@
                     <li class="nav-item" *ngIf="userService.checkLoggedIn()" > <!-- *ngIf="userService.user" -->
                         <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINCC')!= -1" routerLink="/adminCCdashboard" >Dashboard</a>
                         <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINC')!= -1" routerLink="/adminCdashboard" >Dashboard</a>
+                        <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1" routerLink="/patientHome" >My Profile</a>
 
                     </li>
                     <li class="nav-item" *ngIf="!userService.checkLoggedIn()">

@@ -23,7 +23,9 @@ INSERT INTO public.user_authority(
 INSERT INTO public.user_authority(
     user_id, authority_id)
     VALUES (4, 2);
-
+INSERT INTO public.user_authority(
+    user_id, authority_id)
+    VALUES (11, 5);
 
 INSERT INTO public.clinic(
 	id, address, city, description, name, number_of_reviews, number_of_stars, state)
@@ -93,5 +95,13 @@ INSERT INTO public.diagnosis_dictionary(
 INSERT INTO public.diagnosis_dictionary(
 	id, code, description)
 	VALUES (nextval('diagnosis_dictionary_id_seq'), 'A31.1', 'Infekcija kože uzrokovana mikobakterijama');
+
+
+INSERT INTO public.patient(
+	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
+	VALUES (nextval('users_id_seq'), 'Ulica1', 'Grad1', 'patient1@kcv.rs', 'ImePacijenta1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '21', true, true);
+INSERT INTO public.patient(
+	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
+	VALUES (nextval('users_id_seq'), 'Ulica2', 'Grad2', 'patient22@kcv.rs', 'ImePacijenta2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '22', true, false);
 
 
