@@ -16,9 +16,6 @@ public class Examination extends Appointment {
    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
    public Doctor doctor;
 
-   @OneToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name = "typeOfExamination_id", referencedColumnName = "id")
-   public TypeOfExamination typeOfExamination;
 
    public Doctor getDoctor() {
       return doctor;
@@ -28,11 +25,4 @@ public class Examination extends Appointment {
       this.doctor = doctor;
    }
 
-   public TypeOfExamination getTypeOfExamination() {
-      return typeOfExamination;
-   }
-
-   public void setTypeOfExamination(TypeOfExamination typeOfExamination) {
-      this.typeOfExamination = typeOfExamination;
-   }
 }

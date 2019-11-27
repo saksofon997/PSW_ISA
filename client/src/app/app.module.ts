@@ -32,6 +32,8 @@ import { RegistrationListingComponent } from './components/adminCC-dashboard/reg
 import { DialogComponent } from './components/helperComponents/dialog/dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
+import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     OrdinationListingComponent,
     AvailableAppointmentListingComponent,
     RegistrationListingComponent,
-    DialogComponent
+    DialogComponent,
+    AdminCDashboardComponent,
+    TypeOfExaminationListingComponent,
+    TypeOfExaminationFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,8 +74,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     ReactiveFormsModule,
     HttpModule,
-    NgHttpLoaderModule.forRoot(), 
-    NgbModule
+    NgHttpLoaderModule.forRoot(),
+    NgbModule,
   ],
   providers: [CookieService], //UserService, AuthGuardService
   bootstrap: [AppComponent],

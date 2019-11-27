@@ -52,7 +52,6 @@ export class RegistrationListingComponent implements OnInit {
   deleteRequest(request) {
     this.confirmationDialogService.confirm('Please confirm', 'Please provide a reason for deleting request for user: ' + request.name + ' ?', true)
       .then((confirmed) => {
-        console.log(confirmed)
         if (confirmed.submited) {
           this.clinicCenterAdminService.deleteRequest(request, confirmed.explanation).subscribe(
             (data) => {

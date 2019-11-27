@@ -166,4 +166,65 @@ export class ClinicService {
 				})
 			);
 	}
+
+	getTypesOfExamination(clinic_id) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get(`http://localhost:8080/api/examinationTypes/${clinic_id}`, { headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
+	deleteTypeOfExamination(typeOfExamination_id) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.delete(`http://localhost:8080/api/examinationTypes/delete/${typeOfExamination_id}`, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
+	editTypeOfExamination(typeOfExamination) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.put(`http://localhost:8080/api/typesOfExamination/change`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
+	addTypeOfExamination(typeOfExamination, clinic_id) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.post(`http://localhost:8080/api/typesOfExamination/${clinic_id}`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
 }

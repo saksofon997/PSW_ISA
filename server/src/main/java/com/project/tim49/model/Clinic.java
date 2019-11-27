@@ -37,9 +37,6 @@ public class Clinic {
    @Column(name = "numberOfReviews", nullable = true)
    private int numberOfReviews;
 
-   @OneToMany(mappedBy = "clinic")
-   private List<Pricelist> pricelist;
-
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Ordination> ordination;
 
@@ -60,9 +57,9 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Appointment> appointments;
 
-   @ManyToMany
-   @JoinTable(name = "clinics_typesOfExamination", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "typeOfExamination_id", referencedColumnName = "id"))
-   public List<TypeOfExamination> typeOfExamination;
+   @OnDelete(action = OnDeleteAction.CASCADE)
+   @OneToMany(mappedBy = "clinic_id", fetch = FetchType.LAZY)
+   public List<TypeOfExamination> typesOfExamination;
 
    public String getName() {
       return name;
@@ -110,14 +107,6 @@ public class Clinic {
 
    public void setId(Long id) {
       this.id = id;
-   }
-
-   public List<Pricelist> getPricelist() {
-      return pricelist;
-   }
-
-   public void setPricelist(List<Pricelist> pricelist) {
-      this.pricelist = pricelist;
    }
 
    public int getNumberOfStars() {
@@ -184,11 +173,11 @@ public class Clinic {
       this.appointments = appointments;
    }
 
-   public List<TypeOfExamination> getTypeOfExamination() {
-      return typeOfExamination;
+   public List<TypeOfExamination> getTypesOfExamination() {
+      return typesOfExamination;
    }
 
-   public void setTypeOfExamination(List<TypeOfExamination> typeOfExamination) {
-      this.typeOfExamination = typeOfExamination;
+   public void setTypesOfExamination(List<TypeOfExamination> typesOfExamination) {
+      this.typesOfExamination = typesOfExamination;
    }
 }

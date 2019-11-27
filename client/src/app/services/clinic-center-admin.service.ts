@@ -95,7 +95,6 @@ export class ClinicCenterAdminService {
     let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    console.log(request);
     return this.http.put(`http://localhost:8080/api/admin/deleteRequest/${request.id}`,JSON.stringify(message), { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
