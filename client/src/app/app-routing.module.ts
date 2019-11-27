@@ -18,6 +18,12 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { ChangePasswordDeactivateService } from './guards/change-password-deactivate.service';
 import { AdminCPersonalProfileComponent } from './components/adminC-dashboard/adminC-personal-profile/adminC-personal-profile.component';
 import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-dashboard.component';
+import { DiagnosisListingComponent } from './components/adminCC-dashboard/diagnosis-listing/diagnosis-listing.component';
+import { DiagnosisFormComponent } from './components/adminCC-dashboard/diagnosis-form/diagnosis-form.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { OrdinationListingComponent } from './components/adminC-dashboard/ordination-listing/ordination-listing.component';
+import { AvailableAppointmentListingComponent } from './components/adminC-dashboard/available-appointment-listing/available-appointment-listing.component';
+import { RegistrationListingComponent } from './components/adminCC-dashboard/registration-listing/registration-listing.component';
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
 
@@ -33,8 +39,11 @@ const routes: Routes = [
 			{path: 'addClinic', component: ClinicFormComponent},
 			{path: 'medications', component: MedicationListingComponent},
 			{path: 'medication_info', component: MedicationFormComponent},
+			{path: 'diagnoses', component: DiagnosisListingComponent},
+			{path: 'diagnosis_info', component: DiagnosisFormComponent},
 			{path: 'addClinicAdmin', component: ClinicAdminFormComponent},
-			{path: 'showClinicInfo', component: ClinicProfileInfoComponent}
+			{path: 'showClinicInfo', component: ClinicProfileInfoComponent},
+			{path: 'registrationRequests', component: RegistrationListingComponent}
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINCC']}
@@ -48,9 +57,11 @@ const routes: Routes = [
 			{path: 'clinic', component: ClinicProfileInfoComponent},
 			{path: 'doctors', component: DoctorListingComponent},
 			{path: 'doctor', component: DoctorFormComponent},
+			{path: 'ordinations', component: OrdinationListingComponent},
+			{path: 'available_appointments', component: AvailableAppointmentListingComponent},
 			{path: 'types_of_examination', component: TypeOfExaminationListingComponent},
 			{path: 'type_of_examination_info', component: TypeOfExaminationFormComponent},
-			
+
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINC']}
@@ -58,6 +69,10 @@ const routes: Routes = [
 	{
 		path: 'login',
 		component: LoginComponent
+	},
+	{
+		path: 'register',
+		component: RegistrationComponent
 	},
 	{
 		path: 'change-password',

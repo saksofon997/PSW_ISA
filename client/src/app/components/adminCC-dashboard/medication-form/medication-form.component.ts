@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 	styleUrls: ['./medication-form.component.css']
 })
 export class MedicationFormComponent implements OnInit {
-	loginForm: FormGroup;
+	form: FormGroup;
 	medication_id: any;
 	change: string;
 	submitted = false;
@@ -33,8 +33,8 @@ export class MedicationFormComponent implements OnInit {
 			this.change = 'Change';
 		}
 
-		this.loginForm = this.formBuilder.group({
-			code: [code, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+		this.form = this.formBuilder.group({
+			code: [code, [Validators.required]],
 			name: [name, [Validators.required]]
 		});
 	}
@@ -42,14 +42,14 @@ export class MedicationFormComponent implements OnInit {
 	onSubmit() {
 		this.submitted = true;
 
-		if (this.loginForm.invalid) {
+		if (this.form.invalid) {
 			return;
 		}
 		
 		var medication = {
 			id: this.medication_id,
-			code: this.loginForm.controls.code.value,
-			name: this.loginForm.controls.name.value
+			code: this.form.controls.code.value,
+			name: this.form.controls.name.value
 		}
 
 		if (this.medication_id){

@@ -1,11 +1,14 @@
 package com.project.tim49.controller;
 import com.project.tim49.dto.ClinicAdministratorDTO;
 import com.project.tim49.dto.ClinicDTO;
+import com.project.tim49.dto.RegistrationDTO;
 import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.Clinic;
 import com.project.tim49.model.ClinicAdministrator;
 import com.project.tim49.service.ClinicCenterAdminService;
 import com.project.tim49.service.ClinicService;
+import com.project.tim49.service.EmailService;
+import com.project.tim49.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +21,7 @@ import sun.text.normalizer.UTF16;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * ExampleController
@@ -35,6 +39,10 @@ public class AdminKcController {
 
     @Autowired
     private ClinicCenterAdminService clinicCenterAdminService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping(path="/addClinic" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -149,5 +157,46 @@ public class AdminKcController {
         }
         return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
-
+    @GetMapping(path = "/getRegistrationRequests",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC')")
+    public ResponseEntity<List<RegistrationDTO>> getRegistrationRequests() {
+        List<RegistrationDTO> registrationDTOS = new ArrayList<>();
+        registrationDTOS = userService.getRegistrationRequests();
+        return new ResponseEntity<>(registrationDTOS, HttpStatus.OK);
+    }
+    @PutMapping(path="/approveRequest", consumes = "application/json", produces= "application/json")
+    @PreAuthorize("hasAuthority('ADMINCC')")
+    public ResponseEntity approveRequest(@RequestBody RegistrationDTO regDTO) {
+        RegistrationDTO registrationDTO = new RegistrationDTO();
+        try {
+            registrationDTO =  userService.approveRegistrationRequest(regDTO);
+        }catch (ValidationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        try {
+            this.emailService.sendConfirmationEmail(regDTO);
+        }catch(InterruptedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+        return new ResponseEntity<>(registrationDTO, HttpStatus.OK);
+    }
+    @PutMapping(path = "/deleteRequest/{id}")
+    @PreAuthorize("hasAuthority('ADMINCC')")
+    public ResponseEntity deleteRequest(@PathVariable Long id,@RequestBody String message) {
+        RegistrationDTO deleted = new RegistrationDTO();
+        try{
+            deleted = userService.deleteRegistrationRequest(id);
+            this.emailService.sendRegistrationDeniedEmail(deleted,message);
+        }catch(NoSuchElementException e){
+            return new ResponseEntity<>("Registration request deletion failed, request not found!",
+                    HttpStatus.NOT_FOUND);
+        }catch(SecurityException e){
+            return new ResponseEntity<>("Registration request already approved!",
+                    HttpStatus.NOT_ACCEPTABLE);
+        }catch(InterruptedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
+    }
 }

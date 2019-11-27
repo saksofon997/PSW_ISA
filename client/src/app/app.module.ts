@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +23,15 @@ import { DoctorListingComponent } from './components/adminC-dashboard/doctor-lis
 import { ClinicProfileInfoComponent } from './components/adminC-dashboard/clinic-profile-info/clinic-profile-info.component';
 import { AdminCPersonalProfileComponent } from './components/adminC-dashboard/adminC-personal-profile/adminC-personal-profile.component';
 import { AdminCDashboardComponent } from './components/adminC-dashboard/adminC-dashboard.component';
+import { DiagnosisListingComponent } from './components/adminCC-dashboard/diagnosis-listing/diagnosis-listing.component';
+import { DiagnosisFormComponent } from './components/adminCC-dashboard/diagnosis-form/diagnosis-form.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { OrdinationListingComponent } from './components/adminC-dashboard/ordination-listing/ordination-listing.component';
+import { AvailableAppointmentListingComponent } from './components/adminC-dashboard/available-appointment-listing/available-appointment-listing.component';
+import { RegistrationListingComponent } from './components/adminCC-dashboard/registration-listing/registration-listing.component';
+import { DialogComponent } from './components/helperComponents/dialog/dialog.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
 
@@ -45,6 +55,15 @@ import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/ty
     DoctorListingComponent,
     AdminCPersonalProfileComponent,
     AdminCDashboardComponent,
+    DiagnosisListingComponent,
+    DiagnosisFormComponent,
+    RegistrationComponent,
+    DiagnosisFormComponent,
+    OrdinationListingComponent,
+    AvailableAppointmentListingComponent,
+    RegistrationListingComponent,
+    DialogComponent
+    AdminCDashboardComponent,
     TypeOfExaminationListingComponent,
     TypeOfExaminationFormComponent
   ],
@@ -54,9 +73,12 @@ import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/ty
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    NgHttpLoaderModule.forRoot(),
+    NgbModule
   ],
   providers: [CookieService], //UserService, AuthGuardService
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ DialogComponent ],
 })
 export class AppModule { }

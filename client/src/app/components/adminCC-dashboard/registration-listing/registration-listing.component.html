@@ -1,0 +1,39 @@
+<div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
+  <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+      <h3 class="display-8">Registration requests</h3>
+      <p class="lead">Here you can see a list of pending registration requests. You can approve or cancel them.</p>
+  </div>
+</div>
+<table class="table">
+  <thead>
+      <tr>
+          <th scope="col" *ngFor='let param of requestsHeaders'>{{param}}</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor='let request of requests'>
+          <td> {{request.name}} </td>
+          <td> {{request.surname}} </td>
+          <td> {{request.city}} </td>
+          <td> {{request.state}} </td>
+          <td> {{request.phoneNumber}} </td>
+          <td>
+              <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Options
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="approveRequest(request)" >Approve</a> <!-- [routerLink]="['./clinicAdmins']" -->
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="deleteRequest(request)">Delete</a>
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="showRequestInfo(request)">Show info</a>
+
+                  </div>
+              </div>
+          </td>
+      </tr>
+  </tbody>
+</table>
+<div *ngIf="requests==undefined || requests.length==0" class="alert alert-info" role="alert">
+  Currently there are no new registration requests!
+</div>

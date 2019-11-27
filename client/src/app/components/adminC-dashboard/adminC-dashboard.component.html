@@ -13,6 +13,14 @@
           aria-selected="true">Doctors</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" [routerLink]="['./ordinations']" role="tab" aria-controls="v-pills-home"
+          aria-selected="true">Ordinations</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" [routerLink]="['./available_appointments']" role="tab" aria-controls="v-pills-home"
+          aria-selected="true">Available appointments</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" data-toggle="pill" [routerLink]="['./types_of_examination']" role="tab" aria-controls="v-pills-home"
           aria-selected="true">Types of examination</a>
       </li>
@@ -26,9 +34,9 @@
           aria-selected="true">Appointment requests</a>
       </li>
     </ul>
-  
+
     <div class="tab-content" style='width: 100%;' id="v-pills-tabContent">
       <router-outlet></router-outlet>
     </div>
-  
+
   </div>

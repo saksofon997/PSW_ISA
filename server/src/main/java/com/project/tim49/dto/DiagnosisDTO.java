@@ -4,6 +4,7 @@ import com.project.tim49.model.DiagnosisDictionary;
 
 public class DiagnosisDTO {
 
+    private Long id;
     private String code;
     private String description;
 
@@ -12,17 +13,15 @@ public class DiagnosisDTO {
     }
 
     public DiagnosisDTO(DiagnosisDictionary d) {
+        this.id = d.getId();
         this.code = d.getCode();
         this.description = d.getDescription();
     }
 
-    public DiagnosisDTO(String code, String description) {
+    public DiagnosisDTO(Long id, String code, String description) {
+        this.id = id;
         this.code = code;
         this.description = description;
-    }
-
-    public DiagnosisDTO(String code) {
-        this.code = code;
     }
 
     public String getCode() {
@@ -39,5 +38,13 @@ public class DiagnosisDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

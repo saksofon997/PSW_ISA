@@ -73,7 +73,6 @@ export class ClinicProfileInfoComponent implements OnInit {
 
     if (this.clinicID){
       clinic.id = this.clinicID
-      console.log(this.clinicID);
 			this.clinicService.changeClinicInfo(clinic).subscribe(
 				(data) => { this.enableChangeInfo(); /* this.router.navigate(['../clinics'], { relativeTo: this.activatedRoute }); */},
 				(error) => { alert(error); return;}

@@ -31,11 +31,9 @@ export class ClinicFormComponent implements OnInit {
       description: this.description
     }
     this.clinicService.addClinic(clinic).subscribe(
-      (data) => { },
+      (data) => { this.router.navigate(['../clinics'], { relativeTo: this.activatedRoute }); },
       (error) => alert(error)
     );
-
-    this.router.navigate(['../clinics'], { relativeTo: this.activatedRoute });
   }
 
 }

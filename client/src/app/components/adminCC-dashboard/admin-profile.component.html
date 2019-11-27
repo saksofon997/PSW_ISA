@@ -12,13 +12,17 @@
 			<a class="nav-link" data-toggle="pill" [routerLink]="['./medications']" role="tab" aria-controls="v-pills-home"
 				aria-selected="true">Medication Dictonary</a>
 		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="pill" [routerLink]="['./diagnoses']" role="tab" aria-controls="v-pills-home"
+				aria-selected="true">Diagnoses Dictonary</a>
+		</li>
 		<!-- (click)="loadClinics()" href="#v-pills-clinics" -->
 		<!-- <li class="nav-item">
             <a class="nav-link"data-toggle="pill" [routerLink]="['./clinicAdmins']"
             [queryParams]="{params:clinicAdminHeaders | json ,title:'Clinic administrator',jumboText:'clinic administraor'}"  role="tab" aria-controls="v-pills-home" aria-selected="true">Clinic administrators</a>
           </li> -->
 		<li class="nav-item">
-			<a class="nav-link" data-toggle="pill" href="#v-pills-requests" role="tab" aria-controls="v-pills-home"
+			<a class="nav-link" data-toggle="pill" [routerLink]="['./registrationRequests']" href="#v-pills-requests" role="tab" aria-controls="v-pills-home"
 				aria-selected="true">Registration requests</a>
 		</li>
 	</ul>
