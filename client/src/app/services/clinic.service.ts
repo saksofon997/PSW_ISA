@@ -172,7 +172,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/typesOfExamination/getClinicTypesOfExamination/${clinic_id}`, { headers: headers, observe: 'response' })
+		return this.http.get(`http://localhost:8080/api/examinationTypes/${clinic_id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -183,12 +183,12 @@ export class ClinicService {
 			);
 	}
 
-	deleteTypeOfExamination(typeOfExamination_id, clinic_id) {
+	deleteTypeOfExamination(typeOfExamination_id) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/typesOfExamination/delete/${clinic_id}/${typeOfExamination_id}`, { headers: headers, observe: 'response' }).pipe(
+		return this.http.delete(`http://localhost:8080/api/examinationTypes/delete/${typeOfExamination_id}`, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -198,12 +198,12 @@ export class ClinicService {
 		);
 	}
 
-	editTypeOfExamination(typeOfExamination, clinic_id) {
+	editTypeOfExamination(typeOfExamination) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.put(`http://localhost:8080/api/typesOfExamination/change/${clinic_id}`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
+		return this.http.put(`http://localhost:8080/api/typesOfExamination/change`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),

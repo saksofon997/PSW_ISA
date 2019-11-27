@@ -147,8 +147,18 @@ public class AuthenticationController {
         if (this.tokenUtils.canTokenBeRefreshed(token)) {
             String refreshedToken = tokenUtils.refreshToken(token);
             int expiresIn = tokenUtils.getExpiredIn();
+            UserState userState = new UserState();
+            userState.token = new UserTokenState(refreshedToken, expiresIn);
+            userState.passwordChanged = user.isPasswordChanged();
 
-            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
+            if (user instanceof ClinicAdministrator){
+                userState.user = new ClinicAdministratorDTO((ClinicAdministrator) user);
+            } else if (user instanceof Doctor){
+                userState.user = new DoctorDTO((Doctor)user);
+            } else {
+                userState.user = new UserDTO(user);
+            }
+            return ResponseEntity.ok(userState);
         } else {
             UserTokenState userTokenState = new UserTokenState();
             return ResponseEntity.badRequest().body(userTokenState);

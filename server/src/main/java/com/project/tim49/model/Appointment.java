@@ -36,6 +36,10 @@ public class Appointment {
     @JoinColumn(name = "patient_id")
     public Patient patient;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "typeOfExamination_id", referencedColumnName = "id")
+    public TypeOfExamination typeOfExamination;
+
     @Column(name = "completed", nullable = false)
     private boolean completed;
 
@@ -93,6 +97,14 @@ public class Appointment {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public TypeOfExamination getTypeOfExamination() {
+        return typeOfExamination;
+    }
+
+    public void setTypeOfExamination(TypeOfExamination typeOfExamination) {
+        this.typeOfExamination = typeOfExamination;
     }
 
     public boolean isCompleted() {

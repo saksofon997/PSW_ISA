@@ -62,10 +62,10 @@ import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/ty
     OrdinationListingComponent,
     AvailableAppointmentListingComponent,
     RegistrationListingComponent,
-    DialogComponent
+    DialogComponent,
     AdminCDashboardComponent,
     TypeOfExaminationListingComponent,
-    TypeOfExaminationFormComponent
+    TypeOfExaminationFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,7 +75,7 @@ import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/ty
     ReactiveFormsModule,
     HttpModule,
     NgHttpLoaderModule.forRoot(),
-    NgbModule
+    NgbModule,
   ],
   providers: [CookieService], //UserService, AuthGuardService
   bootstrap: [AppComponent],

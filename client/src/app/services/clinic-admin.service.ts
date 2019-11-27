@@ -38,7 +38,6 @@ export class ClinicAdminService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    console.log(adminC.id)
     return this.http.put(`http://localhost:8080/api/clinicAdmin/change`, JSON.stringify(adminC), { headers: headers, observe: 'response' })
       .pipe(
         map(response => {

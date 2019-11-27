@@ -9,7 +9,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./type-of-examination-listing.component.css']
 })
 export class TypeOfExaminationListingComponent implements OnInit {
-  typeOfExaminationHeaders = ['Name'];
+  typeOfExaminationHeaders = ['Name', 'Price'];
   typesOfExamination: any;
   navigationSubscription: any;
   clinicID: any;
@@ -52,7 +52,7 @@ export class TypeOfExaminationListingComponent implements OnInit {
   }
 
   deleteTypeOfExamination(typeOfExamination) {
-    this.clinicService.deleteTypeOfExamination(typeOfExamination.id, this.clinicID).subscribe(
+    this.clinicService.deleteTypeOfExamination(typeOfExamination.id).subscribe(
       (data) => {
         this.getTypesOfExamination();
       },
