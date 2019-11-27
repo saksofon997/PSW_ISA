@@ -19,6 +19,7 @@ import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -100,17 +102,21 @@ public class AuthenticationController {
 
         User existUser = this.userService.findByEmail(registrationDTO.getEmail());
         if (existUser != null) {
-            new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+            new ResponseEntity<>("Email already exists.", HttpStatus.CONFLICT);
         }
-
-        RegistrationDTO created = this.userService.createRegistrationRequest(registrationDTO);
+        RegistrationDTO created = new RegistrationDTO();
+        try{
+           created = this.userService.createRegistrationRequest(registrationDTO);
+        }catch (ValidationException e){
+            new ResponseEntity<>("Request with same email already exists.", HttpStatus.CONFLICT);
+        }
         //HttpHeaders headers = new HttpHeaders();
         //headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<RegistrationDTO>(created , HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/confirm_registration/{id}")
-    public ResponseEntity confirmRegistration(@PathVariable Long id, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity confirmRegistration(@PathVariable Long id, UriComponentsBuilder ucBuilder, RedirectAttributes redirectAttributes) {
 
         try {
             UserDTO userDTO = this.userService.createPatient(id);
@@ -119,7 +125,7 @@ public class AuthenticationController {
             URI myURI = new URI(myUrl);
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(myURI);
-            return new ResponseEntity<>("MORE" , headers, HttpStatus.CREATED);
+            return new ResponseEntity<>("redirect:http://localhost:4200/login" , headers, HttpStatus.PERMANENT_REDIRECT);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>("Registration request not found" , HttpStatus.NOT_FOUND);
         } catch (SecurityException e) {

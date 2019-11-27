@@ -62,6 +62,50 @@ export class ClinicCenterAdminService {
       })
     );
   }
+  getRegistrationRequests(){
+    let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+    return this.http.get(`http://localhost:8080/api/admin/getRegistrationRequests`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
+  approveRequest(request){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    return this.http.put(`http://localhost:8080/api/admin/approveRequest`, JSON.stringify(request), { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
+  deleteRequest(request,message){
+    let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    console.log(request);
+    return this.http.put(`http://localhost:8080/api/admin/deleteRequest/${request.id}`,JSON.stringify(message), { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+  }
 
 }
 
