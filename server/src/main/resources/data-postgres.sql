@@ -103,3 +103,13 @@ INSERT INTO public.type_of_examination(
 INSERT INTO public.type_of_examination(
 	id, name, price, clinic_id_id)
 	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '500', 1);
+
+INSERT INTO public.ordination(
+	id, name, number, clinic_id)
+	VALUES (nextval('ordination_id_seq'), 'Ordinacija1', '20', 1);
+INSERT INTO public.ordination(
+	id, name, number, clinic_id)
+	VALUES (nextval('ordination_id_seq'), 'Ordinacija2', '30', 2);
+INSERT INTO public.ordination(
+	id, name, number, clinic_id)
+	VALUES (nextval('ordination_id_seq'), 'Ordinacija3', '50', 1);

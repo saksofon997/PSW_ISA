@@ -15,10 +15,10 @@ public class Ordination {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "number", nullable = false)
+    @Column(name = "number")
     private String number;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     public Clinic clinic;
 
     public Long getId() {

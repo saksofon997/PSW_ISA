@@ -123,15 +123,8 @@ export class UserService {
 			.pipe(
 				map((response) => {
 					const userState = response.body;
-					//this.setUser(userState['user']);
-					//this.setToken(userState['token']);
-					//this.passwordChanged = userState['passwordChanged'];
-					//if (!this.passwordChanged){
-					//	this.router.navigate(['/change-password']);
-					//} else {
 					alert("Your request has been sent. Check your email.")
 					this.router.navigate(['/']);
-					//}
 
 					return this.user;
 				}),
