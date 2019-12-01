@@ -46,7 +46,7 @@ export class ClinicService {
 				return throwError(response.error);
 			})
 		);
-		}
+	}
 	deleteOrdination(id: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ export class ClinicService {
 				return throwError(response.error);
 			})
 		);
-		}
+	}
 	getOrdinations(clinicID: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
@@ -75,7 +75,25 @@ export class ClinicService {
 					return throwError(response.error);
 				})
 			);
-		}
+	}
+	searchOrdinations(ordination: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var searchParamsString = "";
+		searchParamsString += `name=${ordination.name}&number=${ordination.number}&clinic_id=${ordination.clinic_id}`
+		return this.http.get(`http://localhost:8080/api/ordinations/search_ordinations?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
 
 	addClinic(clinic: any) {
 		let headers = new HttpHeaders({
@@ -227,12 +245,56 @@ export class ClinicService {
 			);
 	}
 
+	searchDoctors(doctor: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var searchParamsString = "";
+		searchParamsString += `name=${doctor.name}&surname=${doctor.surname}&clinic_id=${doctor.clinic_id}`
+		return this.http.get(`http://localhost:8080/api/doctor/search_doctors?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	getTypesOfExamination(clinic_id) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.get(`http://localhost:8080/api/examinationTypes/${clinic_id}`, { headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
+	searchTypesOfExamination(type: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var searchParamsString = "";
+		searchParamsString += `name=${type.name}&clinic_id=${type.clinic_id}`
+		if (type.minPrice !== ""){
+			searchParamsString += `&min_price=${type.minPrice}`
+		}
+		if (type.maxPrice !== ""){
+			searchParamsString += `&max_price=${type.maxPrice}`
+		}
+		return this.http.get(`http://localhost:8080/api/examinationTypes/search_types?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;

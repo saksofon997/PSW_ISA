@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
+
 
 @Component({
   selector: 'app-type-of-examination-listing',
@@ -14,10 +16,15 @@ export class TypeOfExaminationListingComponent implements OnInit {
   navigationSubscription: any;
   clinicID: any;
   clinicName: any;
+
+  searchForm: FormGroup;
+  submitted = false;
+  
   constructor(private clinicService: ClinicService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+		private formBuilder: FormBuilder
   ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
@@ -32,6 +39,12 @@ export class TypeOfExaminationListingComponent implements OnInit {
       this.clinicID = params.id;
       this.clinicName = params.name;
     });
+
+    this.searchForm = this.formBuilder.group({
+			name: [""],
+      minPrice: [""],
+      maxPrice: [""],
+		});
   }
   getTypesOfExamination() {
     this.clinicID = this.userService.getUser().clinic_id;
@@ -61,6 +74,27 @@ export class TypeOfExaminationListingComponent implements OnInit {
       }
     )
   }
+
+	onSearch(){
+		this.submitted = true;
+
+		var type = {
+			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value: "",
+      minPrice: this.searchForm.controls.minPrice.value ? this.searchForm.controls.minPrice.value: "",
+      maxPrice: this.searchForm.controls.maxPrice.value ? this.searchForm.controls.maxPrice.value: "",
+			clinic_id: this.userService.getUser().clinic_id
+		}
+
+		this.clinicService.searchTypesOfExamination(type).subscribe(
+			(data) => {
+			  this.typesOfExamination = data;
+			},
+			(error) => {
+			  alert(error);
+			}
+		  )
+  }
+  
   ngOnDestroy() {
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();

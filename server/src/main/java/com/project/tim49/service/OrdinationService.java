@@ -128,4 +128,14 @@ public class OrdinationService {
         }
         throw new ValidationException("Invalid ID!");
     }
+
+    public List<OrdinationDTO> getByQuery(String name, String number, Long clinic_id) {
+        List<Ordination> ordinations = ordinationRepository.getByQuery(name, number, clinic_id);
+        List<OrdinationDTO> ordinationDTOS = new ArrayList<>();
+        for(Ordination o: ordinations) {
+            OrdinationDTO ordinationDTO = new OrdinationDTO(o);
+            ordinationDTOS.add(ordinationDTO);
+        }
+        return ordinationDTOS;
+    }
 }
