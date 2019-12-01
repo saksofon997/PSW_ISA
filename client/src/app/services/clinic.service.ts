@@ -17,6 +17,66 @@ export class ClinicService {
 		private http: HttpClient,
 		private router: Router) { }
 
+
+	addOrdination(ordination: any, clinic_id: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.post(`http://localhost:8080/api/ordinations/${clinic_id}`, ordination, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
+	editOrdination(ordination: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.put(`http://localhost:8080/api/ordinations/change`, ordination, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+		}
+	deleteOrdination(id: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.delete(`http://localhost:8080/api/ordinations/delete/${id}`, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+		}
+	getOrdinations(clinicID: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get(`http://localhost:8080/api/ordinations/${clinicID}`, { headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+		}
+
 	addClinic(clinic: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',

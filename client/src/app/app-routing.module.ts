@@ -26,6 +26,7 @@ import { AvailableAppointmentListingComponent } from './components/adminC-dashbo
 import { RegistrationListingComponent } from './components/adminCC-dashboard/registration-listing/registration-listing.component';
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
+import { OrdinationFormComponent } from './components/adminC-dashboard/ordination-form/ordination-form.component';
 
 const routes: Routes = [
 	{
@@ -57,10 +58,11 @@ const routes: Routes = [
 			{path: 'clinic', component: ClinicProfileInfoComponent},
 			{path: 'doctors', component: DoctorListingComponent},
 			{path: 'doctor', component: DoctorFormComponent},
-			{path: 'ordinations', component: OrdinationListingComponent},
 			{path: 'available_appointments', component: AvailableAppointmentListingComponent},
 			{path: 'types_of_examination', component: TypeOfExaminationListingComponent},
 			{path: 'type_of_examination_info', component: TypeOfExaminationFormComponent},
+			{path: 'ordinations', component: OrdinationListingComponent},
+			{path: 'ordination_form', component: OrdinationFormComponent},
 
 		],
 		canActivate: [AuthGuardService],

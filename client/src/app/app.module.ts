@@ -34,6 +34,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
+import { OrdinationFormComponent } from './components/adminC-dashboard/ordination-form/ordination-form.component';
 
 @NgModule({
   declarations: [
@@ -59,13 +60,14 @@ import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/ty
     DiagnosisFormComponent,
     RegistrationComponent,
     DiagnosisFormComponent,
-    OrdinationListingComponent,
     AvailableAppointmentListingComponent,
     RegistrationListingComponent,
     DialogComponent,
     AdminCDashboardComponent,
     TypeOfExaminationListingComponent,
     TypeOfExaminationFormComponent,
+    OrdinationListingComponent,
+    OrdinationFormComponent
   ],
   imports: [
     BrowserModule,
