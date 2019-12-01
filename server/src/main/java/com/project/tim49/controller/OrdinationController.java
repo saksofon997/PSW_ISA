@@ -75,4 +75,15 @@ public class OrdinationController {
         }
             return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    @GetMapping("/search_ordinations")
+    @PreAuthorize("hasAuthority('ADMINC')")
+    public ResponseEntity getAllByQuery(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "number", required = false) String number,
+            @RequestParam(value = "clinic_id", required = false) Long clinic_id
+    ) {
+        List<OrdinationDTO> ordinations = ordinationService.getByQuery(name, number, clinic_id);
+        return new ResponseEntity(ordinations, HttpStatus.OK);
+    }
 }

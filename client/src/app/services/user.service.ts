@@ -17,7 +17,7 @@ export class UserService {
 	constructor(private cookieService: CookieService,
 		private http: HttpClient,
 		private router: Router) {
-		interval(290000)
+		interval(200000)
 			.pipe(
 				flatMap(() => this.refreshToken())
 			).subscribe(() => { })
@@ -173,8 +173,6 @@ export class UserService {
 						this.passwordChanged = userState['passwordChanged'];
 						if (!this.passwordChanged) {
 							this.router.navigate(['/change-password']);
-						} else {
-							this.router.navigate(['/']);
 						}
 						return this.user;
 					}),

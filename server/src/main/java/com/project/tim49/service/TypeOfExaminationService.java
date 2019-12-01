@@ -100,4 +100,20 @@ public class TypeOfExaminationService {
         return typeOfExaminationDTO;
     }
 
+    public List<TypeOfExaminationDTO> getByQuery(String name, Float minPrice, Float maxPrice, Long clinic_id) {
+        if (minPrice == null){
+            minPrice = 0f;
+        }
+        if (maxPrice == null){
+            maxPrice = 340282300000000000000000000000000000000f;
+        }
+        List<TypeOfExamination> types = examinationTypesRepository.getByQuery(name, minPrice, maxPrice, clinic_id);
+        List<TypeOfExaminationDTO> typeDTOS = new ArrayList<>();
+        for(TypeOfExamination t: types) {
+            TypeOfExaminationDTO typeDTO = new TypeOfExaminationDTO(t);
+            typeDTOS.add(typeDTO);
+        }
+        return typeDTOS;
+    }
+
 }

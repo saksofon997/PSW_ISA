@@ -77,4 +77,16 @@ public class ExaminationTypesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
+    @GetMapping("/search_types")
+    @PreAuthorize("hasAuthority('ADMINC')")
+    public ResponseEntity getAllByQuery(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "min_price", required = false) Float minPrice,
+            @RequestParam(value = "max_price", required = false) Float maxPrice,
+            @RequestParam(value = "clinic_id", required = false) Long clinic_id
+    ) {
+        List<TypeOfExaminationDTO> types = examinationTypesService.getByQuery(name, minPrice, maxPrice, clinic_id);
+        return new ResponseEntity(types, HttpStatus.OK);
+    }
 }

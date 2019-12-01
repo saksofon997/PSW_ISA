@@ -5,26 +5,26 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-ordination-form',
-  templateUrl: './ordination-form.component.html',
-  styleUrls: ['./ordination-form.component.css']
+	selector: 'app-ordination-form',
+	templateUrl: './ordination-form.component.html',
+	styleUrls: ['./ordination-form.component.css']
 })
 export class OrdinationFormComponent implements OnInit {
-  form: FormGroup;
+	form: FormGroup;
 	ordination_id: any;
 	change: string;
 	submitted = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
+	constructor(
+		private formBuilder: FormBuilder,
 		private clinicService: ClinicService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		private userService: UserService
-  ) { }
+	) { }
 
-  ngOnInit() {
-    var ordination = history.state.data;
+	ngOnInit() {
+		var ordination = history.state.data;
 		var name = "";
 		var number = 0;
 		this.change = 'Add';
@@ -40,9 +40,9 @@ export class OrdinationFormComponent implements OnInit {
 			name: [name, [Validators.required]],
 			number: [number, [Validators.required]]
 		});
-  }
+	}
 
-  onSubmit() {
+	onSubmit() {
 		this.submitted = true;
 
 		if (this.form.invalid) {

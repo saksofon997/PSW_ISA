@@ -11,6 +11,7 @@ import com.project.tim49.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,16 @@ public class DoctorService {
         doctor.setPasswordChanged(false);
 
         doctorRepository.save(doctor);
+    }
+
+    public List<DoctorDTO> getByQuery(String name, String surname, Long clinic_id) {
+        List<Doctor> doctors = doctorRepository.getByQuery(name, surname, clinic_id);
+        List<DoctorDTO> doctorDTOS = new ArrayList<>();
+        for(Doctor d: doctors) {
+            DoctorDTO doctorDTO = new DoctorDTO(d);
+            doctorDTOS.add(doctorDTO);
+        }
+        return doctorDTOS;
     }
 
     public boolean hasActiveAppointments(Long id){

@@ -79,4 +79,14 @@ public class DoctorController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
+    @GetMapping("/search_doctors")
+    @PreAuthorize("hasAuthority('ADMINC')")
+    public ResponseEntity getAllByQuery(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "surname", required = false) String surname,
+            @RequestParam(value = "clinic_id", required = false) Long clinic_id
+    ) {
+        List<DoctorDTO> doctors = doctorService.getByQuery(name, surname, clinic_id);
+        return new ResponseEntity(doctors, HttpStatus.OK);
+    }
 }
