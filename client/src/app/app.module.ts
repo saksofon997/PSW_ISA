@@ -34,6 +34,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
+import { OrdinationFormComponent } from './components/adminC-dashboard/ordination-form/ordination-form.component';
 import { PatientHomeComponent } from './components/patient-home/patient-home/patient-home.component';
 import { PatientPersonalProfileComponent } from './components/patient-home/patient-personal-profile/patient-personal-profile.component';
 
@@ -61,15 +62,16 @@ import { PatientPersonalProfileComponent } from './components/patient-home/patie
     DiagnosisFormComponent,
     RegistrationComponent,
     DiagnosisFormComponent,
-    OrdinationListingComponent,
     AvailableAppointmentListingComponent,
     RegistrationListingComponent,
     DialogComponent,
     AdminCDashboardComponent,
     TypeOfExaminationListingComponent,
     TypeOfExaminationFormComponent,
+    OrdinationListingComponent,
+    OrdinationFormComponent,
     PatientHomeComponent,
-    PatientPersonalProfileComponent,
+    PatientPersonalProfileComponent
   ],
   imports: [
     BrowserModule,

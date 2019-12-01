@@ -33,19 +33,34 @@ export class OrdinationListingComponent implements OnInit {
 			this.clinicName = params.name;
 		});
 	}
+	
 	getOrdinations() {
 		this.clinicID = this.userService.getUser().clinic_id;
-		// service call
+		this.clinicService.getOrdinations(this.clinicID).subscribe(
+			(data) => {
+			  this.ordinations = data;
+			},
+			(error) => {
+			  alert(error);
+			}
+		  )
 	}
 	changeOrdination(ordination) {
-
+		this.router.navigate(['../ordination_form'], { relativeTo: this.activatedRoute, state: { data: ordination } });
 	}
 	addNewOrdination() {
-		//this.router.navigate(['../ordination_form'], { relativeTo: this.activatedRoute });
+		this.router.navigate(['../ordination_form'], { relativeTo: this.activatedRoute });
 	}
 
 	deleteOrdination(ordination) {
-		// service call
+		this.clinicService.deleteOrdination(ordination.id).subscribe(
+			(data) => {
+			  this.getOrdinations();
+			},
+			(error) => {
+			  alert(error);
+			}
+		  )
 	}
 	ngOnDestroy() {
 		if (this.navigationSubscription) {
