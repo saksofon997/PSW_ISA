@@ -31,12 +31,15 @@ import { AvailableAppointmentListingComponent } from './components/adminC-dashbo
 import { RegistrationListingComponent } from './components/adminCC-dashboard/registration-listing/registration-listing.component';
 import { DialogComponent } from './components/helperComponents/dialog/dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
 import { OrdinationFormComponent } from './components/adminC-dashboard/ordination-form/ordination-form.component';
 import { PatientHomeComponent } from './components/patient-home/patient-home/patient-home.component';
 import { PatientPersonalProfileComponent } from './components/patient-home/patient-personal-profile/patient-personal-profile.component';
+import { PatientClinicListingComponent } from './components/patient-home/patient-clinic-listing/patient-clinic-listing.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +74,8 @@ import { PatientPersonalProfileComponent } from './components/patient-home/patie
     OrdinationListingComponent,
     OrdinationFormComponent,
     PatientHomeComponent,
-    PatientPersonalProfileComponent
+    PatientPersonalProfileComponent,
+    PatientClinicListingComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +84,8 @@ import { PatientPersonalProfileComponent } from './components/patient-home/patie
     HttpClientModule,
     ReactiveFormsModule,
     HttpModule,
+    MatTableModule,
+    BrowserAnimationsModule,
     NgHttpLoaderModule.forRoot(),
     NgbModule,
   ],

@@ -29,6 +29,7 @@ import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/ty
 import { OrdinationFormComponent } from './components/adminC-dashboard/ordination-form/ordination-form.component';
 import { PatientHomeComponent } from './components/patient-home/patient-home/patient-home.component';
 import { PatientPersonalProfileComponent } from './components/patient-home/patient-personal-profile/patient-personal-profile.component';
+import { PatientClinicListingComponent } from './components/patient-home/patient-clinic-listing/patient-clinic-listing.component';
 
 const routes: Routes = [
 	{
@@ -75,11 +76,35 @@ const routes: Routes = [
 		component: PatientHomeComponent,
 		children:[
 			{path: '', component: PatientPersonalProfileComponent},
+			{path: 'profile', component: PatientPersonalProfileComponent},
+			{path: 'clinics', component: PatientClinicListingComponent},
 
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['PATIENT']}
 	},
+	// {
+	// 	path: 'nurseHome',
+	// 	component: PatientHomeComponent,
+	// 	children:[
+	// 		{path: '', component: PatientPersonalProfileComponent},
+	// 		{path: 'profile', component: PatientPersonalProfileComponent},
+
+	// 	],
+	// 	canActivate: [AuthGuardService],
+	// 	data: { roles: ['NURSE']}
+	// },
+	// {
+	// 	path: 'doctorHome',
+	// 	component: PatientHomeComponent,
+	// 	children:[
+	// 		{path: '', component: PatientPersonalProfileComponent},
+	// 		{path: 'profile', component: PatientPersonalProfileComponent},
+
+	// 	],
+	// 	canActivate: [AuthGuardService],
+	// 	data: { roles: ['DOCTOR']}
+	// },
 	{
 		path: 'login',
 		component: LoginComponent
