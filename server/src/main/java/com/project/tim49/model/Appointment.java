@@ -12,10 +12,10 @@ import javax.persistence.*;
 @DiscriminatorColumn(name="appointment_type")
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "startingDateAndTime", nullable = false)
+    @Column(name = "starting_date_and_time", nullable = false)
     private long startingDateAndTime;
 
     @Column(name = "duration", nullable = false)
@@ -24,20 +24,21 @@ public class Appointment {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ordination_id")
     public Ordination ordination;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clinic_id")
     public Clinic clinic;
 
+    // NEEDED?
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     public Patient patient;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "typeOfExamination_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_of_examination_id", referencedColumnName = "id")
     public TypeOfExamination typeOfExamination;
 
     @Column(name = "completed", nullable = false)

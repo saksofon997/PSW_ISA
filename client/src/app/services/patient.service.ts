@@ -77,4 +77,22 @@ export class PatientService {
         })
       );
   }
+
+  getPendingAppointments(){
+    let user = JSON.parse(this.cookieService.get('user'));
+    let id = user["id"];
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    return this.http.get(`http://localhost:8080/api/patient/getPendingAppointments/${id}`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
 }

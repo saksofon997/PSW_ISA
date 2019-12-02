@@ -123,3 +123,23 @@ INSERT INTO public.ordination(
 INSERT INTO public.ordination(
 	id, name, number, clinic_id)
 	VALUES (nextval('ordination_id_seq'), 'Ordinacija3', '50', 1);
+
+INSERT INTO public.appointment(
+    id, starting_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type, doctor_id)
+    VALUES (nextval('appointment_id_seq'), 1575385200, 5 * 60 * 1000, 100, 1, 1, 11, 1, false, 'EX', 9);
+INSERT INTO public.appointment(
+    id, starting_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type, doctor_id)
+    VALUES (nextval('appointment_id_seq'), 1575558000, 5 * 60 * 1000, 100, 1, 1, 11, 2, false, 'EX', 9);
+INSERT INTO public.appointment(
+    id, starting_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type, doctor_id)
+    VALUES (nextval('appointment_id_seq'), 1575730800, 5 * 60 * 1000, 100, 1, 1, 11, 3, false, 'EX', 9);
+
+INSERT INTO public.patients_pending_appointments(
+    patient_id, appointment_id)
+    VALUES (11, 1);
+INSERT INTO public.patients_pending_appointments(
+    patient_id, appointment_id)
+    VALUES (11, 2);
+INSERT INTO public.patients_pending_appointments(
+    patient_id, appointment_id)
+    VALUES (11, 3);
