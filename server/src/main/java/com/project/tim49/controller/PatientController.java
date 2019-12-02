@@ -46,25 +46,4 @@ public class PatientController {
         return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(path = "/getClinics",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('PATIENT')")
-    public ResponseEntity<List<ClinicDTO>> getClinic() {
-        return new ResponseEntity<List<ClinicDTO>>(clinicService.findAll(), HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/getClinic/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('PATIENT')")
-    public ResponseEntity getClinicById(@PathVariable Long id) {
-        if(id != null) {
-            ClinicDTO dto = clinicService.findOneDTO(id);
-            if (dto != null) {
-                return new ResponseEntity<>(dto, HttpStatus.OK);
-            }
-            return new ResponseEntity<>("No clinic with this id", HttpStatus.NOT_ACCEPTABLE);
-        }
-        return new ResponseEntity<>("ID is null!",
-                HttpStatus.UNPROCESSABLE_ENTITY);
-    }
 }

@@ -27,9 +27,10 @@ import { RegistrationListingComponent } from './components/adminCC-dashboard/reg
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
 import { OrdinationFormComponent } from './components/adminC-dashboard/ordination-form/ordination-form.component';
-import { PatientHomeComponent } from './components/patient-home/patient-home/patient-home.component';
-import { PatientPersonalProfileComponent } from './components/patient-home/patient-personal-profile/patient-personal-profile.component';
+import { PatientHomeComponent } from './components/patient-home/patient-home.component';
+import { PatientPersonalProfileComponent } from './components/patient-profile/patient-personal-profile/patient-personal-profile.component';
 import { PatientClinicListingComponent } from './components/patient-home/patient-clinic-listing/patient-clinic-listing.component';
+import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 
 const routes: Routes = [
 	{
@@ -71,14 +72,22 @@ const routes: Routes = [
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINC']}
 	},
-	{
-		path: 'patientHome',
+	{ 
+		path: 'patient',
 		component: PatientHomeComponent,
+		children:[
+			{path: '', component: PatientClinicListingComponent},
+			{path: 'clinics', component: PatientClinicListingComponent},
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ['PATIENT']}
+	},
+	{ 
+		path: 'patient/profile',
+		component: PatientProfileComponent,
 		children:[
 			{path: '', component: PatientPersonalProfileComponent},
 			{path: 'profile', component: PatientPersonalProfileComponent},
-			{path: 'clinics', component: PatientClinicListingComponent},
-
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['PATIENT']}

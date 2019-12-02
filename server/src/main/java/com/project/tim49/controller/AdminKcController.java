@@ -93,14 +93,14 @@ public class AdminKcController {
 
     @GetMapping(path = "/getClinics",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC')")
+    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC') or hasAuthority('PATIENT')")
     public ResponseEntity<List<ClinicDTO>> getClinic() {
         return new ResponseEntity<List<ClinicDTO>>(clinicService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/getClinic/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC')")
+    @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC') or hasAuthority('PATIENT')")
     public ResponseEntity getClinicById(@PathVariable Long id) {
         if(id != null) {
             ClinicDTO dto = clinicService.findOneDTO(id);
