@@ -18,7 +18,7 @@ public class Ordination {
     @Column(name = "number")
     private String number;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public Clinic clinic;
 
     public Long getId() {

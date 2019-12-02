@@ -1,6 +1,8 @@
 package com.project.tim49.service;
 
+import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.UserDTO;
+import com.project.tim49.model.Appointment;
 import com.project.tim49.model.ClinicCenterAdministrator;
 import com.project.tim49.model.Patient;
 import com.project.tim49.model.User;
@@ -10,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -48,6 +53,23 @@ public class PatientService {
             throw new ValidationException("Patient does not exist!");
         }
     }
+
+    public List<AppointmentDTO> getPendingAppointments(Long patient_id){
+        Optional<Patient> patient = patientRepository.findById(patient_id);
+
+        if (!patient.isPresent()){
+            throw new ValidationException("Patient does not exist!");
+        }
+
+        List<Appointment> pendingAppointments = patient.get().getPendingAppointments();
+        List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
+        for(Appointment app: pendingAppointments) {
+            AppointmentDTO appDTO = new AppointmentDTO(app);
+            appointmentDTOS.add(appDTO);
+        }
+        return appointmentDTOS;
+    }
+
     // Returns reference to update entity
     public Patient getReference(Long id){
         return patientRepository.getOne(id);

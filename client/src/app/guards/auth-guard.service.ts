@@ -22,7 +22,11 @@ export class AuthGuardService implements CanActivate {
                     if (route.data.roles.indexOf(role) === -1) {
                         // role not authorised so redirect to home page
                         alert('Not authorised!')
-                        this.router.navigate(['/']);
+                        if (currentUser.roles.indexOf('PATIENT')!= -1){
+							this.router.navigate(['/patient']);
+						} else {
+							this.router.navigate(['/']);
+						}
                         return false;
                     }
                 });

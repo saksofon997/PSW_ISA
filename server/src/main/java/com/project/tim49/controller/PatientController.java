@@ -1,7 +1,9 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.ClinicDTO;
 import com.project.tim49.dto.UserDTO;
+import com.project.tim49.model.Appointment;
 import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,32 +41,27 @@ public class PatientController {
             try {
                 patientService.changePatient(userDTO);
                 return new ResponseEntity<>(userDTO, HttpStatus.OK);
-            }catch (ValidationException e){
+            } catch (ValidationException e){
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
             }
         }
         return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(path = "/getClinics",
+    @GetMapping(path="/getPendingAppointments/{patient_id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('PATIENT')")
-    public ResponseEntity<List<ClinicDTO>> getClinic() {
-        return new ResponseEntity<List<ClinicDTO>>(clinicService.findAll(), HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/getClinic/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('PATIENT')")
-    public ResponseEntity getClinicById(@PathVariable Long id) {
-        if(id != null) {
-            ClinicDTO dto = clinicService.findOneDTO(id);
-            if (dto != null) {
-                return new ResponseEntity<>(dto, HttpStatus.OK);
-            }
-            return new ResponseEntity<>("No clinic with this id", HttpStatus.NOT_ACCEPTABLE);
+//    @PreAuthorize("hasAuthority('PATIENT')")
+    public ResponseEntity getPendingAppointments(@PathVariable Long patient_id) {
+        if (patient_id == null){
+            return new ResponseEntity<>("Bad patient id", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("ID is null!",
-                HttpStatus.UNPROCESSABLE_ENTITY);
+
+        try {
+            List<AppointmentDTO> pendingAppointments = patientService.getPendingAppointments(patient_id);
+
+            return new ResponseEntity<>(pendingAppointments, HttpStatus.OK);
+        } catch (ValidationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 }

@@ -103,7 +103,11 @@ export class UserService {
 					if (!this.passwordChanged) {
 						this.router.navigate(['/change-password']);
 					} else {
-						this.router.navigate(['/']);
+						if (this.checkLoggedIn().roles.indexOf('PATIENT')!= -1){
+							this.router.navigate(['/patient']);
+						} else {
+							this.router.navigate(['/']);
+						}
 					}
 
 					return this.user;
@@ -124,7 +128,7 @@ export class UserService {
 				map((response) => {
 					const userState = response.body;
 					alert("Your request has been sent. Check your email.")
-					this.router.navigate(['/']);
+					this.router.navigate(['/login']);
 
 					return this.user;
 				}),

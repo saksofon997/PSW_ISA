@@ -37,9 +37,11 @@ import { MatTableModule } from '@angular/material/table';
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
 import { OrdinationFormComponent } from './components/adminC-dashboard/ordination-form/ordination-form.component';
-import { PatientHomeComponent } from './components/patient-home/patient-home/patient-home.component';
-import { PatientPersonalProfileComponent } from './components/patient-home/patient-personal-profile/patient-personal-profile.component';
+import { PatientHomeComponent } from './components/patient-home/patient-home.component';
+import { PatientPersonalProfileComponent } from './components/patient-profile/patient-personal-profile/patient-personal-profile.component';
 import { PatientClinicListingComponent } from './components/patient-home/patient-clinic-listing/patient-clinic-listing.component';
+import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
+import { PatientPendingAppointmentsListingComponent } from './components/patient-home/patient-pending-appointments-listing/patient-pending-appointments-listing.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { PatientClinicListingComponent } from './components/patient-home/patient
     OrdinationFormComponent,
     PatientHomeComponent,
     PatientPersonalProfileComponent,
-    PatientClinicListingComponent
+    PatientClinicListingComponent,
+    PatientProfileComponent,
+    PatientPendingAppointmentsListingComponent
   ],
   imports: [
     BrowserModule,

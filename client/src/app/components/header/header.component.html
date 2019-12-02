@@ -1,7 +1,14 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
-            <a class="navbar-brand" routerLink="/">Clinical System</a>
+            <ng-container *ngIf="!userService.checkLoggedIn();else second">
+                <a class="navbar-brand" routerLink="/">Clinical System</a>
+            </ng-container>
+            <ng-template #second>
+                <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1"> <a class="navbar-brand"
+                        routerLink="/patient">Clinical System</a> </ng-container> <!-- *ngIf="foo === 2;else third" -->
+            </ng-template>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -9,12 +16,25 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active" *ngIf="userService.checkLoggedIn()">
-                        <a class="nav-link" routerLink="/">Home</a>
+                        <!-- <a class="nav-link" routerLink="/">Home</a> -->
+                        <!-- <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1" routerLink="/patient" >Home</a> -->
+                        <ng-container *ngIf="!userService.checkLoggedIn();else second">
+                            <a class="nav-link" routerLink="/">Home</a>
+                        </ng-container>
+                        <ng-template #second>
+                            <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1"> <a
+                                    class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1"
+                                    routerLink="/patient">Home</a> </ng-container> <!-- *ngIf="foo === 2;else third" -->
+                        </ng-template>
                     </li>
-                    <li class="nav-item" *ngIf="userService.checkLoggedIn()" > <!-- *ngIf="userService.user" -->
-                        <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINCC')!= -1" routerLink="/adminCCdashboard" >Dashboard</a>
-                        <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINC')!= -1" routerLink="/adminCdashboard" >Dashboard</a>
-                        <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1" routerLink="/patientHome" >My Profile</a>
+                    <li class="nav-item" *ngIf="userService.checkLoggedIn()">
+                        <!-- *ngIf="userService.user" -->
+                        <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINCC')!= -1"
+                            routerLink="/adminCCdashboard">Dashboard</a>
+                        <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINC')!= -1"
+                            routerLink="/adminCdashboard">Dashboard</a>
+                        <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1"
+                            routerLink="/patient/profile">My Profile</a>
 
                     </li>
                     <li class="nav-item" *ngIf="!userService.checkLoggedIn()">
@@ -23,9 +43,9 @@
                     <li class="nav-item" *ngIf="!userService.checkLoggedIn()">
                         <a class="nav-link" routerLink="/register">Register</a>
                     </li>
-                    <li class="nav-item dropdown" *ngIf="userService.checkLoggedIn()"> 
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" style="cursor: pointer;"
-                            aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item dropdown" *ngIf="userService.checkLoggedIn()">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            style="cursor: pointer;" aria-haspopup="true" aria-expanded="false">
                             {{userService.checkLoggedIn().name}}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="cursor: pointer;">
