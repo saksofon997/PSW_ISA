@@ -1,6 +1,8 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.dto.ClinicDTO;
 import com.project.tim49.dto.UserDTO;
+import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -18,11 +21,14 @@ public class PatientController {
     @Autowired
     PatientService patientService;
 
+    @Autowired
+    ClinicService clinicService;
+
     @GetMapping(path="/{id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('PATIENT')")
     public ResponseEntity getPatient(@PathVariable Long id) {
-        UserDTO patient=patientService.findById(id);
+        UserDTO patient = patientService.findById(id);
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
@@ -38,5 +44,27 @@ public class PatientController {
             }
         }
         return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(path = "/getClinics",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('PATIENT')")
+    public ResponseEntity<List<ClinicDTO>> getClinic() {
+        return new ResponseEntity<List<ClinicDTO>>(clinicService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getClinic/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('PATIENT')")
+    public ResponseEntity getClinicById(@PathVariable Long id) {
+        if(id != null) {
+            ClinicDTO dto = clinicService.findOneDTO(id);
+            if (dto != null) {
+                return new ResponseEntity<>(dto, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("No clinic with this id", HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>("ID is null!",
+                HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

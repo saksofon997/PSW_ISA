@@ -45,4 +45,36 @@ export class PatientService {
         })
       );
   }
+
+  getClinics() {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    return this.http.get(`http://localhost:8080/api/patient/getClinics`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
+
+  getClinic(clinic_id: any) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    return this.http.get(`http://localhost:8080/api/patient/getClinic/${clinic_id}`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
 }
