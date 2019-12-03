@@ -1,9 +1,8 @@
 package com.project.tim49.controller;
 
-import com.project.tim49.dto.ClinicDTO;
-import com.project.tim49.dto.DoctorDTO;
+import com.project.tim49.dto.NurseDTO;
 import com.project.tim49.service.ClinicService;
-import com.project.tim49.service.DoctorService;
+import com.project.tim49.service.NurseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,21 +16,19 @@ import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping(value = "api/doctor")
-public class DoctorController {
+@RequestMapping(value = "api/nurse")
+public class NurseController {
 
     @Autowired
-    private DoctorService doctorService;
-    @Autowired
-    private ClinicService clinicService;
+    private NurseService nurseService;
 
-    @GetMapping(path = "/getClinicDoctors/{clinic_id}",
+    @GetMapping(path = "/getClinicNurses/{clinic_id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ADMINC')")
-    public ResponseEntity getClinicDoctors(@PathVariable Long clinic_id) {
+    public ResponseEntity getClinicNurses(@PathVariable Long clinic_id) {
         try {
-            List<DoctorDTO> doctors = clinicService.getClinicDoctors(clinic_id);
-            return new ResponseEntity<>(doctors, HttpStatus.OK);
+            List<NurseDTO> nurses = nurseService.getNurses(clinic_id);
+            return new ResponseEntity<>(nurses, HttpStatus.OK);
         } catch (NoSuchElementException e){
             return new ResponseEntity<>("No clinic with this id", HttpStatus.BAD_REQUEST);
         }
@@ -39,70 +36,64 @@ public class DoctorController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ADMINC')")
-    public ResponseEntity addDoctor(@RequestBody DoctorDTO doctorDTO){
-        if (doctorDTO.getEmail() == null || doctorDTO.getEmail().equals("")){
+    public ResponseEntity addNurse(@RequestBody NurseDTO nurseDTO){
+        if (nurseDTO.getEmail() == null || nurseDTO.getEmail().equals("")){
             return new ResponseEntity<>("Invalid email", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        if (!doctorService.shiftValid(doctorDTO.getShiftStart(), doctorDTO.getShiftEnd())){
+        if (!nurseService.shiftValid(nurseDTO.getShiftStart(), nurseDTO.getShiftEnd())){
             return new ResponseEntity<>("Invalid shift", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         try {
-            doctorService.createNewDoctor(doctorDTO);
+            nurseService.createNewNurse(nurseDTO);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
+        return new ResponseEntity<>(nurseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(path="/delete/{id}")
     @PreAuthorize("hasAuthority('ADMINC')")
-    public ResponseEntity deleteDoctor(@PathVariable Long id) {
+    public ResponseEntity deleteNurse(@PathVariable Long id) {
         if (id == null){
             return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);
         }
 
         try {
-            boolean hasActiveAppointments = doctorService.hasActiveAppointments(id);
+            nurseService.deleteNurse(id);
 
-            if (hasActiveAppointments){
-                return new ResponseEntity<>("This doctor has appointments that are not completed!", HttpStatus.FORBIDDEN);
-            }
-
-            doctorService.deleteDoctor(id);
+            return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
-
-        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @PutMapping(path="/change" )
-    @PreAuthorize("hasAuthority('DOCTOR')")
-    public ResponseEntity changeDoctor(@RequestBody DoctorDTO doctorDTO){
+    @PreAuthorize("hasAuthority('NURSE')")
+    public ResponseEntity changeNurse(@RequestBody NurseDTO nurseDTO){
 
-        if (doctorDTO == null || doctorDTO.getId() == null){
+        if (nurseDTO == null || nurseDTO.getId() == null){
             return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         try {
-            DoctorDTO changedDTO = doctorService.changeDoctorData(doctorDTO);
+            NurseDTO changedDTO = nurseService.changeNurseData(nurseDTO);
             return new ResponseEntity<>(changedDTO, HttpStatus.OK);
         } catch (NoSuchElementException e){
             return new ResponseEntity<>("This user does not exists!", HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("/search_doctors")
+    @GetMapping("/search_nurses")
     @PreAuthorize("hasAuthority('ADMINC')")
     public ResponseEntity getAllByQuery(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "surname", required = false) String surname,
             @RequestParam(value = "clinic_id", required = false) Long clinic_id
     ) {
-        List<DoctorDTO> doctors = doctorService.getByQuery(name, surname, clinic_id);
-        return new ResponseEntity(doctors, HttpStatus.OK);
+        List<NurseDTO> nurses = nurseService.getByQuery(name, surname, clinic_id);
+        return new ResponseEntity(nurses, HttpStatus.OK);
     }
 }

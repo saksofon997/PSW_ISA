@@ -15,6 +15,7 @@ import javax.print.Doc;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -70,6 +71,30 @@ public class DoctorService {
         doctor.setPasswordChanged(false);
 
         doctorRepository.save(doctor);
+    }
+
+    public DoctorDTO changeDoctorData(DoctorDTO dto){
+        Doctor doctor = getReference(dto.getId());
+        try {
+            doctor.setName(dto.getName());
+        } catch (Exception e){
+            throw new NoSuchElementException();
+        }
+        doctor.setName(dto.getName());
+        doctor.setSurname(dto.getSurname());
+        doctor.setAddress(dto.getAddress());
+        doctor.setCity(dto.getCity());
+        doctor.setState(dto.getState());
+        doctor.setPhoneNumber(dto.getPhoneNumber());
+        doctor.setUpin(dto.getUpin());
+
+        doctorRepository.save(doctor);
+
+        return new DoctorDTO(doctor);
+    }
+
+    public Doctor getReference(Long id){
+        return doctorRepository.getOne(id);
     }
 
     public List<DoctorDTO> getByQuery(String name, String surname, Long clinic_id) {
