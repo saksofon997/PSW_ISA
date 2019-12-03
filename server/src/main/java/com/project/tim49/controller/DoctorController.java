@@ -1,5 +1,6 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.ClinicDTO;
 import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.service.ClinicService;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -79,6 +81,22 @@ public class DoctorController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
+    @PutMapping(path="/change" )
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    public ResponseEntity changeDoctor(@RequestBody DoctorDTO doctorDTO){
+
+        if (doctorDTO == null || doctorDTO.getId() == null){
+            return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            DoctorDTO changedDTO = doctorService.changeDoctorData(doctorDTO);
+            return new ResponseEntity<>(changedDTO, HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>("This user does not exists!", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/search_doctors")
     @PreAuthorize("hasAuthority('ADMINC')")
     public ResponseEntity getAllByQuery(
@@ -88,5 +106,20 @@ public class DoctorController {
     ) {
         List<DoctorDTO> doctors = doctorService.getByQuery(name, surname, clinic_id);
         return new ResponseEntity(doctors, HttpStatus.OK);
+    }
+
+    @GetMapping(path="/appointments/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    public ResponseEntity getDoctorAppointments(@PathVariable Long id) {
+        List<AppointmentDTO> appointments = new ArrayList<>();
+        try{
+         appointments = doctorService.getAppointments(id);
+
+        }catch (ValidationException e){
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity(appointments, HttpStatus.OK);
     }
 }

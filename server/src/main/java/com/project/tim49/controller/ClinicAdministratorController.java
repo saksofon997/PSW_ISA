@@ -25,10 +25,6 @@ public class ClinicAdministratorController {
 
     @Autowired
     private ClinicAdministratorService clinicAdministratorService;
-    @Autowired
-    private ClinicService clinicService;
-    @Autowired
-    private AuthorityServiceImpl authorityService;
 
     @GetMapping(path="/getAdminC/{id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -85,8 +81,8 @@ public class ClinicAdministratorController {
         }
 
         try {
-            ClinicAdministratorDTO clinicDTO = clinicAdministratorService.changeClinicAdministratorData(clinicAdministratorDTO);
-            return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
+            ClinicAdministratorDTO changedDTO = clinicAdministratorService.changeClinicAdministratorData(clinicAdministratorDTO);
+            return new ResponseEntity<>(changedDTO, HttpStatus.OK);
         } catch (NoSuchElementException e){
             return new ResponseEntity<>("This user does not exists!", HttpStatus.NOT_FOUND);
         } catch (ValidationException e){

@@ -42,6 +42,10 @@ import { PatientPersonalProfileComponent } from './components/patient-profile/pa
 import { PatientClinicListingComponent } from './components/patient-home/patient-clinic-listing/patient-clinic-listing.component';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 import { PatientPendingAppointmentsListingComponent } from './components/patient-home/patient-pending-appointments-listing/patient-pending-appointments-listing.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { DoctorHomeComponent } from './components/doctor-home/doctor-home/doctor-home.component';
+import { DoctorCalendarComponent } from './components/doctor-home/doctor-calendar/doctor-calendar.component';
 import { NurseFormComponent } from './components/adminC-dashboard/nurse-form/nurse-form.component';
 import { NurseHomeComponent } from './components/nurse-home/nurse-home.component';
 import { NurseListingComponent } from './components/adminC-dashboard/nurse-listing/nurse-listing.component';
@@ -85,6 +89,9 @@ import { NursePersonalProfileComponent } from './components/nurse-home/nurse-pro
     PatientClinicListingComponent,
     PatientProfileComponent,
     PatientPendingAppointmentsListingComponent,
+    DoctorHomeComponent,
+    DoctorCalendarComponent,
+    PatientPendingAppointmentsListingComponent,
     NurseFormComponent,
     NurseHomeComponent,
     NurseListingComponent,
@@ -103,6 +110,7 @@ import { NursePersonalProfileComponent } from './components/nurse-home/nurse-pro
     BrowserAnimationsModule,
     NgHttpLoaderModule.forRoot(),
     NgbModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
   providers: [CookieService], //UserService, AuthGuardService
   bootstrap: [AppComponent],

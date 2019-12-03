@@ -6,11 +6,12 @@ public class AppointmentDTO {
 
     private Long id;
     private long startingDateAndTime;
+    private long endingDateAndTime;
     private long duration;
     private double price;
     private OrdinationDTO ordination;
     private ClinicDTO clinic;
-    //private PatientDTO patient;
+    private PatientDTO patient;
     private TypeOfExaminationDTO typeOfExamination;
     private boolean completed;
 
@@ -20,6 +21,7 @@ public class AppointmentDTO {
     public AppointmentDTO(Appointment appointment){
         this.id = appointment.getId();
         this.startingDateAndTime = appointment.getStartingDateAndTime();
+        this.endingDateAndTime = appointment.getEndingDateAndTime();
         this.duration = appointment.getDuration();
         this.price = appointment.getPrice();
         this.ordination = new OrdinationDTO(appointment.getOrdination());
@@ -42,6 +44,22 @@ public class AppointmentDTO {
 
     public void setStartingDateAndTime(long startingDateAndTime) {
         this.startingDateAndTime = startingDateAndTime;
+    }
+
+    public long getEndingDateAndTime() {
+        return endingDateAndTime;
+    }
+
+    public void setEndingDateAndTime(long endingDateAndTime) {
+        this.endingDateAndTime = endingDateAndTime;
+    }
+
+    public PatientDTO getPatient() {
+        return patient;
+    }
+
+    public void setPatient(PatientDTO patient) {
+        this.patient = patient;
     }
 
     public long getDuration() {
@@ -91,4 +109,5 @@ public class AppointmentDTO {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
 }

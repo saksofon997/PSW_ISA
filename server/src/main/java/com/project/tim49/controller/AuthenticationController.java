@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.ValidationException;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -102,13 +102,13 @@ public class AuthenticationController {
 
         User existUser = this.userService.findByEmail(registrationDTO.getEmail());
         if (existUser != null) {
-            new ResponseEntity<>("Email already exists.", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Email already exists.", HttpStatus.CONFLICT);
         }
         RegistrationDTO created = new RegistrationDTO();
         try{
            created = this.userService.createRegistrationRequest(registrationDTO);
         }catch (ValidationException e){
-            new ResponseEntity<>("Request with same email already exists.", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Request with same email already exists.", HttpStatus.CONFLICT);
         }
         //HttpHeaders headers = new HttpHeaders();
         //headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());

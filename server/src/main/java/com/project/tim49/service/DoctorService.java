@@ -1,10 +1,9 @@
 package com.project.tim49.service;
 
+import com.project.tim49.dto.AppointmentDTO;
+import com.project.tim49.dto.ClinicAdministratorDTO;
 import com.project.tim49.dto.DoctorDTO;
-import com.project.tim49.model.Appointment;
-import com.project.tim49.model.Clinic;
-import com.project.tim49.model.Doctor;
-import com.project.tim49.model.User;
+import com.project.tim49.model.*;
 import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.DoctorRepository;
 import com.project.tim49.repository.LoginRepository;
@@ -15,6 +14,7 @@ import javax.print.Doc;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -70,6 +70,30 @@ public class DoctorService {
         doctor.setPasswordChanged(false);
 
         doctorRepository.save(doctor);
+    }
+
+    public DoctorDTO changeDoctorData(DoctorDTO dto){
+        Doctor doctor = getReference(dto.getId());
+        try {
+            doctor.setName(dto.getName());
+        } catch (Exception e){
+            throw new NoSuchElementException();
+        }
+        doctor.setName(dto.getName());
+        doctor.setSurname(dto.getSurname());
+        doctor.setAddress(dto.getAddress());
+        doctor.setCity(dto.getCity());
+        doctor.setState(dto.getState());
+        doctor.setPhoneNumber(dto.getPhoneNumber());
+        doctor.setUpin(dto.getUpin());
+
+        doctorRepository.save(doctor);
+
+        return new DoctorDTO(doctor);
+    }
+
+    public Doctor getReference(Long id){
+        return doctorRepository.getOne(id);
     }
 
     public List<DoctorDTO> getByQuery(String name, String surname, Long clinic_id) {
@@ -173,5 +197,19 @@ public class DoctorService {
 
 
         return true;
+    }
+    public List<AppointmentDTO> getAppointments(Long id){
+        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        List<Appointment> appointments = new ArrayList<>();
+        List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
+        if (doctor!= null){
+            appointments = doctor.getAppointments();
+            for (Appointment a: appointments) {
+                appointmentDTOS.add(new AppointmentDTO(a));
+            }
+        }else{
+            throw new ValidationException("Doctor not found.");
+        }
+        return appointmentDTOS;
     }
 }
