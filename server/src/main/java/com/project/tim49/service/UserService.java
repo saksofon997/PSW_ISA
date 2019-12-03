@@ -6,7 +6,8 @@ import com.project.tim49.model.Patient;
 import com.project.tim49.model.User;
 import com.project.tim49.model.UserRequest;
 
-import javax.xml.bind.ValidationException;
+
+import javax.validation.ValidationException;
 import java.util.List;
 
 public interface UserService {

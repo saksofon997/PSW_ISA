@@ -18,6 +18,9 @@ public class Appointment {
     @Column(name = "starting_date_and_time", nullable = false)
     private long startingDateAndTime;
 
+    @Column(name = "ending_date_and_time", nullable = false)
+    private long endingDateAndTime;
+
     @Column(name = "duration", nullable = false)
     private long duration;
 
@@ -35,7 +38,7 @@ public class Appointment {
     // NEEDED?
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
-    public Patient patient;
+    public Patient patient     ;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_of_examination_id", referencedColumnName = "id")
@@ -114,5 +117,13 @@ public class Appointment {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public long getEndingDateAndTime() {
+        return endingDateAndTime;
+    }
+
+    public void setEndingDateAndTime(long endingDateAndTime) {
+        this.endingDateAndTime = endingDateAndTime;
     }
 }

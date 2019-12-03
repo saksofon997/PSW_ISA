@@ -32,6 +32,8 @@ import { PatientPersonalProfileComponent } from './components/patient-profile/pa
 import { PatientClinicListingComponent } from './components/patient-home/patient-clinic-listing/patient-clinic-listing.component';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 import { PatientPendingAppointmentsListingComponent } from './components/patient-home/patient-pending-appointments-listing/patient-pending-appointments-listing.component';
+import { DoctorHomeComponent } from './components/doctor-home/doctor-home/doctor-home.component';
+import { DoctorCalendarComponent } from './components/doctor-home/doctor-calendar/doctor-calendar.component';
 
 const routes: Routes = [
 	{
@@ -83,6 +85,17 @@ const routes: Routes = [
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['PATIENT']}
+	},
+	{ 
+		path: 'doctor',
+		component: DoctorHomeComponent,
+		children:[
+			{path: '', component: DoctorCalendarComponent},
+			{path: 'calendar', component: DoctorCalendarComponent},
+			{path: 'pending_appointments', component: PatientPendingAppointmentsListingComponent},
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ['DOCTOR']}
 	},
 	{ 
 		path: 'patient/profile',
