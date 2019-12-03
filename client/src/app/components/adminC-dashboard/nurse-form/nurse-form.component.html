@@ -75,11 +75,11 @@ style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
 <div class="form-group row">
   <label class="col-sm-2 col-form-label font-weight-bold" for="nursePhone">Phone number:</label>
   <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-  <input type="text" formControlName="phoneNr"
-    [ngClass]="{ 'is-invalid': submitted && loginForm.controls.phoneNr.errors }" class="form-control" id="nursePhone"
+  <input type="text" formControlName="phoneNumber"
+    [ngClass]="{ 'is-invalid': submitted && loginForm.controls.phoneNumber.errors }" class="form-control" id="nursePhone"
     aria-describedby="nursePhone" style="border: 0;" />
-  <div *ngIf="submitted && loginForm.controls.phoneNr.errors" class="invalid-feedback">
-    <div *ngIf="loginForm.controls.phoneNr.errors.required">Phone number is required</div>
+  <div *ngIf="submitted && loginForm.controls.phoneNumber.errors" class="invalid-feedback">
+    <div *ngIf="loginForm.controls.phoneNumber.errors.required">Phone number is required</div>
   </div>
   </div>
 </div>

@@ -13,7 +13,7 @@ export class NursePersonalProfileComponent implements OnInit {
   nurse: any;
   form: FormGroup;
   change: boolean;
-  upinChange: boolean = false;
+  upinChange: boolean = true;
   submitted: boolean;
   constructor(private nurseService: NurseService,
               private formBuilder: FormBuilder) { }

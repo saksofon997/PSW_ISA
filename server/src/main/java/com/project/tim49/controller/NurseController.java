@@ -1,6 +1,8 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.dto.NurseDTO;
+import com.project.tim49.dto.UserDTO;
 import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.NurseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,31 @@ public class NurseController {
 
     @Autowired
     private NurseService nurseService;
+
+    @GetMapping(path="/{id}" ,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('NURSE')")
+    public ResponseEntity getNurse(@PathVariable Long id) {
+        UserDTO patient = nurseService.findById(id);
+        return new ResponseEntity<>(patient, HttpStatus.OK);
+    }
+
+    @PutMapping(path="/change" )
+    @PreAuthorize("hasAuthority('NURSE') or hasAuthority('ADMINC')")
+    public ResponseEntity changeDoctor(@RequestBody NurseDTO nurseDTO){
+
+        if (nurseDTO == null || nurseDTO.getId() == null){
+            return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            NurseDTO changedDTO = nurseService.changeNurseData(nurseDTO);
+            return new ResponseEntity<>(changedDTO, HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>("This nurse does not exists!",
+                    HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping(path = "/getClinicNurses/{clinic_id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,23 +96,6 @@ public class NurseController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
-
-    @PutMapping(path="/change" )
-    @PreAuthorize("hasAuthority('NURSE')")
-    public ResponseEntity changeNurse(@RequestBody NurseDTO nurseDTO){
-
-        if (nurseDTO == null || nurseDTO.getId() == null){
-            return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
-        try {
-            NurseDTO changedDTO = nurseService.changeNurseData(nurseDTO);
-            return new ResponseEntity<>(changedDTO, HttpStatus.OK);
-        } catch (NoSuchElementException e){
-            return new ResponseEntity<>("This user does not exists!", HttpStatus.NOT_FOUND);
-        }
-    }
-
     @GetMapping("/search_nurses")
     @PreAuthorize("hasAuthority('ADMINC')")
     public ResponseEntity getAllByQuery(

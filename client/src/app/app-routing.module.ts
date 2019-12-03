@@ -118,8 +118,8 @@ const routes: Routes = [
 		path: 'nurse',
 		component: NurseHomeComponent,
 		children:[
-			{path: '', component: NurseHomeComponent},
-			//{path: 'work_calendar', component: NurseHomeComponent},
+			{path: '', component: NurseProfileComponent},
+			//{path: '', component: SCHEDULER},
 
 		],
 		canActivate: [AuthGuardService],

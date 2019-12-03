@@ -30,7 +30,7 @@ export class DoctorFormComponent implements OnInit {
     var address = "";
     var city = "";
     var state = "";
-    var phoneNr = "";
+    var phoneNumber = "";
     var shiftStart = "";
     var shiftEnd = "";
     var upin = "";
@@ -43,7 +43,7 @@ export class DoctorFormComponent implements OnInit {
       address: [address, [Validators.required]],
       city: [city, [Validators.required]],
       state: [state, [Validators.required]],
-      phoneNr: [phoneNr, [Validators.required]],
+      phoneNumber: [phoneNumber, [Validators.required]],
       shiftStart: [shiftStart, [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
       shiftEnd: [shiftEnd, [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
       upin: [upin, [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
@@ -64,7 +64,7 @@ export class DoctorFormComponent implements OnInit {
       address: this.loginForm.controls.address.value,
       city: this.loginForm.controls.city.value,
       state: this.loginForm.controls.state.value,
-      phoneNr: this.loginForm.controls.phoneNr.value,
+      phoneNumber: this.loginForm.controls.phoneNumber.value,
       shiftStart: this.loginForm.controls.shiftStart.value,
       shiftEnd: this.loginForm.controls.shiftEnd.value,
       upin: this.loginForm.controls.upin.value,

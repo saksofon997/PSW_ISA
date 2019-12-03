@@ -1,6 +1,7 @@
 package com.project.tim49.service;
 
 import com.project.tim49.dto.NurseDTO;
+import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.Clinic;
 import com.project.tim49.model.Nurse;
 import com.project.tim49.model.User;
@@ -175,5 +176,15 @@ public class NurseService {
 
 
         return true;
+    }
+
+    public NurseDTO findById(Long id) {
+
+        Nurse nurse = nurseRepository.findById(id).orElse(null);
+        NurseDTO nurseDTO = null;
+        if(nurse != null){
+            nurseDTO = new NurseDTO(nurse);
+        }
+        return nurseDTO;
     }
 }
