@@ -105,7 +105,10 @@ export class UserService {
 					} else {
 						if (this.checkLoggedIn().roles.indexOf('PATIENT')!= -1){
 							this.router.navigate(['/patient']);
-						} else {
+						} else if (this.checkLoggedIn().roles.indexOf('DOCTOR')!= -1){
+							console.log('HERE')
+							this.router.navigate(['/doctor']);
+						}else{
 							this.router.navigate(['/']);
 						}
 					}

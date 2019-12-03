@@ -1,46 +1,39 @@
-package com.project.tim49.model; /***********************************************************************
- * Module:  RegistrationRequest.java
- * Author:  TIM 49
- * Purpose: Defines the Class RegistrationRequest
- ***********************************************************************/
+package com.project.tim49.dto;
 
-import javax.persistence.*;
+import com.project.tim49.model.Doctor;
+import com.project.tim49.model.Patient;
+import org.springframework.security.core.GrantedAuthority;
 
-@Entity
-public class RegistrationRequest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PatientDTO extends UserDTO{
+
     private Long id;
-
-    @Column(name = "email", nullable = false, unique = true)
     private String email;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "surname", nullable = false)
     private String surname;
-
-    @Column(name = "address", nullable = false)
     private String address;
-
-    @Column(name = "city", nullable = false)
     private String city;
-
-    @Column(name = "state", nullable = false)
     private String state;
-
-    @Column(name = "phoneNumber", nullable = false)
     private String phoneNumber;
-
-    @Column(name = "upin", nullable = false)
     private String upin;
 
-    @Column(name = "approved", nullable = false)
-    private boolean approved;
+
+    public PatientDTO() {
+    }
+
+    public PatientDTO(Patient patient){
+        this.id = patient.getId();
+        this.email = patient.getEmail();
+        this.name = patient.getName();
+        this.surname = patient.getSurname();
+        this.address = patient.getAddress();
+        this.city = patient.getCity();
+        this.state = patient.getState();
+        this.phoneNumber = patient.getPhoneNumber();
+        this.upin = patient.getUpin();
+        for (GrantedAuthority auth: patient.getAuthorities()) {
+            this.roles.add(auth.getAuthority());
+        }
+    }
 
     public Long getId() {
         return id;
@@ -56,14 +49,6 @@ public class RegistrationRequest {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -120,13 +105,5 @@ public class RegistrationRequest {
 
     public void setUpin(String upin) {
         this.upin = upin;
-    }
-
-    public boolean isApproved() {
-        return approved;
-    }
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
     }
 }

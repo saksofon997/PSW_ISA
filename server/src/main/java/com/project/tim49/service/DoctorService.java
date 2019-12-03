@@ -1,10 +1,9 @@
 package com.project.tim49.service;
 
+import com.project.tim49.dto.AppointmentDTO;
+import com.project.tim49.dto.ClinicAdministratorDTO;
 import com.project.tim49.dto.DoctorDTO;
-import com.project.tim49.model.Appointment;
-import com.project.tim49.model.Clinic;
-import com.project.tim49.model.Doctor;
-import com.project.tim49.model.User;
+import com.project.tim49.model.*;
 import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.DoctorRepository;
 import com.project.tim49.repository.LoginRepository;
@@ -173,5 +172,19 @@ public class DoctorService {
 
 
         return true;
+    }
+    public List<AppointmentDTO> getAppointments(Long id){
+        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        List<Appointment> appointments = new ArrayList<>();
+        List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
+        if (doctor!= null){
+            appointments = doctor.getAppointments();
+            for (Appointment a: appointments) {
+                appointmentDTOS.add(new AppointmentDTO(a));
+            }
+        }else{
+            throw new ValidationException("Doctor not found.");
+        }
+        return appointmentDTOS;
     }
 }
