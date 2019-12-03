@@ -42,6 +42,11 @@ import { PatientPersonalProfileComponent } from './components/patient-profile/pa
 import { PatientClinicListingComponent } from './components/patient-home/patient-clinic-listing/patient-clinic-listing.component';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 import { PatientPendingAppointmentsListingComponent } from './components/patient-home/patient-pending-appointments-listing/patient-pending-appointments-listing.component';
+import { NurseFormComponent } from './components/adminC-dashboard/nurse-form/nurse-form.component';
+import { NurseHomeComponent } from './components/nurse-home/nurse-home.component';
+import { NurseListingComponent } from './components/adminC-dashboard/nurse-listing/nurse-listing.component';
+import { NurseProfileComponent } from './components/nurse-home/nurse-profile/nurse-profile.component';
+import { NursePersonalProfileComponent } from './components/nurse-home/nurse-profile/nurse-personal-profile/nurse-personal-profile.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +84,13 @@ import { PatientPendingAppointmentsListingComponent } from './components/patient
     PatientPersonalProfileComponent,
     PatientClinicListingComponent,
     PatientProfileComponent,
-    PatientPendingAppointmentsListingComponent
+    PatientPendingAppointmentsListingComponent,
+    NurseFormComponent,
+    NurseHomeComponent,
+    NurseListingComponent,
+    NurseFormComponent,
+    NurseProfileComponent,
+    NursePersonalProfileComponent
   ],
   imports: [
     BrowserModule,

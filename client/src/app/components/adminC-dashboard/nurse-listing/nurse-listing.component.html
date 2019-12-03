@@ -1,0 +1,63 @@
+<div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
+  <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+      <h3 class="display-8">Nurses</h3>
+      <p class="lead">Here you can see a list of clinic nurses.</p>
+  </div>
+</div>
+<p>
+    <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseExample"
+        aria-expanded="false" aria-controls="collapseExample">
+        Search nurses
+    </button>
+</p>
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+            <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label font-weight-bold" for="code">Name: </label>
+                    <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                        <input type="text" [ngClass]="{ 'is-invalid': submitted && searchForm.controls.name.errors }"
+                            class="form-control" formControlName="name" style="border: 0;" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label font-weight-bold" for="code">Surname: </label>
+                    <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                        <input type="text" [ngClass]="{ 'is-invalid': submitted && searchForm.controls.surname.errors }"
+                            class="form-control" formControlName="surname" style="border: 0;" />
+                    </div>
+                </div>
+                <button class="btn btn-primary ">Search</button>
+            </form>
+    </div>
+</div>
+<table class="table">
+  <thead>
+      <tr>
+          <th scope="col" *ngFor='let param of nurseHeaders'>{{param}}</th>
+          <th scope="col">
+              <button type="button" class="btn btn-light" (click)="addNewNurse()">Add</button>
+          </th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor='let nurse of nurses'>
+          <td> {{nurse.name}} </td>
+          <td> {{nurse.surname}} </td>
+          <td> {{nurse.phoneNumber}} </td>
+          <td> {{nurse.shiftStart}} </td>
+          <td> {{nurse.shiftEnd}} </td>
+          <td>
+              <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Options
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="deleteNurse(nurse)">Delete</a>
+                  </div>
+              </div>
+          </td>
+      </tr>
+  </tbody>
+</table>

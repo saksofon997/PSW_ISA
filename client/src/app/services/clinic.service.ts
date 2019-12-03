@@ -185,6 +185,36 @@ export class ClinicService {
 		);
 	}
 
+	addNurse(nurse) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.post('http://localhost:8080/api/nurse', JSON.stringify(nurse), { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
+	deleteNurse(id) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.delete(`http://localhost:8080/api/nurse/delete/${id}`, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
 	deleteDoctor(id) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
@@ -245,6 +275,22 @@ export class ClinicService {
 			);
 	}
 
+	getNurses(clinic_id) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get(`http://localhost:8080/api/nurse/getClinicNurses/${clinic_id}`, { headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	searchDoctors(doctor: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
@@ -253,6 +299,25 @@ export class ClinicService {
 		var searchParamsString = "";
 		searchParamsString += `name=${doctor.name}&surname=${doctor.surname}&clinic_id=${doctor.clinic_id}`
 		return this.http.get(`http://localhost:8080/api/doctor/search_doctors?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
+	searchNurses(nurse: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var searchParamsString = "";
+		searchParamsString += `name=${nurse.name}&surname=${nurse.surname}&clinic_id=${nurse.clinic_id}`
+		return this.http.get(`http://localhost:8080/api/nurse/search_nurse?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {

@@ -32,6 +32,11 @@ import { PatientPersonalProfileComponent } from './components/patient-profile/pa
 import { PatientClinicListingComponent } from './components/patient-home/patient-clinic-listing/patient-clinic-listing.component';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 import { PatientPendingAppointmentsListingComponent } from './components/patient-home/patient-pending-appointments-listing/patient-pending-appointments-listing.component';
+import { NurseHomeComponent } from './components/nurse-home/nurse-home.component';
+import { NurseProfileComponent } from './components/nurse-home/nurse-profile/nurse-profile.component';
+import { NursePersonalProfileComponent } from './components/nurse-home/nurse-profile/nurse-personal-profile/nurse-personal-profile.component';
+import { NurseListingComponent } from './components/adminC-dashboard/nurse-listing/nurse-listing.component';
+import { NurseFormComponent } from './components/adminC-dashboard/nurse-form/nurse-form.component';
 
 const routes: Routes = [
 	{
@@ -68,6 +73,8 @@ const routes: Routes = [
 			{path: 'type_of_examination_info', component: TypeOfExaminationFormComponent},
 			{path: 'ordinations', component: OrdinationListingComponent},
 			{path: 'ordination_form', component: OrdinationFormComponent},
+			{path: 'nurse_listing', component: NurseListingComponent},
+			{path: 'nurse_form', component: NurseFormComponent},
 
 		],
 		canActivate: [AuthGuardService],
@@ -94,17 +101,28 @@ const routes: Routes = [
 		canActivate: [AuthGuardService],
 		data: { roles: ['PATIENT']}
 	},
-	// {
-	// 	path: 'nurseHome',
-	// 	component: PatientHomeComponent,
-	// 	children:[
-	// 		{path: '', component: PatientPersonalProfileComponent},
-	// 		{path: 'profile', component: PatientPersonalProfileComponent},
+	{
+		path: 'nurse',
+		component: NurseHomeComponent,
+		children:[
+			{path: '', component: NurseHomeComponent},
+			//{path: 'work_calendar', component: NurseHomeComponent},
 
-	// 	],
-	// 	canActivate: [AuthGuardService],
-	// 	data: { roles: ['NURSE']}
-	// },
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ['NURSE']}
+	},
+	{
+		path: 'nurse/profile',
+		component: NurseProfileComponent,
+		children:[
+			{path: '', component: NursePersonalProfileComponent},
+			{path: 'profile', component: NursePersonalProfileComponent},
+
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ['NURSE']}
+	},
 	// {
 	// 	path: 'doctorHome',
 	// 	component: PatientHomeComponent,
