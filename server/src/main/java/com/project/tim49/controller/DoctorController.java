@@ -81,6 +81,22 @@ public class DoctorController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
+    @PutMapping(path="/change" )
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    public ResponseEntity changeDoctor(@RequestBody DoctorDTO doctorDTO){
+
+        if (doctorDTO == null || doctorDTO.getId() == null){
+            return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            DoctorDTO changedDTO = doctorService.changeDoctorData(doctorDTO);
+            return new ResponseEntity<>(changedDTO, HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>("This user does not exists!", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/search_doctors")
     @PreAuthorize("hasAuthority('ADMINC')")
     public ResponseEntity getAllByQuery(
