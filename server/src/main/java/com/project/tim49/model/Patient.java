@@ -2,6 +2,7 @@ package com.project.tim49.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /***********************************************************************
  * Module:  Patient.java
@@ -18,11 +19,11 @@ public class Patient extends User {
 
    @ManyToMany
    @JoinTable(name = "patients_finished_appointments", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
-   public List<Appointment> finishedAppointments;
+   public Set<Appointment> finishedAppointments;
 
-   @ManyToMany
+   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Appointment.class)
    @JoinTable(name = "patients_pending_appointments", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
-   public List<Appointment> pendingAppointments;
+   public Set<Appointment> pendingAppointments;
 
    public MedicalRecord getMedicalRecord() {
       return medicalRecord;
@@ -32,19 +33,19 @@ public class Patient extends User {
       this.medicalRecord = medicalRecord;
    }
 
-   public List<Appointment> getFinishedAppointments() {
+   public Set<Appointment> getFinishedAppointments() {
       return finishedAppointments;
    }
 
-   public void setFinishedAppointments(List<Appointment> finishedAppointments) {
+   public void setFinishedAppointments(Set<Appointment> finishedAppointments) {
       this.finishedAppointments = finishedAppointments;
    }
 
-   public List<Appointment> getPendingAppointments() {
+   public Set<Appointment> getPendingAppointments() {
       return pendingAppointments;
    }
 
-   public void setPendingAppointments(List<Appointment> pendingAppointments) {
+   public void setPendingAppointments(Set<Appointment> pendingAppointments) {
       this.pendingAppointments = pendingAppointments;
    }
 }

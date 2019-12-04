@@ -4,7 +4,15 @@ package com.project.tim49.model; /**********************************************
  * Purpose: Defines the Class Appointment
  ***********************************************************************/
 
+import com.project.tim49.repository.DoctorRepository;
+import com.project.tim49.service.DoctorService;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
+import javax.print.Doc;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
@@ -27,25 +35,43 @@ public class Appointment {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "ordination_id")
     public Ordination ordination;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "clinic_id")
     public Clinic clinic;
 
     // NEEDED?
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     public Patient patient     ;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "type_of_examination_id", referencedColumnName = "id")
     public TypeOfExamination typeOfExamination;
 
     @Column(name = "completed", nullable = false)
     private boolean completed;
+
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, targetEntity = Doctor.class)
+    @JoinTable(name = "appointment_doctors", inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"), joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"),
+            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
+            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
+    public Set<Doctor> doctors;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Patient.class)
+    @JoinTable(name = "patients_pending_appointments", inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
+    public Set<Patient> patients;
+//    @PreRemove
+//    public void removeFromDoctorAppointments(){
+//        System.out.println("doc.getId()");
+//        for (Doctor m : doctors) {
+//            m.getAppointments().remove(this);
+//        }
+//    }
 
     public Long getId() {
         return id;
@@ -125,5 +151,13 @@ public class Appointment {
 
     public void setEndingDateAndTime(long endingDateAndTime) {
         this.endingDateAndTime = endingDateAndTime;
+    }
+
+    public Set<Doctor> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(Set<Doctor> doctors) {
+        this.doctors = doctors;
     }
 }

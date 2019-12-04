@@ -15,6 +15,7 @@ import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PatientService {
@@ -61,7 +62,7 @@ public class PatientService {
             throw new ValidationException("Patient does not exist!");
         }
 
-        List<Appointment> pendingAppointments = patient.get().getPendingAppointments();
+        Set<Appointment> pendingAppointments = patient.get().getPendingAppointments();
         List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
         for(Appointment app: pendingAppointments) {
             AppointmentDTO appDTO = new AppointmentDTO(app);

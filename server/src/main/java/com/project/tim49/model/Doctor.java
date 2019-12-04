@@ -4,9 +4,13 @@ package com.project.tim49.model; /**********************************************
  * Purpose: Defines the Class Doctor
  ***********************************************************************/
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Doctor extends User {
@@ -19,8 +23,25 @@ public class Doctor extends User {
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public Clinic clinic;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    public List<Appointment> appointments = new ArrayList<Appointment>();
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+//    public List<Appointment> appointments = new ArrayList<Appointment>();
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctores", fetch = FetchType.LAZY)
+//    public List<Appointment> appointments = new ArrayList<Appointment>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, targetEntity = Appointment.class)
+    @JoinTable(name = "appointment_doctors", joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"),
+            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
+            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
+    public Set<Appointment> appointments;
+
+//    @PreRemove
+//    public void removeFromDoctorAppointments(){
+//        System.out.println("doc.getId()");
+//        for (Appointment m : appointments) {
+//            m.getDoctors().remove(this);
+//        }
+//    }
 
     @Column(name = "number_of_stars")
     private int numberOfStars;
@@ -52,11 +73,11 @@ public class Doctor extends User {
         this.clinic = clinic;
     }
 
-    public List<Appointment> getAppointments() {
+    public Set<Appointment> getAppointments() {
         return appointments;
     }
 
-    public void setAppointments(List<Appointment> appointments) {
+    public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
     }
 

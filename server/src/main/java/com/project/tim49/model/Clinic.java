@@ -37,6 +37,7 @@ public class Clinic {
    @Column(name = "numberOfReviews", nullable = true)
    private int numberOfReviews;
 
+   @OnDelete(action = OnDeleteAction.CASCADE)
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Ordination> ordination;
 
@@ -44,16 +45,19 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<ClinicAdministrator> clinicAdministrator;
 
-   @ManyToMany
+   @ManyToMany(cascade = CascadeType.DETACH)
    @JoinTable(name = "clinics_patients", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
    public List<Patient> patients;
 
+   @OnDelete(action = OnDeleteAction.CASCADE)
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Doctor> doctors;
 
+   @OnDelete(action = OnDeleteAction.CASCADE)
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Nurse> nurses;
 
+   @OnDelete(action = OnDeleteAction.CASCADE)
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Appointment> appointments;
 

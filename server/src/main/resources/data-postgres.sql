@@ -140,14 +140,14 @@ INSERT INTO public.ordination(
 	VALUES (nextval('ordination_id_seq'), 'Ordinacija3', '50', 1);
 
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type, doctor_id)
-    VALUES (nextval('appointment_id_seq'), 1575385200, 1575385800, 5 * 60 * 1000, 100, 1, 1, 11, 1, false, 'EX', 9);
+    id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type)
+    VALUES (nextval('appointment_id_seq'), 1575385200, 1575385800, 5 * 60 * 1000, 100, 1, 1, 11, 1, false, 'EX');
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type, doctor_id)
-    VALUES (nextval('appointment_id_seq'), 1575558000, 1575558600, 5 * 60 * 1000, 100, 1, 1, 11, 2, false, 'EX', 9);
+    id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type)
+    VALUES (nextval('appointment_id_seq'), 1575558000, 1575558600, 5 * 60 * 1000, 100, 1, 1, 11, 2, false, 'EX');
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type, doctor_id)
-    VALUES (nextval('appointment_id_seq'), 1575730800,1575731400, 5 * 60 * 1000, 100, 1, 1, 11, 3, false, 'EX', 9);
+    id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type)
+    VALUES (nextval('appointment_id_seq'), 1575730800,1575731400, 5 * 60 * 1000, 100, 1, 1, 11, 3, false, 'EX');
 
 INSERT INTO public.patients_pending_appointments(
     patient_id, appointment_id)
@@ -159,15 +159,22 @@ INSERT INTO public.patients_pending_appointments(
     patient_id, appointment_id)
     VALUES (11, 3);
 
-INSERT INTO public.doctor_appointments(
-    doctor_id, appointments_id)
-    VALUES (9, 1);
-INSERT INTO public.doctor_appointments(
-    doctor_id, appointments_id)
-    VALUES (9, 2);
-INSERT INTO public.doctor_appointments(
-    doctor_id, appointments_id)
-    VALUES (9, 3);
+INSERT INTO public.appointment_doctors(
+    appointment_id, doctor_id)
+    VALUES (1, 9);
+INSERT INTO public.appointment_doctors(
+    appointment_id, doctor_id)
+    VALUES (2, 9);
+INSERT INTO public.appointment_doctors(
+    appointment_id, doctor_id)
+    VALUES (3, 9);
+
+INSERT INTO public.clinics_patients(
+    clinic_id, patient_id)
+    VALUES (1, 11);
+INSERT INTO public.clinics_patients(
+    clinic_id, patient_id)
+    VALUES (1, 12);
 
 INSERT INTO public.nurse(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end)
