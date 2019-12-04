@@ -15,7 +15,7 @@ public class Nurse extends User {
     @Column(name = "shiftEnd", nullable = false)
     private String shiftEnd;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     public Clinic clinic;
 
     public String getShiftStart() {

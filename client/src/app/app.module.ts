@@ -46,6 +46,11 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { DoctorHomeComponent } from './components/doctor-home/doctor-home/doctor-home.component';
 import { DoctorCalendarComponent } from './components/doctor-home/doctor-calendar/doctor-calendar.component';
+import { NurseFormComponent } from './components/adminC-dashboard/nurse-form/nurse-form.component';
+import { NurseHomeComponent } from './components/nurse-home/nurse-home.component';
+import { NurseListingComponent } from './components/adminC-dashboard/nurse-listing/nurse-listing.component';
+import { NurseProfileComponent } from './components/nurse-home/nurse-profile/nurse-profile.component';
+import { NursePersonalProfileComponent } from './components/nurse-home/nurse-profile/nurse-personal-profile/nurse-personal-profile.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +90,14 @@ import { DoctorCalendarComponent } from './components/doctor-home/doctor-calenda
     PatientProfileComponent,
     PatientPendingAppointmentsListingComponent,
     DoctorHomeComponent,
-    DoctorCalendarComponent
+    DoctorCalendarComponent,
+    PatientPendingAppointmentsListingComponent,
+    NurseFormComponent,
+    NurseHomeComponent,
+    NurseListingComponent,
+    NurseFormComponent,
+    NurseProfileComponent,
+    NursePersonalProfileComponent
   ],
   imports: [
     BrowserModule,

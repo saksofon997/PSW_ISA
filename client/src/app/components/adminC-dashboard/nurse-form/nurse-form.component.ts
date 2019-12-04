@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
 import { ClinicService } from 'src/app/services/clinic.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-doctor-form',
-  templateUrl: './doctor-form.component.html',
-  styleUrls: ['./doctor-form.component.css']
+  selector: 'app-nurse-form',
+  templateUrl: './nurse-form.component.html',
+  styleUrls: ['./nurse-form.component.css']
 })
-export class DoctorFormComponent implements OnInit {
+export class NurseFormComponent implements OnInit {
 
   loginForm: FormGroup;
 
@@ -22,7 +22,7 @@ export class DoctorFormComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit() {
-    var doctor = history.state.data;
+    var nurse = history.state.data;
 
     var email = "";
     var name = "";
@@ -57,7 +57,7 @@ export class DoctorFormComponent implements OnInit {
       return;
     }
 
-    var doctor = {
+    var nurse = {
       email: this.loginForm.controls.email.value,
       name: this.loginForm.controls.name.value,
       surname: this.loginForm.controls.surname.value,
@@ -72,8 +72,8 @@ export class DoctorFormComponent implements OnInit {
     }
 
 
-    this.clinicService.addDoctor(doctor).subscribe(
-      (data) => { this.router.navigate(['../doctors'], { relativeTo: this.activatedRoute }); },
+    this.clinicService.addNurse(nurse).subscribe(
+      (data) => { this.router.navigate(['../nurse_listing'], { relativeTo: this.activatedRoute }); },
       (error) => { alert(error); return; }
     );
 
