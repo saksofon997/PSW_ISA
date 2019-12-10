@@ -33,6 +33,7 @@ import { DialogComponent } from './components/helperComponents/dialog/dialog.com
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
+import { APP_INITIALIZER } from '@angular/core';
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
@@ -54,6 +55,7 @@ import { NursePersonalProfileComponent } from './components/nurse-home/nurse-pro
 import { PatientListingComponent } from './components/doctor-home/patient-listing/patient-listing.component';
 import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/doctor-profile.component';
 import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-profile/doctor-my-profile.component';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -118,7 +120,13 @@ import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-pro
     NgbModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
-  providers: [CookieService], //UserService, AuthGuardService
+  providers: [CookieService, UserService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (userService: UserService) => function() {userService.refreshToken()},
+      deps: [UserService],
+      multi: true
+    }], //UserService, AuthGuardService
   bootstrap: [AppComponent],
   entryComponents: [ DialogComponent ],
 })

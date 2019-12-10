@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,10 +13,11 @@ export class UserService {
 	private user: any = null;
 	private token: any = null;
 	passwordChanged = true;
+	private get router() { return this.injector.get(Router); }
 
 	constructor(private cookieService: CookieService,
 		private http: HttpClient,
-		private router: Router) {
+		private injector: Injector) {
 		interval(200000)
 			.pipe(
 				flatMap(() => this.refreshToken())
@@ -41,14 +42,6 @@ export class UserService {
 		this.user = user;
 		this.cookieService.set('user', JSON.stringify(user));
 	}
-	// 1. Mogucnost: nadklasa za sve DTO...
-	// 2. u zavisnosti od role 4 pomocne alternate funkcije za usera na frontu
-	// alternateUser(toAdd){
-	// 	toAdd.forEach(element => {
-
-	// 	});
-	// 	this.user = user;
-	// }
 
 	setToken(token: any) {
 		this.token = token;
@@ -103,15 +96,13 @@ export class UserService {
 					if (!this.passwordChanged) {
 						this.router.navigate(['/change-password']);
 					} else {
-						if (this.checkLoggedIn().roles.indexOf('PATIENT')!= -1){
+						if (this.checkLoggedIn().roles.indexOf('PATIENT') != -1) {
 							this.router.navigate(['/patient']);
-						} else if (this.checkLoggedIn().roles.indexOf('DOCTOR')!= -1){
-							console.log('HERE')
+						} else if (this.checkLoggedIn().roles.indexOf('DOCTOR') != -1) {
 							this.router.navigate(['/doctor']);
-						} else if (this.checkLoggedIn().roles.indexOf('NURSE')!= -1){
-							console.log('HERE')
+						} else if (this.checkLoggedIn().roles.indexOf('NURSE') != -1) {
 							this.router.navigate(['/nurse']);
-						} else{
+						} else {
 							this.router.navigate(['/']);
 						}
 					}
@@ -145,9 +136,7 @@ export class UserService {
 	}
 
 	logout() {
-		this.user = null;
 		this.removeUser();
-		this.token = null;
 		this.removeToken();
 		this.router.navigate(['/login']);
 	}
@@ -191,6 +180,8 @@ export class UserService {
 					})
 				);
 		} else {
+			this.removeUser();
+			this.removeToken();
 			return new Observable();
 		}
 	}

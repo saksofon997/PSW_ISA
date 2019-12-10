@@ -30,7 +30,7 @@
                             <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1; else third">
                                 <a class="nav-link" routerLink="/patient">Home</a> </ng-container>
                         </ng-template>
-                        <ng-template #second>
+                        <ng-template #third>
                             <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('DOCTOR')!= -1; else fourth">
                                 <a class="nav-link" routerLink="/doctor">Home</a> </ng-container>
                         </ng-template>

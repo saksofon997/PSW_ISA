@@ -10,9 +10,11 @@ import com.project.tim49.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,6 +33,8 @@ public class ClinicAdministratorService {
     private LoginRepository userRepository;
     @Autowired
     private AuthorityService authorityService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void createNewClinicAdministrator(ClinicAdministratorDTO clinicAdministratorDTO){
         if (clinicAdministratorDTO.getClinic_id() == null){
@@ -52,7 +56,7 @@ public class ClinicAdministratorService {
         adminDTOtoReal(admin, clinicAdministratorDTO);
         admin.setClinic(clinic.get());
         admin.setAuthorities( authorityService.findByname("ADMINCC") );
-        admin.setPassword("TEMPPASS");
+        admin.setPassword(passwordEncoder.encode("123456"));
         admin.setPasswordChanged(false);
 
         clinicAdministratorRepository.save(admin);
