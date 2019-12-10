@@ -106,26 +106,17 @@ public class ClinicService {
         }
     }
 
-    public boolean deleteClinic(Long id) {
+    public void deleteClinic(Long id) {
         if (id != null) {
             Clinic forDelete = findOne(id);
-
             if(forDelete != null) {
-                System.out.println("STIGAOooo");
-
                 List<Appointment> clinicAppointments = forDelete.getAppointment();
-
                 for (Patient p: forDelete.getPatients()){
-                    System.out.println("STIGAO1");
-
                     ArrayList<Appointment> pendingApp = new ArrayList<Appointment>();
                     pendingApp.addAll(p.getPendingAppointments());
                     for (int i=0; i<pendingApp.size(); i++){
-                        System.out.println("STIGAO2");
-
                         if (clinicAppointments.contains(pendingApp.get(i))){
-                            System.out.println("STIGAO3");
-                            p.getPendingAppointments().remove(pendingApp.get(i));
+                            throw new IllegalStateException("Clinic has pending appointments and can not be deleted!");
                         }
                     }
                 }
@@ -133,9 +124,8 @@ public class ClinicService {
                     d.getAppointments().clear();
                 }
                 forDelete.getAppointment().clear();
-
                 clinicRepository.deleteById(id);
-                return true;
+                return;
             }
             throw new ValidationException("Clinic does not exist!");
         }

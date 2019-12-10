@@ -116,7 +116,7 @@ INSERT INTO public.type_of_examination(
 	VALUES (nextval('type_of_examination_id_seq'), 'Pregled prostate', '2000', 1);
 INSERT INTO public.type_of_examination(
 	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3000', 2);
+	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3000', 1);
 INSERT INTO public.type_of_examination(
 	id, name, price, clinic_id_id)
 	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '500', 1);

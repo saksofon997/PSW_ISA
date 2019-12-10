@@ -66,8 +66,9 @@ public class NurseService {
         Nurse nurse = nurseDTOtoReal(nurseDTO);
         nurse.setClinic(clinic.get());
         nurse.setAuthorities( authorityService.findByname("NURSE") );
-        nurse.setPassword("TEMPPASS");
+        nurse.setPassword("$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S");
         nurse.setPasswordChanged(false);
+        nurse.setEnabled(true);
 
         nurseRepository.save(nurse);
     }
