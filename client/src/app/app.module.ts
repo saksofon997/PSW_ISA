@@ -52,6 +52,9 @@ import { NurseHomeComponent } from './components/nurse-home/nurse-home.component
 import { NurseListingComponent } from './components/adminC-dashboard/nurse-listing/nurse-listing.component';
 import { NurseProfileComponent } from './components/nurse-home/nurse-profile/nurse-profile.component';
 import { NursePersonalProfileComponent } from './components/nurse-home/nurse-profile/nurse-personal-profile/nurse-personal-profile.component';
+import { PatientListingComponent } from './components/doctor-home/patient-listing/patient-listing.component';
+import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/doctor-profile.component';
+import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-profile/doctor-my-profile.component';
 import { UserService } from './services/user.service';
 
 @NgModule({
@@ -99,7 +102,10 @@ import { UserService } from './services/user.service';
     NurseListingComponent,
     NurseFormComponent,
     NurseProfileComponent,
-    NursePersonalProfileComponent
+    NursePersonalProfileComponent,
+    PatientListingComponent,
+    DoctorProfileComponent,
+    DoctorMyProfileComponent
   ],
   imports: [
     BrowserModule,

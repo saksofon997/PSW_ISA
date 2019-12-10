@@ -39,6 +39,9 @@ import { NurseProfileComponent } from './components/nurse-home/nurse-profile/nur
 import { NursePersonalProfileComponent } from './components/nurse-home/nurse-profile/nurse-personal-profile/nurse-personal-profile.component';
 import { NurseListingComponent } from './components/adminC-dashboard/nurse-listing/nurse-listing.component';
 import { NurseFormComponent } from './components/adminC-dashboard/nurse-form/nurse-form.component';
+import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-profile/doctor-my-profile.component';
+import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/doctor-profile.component';
+import { PatientListingComponent } from './components/doctor-home/patient-listing/patient-listing.component';
 
 const routes: Routes = [
 	{
@@ -99,7 +102,17 @@ const routes: Routes = [
 		children:[
 			{path: '', component: DoctorCalendarComponent},
 			{path: 'calendar', component: DoctorCalendarComponent},
-			{path: 'pending_appointments', component: PatientPendingAppointmentsListingComponent},
+			{path: 'patients', component: PatientListingComponent},
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ['DOCTOR']}
+	},
+	{
+		path: 'doctor/profile',
+		component: DoctorMyProfileComponent,
+		children:[
+			{path: '', component: DoctorProfileComponent},
+			{path: 'personal', component: DoctorProfileComponent}
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['DOCTOR']}

@@ -196,8 +196,6 @@ public class DoctorService {
                 }
             }
         }
-
-
         return true;
     }
     public List<AppointmentDTO> getAppointments(Long id){
@@ -213,5 +211,13 @@ public class DoctorService {
             throw new ValidationException("Doctor not found.");
         }
         return appointmentDTOS;
+    }
+
+    public DoctorDTO getDoctor(Long id){
+        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        if (doctor != null){
+            return new DoctorDTO(doctor);
+        }
+        throw new NoSuchElementException("Doctor with given id not found.");
     }
 }
