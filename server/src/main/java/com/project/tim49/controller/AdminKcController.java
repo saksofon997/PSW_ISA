@@ -81,14 +81,17 @@ public class AdminKcController {
     @DeleteMapping(path = "/deleteClinic/{id}")
     @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity deleteClinic(@PathVariable Long id) {
-        boolean deleted = clinicService.deleteClinic(id);
-        if (deleted){
-            return new ResponseEntity<>(id,
-                    HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Clinic deletion NOT successful!",
+        try{
+            clinicService.deleteClinic(id);
+        }catch (IllegalStateException e){
+            return new ResponseEntity<>(e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
+        }catch (ValidationException e){
+            return new ResponseEntity<>(e.getMessage(),
                     HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(id,
+                    HttpStatus.OK);
     }
 
     @GetMapping(path = "/getClinics",

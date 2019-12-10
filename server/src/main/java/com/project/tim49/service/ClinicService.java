@@ -2,8 +2,10 @@ package com.project.tim49.service;
 
 import com.project.tim49.dto.ClinicDTO;
 import com.project.tim49.dto.DoctorDTO;
+import com.project.tim49.model.Appointment;
 import com.project.tim49.model.Clinic;
 import com.project.tim49.model.Doctor;
+import com.project.tim49.model.Patient;
 import com.project.tim49.repository.ClinicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Service
 public class ClinicService {
@@ -103,13 +106,26 @@ public class ClinicService {
         }
     }
 
-    public boolean deleteClinic(Long id) {
+    public void deleteClinic(Long id) {
         if (id != null) {
             Clinic forDelete = findOne(id);
-
             if(forDelete != null) {
+                List<Appointment> clinicAppointments = forDelete.getAppointment();
+                for (Patient p: forDelete.getPatients()){
+                    ArrayList<Appointment> pendingApp = new ArrayList<Appointment>();
+                    pendingApp.addAll(p.getPendingAppointments());
+                    for (int i=0; i<pendingApp.size(); i++){
+                        if (clinicAppointments.contains(pendingApp.get(i))){
+                            throw new IllegalStateException("Clinic has pending appointments and can not be deleted!");
+                        }
+                    }
+                }
+                for (Doctor d: forDelete.getDoctors()) {
+                    d.getAppointments().clear();
+                }
+                forDelete.getAppointment().clear();
                 clinicRepository.deleteById(id);
-                return true;
+                return;
             }
             throw new ValidationException("Clinic does not exist!");
         }

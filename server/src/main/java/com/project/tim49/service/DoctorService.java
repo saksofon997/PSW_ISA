@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
 import javax.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DoctorService {
@@ -116,7 +113,8 @@ public class DoctorService {
             throw new ValidationException("No doctor with that ID!");
         }
 
-        List<Appointment> appointments = doctor.get().getAppointments();
+        //List<Appointment> appointments = doctor.get().getAppointments();
+        Set<Appointment> appointments = doctor.get().getAppointments();
         for (Appointment appointment: appointments) {
             if (!appointment.isCompleted()){
                 return true;
@@ -200,7 +198,7 @@ public class DoctorService {
     }
     public List<AppointmentDTO> getAppointments(Long id){
         Doctor doctor = doctorRepository.findById(id).orElse(null);
-        List<Appointment> appointments = new ArrayList<>();
+        Set<Appointment> appointments = new HashSet<>();
         List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
         if (doctor!= null){
             appointments = doctor.getAppointments();
