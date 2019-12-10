@@ -61,8 +61,11 @@ export class PatientListingComponent implements OnInit {
 		  )
   }
   
-  showPatient(){
-
+  ShowMedicalRecord(){
+    //TODO
+  }
+  startAppointment(){
+    //TODO
   }
 
   ngOnDestroy() {

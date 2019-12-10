@@ -37,6 +37,7 @@
           <th scope="col" *ngFor='let param of patientsHeaders'>
             {{param}}
           </th>
+          <th></th>
       </tr>
   </thead>
   <tbody>
@@ -53,7 +54,8 @@
                       Options
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" style="cursor: pointer;" (click)="showPatient(patient)">Show patient</a>
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="startAppointment(patient)">Start appointment</a>
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="ShowMedicalRecord(patient)">Show medical record</a>
                   </div>
               </div>
           </td>
