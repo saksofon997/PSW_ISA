@@ -10,8 +10,9 @@
     <div class="form-group row">
       <label for="Name" class="col-sm-2 col-form-label font-weight-bold">Name</label>
       <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-        <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.name.errors }" 
-        id="Name" formControlName="name" style="border: 0;" />
+        <input type="text" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.name.errors }" id="Name" formControlName="name"
+          style="border: 0;" />
         <div *ngIf="submitted && clinicForm.controls.name.errors" class="invalid-feedback">
           <div *ngIf="clinicForm.controls.name.errors.required">Name is required</div>
         </div>
@@ -21,8 +22,9 @@
     <div class="form-group row">
       <label for="Address" class="col-sm-2 col-form-label font-weight-bold">Address</label>
       <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-        <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.address.errors }" 
-        id="Address" formControlName="address" style="border: 0;" />
+        <input type="text" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.address.errors }" id="Address"
+          formControlName="address" style="border: 0;" />
         <div *ngIf="submitted && clinicForm.controls.address.errors" class="invalid-feedback">
           <div *ngIf="clinicForm.controls.address.errors.required">Address is required</div>
         </div>
@@ -31,8 +33,9 @@
     <div class="form-group row">
       <label for="City" class="col-sm-2 col-form-label font-weight-bold">City</label>
       <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-        <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.city.errors }" 
-        id="City" formControlName="city" style="border: 0;" />
+        <input type="text" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.city.errors }" id="City" formControlName="city"
+          style="border: 0;" />
         <div *ngIf="submitted && clinicForm.controls.city.errors" class="invalid-feedback">
           <div *ngIf="clinicForm.controls.city.errors.required">City is required</div>
         </div>
@@ -41,8 +44,9 @@
     <div class="form-group row">
       <label for="State" class="col-sm-2 col-form-label font-weight-bold">State</label>
       <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-        <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.state.errors }" 
-        id="State" formControlName="state" style="border: 0;" />
+        <input type="text" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.state.errors }" id="State" formControlName="state"
+          style="border: 0;" />
         <div *ngIf="submitted && clinicForm.controls.state.errors" class="invalid-feedback">
           <div *ngIf="clinicForm.controls.state.errors.required">State is required</div>
         </div>
@@ -51,8 +55,9 @@
     <div class="form-group row">
       <label for="Description" class="col-sm-2 col-form-label font-weight-bold">Description</label>
       <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-        <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.description.errors }" 
-        id="Description" formControlName="description" style="border: 0;" />
+        <input type="text" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.description.errors }" id="Description"
+          formControlName="description" style="border: 0;" />
         <div *ngIf="submitted && clinicForm.controls.description.errors" class="invalid-feedback">
           <div *ngIf="clinicForm.controls.description.errors.required">Description is required</div>
         </div>
@@ -63,7 +68,11 @@
     </div>
   </fieldset>
 
-  <button type="submit" class="btn btn-primary" *ngIf='!formDisabled'>Submit changes</button>
+  <div>
+    <button type="submit" class="btn btn-primary" *ngIf='!formDisabled'>Submit changes</button>
+    <button type="button" class="btn btn-outline-primary m-1" *ngIf='!formDisabled'
+      (click)='cancelChanges()'>Cancel</button>
+  </div>
 
 </form>
 <button type="button" class="btn btn-outline-primary" *ngIf='formDisabled' (click)='enableChangeInfo()'>Change

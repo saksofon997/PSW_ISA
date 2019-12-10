@@ -24,7 +24,6 @@ export class AdminCPersonalProfileComponent implements OnInit {
 
   ngOnInit() {
       this.getAdminInfo();
-      
   }
   getAdminInfo(){
     this.clinicAdminService.getAdminC().subscribe(
@@ -49,6 +48,13 @@ export class AdminCPersonalProfileComponent implements OnInit {
   }
   enableChangeInfo(){
     this.change=!this.change;
+  }
+  cancelChanges(){
+    this.change=!this.change;
+    this.getAdminInfo();
+  }
+  showChangePasswordForm(){
+    this.router.navigate(['../change-password']);
   }
   onSubmit(){
     this.submitted = true;

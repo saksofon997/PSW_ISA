@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PatientService } from 'src/app/services/patient.service';
 import { NurseService } from 'src/app/services/nurse.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nurse-personal-profile',
@@ -13,10 +14,10 @@ export class NursePersonalProfileComponent implements OnInit {
   nurse: any;
   form: FormGroup;
   change: boolean;
-  upinChange: boolean = true;
   submitted: boolean;
   constructor(private nurseService: NurseService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private router: Router) { }
 
   ngOnInit() {
     this.getNurseInfo();
@@ -45,6 +46,15 @@ export class NursePersonalProfileComponent implements OnInit {
 
   enableChangeInfo(){
     this.change=!this.change;
+  }
+
+  cancelChanges(){
+    this.change=!this.change;
+    this.getNurseInfo();
+  }
+
+  showChangePasswordForm(){
+    this.router.navigate(['../change-password']);
   }
 
   onSubmit(){

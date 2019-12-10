@@ -8,10 +8,12 @@ import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.DoctorRepository;
 import com.project.tim49.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
 import javax.validation.ValidationException;
+import java.net.URLEncoder;
 import java.util.*;
 
 @Service
@@ -25,6 +27,8 @@ public class DoctorService {
     private LoginRepository userRepository;
     @Autowired
     private AuthorityService authorityService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<DoctorDTO> getDoctors(Long id){
         if (id == null) {
@@ -63,7 +67,7 @@ public class DoctorService {
         Doctor doctor = docDTOtoReal(doctorDTO);
         doctor.setClinic(clinic.get());
         doctor.setAuthorities( authorityService.findByname("DOCTOR") );
-        doctor.setPassword("TEMPPASS");
+        doctor.setPassword(passwordEncoder.encode("123456"));
         doctor.setPasswordChanged(false);
 
         doctorRepository.save(doctor);

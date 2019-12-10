@@ -9,6 +9,7 @@ import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.LoginRepository;
 import com.project.tim49.repository.NurseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -28,6 +29,8 @@ public class NurseService {
     private LoginRepository userRepository;
     @Autowired
     private AuthorityService authorityService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<NurseDTO> getNurses(Long clinic_id){
         if (clinic_id == null) {
@@ -66,7 +69,7 @@ public class NurseService {
         Nurse nurse = nurseDTOtoReal(nurseDTO);
         nurse.setClinic(clinic.get());
         nurse.setAuthorities( authorityService.findByname("NURSE") );
-        nurse.setPassword("$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S");
+        nurse.setPassword(passwordEncoder.encode("123456"));
         nurse.setPasswordChanged(false);
         nurse.setEnabled(true);
 
