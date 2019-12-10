@@ -39,6 +39,17 @@ public class DoctorController {
         }
     }
 
+    @GetMapping(path = "/getDoctor/{doctor_id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    public ResponseEntity getDoctor(@PathVariable Long doctor_id) {
+        try {
+            DoctorDTO doctor = doctorService.getDoctor(doctor_id);
+            return new ResponseEntity<>(doctor, HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>(e, HttpStatus.NO_CONTENT);
+        }
+    }
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ADMINC')")
     public ResponseEntity addDoctor(@RequestBody DoctorDTO doctorDTO){
@@ -88,7 +99,6 @@ public class DoctorController {
         if (doctorDTO == null || doctorDTO.getId() == null){
             return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-
         try {
             DoctorDTO changedDTO = doctorService.changeDoctorData(doctorDTO);
             return new ResponseEntity<>(changedDTO, HttpStatus.OK);

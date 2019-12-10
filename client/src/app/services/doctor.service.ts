@@ -31,4 +31,36 @@ getAppointments(){
         })
       );
 }
+
+getDoctor() {
+  let user = JSON.parse(this.cookieService.get('user'));
+  let id = user["id"];
+  let headers = new HttpHeaders({
+    'Authorization': `Bearer ${this.userService.getToken()}`
+  });
+  return this.http.get(`http://localhost:8080/api/doctor/getDoctor/${id}`, { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+}
+changeDoctor(doctor){
+  let headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.userService.getToken()}`
+  });
+  return this.http.put(`http://localhost:8080/api/doctor/change`, JSON.stringify(doctor), { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+}
 }

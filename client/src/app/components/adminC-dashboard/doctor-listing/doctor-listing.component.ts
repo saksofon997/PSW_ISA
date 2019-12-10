@@ -23,8 +23,7 @@ export class DoctorListingComponent implements OnInit {
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		private userService: UserService,
-		private formBuilder: FormBuilder
-	) {
+		private formBuilder: FormBuilder) {
 		this.navigationSubscription = this.router.events.subscribe((e: any) => {
 			if (e instanceof NavigationEnd) {
 				this.clinicID = this.userService.getUser().clinic_id;

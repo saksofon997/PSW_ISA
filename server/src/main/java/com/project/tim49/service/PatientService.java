@@ -1,11 +1,12 @@
 package com.project.tim49.service;
 
 import com.project.tim49.dto.AppointmentDTO;
+import com.project.tim49.dto.DoctorDTO;
+import com.project.tim49.dto.PatientDTO;
 import com.project.tim49.dto.UserDTO;
-import com.project.tim49.model.Appointment;
-import com.project.tim49.model.ClinicCenterAdministrator;
-import com.project.tim49.model.Patient;
-import com.project.tim49.model.User;
+import com.project.tim49.model.*;
+import com.project.tim49.repository.ClinicRepository;
+import com.project.tim49.repository.DoctorRepository;
 import com.project.tim49.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,12 @@ import java.util.Set;
 public class PatientService {
     @Autowired
     PatientRepository patientRepository;
+
+    @Autowired
+    DoctorRepository doctorRepository;
+
+    @Autowired
+    ClinicRepository clinicRepository;
 
     public UserDTO findById(Long id) {
 
@@ -74,5 +81,31 @@ public class PatientService {
     // Returns reference to update entity
     public Patient getReference(Long id){
         return patientRepository.getOne(id);
+    }
+    public List<PatientDTO> getClinicPatients(Long id){
+        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        if (doctor!= null){
+            Clinic clinic = clinicRepository.findById(doctor.getClinic().getId()).orElse(null);
+            if (clinic != null ){
+                List<Patient> patients = clinic.getPatients();
+                List<PatientDTO> patientDTOS = new ArrayList<>();
+                for (Patient patient: patients) {
+                    patientDTOS.add(new PatientDTO(patient));
+                }
+                return patientDTOS;
+            }
+            throw new ValidationException("Clinic for this doctor does not exist.");
+        }
+        throw  new ValidationException("Doctor not recognized.");
+    }
+
+    public List<PatientDTO> getByQuery(String name, String surname) {
+        List<Patient> patients = patientRepository.getByQuery(name, surname);
+        List<PatientDTO> patientDTOS = new ArrayList<>();
+        for(Patient p: patients) {
+            PatientDTO patientDTO = new PatientDTO(p);
+            patientDTOS.add(patientDTO);
+        }
+        return patientDTOS;
     }
 }
