@@ -50,6 +50,9 @@ export class AdminCPersonalProfileComponent implements OnInit {
   enableChangeInfo(){
     this.change=!this.change;
   }
+  showChangePasswordForm(){
+    this.router.navigate(['../change-password']);
+  }
   onSubmit(){
     this.submitted = true;
 		if (this.form.invalid) {

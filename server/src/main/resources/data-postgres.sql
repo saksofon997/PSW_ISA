@@ -60,36 +60,36 @@ INSERT INTO public.clinic(
 
 INSERT INTO public.clinic_center_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'AdresaKcAdmina1', 'Grad1', 'adminkc1@kcv.rs', 'ImeKcAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1', true, true);
+	VALUES (nextval('users_id_seq'), 'AdresaKcAdmina1', 'Grad1', 'adminkc1@kcv.rs', 'ImeKcAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1010990100010', true, true);
 INSERT INTO public.clinic_center_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'AdresaKcAdmina2', 'Grad2', 'adminkc2@kcv.rs', 'ImeKcAdmina2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '2', true, false);
+	VALUES (nextval('users_id_seq'), 'AdresaKcAdmina2', 'Grad2', 'adminkc2@kcv.rs', 'ImeKcAdmina2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1012991100010', true, false);
 INSERT INTO public.clinic_center_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'AdresaKcAdmina3', 'Grad3', 'adminkc3@kcv.rs', 'ImeKcAdmina3', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime3', '3', true, false);
+	VALUES (nextval('users_id_seq'), 'AdresaKcAdmina3', 'Grad3', 'adminkc3@kcv.rs', 'ImeKcAdmina3', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime3', '1009992100010', true, false);
 
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica1', 'Grad1', 'adminc1@kcv.rs', 'ImeAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '21', '1', true, true);
+	VALUES (nextval('users_id_seq'), 'Ulica1', 'Grad1', 'adminc1@kcv.rs', 'ImeAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1011990100010', '1', true, true);
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica2', 'Grad2', 'adminc2@kcv.rs', 'ImeAdmina2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '22', '1', true, false);
+	VALUES (nextval('users_id_seq'), 'Ulica2', 'Grad2', 'adminc2@kcv.rs', 'ImeAdmina2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1110994100010', '1', true, false);
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica3', 'Grad3', 'adminc3@kcv.rs', 'ImeAdmina3', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime3', '23', '4', true, false);
+	VALUES (nextval('users_id_seq'), 'Ulica3', 'Grad3', 'adminc3@kcv.rs', 'ImeAdmina3', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime3', '1111992100010', '4', true, false);
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica4', 'Grad4', 'adminc4@kcv.rs', 'ImeAdmina4', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime4', '24', '5', true, false);
+	VALUES (nextval('users_id_seq'), 'Ulica4', 'Grad4', 'adminc4@kcv.rs', 'ImeAdmina4', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime4', '0506990100010', '5', true, false);
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica5', 'Grad5', 'adminc5@kcv.rs', 'ImeAdmina5', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime5', '25', '3', true, false);
+	VALUES (nextval('users_id_seq'), 'Ulica5', 'Grad5', 'adminc5@kcv.rs', 'ImeAdmina5', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime5', '1508993100010', '3', true, false);
 
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
-	VALUES (nextval('users_id_seq'), 'DocAddress1', 'Grad1', 'doc1@kcv.rs', 'ImeDoc1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1', '1', true, true, '12:00', '20:00', 2, 0);
+	VALUES (nextval('users_id_seq'), 'DocAddress1', 'Grad1', 'doc1@kcv.rs', 'ImeDoc1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1005990100010', '1', true, true, '12:00', '20:00', 2, 0);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
-	VALUES (nextval('users_id_seq'), 'DocAddress2', 'Grad2', 'doc2@kcv.rs', 'ImeDoc2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1', '1', true, true, '7:00', '15:00', 0, 0);
+	VALUES (nextval('users_id_seq'), 'DocAddress2', 'Grad2', 'doc2@kcv.rs', 'ImeDoc2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1007990100010', '1', true, true, '7:00', '15:00', 0, 0);
 
 INSERT INTO public.medication_dictionary(
 	id, code, name)
@@ -123,10 +123,10 @@ INSERT INTO public.type_of_examination(
 
 INSERT INTO public.patient(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica1', 'Grad1', 'patient1@kcv.rs', 'ImePacijenta1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '21', true, true);
+	VALUES (nextval('users_id_seq'), 'Ulica1', 'Grad1', 'patient1@kcv.rs', 'ImePacijenta1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1010997100010', true, true);
 INSERT INTO public.patient(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica2', 'Grad2', 'patient2@kcv.rs', 'ImePacijenta2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '22', true, false);
+	VALUES (nextval('users_id_seq'), 'Ulica2', 'Grad2', 'patient2@kcv.rs', 'ImePacijenta2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1012996100010', true, false);
 
 
 INSERT INTO public.ordination(
@@ -178,7 +178,7 @@ INSERT INTO public.clinics_patients(
 
 INSERT INTO public.nurse(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end)
-	VALUES (nextval('users_id_seq'), 'NurseA1', 'Grad1', 'nurse1@kcv.rs', 'Nurse1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1', '1', true, true, '12:00', '20:00');
+	VALUES (nextval('users_id_seq'), 'NurseA1', 'Grad1', 'nurse1@kcv.rs', 'Nurse1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1410995100010', '1', true, true, '12:00', '20:00');
 INSERT INTO public.nurse(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end)
-	VALUES (nextval('users_id_seq'), 'NurseA2', 'Grad2', 'nurse2@kcv.rs', 'Nurse2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1', '1', true, true, '7:00', '15:00');
+	VALUES (nextval('users_id_seq'), 'NurseA2', 'Grad2', 'nurse2@kcv.rs', 'Nurse2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '0110996100010', '1', true, true, '7:00', '15:00');
