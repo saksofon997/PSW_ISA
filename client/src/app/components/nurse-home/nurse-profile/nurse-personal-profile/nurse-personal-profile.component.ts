@@ -48,6 +48,11 @@ export class NursePersonalProfileComponent implements OnInit {
     this.change=!this.change;
   }
 
+  cancelChanges(){
+    this.change=!this.change;
+    this.getNurseInfo();
+  }
+
   showChangePasswordForm(){
     this.router.navigate(['../change-password']);
   }

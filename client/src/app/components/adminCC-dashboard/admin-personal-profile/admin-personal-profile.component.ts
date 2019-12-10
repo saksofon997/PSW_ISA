@@ -15,47 +15,51 @@ export class AdminPersonalProfileComponent implements OnInit {
   change: boolean;
   submitted: boolean;
   constructor(private clinicCenterAdminService: ClinicCenterAdminService,
-              private formBuilder: FormBuilder,
-              private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private cookieService: CookieService) { }
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private cookieService: CookieService) { }
 
   ngOnInit() {
+    this.getAdminInfo();
+  }
+
+  getAdminInfo() {
     this.clinicCenterAdminService.getAdminKc().subscribe((data) => {
       this.admin = data;
       this.loginForm = this.formBuilder.group({
-        name: [this.admin.name, [Validators.required, ]],
+        name: [this.admin.name, [Validators.required,]],
         surname: [this.admin.surname, [Validators.required]],
-        email:  [this.admin.email,[Validators.required, Validators.email]],
-        address:  [this.admin.address,[Validators.required]],
-        city:  [this.admin.city,[Validators.required]],
-        state:  [this.admin.state,[Validators.required]],
-        phoneNumber:  [this.admin.phoneNumber,[Validators.required]],
-        upin:  [this.admin.upin,[Validators.required,Validators.minLength(13),Validators.maxLength(13)]]
+        email: [this.admin.email, [Validators.required, Validators.email]],
+        address: [this.admin.address, [Validators.required]],
+        city: [this.admin.city, [Validators.required]],
+        state: [this.admin.state, [Validators.required]],
+        phoneNumber: [this.admin.phoneNumber, [Validators.required]],
+        upin: [this.admin.upin, [Validators.required, Validators.minLength(13), Validators.maxLength(13)]]
       });
-      this.change=true;
+      this.change = true;
     });;
-    
   }
-
-  getAdminInfo(){
-    
+  enableChangeInfo() {
+    this.change = !this.change;
   }
-  enableChangeInfo(){
-    this.change=!this.change;
+  cancelChanges() {
+    this.change = !this.change;
+    this.getAdminInfo();
   }
-  showChangePasswordForm(){
+  showChangePasswordForm() {
     this.router.navigate(['../change-password']);
   }
-  onSubmit(){
+
+  onSubmit() {
     this.submitted = true;
-		if (this.loginForm.invalid) {
-			return;
-		}
-		
-		var adminKc = {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    var adminKc = {
       id: JSON.parse(this.cookieService.get('user'))['id'],
-			email: this.loginForm.controls.email.value,
+      email: this.loginForm.controls.email.value,
       name: this.loginForm.controls.name.value,
       surname: this.loginForm.controls.surname.value,
       address: this.loginForm.controls.address.value,
@@ -63,11 +67,11 @@ export class AdminPersonalProfileComponent implements OnInit {
       state: this.loginForm.controls.state.value,
       phoneNumber: this.loginForm.controls.phoneNumber.value,
       upin: this.loginForm.controls.upin.value
-		}
+    }
 
     this.clinicCenterAdminService.changeAdminKc(adminKc).subscribe(
-      (data) => {this.change=!this.change; return;},
-      (error) => { alert(error);}
+      (data) => { this.change = !this.change; return; },
+      (error) => { alert(error); }
     );
 
   }

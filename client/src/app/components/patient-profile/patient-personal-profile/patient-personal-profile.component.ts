@@ -46,6 +46,11 @@ export class PatientPersonalProfileComponent implements OnInit {
     this.change=!this.change;
   }
 
+  cancelChanges(){
+    this.change=!this.change;
+    this.getPatientInfo();
+  }
+
   showChangePasswordForm(){
     this.router.navigate(['../change-password']);
   }
