@@ -24,12 +24,6 @@ public class PatientController {
     @Autowired
     PatientService patientService;
 
-    @Autowired
-    ClinicService clinicService;
-
-    @Autowired
-    DoctorService doctorService;
-
     @GetMapping(path="/{id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('PATIENT')")

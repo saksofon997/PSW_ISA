@@ -97,7 +97,7 @@ export class PatientService {
   }
   getClinicPatients(){
     let user = JSON.parse(this.cookieService.get('user'));
-    let id = user["id"];
+    let id = user["clinic_id"];
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.userService.getToken()}`
     });

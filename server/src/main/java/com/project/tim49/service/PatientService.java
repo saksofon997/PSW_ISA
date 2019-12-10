@@ -83,21 +83,21 @@ public class PatientService {
         return patientRepository.getOne(id);
     }
     public List<PatientDTO> getClinicPatients(Long id){
-        Doctor doctor = doctorRepository.findById(id).orElse(null);
-        if (doctor!= null){
-            Clinic clinic = clinicRepository.findById(doctor.getClinic().getId()).orElse(null);
-            if (clinic != null ){
-                List<Patient> patients = clinic.getPatients();
-                List<PatientDTO> patientDTOS = new ArrayList<>();
-                for (Patient patient: patients) {
-                    patientDTOS.add(new PatientDTO(patient));
-                }
-                return patientDTOS;
-            }
+        if (id== null){
+            throw  new ValidationException("Clinic not recognized.");
+        }
+        Clinic clinic = clinicRepository.findById(id).orElse(null);
+        if (clinic == null ) {
             throw new ValidationException("Clinic for this doctor does not exist.");
         }
-        throw  new ValidationException("Doctor not recognized.");
+        List<Patient> patients = clinic.getPatients();
+        List<PatientDTO> patientDTOS = new ArrayList<>();
+        for (Patient patient: patients) {
+            patientDTOS.add(new PatientDTO(patient));
+        }
+        return patientDTOS;
     }
+
 
     public List<PatientDTO> getByQuery(String name, String surname) {
         List<Patient> patients = patientRepository.getByQuery(name, surname);
