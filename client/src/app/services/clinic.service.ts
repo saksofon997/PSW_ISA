@@ -61,6 +61,22 @@ export class ClinicService {
 			})
 		);
 	}
+	approvePrescription(prescription: any) {
+		let user = JSON.parse(this.cookieService.get('user'));
+    	let id = user["clinic_id"];
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.put(`http://localhost:8080/api/prescriptions/approve/${id}`, JSON.stringify(prescription), { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	  }
 	getOrdinations(clinicID: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
@@ -76,6 +92,21 @@ export class ClinicService {
 				})
 			);
 	}
+	getPrescriptions(clinicID: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get(`http://localhost:8080/api/prescriptions/${clinicID}`, { headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	  }
 	searchOrdinations(ordination: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',

@@ -42,6 +42,8 @@ import { NurseFormComponent } from './components/adminC-dashboard/nurse-form/nur
 import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-profile/doctor-my-profile.component';
 import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/doctor-profile.component';
 import { PatientListingComponent } from './components/doctor-home/patient-listing/patient-listing.component';
+import { NursePatientListingComponent } from './components/nurse-home/nurse-patient-listing/nurse-patient-listing.component';
+import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
 
 const routes: Routes = [
 	{
@@ -132,7 +134,8 @@ const routes: Routes = [
 		component: NurseHomeComponent,
 		children:[
 			{path: '', component: NurseProfileComponent},
-			//{path: '', component: SCHEDULER},
+			{path: 'patients', component: NursePatientListingComponent},
+			{path: 'prescriptions', component: PrescriptionListingComponent},
 
 		],
 		canActivate: [AuthGuardService],
