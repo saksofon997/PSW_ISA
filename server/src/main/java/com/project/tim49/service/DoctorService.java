@@ -128,6 +128,28 @@ public class DoctorService {
         return false;
     }
 
+    public boolean isAvailable(Long doctor_id, long startingTimeStamp, long duration){
+        Optional<Doctor> doctor = doctorRepository.findById(doctor_id);
+        if (!doctor.isPresent()){
+            throw new ValidationException("No doctor with that ID!");
+        }
+
+        Set<Appointment> appointments = doctor.get().getAppointments();
+        for (Appointment appointment: appointments) {
+            if (appointment.isCompleted()){
+                continue;
+            }
+            if (appointment.getStartingDateAndTime() >= startingTimeStamp
+                    && appointment.getStartingDateAndTime() <= startingTimeStamp + duration){
+                return false;
+            }
+            if (appointment.getEndingDateAndTime() >= startingTimeStamp){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void deleteDoctor(Long id){
         Optional<Doctor> doctor = doctorRepository.findById(id);
         if (!doctor.isPresent()){

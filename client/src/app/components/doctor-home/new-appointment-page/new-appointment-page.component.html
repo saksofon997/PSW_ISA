@@ -6,23 +6,24 @@
 </div>
 
 <form *ngIf='form' [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="form-group row">
-        <label for="dateAndTime" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Date and time</label>
-        <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
-            <div class="col-lg-10 col-sm-10 col-md-10">
-                <input type="datetime" formControlName="dateAndTime" [owlDateTime]="dt2" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && form.controls.dateAndTime.errors }" id="dateAndTime"
-                    style="border: 0;">
-                <div *ngIf="submitted && form.controls.dateAndTime.errors" class="invalid-feedback">
-                    <div *ngIf="form.controls.dateAndTime.errors.required">Date and time is required</div>
+    <fieldset [disabled]="startAppointmentNow">
+        <div class="form-group row">
+            <label for="dateAndTime" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Date and time</label>
+            <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+                <div class="col-lg-10 col-sm-10 col-md-10">
+                    <input type="datetime" formControlName="dateAndTime" [owlDateTime]="dt2" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && form.controls.dateAndTime.errors }" id="dateAndTime"
+                        style="border: 0;">
+                    <div *ngIf="submitted && form.controls.dateAndTime.errors" class="invalid-feedback">
+                        <div *ngIf="form.controls.dateAndTime.errors.required">Date and time is required</div>
+                    </div>
                 </div>
+                <span *ngIf="!startAppointmentNow" class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
+                        class="fa fa-calendar"></i> </span>
+                <owl-date-time #dt2></owl-date-time>
             </div>
-            <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
-                    class="fa fa-calendar"></i> </span>
-            <owl-date-time #dt2></owl-date-time>
-
         </div>
-    </div>
+    </fieldset>
 
     <div class="form-group row">
         <label for="duration" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Duration</label>
@@ -47,7 +48,8 @@
         <label for="typeOfExamination" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Type of
             examination</label>
         <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
-            <select formControlName="typeOfExamination" class="m-1 form-control" (change)="setPriceFromTypeOfExamination()"
+            <select formControlName="typeOfExamination" class="m-1 form-control"
+                (change)="setPriceFromTypeOfExamination()"
                 [ngClass]="{ 'is-invalid': submitted && form.controls.typeOfExamination.errors }" id="typeOfExamination"
                 style="border: 0; width: 100%;">
                 <option value=""></option>
@@ -99,7 +101,7 @@
                 </h2>
             </div>
 
-            <div id="collapseOne" class="collapse show border" aria-labelledby="headingOne"
+            <div id="collapseOne" class="collapse border" aria-labelledby="headingOne"
                 data-parent="#accordionExample">
                 <div class="card-body">
                     <div class="row">
@@ -125,7 +127,8 @@
     </div>
 
     <div>
-        <button type="submit" class="btn btn-primary">Create appointment</button>
+        <button type="submit" *ngIf="!startAppointmentNow" class="btn btn-primary">Create appointment</button>
+        <button type="submit" *ngIf="startAppointmentNow" class="btn btn-primary">Start appointment</button>
         <button type="button" class="btn btn-outline-primary m-1" (click)='cancelChanges()'>Cancel</button>
     </div>
 </form>
