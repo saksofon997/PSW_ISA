@@ -56,6 +56,7 @@ import { PatientListingComponent } from './components/doctor-home/patient-listin
 import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/doctor-profile.component';
 import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-profile/doctor-my-profile.component';
 import { UserService } from './services/user.service';
+import { NurseCalendarComponent } from './components/nurse-home/nurse-calendar/nurse-calendar.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { UserService } from './services/user.service';
     NursePersonalProfileComponent,
     PatientListingComponent,
     DoctorProfileComponent,
-    DoctorMyProfileComponent
+    DoctorMyProfileComponent,
+    NurseCalendarComponent
   ],
   imports: [
     BrowserModule,

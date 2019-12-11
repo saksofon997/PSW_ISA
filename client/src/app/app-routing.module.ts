@@ -42,6 +42,7 @@ import { NurseFormComponent } from './components/adminC-dashboard/nurse-form/nur
 import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-profile/doctor-my-profile.component';
 import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/doctor-profile.component';
 import { PatientListingComponent } from './components/doctor-home/patient-listing/patient-listing.component';
+import { NurseCalendarComponent } from './components/nurse-home/nurse-calendar/nurse-calendar.component';
 
 const routes: Routes = [
 	{
@@ -131,7 +132,7 @@ const routes: Routes = [
 		path: 'nurse',
 		component: NurseHomeComponent,
 		children:[
-			//{path: '', component: NurseProfileComponent},
+			{path: '', component: NurseCalendarComponent},
 			//{path: '', component: SCHEDULER},
 
 		],

@@ -1,9 +1,6 @@
 package com.project.tim49.controller;
 
-import com.project.tim49.dto.ClinicAdministratorDTO;
-import com.project.tim49.dto.DoctorDTO;
-import com.project.tim49.dto.RegistrationDTO;
-import com.project.tim49.dto.UserDTO;
+import com.project.tim49.dto.*;
 import com.project.tim49.model.*;
 import com.project.tim49.security.TokenUtils;
 import com.project.tim49.security.auth.JwtAuthenticationRequest;
@@ -82,6 +79,8 @@ public class AuthenticationController {
             userState.user = new ClinicAdministratorDTO((ClinicAdministrator) user);
         } else if (user instanceof Doctor){
             userState.user = new DoctorDTO((Doctor)user);
+        }else if (user instanceof Nurse){
+            userState.user = new NurseDTO((Nurse)user);
         } else {
             userState.user = new UserDTO(user);
         }
