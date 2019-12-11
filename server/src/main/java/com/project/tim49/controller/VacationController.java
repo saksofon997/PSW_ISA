@@ -2,8 +2,6 @@ package com.project.tim49.controller;
 
 import com.project.tim49.dto.UserDTO;
 import com.project.tim49.dto.VacationDTO;
-import com.project.tim49.service.ClinicService;
-import com.project.tim49.service.DoctorService;
 import com.project.tim49.service.EmailService;
 import com.project.tim49.service.VacationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,28 +43,38 @@ public class VacationController {
 
     @GetMapping(path="/requests/{id}")
     @PreAuthorize("hasAuthority('ADMINC')")
-    public ResponseEntity<List<VacationDTO>> getVacationRequests(@PathVariable("id") Long clinic_id) {
+    public ResponseEntity<Object> getVacationRequests(@PathVariable("id") Long clinic_id) {
+        if(clinic_id == null)
+            return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
+
         List<VacationDTO> vacations = vacationService.findAll(clinic_id);
-        return new ResponseEntity(vacations, HttpStatus.OK);
+        return new ResponseEntity<>(vacations, HttpStatus.OK);
     }
 
     @GetMapping(path="/{id}")
     @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('NURSE')")
-    public ResponseEntity<List<VacationDTO>> getStaffVacations(@PathVariable("id") Long staff_id) {
+    public ResponseEntity<Object> getStaffVacations(@PathVariable("id") Long staff_id) {
+        if(staff_id == null)
+            return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
+
         List<VacationDTO> vacations = vacationService.getVacationsStaff(staff_id);
-        return new ResponseEntity(vacations, HttpStatus.OK);
+        return new ResponseEntity<>(vacations, HttpStatus.OK);
     }
 
     @PutMapping(path="/approve/{id}")
     @PreAuthorize("hasAuthority('ADMINC')")
-    public ResponseEntity approveVacationRequest(@PathVariable("id") Long vacation_id) {
+    public ResponseEntity<Object> approveVacationRequest(@PathVariable("id") Long vacation_id) {
+        if(vacation_id == null)
+            return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
         VacationDTO approved = vacationService.approveVacationRequest(vacation_id);
-        return new ResponseEntity(approved, HttpStatus.OK);
+        return new ResponseEntity<>(approved, HttpStatus.OK);
     }
 
     @PutMapping(path="/deny/{id}")
     @PreAuthorize("hasAuthority('ADMINC')")
-    public ResponseEntity denyVacationRequest(@PathVariable("id") Long vacation_id, @RequestBody String message) throws InterruptedException {
+    public ResponseEntity<String> denyVacationRequest(@PathVariable("id") Long vacation_id, @RequestBody String message) throws InterruptedException {
+        if(vacation_id == null)
+            return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
         try{
             UserDTO denied = vacationService.denyVacationRequest(vacation_id);
             this.emailService.sendVacationRequestDeniedEmail(denied, message);
