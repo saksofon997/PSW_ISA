@@ -88,33 +88,45 @@ export class NewAppointmentPageComponent implements OnInit {
 			duration: [, [Validators.required,]],
 			typeOfExamination: [, [Validators.required,]],
 			ordination: [, [Validators.required,]],
+			price: [, [Validators.required,]],
 		});
 
+	}
+
+	setPriceFromTypeOfExamination(){
+		let type = this.typesOfExamination.find( element => element.id == this.form.controls.typeOfExamination.value);
+		if (!type) {
+			this.form.controls['price'].setValue("");
+			return;
+		}
+		this.form.controls['price'].setValue(type.price);
 	}
 
 	onSubmit() {
 		this.submitted = true;
 
-		// console.log(this.form.controls.dateAndTime.value.getTime())
-		console.log(this.form.controls.typeOfExamination.value)
-		console.log(this.form.controls.duration.value)
-		console.log(this.form.controls.ordination.value)
-
 		if (this.form.invalid) {
 			return;
 		}
 
-		// var doctor = {
-		//   id: JSON.parse(this.cookieService.get('user'))['id'],
-		//   email: this.loginForm.controls.email.value,
-		//   name: this.loginForm.controls.name.value,
-		//   surname: this.loginForm.controls.surname.value,
-		//   address: this.loginForm.controls.address.value,
-		//   city: this.loginForm.controls.city.value,
-		//   state: this.loginForm.controls.state.value,
-		//   phoneNumber: this.loginForm.controls.phoneNumber.value,
-		//   upin: this.loginForm.controls.upin.value
-		// }
+		let doctor = this.userService.getUser();
+		if (!doctor){
+			alert("Invalid user");
+			return;
+		}
+		let clinic_id = doctor.clinic_id;
+
+		let appointment = {
+			startingDateAndTime: this.form.controls.dateAndTime.value.getTime(),
+			duration: this.form.controls.duration.value,
+			typeOfExamination: { id: this.form.controls.typeOfExamination.value },
+			ordination: { id: this.form.controls.ordination.value },
+			price: this.form.controls.price.value,
+			clinic: { id: clinic_id },
+			patient: { id: this.patient.id }
+		}
+
+		console.log(appointment);
 
 		// this.doctorService.changeDoctor(doctor).subscribe(
 		//   (data) => { this.change = !this.change; return; },

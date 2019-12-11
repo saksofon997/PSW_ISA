@@ -131,7 +131,7 @@ import { NewAppointmentPageComponent } from './components/doctor-home/new-appoin
   providers: [CookieService, UserService,
     {
       provide: APP_INITIALIZER,
-      useFactory: (userService: UserService) => function() {userService.refreshToken()},
+      useFactory: (userService: UserService) => function() { /*userService.refreshToken()*/},
       deps: [UserService],
       multi: true
     }], //UserService, AuthGuardService
