@@ -31,6 +31,42 @@ getAppointments(){
         })
       );
 }
+getOneAppointment(appID){
+  let user = JSON.parse(this.cookieService.get('user'));
+    let id = user["id"];
+    let headers = new HttpHeaders({
+      'Accept': 'application/json',
+			'Authorization': `Bearer ${JSON.parse(this.cookieService.get('token')).accessToken}`
+    });
+    return this.http.get(`http://localhost:8080/api/doctor/oneAppointment/${id}/${appID}`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+          console.log(response.body);
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+}
+
+getVacations(){
+  let user = JSON.parse(this.cookieService.get('user'));
+    let id = user["id"];
+    let headers = new HttpHeaders({
+      'Accept': 'application/json',
+			'Authorization': `Bearer ${JSON.parse(this.cookieService.get('token')).accessToken}`
+    });
+    return this.http.get(`http://localhost:8080/api/vacations/${id}`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+}
 
 getDoctor() {
   let user = JSON.parse(this.cookieService.get('user'));

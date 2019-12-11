@@ -75,7 +75,14 @@ export class NurseCalendarComponent implements OnInit {
     let user = JSON.parse(this.cookieService.get('user'));
     this.daystart = parseInt(user.shiftStart);
     this.dayend = parseInt(user.shiftEnd);
-    console.log(user)
+    this.nurseService.getVacations().subscribe(
+      (data) => {
+       this.populateCalendarEvents(data);
+      },
+      (error) => { 
+        alert(error);
+      }
+    );
   }
 
   actions: CalendarEventAction[] = [
@@ -152,9 +159,9 @@ export class NurseCalendarComponent implements OnInit {
   populateCalendarEvents(data){
     data.forEach(appointment => {
       var  eventToAdd = {
-        start: new Date(appointment.startingDateAndTime*1000),
-        end: new Date(appointment.endingDateAndTime*1000),
-        title: appointment.typeOfExamination.name,
+        start: new Date(appointment.startDate*1000),
+        end: new Date(appointment.endDate*1000),
+        title: "Vacation",
         color: colors.red,
         actions: this.actions
       }

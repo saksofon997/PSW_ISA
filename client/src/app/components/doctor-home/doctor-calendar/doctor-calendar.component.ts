@@ -59,8 +59,8 @@ export class DoctorCalendarComponent implements OnInit{
   daystart: Number;
   dayend: Number;
   modalData: {
+    appointment: any;
     action: string;
-    event: CalendarEvent;
   };
   excludeDays: number[] = [0, 6];
 
@@ -84,6 +84,15 @@ export class DoctorCalendarComponent implements OnInit{
         alert(error);
       }
     );
+
+    this.doctorService.getVacations().subscribe(
+      (data) => {
+       this.populateCalendarEvents(data);
+      },
+      (error) => { 
+        alert(error);
+      }
+    );
   }
 
   actions: CalendarEventAction[] = [
@@ -92,14 +101,6 @@ export class DoctorCalendarComponent implements OnInit{
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.handleEvent('Edited', event);
-      }
-    },
-    {
-      label: '<i class="fa fa-fw fa-times"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
       }
     }
   ];
@@ -143,8 +144,18 @@ export class DoctorCalendarComponent implements OnInit{
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    let appointment = {}
+    this.doctorService.getOneAppointment(event.id).subscribe(
+      (data) => {
+        appointment=data;
+        this.modalData = { appointment, action };
+        this.modal.open(this.modalContent, { size: 'lg' });
+      },
+      (error) => { 
+        alert(error);
+      }
+    );
+    
   }
 
   addEvent(): void {
@@ -179,9 +190,23 @@ export class DoctorCalendarComponent implements OnInit{
   populateCalendarEvents(data){
     data.forEach(appointment => {
       var  eventToAdd = {
+        id: appointment.id,
         start: new Date(appointment.startingDateAndTime*1000),
         end: new Date(appointment.endingDateAndTime*1000),
         title: appointment.typeOfExamination.name,
+        color: colors.red,
+        actions: this.actions
+      }
+      this.events.push(eventToAdd);
+    });
+  }
+  populateVacations(data){
+    data.forEach(vacation => {
+      var  eventToAdd = {
+        id: vacation.id,
+        start: new Date(vacation.startingDateAndTime*1000),
+        end: new Date(vacation.endingDateAndTime*1000),
+        title: vacation.typeOfExamination.name,
         color: colors.red,
         actions: this.actions
       }
@@ -199,5 +224,13 @@ export class DoctorCalendarComponent implements OnInit{
 		var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
 		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min;
 		return time;
-	  }
+    }
+    startExamination(){
+      this.modal.dismissAll();
+      //TODO
+      //this.router.navigate(['../examination'], { relativeTo: this.activatedRoute, state: {data: clinic}});
+    }
+    close(){
+      this.modal.dismissAll();
+    }
 }
