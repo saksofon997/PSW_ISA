@@ -175,11 +175,11 @@ public class VacationService {
 
         List<Doctor> doctors = clinic.get().getDoctors();
         for(Doctor doc : doctors)
-            doc.getVacations().forEach(n -> { if(n.isApproved() == false) vacationList.add(new VacationDTO(n)); });
+            doc.getVacations().forEach(n -> { if(!n.isApproved()) vacationList.add(new VacationDTO(n)); });
 
         List<Nurse> nurses = clinic.get().getNurses();
         for(Nurse nurse : nurses)
-            nurse.getVacations().forEach(n -> { if(n.isApproved() == false) vacationList.add(new VacationDTO(n)); });
+            nurse.getVacations().forEach(n -> { if(!n.isApproved()) vacationList.add(new VacationDTO(n)); });
 
         return vacationList;
 
@@ -199,10 +199,10 @@ public class VacationService {
         List<VacationDTO> vacationList = new ArrayList<VacationDTO>();
 
         if(doctor.isPresent()) {
-            doctor.get().getVacations().forEach(n -> { if(n.isApproved() == true) vacationList.add(new VacationDTO(n)); });
+            doctor.get().getVacations().forEach(n -> { if(n.isApproved()) vacationList.add(new VacationDTO(n)); });
             return vacationList;
         } else {
-            nurse.get().getVacations().forEach(n -> { if(n.isApproved() == true) vacationList.add(new VacationDTO(n)); });
+            nurse.get().getVacations().forEach(n -> { if(n.isApproved()) vacationList.add(new VacationDTO(n)); });
             return vacationList;
         }
     }

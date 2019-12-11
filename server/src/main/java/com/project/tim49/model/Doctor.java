@@ -43,7 +43,7 @@ public class Doctor extends User {
 //        }
 //    }
 
-    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY)
     public List<Vacation> vacations = new ArrayList<Vacation>();
 
     public List<Vacation> getVacations() {

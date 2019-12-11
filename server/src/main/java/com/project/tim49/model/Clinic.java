@@ -65,6 +65,18 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic_id", fetch = FetchType.LAZY)
    public List<TypeOfExamination> typesOfExamination;
 
+   @OnDelete(action = OnDeleteAction.CASCADE)
+   @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
+   public List<Prescription> prescriptions;
+
+   public List<Prescription> getPrescriptions() {
+      return prescriptions;
+   }
+
+   public void setPrescriptions(List<Prescription> prescriptions) {
+      this.prescriptions = prescriptions;
+   }
+
    public String getName() {
       return name;
    }

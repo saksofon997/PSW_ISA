@@ -20,7 +20,7 @@ public class Nurse extends User {
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     public Clinic clinic;
 
-    @OneToMany(mappedBy = "nurse", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY)
     public List<Vacation> vacations = new ArrayList<Vacation>();
 
     public List<Vacation> getVacations() {
