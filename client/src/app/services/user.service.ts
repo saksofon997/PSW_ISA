@@ -176,6 +176,8 @@ export class UserService {
 						return this.user;
 					}),
 					catchError((response) => {
+						this.removeUser();
+						this.removeToken();
 						return throwError(response.error);
 					})
 				);

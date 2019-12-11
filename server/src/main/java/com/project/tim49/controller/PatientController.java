@@ -26,7 +26,7 @@ public class PatientController {
 
     @GetMapping(path="/{id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('PATIENT')")
+    @PreAuthorize("hasAuthority('PATIENT') or hasAuthority('DOCTOR')")
     public ResponseEntity getPatient(@PathVariable Long id) {
         UserDTO patient = patientService.findById(id);
         return new ResponseEntity<>(patient, HttpStatus.OK);

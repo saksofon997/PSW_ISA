@@ -30,6 +30,20 @@ export class PatientService {
         })
       );
   }
+  getPatientById(patient_id) {
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    return this.http.get(`http://localhost:8080/api/patient/${patient_id}`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
   changePatient(patient) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
