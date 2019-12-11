@@ -28,15 +28,23 @@
                         </ng-container>
                         <ng-template #second>
                             <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1; else third">
-                                <a class="nav-link" routerLink="/patient">Home</a> </ng-container>
+                                <a class="nav-link" routerLink="/patient">Home</a>
+                             </ng-container>
                         </ng-template>
                         <ng-template #third>
                             <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('DOCTOR')!= -1; else fourth">
-                                <a class="nav-link" routerLink="/doctor">Home</a> </ng-container>
+                                <a class="nav-link" routerLink="/doctor">Home</a>
+                             </ng-container>
                         </ng-template>
                         <ng-template #fourth>
+                            <ng-container  *ngIf="userService.checkLoggedIn().roles.indexOf('NURSE')!= -1; else fifth">
+                                <a class="nav-link" routerLink="/nurse">Home</a>
+                             </ng-container>
+                        </ng-template>
+                        <ng-template #fifth>
                             <ng-container>
-                                <a class="nav-link" routerLink="/">Home</a> </ng-container>
+                                <a class="nav-link" routerLink="/">Home</a>
+                             </ng-container>
                         </ng-template>
                     </li>
                     <li class="nav-item" *ngIf="userService.checkLoggedIn()">
@@ -49,6 +57,8 @@
                             routerLink="/patient/profile">My Profile</a>
                         <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('DOCTOR')!= -1"
                             routerLink="/doctor/profile">My Profile</a>
+                        <a class="nav-link" *ngIf="userService.checkLoggedIn().roles.indexOf('NURSE')!= -1"
+                            routerLink="/nurse/profile">My Profile</a>
 
                     </li>
                     <li class="nav-item" *ngIf="!userService.checkLoggedIn()">
