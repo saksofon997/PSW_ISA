@@ -5,6 +5,8 @@ package com.project.tim49.model; /**********************************************
  ***********************************************************************/
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Nurse extends User {
@@ -17,6 +19,17 @@ public class Nurse extends User {
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     public Clinic clinic;
+
+    @OneToMany(mappedBy = "nurse", fetch = FetchType.LAZY)
+    public List<Vacation> vacations = new ArrayList<Vacation>();
+
+    public List<Vacation> getVacations() {
+        return vacations;
+    }
+
+    public void setVacations(List<Vacation> vacations) {
+        this.vacations = vacations;
+    }
 
     public String getShiftStart() {
         return shiftStart;

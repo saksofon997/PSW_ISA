@@ -74,7 +74,7 @@ public class TypeOfExaminationService {
     public TypeOfExaminationDTO changeTypeOfExamination(TypeOfExaminationDTO typeOfExaminationDTO){
         TypeOfExamination toe = examinationTypesRepository.getOne(typeOfExaminationDTO.getId());
         if(toe==null ){
-            throw new ValidationException("Type of examinnation not found.");
+            throw new ValidationException("Type of examination not found.");
         }
         Optional<Clinic> clinic = clinicRepository.findById(typeOfExaminationDTO.getClinic_id());
         if (!clinic.isPresent()){

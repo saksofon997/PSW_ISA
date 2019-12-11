@@ -43,6 +43,17 @@ public class Doctor extends User {
 //        }
 //    }
 
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    public List<Vacation> vacations = new ArrayList<Vacation>();
+
+    public List<Vacation> getVacations() {
+        return vacations;
+    }
+
+    public void setVacations(List<Vacation> vacations) {
+        this.vacations = vacations;
+    }
+
     @Column(name = "number_of_stars")
     private int numberOfStars;
 

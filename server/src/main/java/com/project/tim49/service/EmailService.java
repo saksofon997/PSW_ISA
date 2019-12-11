@@ -1,6 +1,8 @@
 package com.project.tim49.service;
 
 import com.project.tim49.dto.RegistrationDTO;
+import com.project.tim49.dto.UserDTO;
+import com.project.tim49.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -60,6 +62,28 @@ public class EmailService {
                 "\n\nPlease contact our support for further assistance.\n\nBest regards,\nClinical center team\n\n\n\n" +
                 "If you don't know what this is about, then someone has probably" +
                 " entered your email address by mistake and you can ignore this e-mail. Sorry about that.");
+        javaMailSender.send(mail);
+
+        System.out.println("Email poslat!");
+    }
+
+    @Async
+    public void sendVacationRequestDeniedEmail(UserDTO user, String message) throws MailException,
+            InterruptedException {
+        System.out.println("Slanje emaila...");
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(user.getEmail());
+        mail.setFrom("noreply@clinic.com");
+        mail.setSubject("Clinic: Vacation request denied");
+        mail.setText("Dear " + user.getName() + ",\n\nwe are sorry to inform you that your vacation request at our " +
+                "clinic has" +
+                " been denied.\n" +
+                "Here is an explanation from our team:\n\n" +
+                ""+message+
+                "\n\nPlease contact our support for further assistance.\n\nBest regards,\nClinical center team\n\n\n\n" +
+                "If you don't know what this is about, then someone has probably" +
+                " entered your email address by mistake and you can ignore this e-mail.");
         javaMailSender.send(mail);
 
         System.out.println("Email poslat!");

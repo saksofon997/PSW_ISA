@@ -20,6 +20,17 @@ public class Prescription {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor performs;
 
+    @Column(name = "approved", nullable = false)
+    private boolean approved;
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
     public Long getId() {
         return id;
     }
