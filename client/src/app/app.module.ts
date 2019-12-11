@@ -34,6 +34,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { APP_INITIALIZER } from '@angular/core';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
@@ -56,6 +58,7 @@ import { PatientListingComponent } from './components/doctor-home/patient-listin
 import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/doctor-profile.component';
 import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-profile/doctor-my-profile.component';
 import { UserService } from './services/user.service';
+import { NewAppointmentPageComponent } from './components/doctor-home/new-appointment-page/new-appointment-page.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +108,9 @@ import { UserService } from './services/user.service';
     NursePersonalProfileComponent,
     PatientListingComponent,
     DoctorProfileComponent,
-    DoctorMyProfileComponent
+    DoctorMyProfileComponent,
+    NursePersonalProfileComponent,
+    NewAppointmentPageComponent
   ],
   imports: [
     BrowserModule,
@@ -119,6 +124,9 @@ import { UserService } from './services/user.service';
     NgHttpLoaderModule.forRoot(),
     NgbModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
+    AngularFontAwesomeModule,
   ],
   providers: [CookieService, UserService,
     {
