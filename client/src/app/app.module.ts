@@ -109,7 +109,7 @@ import { PrescriptionListingComponent } from './components/nurse-home/prescripti
     PatientListingComponent,
     DoctorProfileComponent,
     DoctorMyProfileComponent,
-    NurseCalendarComponent
+    NurseCalendarComponent,
     DoctorMyProfileComponent,
     NursePatientListingComponent,
     PrescriptionListingComponent

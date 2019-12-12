@@ -189,3 +189,7 @@ INSERT INTO public.prescription(
 INSERT INTO public.prescription(
 	id, medication_id, nurse_id, doctor_id, clinic_id, approved)
 	VALUES (nextval('prescription_id_seq'), 2, 13, 9, 1, false);
+
+INSERT INTO public.vacation(
+	id, approved, end_date, start_date, medical_staff_id)
+	VALUES (nextval('vacation_id_seq'), true, 1575731400, 1575385200, 13);
