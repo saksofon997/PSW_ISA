@@ -132,4 +132,21 @@ public class DoctorController {
 
         return new ResponseEntity(appointments, HttpStatus.OK);
     }
+
+    @GetMapping(path="/oneAppointment/{id}/{appID}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    public ResponseEntity getOneAppointment(@PathVariable Long id,@PathVariable Long appID) {
+        AppointmentDTO appointment = new AppointmentDTO();
+        try{
+            appointment = doctorService.getOneAppointment(id, appID);
+
+        }catch (ValidationException e){
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        if(appointment == null){
+            return new ResponseEntity("Appointment not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(appointment, HttpStatus.OK);
+    }
 }

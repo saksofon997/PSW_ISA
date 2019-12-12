@@ -64,7 +64,7 @@ public class PatientController {
     }
     @GetMapping(path = "/getClinicPatients/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('NURSE')")
     public ResponseEntity getPatients(@PathVariable Long id) {
         try {
             List<PatientDTO> patients = patientService.getClinicPatients(id);
@@ -75,7 +75,7 @@ public class PatientController {
     }
 
     @GetMapping("/search_patients")
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('NURSE')")
     public ResponseEntity getAllByQuery(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "surname", required = false) String surname

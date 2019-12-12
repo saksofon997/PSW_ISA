@@ -31,6 +31,7 @@ public class AppointmentDTO {
         this.price = appointment.getPrice();
         this.ordination = new OrdinationDTO(appointment.getOrdination());
         this.clinic = new ClinicDTO(appointment.getClinic());
+        this.patient = new PatientDTO(appointment.getPatient());
         this.typeOfExamination = new TypeOfExaminationDTO(appointment.getTypeOfExamination());
         this.doctors = new ArrayList<>();
         for (Doctor doctor: appointment.getDoctors()){

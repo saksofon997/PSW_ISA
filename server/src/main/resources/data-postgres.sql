@@ -182,3 +182,14 @@ INSERT INTO public.nurse(
 INSERT INTO public.nurse(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end)
 	VALUES (nextval('users_id_seq'), 'NurseA2', 'Grad2', 'nurse2@kcv.rs', 'Nurse2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '0110996100010', '1', true, true, '7:00', '15:00');
+
+INSERT INTO public.prescription(
+	id, medication_id, nurse_id, doctor_id, clinic_id, approved)
+	VALUES (nextval('prescription_id_seq'), 1, 13, 9, 1, false);
+INSERT INTO public.prescription(
+	id, medication_id, nurse_id, doctor_id, clinic_id, approved)
+	VALUES (nextval('prescription_id_seq'), 2, 13, 9, 1, false);
+
+INSERT INTO public.vacation(
+	id, approved, end_date, start_date, medical_staff_id)
+	VALUES (nextval('vacation_id_seq'), true, 1575731400, 1575385200, 13);

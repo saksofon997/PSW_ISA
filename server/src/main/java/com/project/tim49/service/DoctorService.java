@@ -235,6 +235,23 @@ public class DoctorService {
         return appointmentDTOS;
     }
 
+    public AppointmentDTO getOneAppointment(Long id, Long appID){
+        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        Set<Appointment> appointments = new HashSet<>();
+        AppointmentDTO appointmentDTO = null;
+        if (doctor== null){
+            throw new ValidationException("Doctor not found.");
+        }else{
+            appointments = doctor.getAppointments();
+            for (Appointment a: appointments) {
+                if (a.getId().equals(appID)){
+                    appointmentDTO = new AppointmentDTO(a);
+                }
+            }
+        }
+        return appointmentDTO;
+    }
+
     public DoctorDTO getDoctor(Long id){
         Doctor doctor = doctorRepository.findById(id).orElse(null);
         if (doctor != null){

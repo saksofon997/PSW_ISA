@@ -59,6 +59,9 @@ import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/
 import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-profile/doctor-my-profile.component';
 import { UserService } from './services/user.service';
 import { NewAppointmentPageComponent } from './components/doctor-home/new-appointment-page/new-appointment-page.component';
+import { NurseCalendarComponent } from './components/nurse-home/nurse-calendar/nurse-calendar.component';
+import { NursePatientListingComponent } from './components/nurse-home/nurse-patient-listing/nurse-patient-listing.component';
+import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +113,10 @@ import { NewAppointmentPageComponent } from './components/doctor-home/new-appoin
     DoctorProfileComponent,
     DoctorMyProfileComponent,
     NursePersonalProfileComponent,
-    NewAppointmentPageComponent
+    NewAppointmentPageComponent,
+    NurseCalendarComponent,
+    NursePatientListingComponent,
+    PrescriptionListingComponent
   ],
   imports: [
     BrowserModule,
@@ -124,7 +130,7 @@ import { NewAppointmentPageComponent } from './components/doctor-home/new-appoin
     NgHttpLoaderModule.forRoot(),
     NgbModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
-    OwlDateTimeModule, 
+    OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularFontAwesomeModule,
   ],
