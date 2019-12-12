@@ -42,6 +42,8 @@ public class PrescriptionService {
 
         clinic.getPrescriptions().forEach(n -> {if(!n.isApproved()) prescriptionDTOS.add(new PrescriptionDTO(n));});
 
+        System.out.println("ovde");
+
         return prescriptionDTOS;
     }
 

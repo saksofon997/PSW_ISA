@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./prescription-listing.component.css']
 })
 export class PrescriptionListingComponent implements OnInit {
-  ordinationsHeaders = ['Doctor', 'Medication'];
+  prescriptionsHeader = ['Doctor', 'Medication'];
 	prescriptions: any;
 	navigationSubscription: any;
 	clinicID: any;

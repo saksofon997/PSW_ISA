@@ -13,6 +13,10 @@ public class PrescriptionDTO {
 
     private boolean approved;
 
+    public PrescriptionDTO(){
+        
+    }
+
     public PrescriptionDTO(Long id, Long medication_id, Long nurse_id, Long doctor_id, boolean approved) {
         this.id = id;
         this.medication_id = medication_id;

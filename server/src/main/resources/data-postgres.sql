@@ -185,7 +185,7 @@ INSERT INTO public.nurse(
 
 INSERT INTO public.prescription(
 	id, medication_id, nurse_id, doctor_id, clinic_id, approved)
-	VALUES (nextval('prescription_id_seq'), 1, null, 9, 1, false);
+	VALUES (nextval('prescription_id_seq'), 1, 13, 9, 1, false);
 INSERT INTO public.prescription(
 	id, medication_id, nurse_id, doctor_id, clinic_id, approved)
-	VALUES (nextval('prescription_id_seq'), 2, null, 9, 1, false);
+	VALUES (nextval('prescription_id_seq'), 2, 13, 9, 1, false);

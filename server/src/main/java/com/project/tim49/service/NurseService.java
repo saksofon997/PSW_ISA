@@ -182,13 +182,12 @@ public class NurseService {
         return true;
     }
 
-    public NurseDTO findById(Long id) {
+    public NurseDTO getNurse(Long id) {
 
         Nurse nurse = nurseRepository.findById(id).orElse(null);
-        NurseDTO nurseDTO = null;
-        if(nurse != null){
-            nurseDTO = new NurseDTO(nurse);
+        if (nurse != null){
+            return new NurseDTO(nurse);
         }
-        return nurseDTO;
+        throw new NoSuchElementException("Nurse with given id not found.");
     }
 }

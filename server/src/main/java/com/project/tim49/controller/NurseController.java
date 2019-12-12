@@ -28,8 +28,8 @@ public class NurseController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('NURSE')")
     public ResponseEntity getNurse(@PathVariable Long id) {
-        UserDTO patient = nurseService.findById(id);
-        return new ResponseEntity<>(patient, HttpStatus.OK);
+        NurseDTO nurse = nurseService.getNurse(id);
+        return new ResponseEntity<>(nurse, HttpStatus.OK);
     }
 
     @PutMapping(path="/change" )
