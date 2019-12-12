@@ -4,6 +4,8 @@ import { ClinicService } from 'src/app/services/clinic.service';
 import { UserService } from 'src/app/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
+import { AppointmentService } from 'src/app/services/appointment.service';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Component({
 	selector: 'app-new-appointment-page',
@@ -16,6 +18,7 @@ export class NewAppointmentPageComponent implements OnInit {
 	typesOfExamination: any;
 	ordinations: any;
 
+	startAppointmentNow: any;
 	form: FormGroup;
 	submitted: boolean;
 	private sub: any;
@@ -23,19 +26,29 @@ export class NewAppointmentPageComponent implements OnInit {
 		private userService: UserService,
 		private clinicService: ClinicService,
 		private patientService: PatientService,
-		private activatedRoute: ActivatedRoute) { }
+		private activatedRoute: ActivatedRoute,
+		private appointmentService: AppointmentService) { }
 
 	ngOnInit() {
+		this.activatedRoute.queryParams.subscribe(params => {
+			let time = params['time'];
+			if (time) {
+				this.startAppointmentNow = true;
+			} else {
+				this.startAppointmentNow = false;
+			}
+		});
+
 		this.sub = this.activatedRoute.params.subscribe(params => {
 			let patient_id = +params['patient_id'];
-			
+
 			this.loadData(patient_id).then(() => {
 				this.createFormGroup();
 			}, () => alert("Error loading data"))
 		});
 	}
 
-	loadData(patient_id){
+	loadData(patient_id) {
 		let promise = new Promise((resolve, reject) => {
 			this.loadPatientInfo(patient_id).then(() => {
 				this.loadTypesOfExamination().then(() => {
@@ -44,7 +57,7 @@ export class NewAppointmentPageComponent implements OnInit {
 					}, () => reject());
 				}, () => reject());
 			}, () => reject());
-			
+
 		});
 		return promise;
 	}
@@ -82,9 +95,13 @@ export class NewAppointmentPageComponent implements OnInit {
 	}
 
 	createFormGroup() {
+		let date;
+		if (this.startAppointmentNow) {
+			date = new Date();
+		}
 
 		this.form = this.formBuilder.group({
-			dateAndTime: [, [Validators.required,]],
+			dateAndTime: [date, [Validators.required,]],
 			duration: [, [Validators.required,]],
 			typeOfExamination: [, [Validators.required,]],
 			ordination: [, [Validators.required,]],
@@ -93,8 +110,8 @@ export class NewAppointmentPageComponent implements OnInit {
 
 	}
 
-	setPriceFromTypeOfExamination(){
-		let type = this.typesOfExamination.find( element => element.id == this.form.controls.typeOfExamination.value);
+	setPriceFromTypeOfExamination() {
+		let type = this.typesOfExamination.find(element => element.id == this.form.controls.typeOfExamination.value);
 		if (!type) {
 			this.form.controls['price'].setValue("");
 			return;
@@ -110,28 +127,34 @@ export class NewAppointmentPageComponent implements OnInit {
 		}
 
 		let doctor = this.userService.getUser();
-		if (!doctor){
+		if (!doctor) {
 			alert("Invalid user");
 			return;
 		}
 		let clinic_id = doctor.clinic_id;
 
 		let appointment = {
-			startingDateAndTime: this.form.controls.dateAndTime.value.getTime(),
-			duration: this.form.controls.duration.value,
+			startingDateAndTime: this.form.controls.dateAndTime.value.getTime() / 1000,
+			duration: this.form.controls.duration.value * 60 * 1000,
 			typeOfExamination: { id: this.form.controls.typeOfExamination.value },
 			ordination: { id: this.form.controls.ordination.value },
 			price: this.form.controls.price.value,
 			clinic: { id: clinic_id },
-			patient: { id: this.patient.id }
+			patient: { id: this.patient.id },
+			doctors: [{id: this.userService.getUser().id}]
 		}
 
 		console.log(appointment);
 
-		// this.doctorService.changeDoctor(doctor).subscribe(
-		//   (data) => { this.change = !this.change; return; },
-		//   (error) => { alert(error); }
-		// );
+		if (this.startAppointmentNow) {
+			this.appointmentService.startAppointment(appointment).subscribe(
+				(data) => { alert("SAVED"); /* rutirati na stranicu za evidecniju o pregledu */ },
+				(error) => { alert(error); }
+			);
+		} else {
+
+		}
+
 
 	}
 
