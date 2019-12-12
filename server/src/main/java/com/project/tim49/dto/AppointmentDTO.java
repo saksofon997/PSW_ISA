@@ -1,6 +1,10 @@
 package com.project.tim49.dto;
 
 import com.project.tim49.model.Appointment;
+import com.project.tim49.model.Doctor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppointmentDTO {
 
@@ -13,6 +17,7 @@ public class AppointmentDTO {
     private ClinicDTO clinic;
     private PatientDTO patient;
     private TypeOfExaminationDTO typeOfExamination;
+    private List<DoctorDTO> doctors;
     private boolean completed;
 
     public AppointmentDTO() {
@@ -28,6 +33,10 @@ public class AppointmentDTO {
         this.clinic = new ClinicDTO(appointment.getClinic());
         this.patient = new PatientDTO(appointment.getPatient());
         this.typeOfExamination = new TypeOfExaminationDTO(appointment.getTypeOfExamination());
+        this.doctors = new ArrayList<>();
+        for (Doctor doctor: appointment.getDoctors()){
+            this.doctors.add(new DoctorDTO(doctor));
+        }
         this.completed = appointment.isCompleted();
     }
 
@@ -106,6 +115,22 @@ public class AppointmentDTO {
     public boolean isCompleted() {
         return completed;
     }
+
+    public List<DoctorDTO> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(List<DoctorDTO> doctors) {
+        this.doctors = doctors;
+    }
+
+//    public void setDoctorDTOs(DoctorDTO[] doctorDTOs) {
+//        this.doctorDTOs = new ArrayList<>();
+//        for (int i = 0; i < doctorDTOs.length; i++){
+//            this.doctorDTOs.add(doctorDTOs[i]);
+//        }
+//
+//    }
 
     public void setCompleted(boolean completed) {
         this.completed = completed;

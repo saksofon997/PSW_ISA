@@ -45,6 +45,7 @@ import { PatientListingComponent } from './components/doctor-home/patient-listin
 import { NurseCalendarComponent } from './components/nurse-home/nurse-calendar/nurse-calendar.component';
 import { NursePatientListingComponent } from './components/nurse-home/nurse-patient-listing/nurse-patient-listing.component';
 import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
+import { NewAppointmentPageComponent } from './components/doctor-home/new-appointment-page/new-appointment-page.component';
 
 const routes: Routes = [
 	{
@@ -106,6 +107,7 @@ const routes: Routes = [
 			{path: '', component: DoctorCalendarComponent},
 			{path: 'calendar', component: DoctorCalendarComponent},
 			{path: 'patients', component: PatientListingComponent},
+			{path: 'new_appointment/:patient_id', component: NewAppointmentPageComponent},
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['DOCTOR']}

@@ -1,0 +1,145 @@
+<div class="jumbotron jumbotron-fluid col-lg-8 col-sm-8" style="margin-top:0.5em; padding-top: 0.5em;">
+    <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+        <h3 class="display-8">New Appointment</h3>
+        <p class="lead">Insert informations about new appointment.</p>
+    </div>
+</div>
+
+<form *ngIf='form' [formGroup]="form" (ngSubmit)="onSubmit()">
+    <fieldset [disabled]="startAppointmentNow">
+        <div class="form-group row">
+            <label for="dateAndTime" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Date and time</label>
+            <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+                <div class="col-lg-10 col-sm-10 col-md-10">
+                    <input type="datetime" formControlName="dateAndTime" [owlDateTime]="dt2" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && form.controls.dateAndTime.errors }" id="dateAndTime"
+                        style="border: 0;">
+                    <div *ngIf="submitted && form.controls.dateAndTime.errors" class="invalid-feedback">
+                        <div *ngIf="form.controls.dateAndTime.errors.required">Date and time is required</div>
+                    </div>
+                </div>
+                <span *ngIf="!startAppointmentNow" class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
+                        class="fa fa-calendar"></i> </span>
+                <owl-date-time #dt2></owl-date-time>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="form-group row">
+        <label for="duration" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Duration</label>
+        <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+            <select formControlName="duration" class="m-1 form-control"
+                [ngClass]="{ 'is-invalid': submitted && form.controls.duration.errors }" id="duration"
+                style="border: 0; width: 100%;">
+                <option value=""></option>
+                <option value="10">10 minutes</option>
+                <option value="20">20 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="40">40 minutes</option>
+                <option value="50">50 minutes</option>
+            </select>
+            <div *ngIf="submitted && form.controls.duration.errors" class="invalid-feedback ml-3">
+                <div *ngIf="form.controls.duration.errors.required">Duration is required</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="typeOfExamination" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Type of
+            examination</label>
+        <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+            <select formControlName="typeOfExamination" class="m-1 form-control"
+                (change)="setPriceFromTypeOfExamination()"
+                [ngClass]="{ 'is-invalid': submitted && form.controls.typeOfExamination.errors }" id="typeOfExamination"
+                style="border: 0; width: 100%;">
+                <option value=""></option>
+                <option *ngFor="let type of typesOfExamination" [value]="type.id">{{type.name}}
+                </option>
+            </select>
+            <div *ngIf="submitted && form.controls.typeOfExamination.errors" class="invalid-feedback ml-3">
+                <div *ngIf="form.controls.typeOfExamination.errors.required">Please select type of examination</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-lg-3 col-form-label font-weight-bold" for="price">Price: </label>
+        <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded">
+            <input type="number" [ngClass]="{ 'is-invalid': submitted && form.controls.price.errors }"
+                class="form-control" formControlName="price" style="border: 0;" />
+            <div *ngIf="submitted && form.controls.price.errors" class="invalid-feedback">
+                <div *ngIf="form.controls.price.errors.required">Price is required</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="ordination" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Ordination</label>
+        <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+            <select formControlName="ordination" class="m-1 form-control"
+                [ngClass]="{ 'is-invalid': submitted && form.controls.ordination.errors }" id="ordination"
+                style="border: 0; width: 100%;">
+                <option value=""></option>
+                <option *ngFor="let ordination of ordinations" [value]="ordination.id">
+                    {{ordination.name + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Num. " + ordination.number + ")"}}
+                </option>
+            </select>
+            <div *ngIf="submitted && form.controls.ordination.errors" class="invalid-feedback ml-3">
+                <div *ngIf="form.controls.ordination.errors.required">Please select ordination</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion col-lg-7 col-sm-7 mb-5 p-0" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                        Patient informations
+                    </button>
+                </h2>
+            </div>
+
+            <div id="collapseOne" class="collapse border" aria-labelledby="headingOne"
+                data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="row">
+                        <label class="col-lg-3"> <b>Name:</b> </label>
+                        <label class="col-lg-9"> {{patient.name}} </label>
+                    </div>
+                    <div class="row">
+                        <label class="col-lg-3"><b>Surname: </b> </label>
+                        <label class="col-lg-9"> {{patient.surname}} </label>
+                    </div>
+                    <div class="row">
+                        <label class="col-lg-3"><b>Upin: </b> </label>
+                        <label class="col-lg-9"> {{patient.upin}} </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8 col-sm-10">
+        <hr>
+    </div>
+
+    <div>
+        <button type="submit" *ngIf="!startAppointmentNow" class="btn btn-primary">Create appointment</button>
+        <button type="submit" *ngIf="startAppointmentNow" class="btn btn-primary">Start appointment</button>
+        <button type="button" class="btn btn-outline-primary m-1" (click)='cancelChanges()'>Cancel</button>
+    </div>
+</form>
+<br><br>
+<!-- 
+<div class="row">
+    <div class='col-sm-6'>
+        <div class="form-group">
+            <input [owlDateTime]="dt2" placeholder="Date Time">
+            <span class="m-1" [owlDateTimeTrigger]="dt2"> <i class="fa fa-calendar"></i> </span>
+            <owl-date-time #dt2></owl-date-time>
+        </div>
+    </div>
+</div> -->

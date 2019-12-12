@@ -5,6 +5,7 @@ import com.project.tim49.model.Appointment;
 import com.project.tim49.model.Clinic;
 import com.project.tim49.model.Doctor;
 import com.project.tim49.model.Ordination;
+import com.project.tim49.repository.AppointmentRepository;
 import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.DoctorRepository;
 import com.project.tim49.repository.OrdinationRepository;
@@ -15,6 +16,7 @@ import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class OrdinationService {
@@ -24,7 +26,7 @@ public class OrdinationService {
     @Autowired
     private ClinicRepository clinicRepository;
     @Autowired
-    private DoctorRepository doctorRepository;
+    private AppointmentRepository appointmentRepository;
 
     public List<OrdinationDTO> getAll(Long clinic_id) {
         if(clinic_id != null) {
@@ -127,6 +129,25 @@ public class OrdinationService {
             throw new ValidationException("Ordination does not exist!");
         }
         throw new ValidationException("Invalid ID!");
+    }
+
+    public boolean isAvailable(Long ordination_id, long startingTimeStamp, long duration){
+        Optional<Ordination> ordination = ordinationRepository.findById(ordination_id);
+        if (!ordination.isPresent()){
+            throw new ValidationException("No ordination with that ID!");
+        }
+
+        List<Appointment> appointments = appointmentRepository.getByOrdinationAndNotCompleted(ordination_id);
+        for (Appointment appointment: appointments) {
+            if (appointment.getStartingDateAndTime() >= startingTimeStamp
+                    && appointment.getStartingDateAndTime() <= startingTimeStamp + duration){
+                return false;
+            }
+            if (appointment.getEndingDateAndTime() >= startingTimeStamp){
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<OrdinationDTO> getByQuery(String name, String number, Long clinic_id) {
