@@ -57,6 +57,8 @@ import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/
 import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-profile/doctor-my-profile.component';
 import { UserService } from './services/user.service';
 import { NurseCalendarComponent } from './components/nurse-home/nurse-calendar/nurse-calendar.component';
+import { NursePatientListingComponent } from './components/nurse-home/nurse-patient-listing/nurse-patient-listing.component';
+import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +110,9 @@ import { NurseCalendarComponent } from './components/nurse-home/nurse-calendar/n
     DoctorProfileComponent,
     DoctorMyProfileComponent,
     NurseCalendarComponent
+    DoctorMyProfileComponent,
+    NursePatientListingComponent,
+    PrescriptionListingComponent
   ],
   imports: [
     BrowserModule,

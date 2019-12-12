@@ -20,6 +20,28 @@ public class Prescription {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor performs;
 
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    private Clinic clinic;
+
+    @Column(name = "approved", nullable = false)
+    private boolean approved;
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
     public Long getId() {
         return id;
     }

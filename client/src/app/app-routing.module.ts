@@ -43,6 +43,8 @@ import { DoctorMyProfileComponent } from './components/doctor-home/doctor-my-pro
 import { DoctorProfileComponent } from './components/doctor-home/doctor-profile/doctor-profile.component';
 import { PatientListingComponent } from './components/doctor-home/patient-listing/patient-listing.component';
 import { NurseCalendarComponent } from './components/nurse-home/nurse-calendar/nurse-calendar.component';
+import { NursePatientListingComponent } from './components/nurse-home/nurse-patient-listing/nurse-patient-listing.component';
+import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
 
 const routes: Routes = [
 	{
@@ -134,6 +136,8 @@ const routes: Routes = [
 		children:[
 			{path: '', component: NurseCalendarComponent},
 			//{path: '', component: SCHEDULER},
+			{path: 'patients', component: NursePatientListingComponent},
+			{path: 'prescriptions', component: PrescriptionListingComponent},
 
 		],
 		canActivate: [AuthGuardService],
