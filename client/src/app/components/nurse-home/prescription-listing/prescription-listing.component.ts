@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./prescription-listing.component.css']
 })
 export class PrescriptionListingComponent implements OnInit {
-  prescriptionsHeader = ['Doctor', 'Medication'];
+  prescriptionsHeader = ['Doctor name', 'Doctor surname', 'Medication'];
 	prescriptions: any;
 	navigationSubscription: any;
 	clinicID: any;
@@ -41,6 +41,7 @@ export class PrescriptionListingComponent implements OnInit {
 
 		this.searchForm = this.formBuilder.group({
 			name: [""],
+			surname: [""],
 			medication: [""]
 		});
 	}
@@ -73,11 +74,12 @@ export class PrescriptionListingComponent implements OnInit {
 
 		var prescription = {
 			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value: "",
+			surname: this.searchForm.controls.surname.value ? this.searchForm.controls.surname.value: "",
 			medication: this.searchForm.controls.medication.value ? this.searchForm.controls.medication.value: "",
 			clinic_id: this.userService.getUser().clinic_id
 		}
 
-		this.clinicService.searchOrdinations(prescription).subscribe(
+		this.clinicService.searchPrescriptions(prescription).subscribe(
 			(data) => {
 			  this.prescriptions = data;
 			},

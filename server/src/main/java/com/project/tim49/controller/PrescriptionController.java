@@ -38,4 +38,16 @@ public class PrescriptionController {
         PrescriptionDTO approved = prescriptionService.approvePrescription(prescriptionDTO, nurse_id);
         return new ResponseEntity<>(approved, HttpStatus.OK);
     }
+
+    @GetMapping("/search_prescriptions")
+    @PreAuthorize("hasAuthority('NURSE')")
+    public ResponseEntity getAllByQuery(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "surname", required = false) String surname,
+            @RequestParam(value = "medication", required = false) String medication,
+            @RequestParam(value = "clinic_id", required = false) Long clinic_id
+    ) {
+        List<PrescriptionDTO> prescriptionDTOS = prescriptionService.getByQuery(name, surname, medication, clinic_id);
+        return new ResponseEntity(prescriptionDTOS, HttpStatus.OK);
+    }
 }

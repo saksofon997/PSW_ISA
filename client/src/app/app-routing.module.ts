@@ -137,7 +137,7 @@ const routes: Routes = [
 		component: NurseHomeComponent,
 		children:[
 			{path: '', component: NurseCalendarComponent},
-			//{path: '', component: SCHEDULER},
+			{path: 'calendar', component: NurseCalendarComponent},
 			{path: 'patients', component: NursePatientListingComponent},
 			{path: 'prescriptions', component: PrescriptionListingComponent},
 
