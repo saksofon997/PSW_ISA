@@ -37,7 +37,21 @@
           <th scope="col" *ngFor='let param of patientsHeaders'>
             {{param}}
           </th>
-          <th></th>
+          <th scope="col">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sort by
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" style="cursor: pointer;" (click)="sortName()" >Name</a>
+                    <a class="dropdown-item" style="cursor: pointer;" (click)="sortAddress()">Address</a>
+                    <a class="dropdown-item" style="cursor: pointer;" (click)="sortCity()">City</a>
+                    <a class="dropdown-item" style="cursor: pointer;" (click)="sortState()">State</a>
+                    <a class="dropdown-item" style="cursor: pointer;" (click)="sortUpin()">UPIN</a>
+                </div>
+            </div>
+        </th>
       </tr>
   </thead>
   <tbody>

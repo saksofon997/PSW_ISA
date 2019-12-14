@@ -131,13 +131,13 @@
         <div class="form-group row">
             <label for="Surname" class="col-sm-2 col-form-label font-weight-bold">Starting time</label>
             <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-              <input type="text" class="form-control" value="{{modalData?.appointment.startingDateAndTime}}" style="border: 0;" />
+              <input type="text" class="form-control" value="{{timeConverter(modalData?.appointment.startingDateAndTime)}}" style="border: 0;" />
             </div>
         </div>
         <div class="form-group row">
             <label for="Surname" class="col-sm-2 col-form-label font-weight-bold">Ending time</label>
             <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-              <input type="text" class="form-control" value="{{modalData?.appointment.endingDateAndTime}}" style="border: 0;" />
+              <input type="text" class="form-control" value="{{timeConverter(modalData?.appointment.endingDateAndTime)}}" style="border: 0;" />
             </div>
         </div>
     <div>
