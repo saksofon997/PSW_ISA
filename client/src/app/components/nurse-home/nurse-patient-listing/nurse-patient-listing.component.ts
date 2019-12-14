@@ -10,9 +10,9 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./nurse-patient-listing.component.css']
 })
 export class NursePatientListingComponent implements OnInit {
-
+  sortingOption: any;
   patientsHeaders = ['Name', 'Surname', 'Phone Number', 'E-mail', 'City'];
-	patients: any;
+  patients: any;
   navigationSubscription: any;
   
   searchForm: FormGroup;
@@ -65,7 +65,55 @@ export class NursePatientListingComponent implements OnInit {
   ShowMedicalRecord(){
     //TODO
   }
+  sortName() {
+    this.sortingOption = "name";
+    this.sortPatients();
+  }
+  sortUpin() {
+    this.sortingOption = "upin";
+    this.sortPatients();
+  }
+  sortAddress() {
+    this.sortingOption = "address";
+    this.sortPatients();
+  }
+  sortCity() {
+    this.sortingOption = "city";
+    this.sortPatients();
+  }
+  sortState() {
+    this.sortingOption = "state";
+    this.sortPatients();
+  }
 
+  sortPatients() {
+		switch(this.sortingOption) {
+			case "name": {
+				this.patients.sort((a, b) => (a.name > b.name) ? 1 : -1)
+				break;
+			}
+			case "address": {
+				this.patients.sort((a, b) => (a.address > b.address) ? 1 : -1)
+				break;
+			}
+			case "city": {
+				this.patients.sort((a, b) => (a.city > b.city) ? 1 : -1)
+				break;
+			}
+			case "state": {
+				this.patients.sort((a, b) => (a.state > b.state) ? 1 : -1)
+				break;
+			}
+			case "upin": {
+				this.patients.sort((a, b) => (a.upin > b.upin) ? 1 : -1)
+				break;
+			}
+			default: {
+				this.patients.sort((a, b) => (a.id > b.id) ? 1 : -1)
+				break;
+			}
+		}
+	}
   ngOnDestroy() {
 		if (this.navigationSubscription) {
 			this.navigationSubscription.unsubscribe();

@@ -135,7 +135,7 @@ export class NewAppointmentPageComponent implements OnInit {
 
 		let appointment = {
 			startingDateAndTime: this.form.controls.dateAndTime.value.getTime() / 1000,
-			duration: this.form.controls.duration.value * 60 * 1000,
+			duration: this.form.controls.duration.value * 60,
 			typeOfExamination: { id: this.form.controls.typeOfExamination.value },
 			ordination: { id: this.form.controls.ordination.value },
 			price: this.form.controls.price.value,
