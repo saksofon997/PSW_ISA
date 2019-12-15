@@ -2,6 +2,7 @@ import { ClinicCenterAdminService } from './../../../services/clinic-center-admi
 import { Component, OnInit } from '@angular/core';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-clinic-administrators-listing',
@@ -18,8 +19,8 @@ export class ClinicAdministratorsListingComponent implements OnInit {
   constructor(private clinicService: ClinicService,
 	private clinicCenterAdminService: ClinicCenterAdminService,
 		private router: Router,
-		private activatedRoute: ActivatedRoute) { 
-		}
+		private activatedRoute: ActivatedRoute,
+		private confirmationDialogService: DialogService) {}
 
 	ngOnInit() {
 		this.activatedRoute.params.subscribe((params)=> {
@@ -37,10 +38,18 @@ export class ClinicAdministratorsListingComponent implements OnInit {
 		});
 	}
 	deleteAdmin(admin){
-		this.clinicCenterAdminService.deleteClinicAdmin(admin).subscribe(
-			(data) => {this.getClinicAdministrators();}, // Dodati feedback za uspesno brisanje
-			(error)=> {alert(error);}
-		)
+		this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to delete clinic administrator: ' + admin.name +' '+admin.surname + ' ?', false)
+		.then((confirmed) => {
+			if (confirmed.submited) {
+				this.clinicCenterAdminService.deleteClinicAdmin(admin).subscribe(
+					(data) => {
+						this.getClinicAdministrators();
+						alert("Administrator succesfully deleted!");
+					}, // Dodati feedback za uspesno brisanje
+					(error)=> {alert(error);}
+				)
+			}
+		});
 	}
 	addAdministrator(){
 		this.router.navigate(['../addClinicAdmin', { id: this.clinicID, name: this.clinicName }], { relativeTo: this.activatedRoute });

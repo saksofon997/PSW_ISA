@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ClinicalCenterService } from 'src/app/services/clinical-center.service';
+import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-diagnosis-listing',
@@ -15,7 +16,8 @@ export class DiagnosisListingComponent implements OnInit {
 
 	constructor(private clinicalCenterService: ClinicalCenterService,
 		private router: Router,
-		private activatedRoute: ActivatedRoute) {
+		private activatedRoute: ActivatedRoute,
+		private confirmationDialogService: DialogService) {
 
 		this.navigationSubscription = this.router.events.subscribe((e: any) => {
 			if (e instanceof NavigationEnd) {
@@ -40,10 +42,16 @@ export class DiagnosisListingComponent implements OnInit {
 	}
 
 	deleteDiagnosis(diagnosis: any) {
-		this.clinicalCenterService.deleteDiagnosis(diagnosis.id).subscribe(
-			(data) => this.getDiagnosis(),
-			(error) => alert(error)
-		);
+		this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to delete diagnosis with code: ' + diagnosis.code + ' ?', false)
+		.then((confirmed) => {
+			if (confirmed.submited) {
+				this.clinicalCenterService.deleteDiagnosis(diagnosis.id).subscribe(
+					(data) => this.getDiagnosis(),
+					(error) => alert(error)
+				);
+			}
+		});
+		
 	}
 
 	ngOnDestroy() {

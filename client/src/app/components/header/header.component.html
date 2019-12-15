@@ -46,6 +46,11 @@
                              </ng-container>
                         </ng-template>
                         <ng-template #fifth>
+                            <ng-container  *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINCC')!= -1; else sixth">
+                                <a class="nav-link" routerLink="/adminCC">Home</a>
+                             </ng-container>
+                        </ng-template>
+                        <ng-template #sixth>
                             <ng-container>
                                 <a class="nav-link" routerLink="/">Home</a>
                              </ng-container>

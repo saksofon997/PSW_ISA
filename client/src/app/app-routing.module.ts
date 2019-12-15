@@ -54,16 +54,23 @@ const routes: Routes = [
 		children:[
 			{path: '', component: AdminPersonalProfileComponent},
 			{path: 'profile', component: AdminPersonalProfileComponent},
-			{path: 'clinics', component: ClinicListingComponent},
-			{path: 'clinicAdmins', component: ClinicAdministratorsListingComponent},
-			{path: 'addClinic', component: ClinicFormComponent},
 			{path: 'medications', component: MedicationListingComponent},
 			{path: 'medication_info', component: MedicationFormComponent},
 			{path: 'diagnoses', component: DiagnosisListingComponent},
 			{path: 'diagnosis_info', component: DiagnosisFormComponent},
-			{path: 'addClinicAdmin', component: ClinicAdminFormComponent},
-			{path: 'showClinicInfo', component: ClinicProfileInfoComponent},
 			{path: 'registrationRequests', component: RegistrationListingComponent}
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ['ADMINCC']}
+	},
+	{
+		path: 'adminCC', 
+		component: ClinicListingComponent,
+		children:[
+			{path: 'clinicAdmins', component: ClinicAdministratorsListingComponent},
+			{path: 'addClinic', component: ClinicFormComponent},
+			{path: 'showClinicInfo', component: ClinicProfileInfoComponent},
+			{path: 'addClinicAdmin', component: ClinicAdminFormComponent}
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINCC']}
