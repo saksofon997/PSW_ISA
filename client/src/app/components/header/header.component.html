@@ -30,7 +30,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active" *ngIf="userService.checkLoggedIn()">
+                    <li class="nav-item" *ngIf="userService.checkLoggedIn()">
                         <ng-container *ngIf="!userService.checkLoggedIn();else second">
                             <a class="nav-link" routerLink="/">Home</a>
                         </ng-container>

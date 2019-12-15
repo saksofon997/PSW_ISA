@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -17,9 +18,9 @@ public class MedicationService {
     @Autowired
     private MedicationRepository medicationRepository;
 
-    public MedicationDTO createNewMedication(MedicationDTO medicationDTO){
+    public MedicationDTO createNewMedication(MedicationDTO medicationDTO) {
         MedicationDictionary medication = medicationRepository.findOneByCode(medicationDTO.getCode());
-        if (medication != null){
+        if (medication != null) {
             throw new ValidationException("Medication with this code already exists!");
         }
 
@@ -31,18 +32,23 @@ public class MedicationService {
         return medicationDTO;
     }
 
-    public void deleteMedication(Long id){
+    public void deleteMedication(Long id) {
         Optional<MedicationDictionary> medication = medicationRepository.findById(id);
-        if (!medication.isPresent()){
+        if (!medication.isPresent()) {
             throw new ValidationException("No medication with that ID!");
         }
-
-        medicationRepository.delete(medication.get());
+        MedicationDictionary medicationDictionary = getReference(id);
+        try {
+            medicationDictionary.setDeleted(true);
+            medicationRepository.save(medicationDictionary);
+        } catch (Exception e) {
+            throw new NoSuchElementException();
+        }
     }
 
-    public MedicationDTO changeMedicationData(MedicationDTO dto){
+    public MedicationDTO changeMedicationData(MedicationDTO dto) {
         MedicationDictionary codeCheck = medicationRepository.findOneByCode(dto.getCode());
-        if (codeCheck != null && codeCheck.getId() != dto.getId()){
+        if (codeCheck != null && codeCheck.getId() != dto.getId()) {
             throw new ValidationException("Medication with this code already exists!");
         }
 
@@ -54,16 +60,18 @@ public class MedicationService {
             medicationRepository.save(medication);
 
             return new MedicationDTO(medication);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new NoSuchElementException();
         }
     }
 
-    public MedicationDictionary getReference(Long id){
+    public MedicationDictionary getReference(Long id) {
         return medicationRepository.getOne(id);
     }
 
-    public List<MedicationDictionary> findAll(){
-        return medicationRepository.findAll();
+    public List<MedicationDTO> findAll() {
+        List<MedicationDTO> medicationDTOS = new ArrayList<>();
+         medicationRepository.findAll().forEach(n -> {if(!n.isDeleted()) medicationDTOS.add(new MedicationDTO(n));});
+         return medicationDTOS;
     }
 }

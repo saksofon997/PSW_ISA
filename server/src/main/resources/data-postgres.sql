@@ -92,14 +92,14 @@ INSERT INTO public.doctor(
 	VALUES (nextval('users_id_seq'), 'DocAddress2', 'Grad2', 'doc2@kcv.rs', 'ImeDoc2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1007990100010', '1', true, true, '7:00', '15:00', 0, 0);
 
 INSERT INTO public.medication_dictionary(
-	id, code, name)
-	VALUES (nextval('medication_dictionary_id_seq'), '0001', 'Acetaminophen');
+	id, code, name, deleted)
+	VALUES (nextval('medication_dictionary_id_seq'), '0001', 'Acetaminophen', false);
 INSERT INTO public.medication_dictionary(
-	id, code, name)
-	VALUES (nextval('medication_dictionary_id_seq'), '0002', 'Adderall');
+	id, code, name, deleted)
+	VALUES (nextval('medication_dictionary_id_seq'), '0002', 'Adderall', false);
 INSERT INTO public.medication_dictionary(
-	id, code, name)
-	VALUES (nextval('medication_dictionary_id_seq'), '0003', 'Alprazolam');
+	id, code, name, deleted)
+	VALUES (nextval('medication_dictionary_id_seq'), '0003', 'Alprazolam', false);
 
 INSERT INTO public.diagnosis_dictionary(
 	id, code, description)
