@@ -3,6 +3,7 @@ import { ClinicService } from 'src/app/services/clinic.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { DialogService } from 'src/app/services/dialog.service';
 
 
 @Component({
@@ -19,12 +20,13 @@ export class TypeOfExaminationListingComponent implements OnInit {
 
   searchForm: FormGroup;
   submitted = false;
-  
+
   constructor(private clinicService: ClinicService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
-		private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private confirmationDialogService: DialogService
   ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
@@ -41,10 +43,10 @@ export class TypeOfExaminationListingComponent implements OnInit {
     });
 
     this.searchForm = this.formBuilder.group({
-			name: [""],
+      name: [""],
       minPrice: [""],
       maxPrice: [""],
-		});
+    });
   }
   getTypesOfExamination() {
     this.clinicID = this.userService.getUser().clinic_id;
@@ -65,9 +67,34 @@ export class TypeOfExaminationListingComponent implements OnInit {
   }
 
   deleteTypeOfExamination(typeOfExamination) {
-    this.clinicService.deleteTypeOfExamination(typeOfExamination.id).subscribe(
+    this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to delete type of examination: ' + typeOfExamination.name + ' ?', false)
+      .then((confirmed) => {
+        if (confirmed.submited) {
+          this.clinicService.deleteTypeOfExamination(typeOfExamination.id).subscribe(
+            (data) => {
+              this.getTypesOfExamination();
+            },
+            (error) => {
+              alert(error);
+            }
+          )
+        }
+      });
+  }
+
+  onSearch() {
+    this.submitted = true;
+
+    var type = {
+      name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value : "",
+      minPrice: this.searchForm.controls.minPrice.value ? this.searchForm.controls.minPrice.value : "",
+      maxPrice: this.searchForm.controls.maxPrice.value ? this.searchForm.controls.maxPrice.value : "",
+      clinic_id: this.userService.getUser().clinic_id
+    }
+
+    this.clinicService.searchTypesOfExamination(type).subscribe(
       (data) => {
-        this.getTypesOfExamination();
+        this.typesOfExamination = data;
       },
       (error) => {
         alert(error);
@@ -75,26 +102,6 @@ export class TypeOfExaminationListingComponent implements OnInit {
     )
   }
 
-	onSearch(){
-		this.submitted = true;
-
-		var type = {
-			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value: "",
-      minPrice: this.searchForm.controls.minPrice.value ? this.searchForm.controls.minPrice.value: "",
-      maxPrice: this.searchForm.controls.maxPrice.value ? this.searchForm.controls.maxPrice.value: "",
-			clinic_id: this.userService.getUser().clinic_id
-		}
-
-		this.clinicService.searchTypesOfExamination(type).subscribe(
-			(data) => {
-			  this.typesOfExamination = data;
-			},
-			(error) => {
-			  alert(error);
-			}
-		  )
-  }
-  
   ngOnDestroy() {
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();

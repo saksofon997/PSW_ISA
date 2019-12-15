@@ -102,6 +102,8 @@ export class UserService {
 							this.router.navigate(['/doctor']);
 						} else if (this.checkLoggedIn().roles.indexOf('NURSE') != -1) {
 							this.router.navigate(['/nurse']);
+						} else if(this.checkLoggedIn().roles.indexOf('ADMINCC') != -1){
+							this.router.navigate(['/adminCC']);
 						} else {
 							this.router.navigate(['/']);
 						}

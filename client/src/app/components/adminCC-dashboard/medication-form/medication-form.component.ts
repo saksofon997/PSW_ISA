@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ClinicalCenterService } from 'src/app/services/clinical-center.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
 	selector: 'app-medication-form',
@@ -18,7 +19,8 @@ export class MedicationFormComponent implements OnInit {
 	constructor(private formBuilder: FormBuilder,
 		private clinicalCenterService: ClinicalCenterService,
 		private router: Router,
-		private activatedRoute: ActivatedRoute ) { }
+		private activatedRoute: ActivatedRoute,
+		private confirmationDialogService: DialogService ) { }
 
 	ngOnInit() {
 		var medication = history.state.data;
@@ -40,6 +42,19 @@ export class MedicationFormComponent implements OnInit {
 	}
 
 	onSubmit() {
+		if(this.medication_id){
+			this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to ' + 'edit' + ' medication with code: ' + this.form.controls.code.value + ' ?', false)
+				.then((confirmed) => {
+					if (confirmed.submited) {
+						this.submitOrEdit();
+					}
+				});
+		}else{
+			this.submitOrEdit();
+		}
+		
+	}
+	submitOrEdit(){
 		this.submitted = true;
 
 		if (this.form.invalid) {
