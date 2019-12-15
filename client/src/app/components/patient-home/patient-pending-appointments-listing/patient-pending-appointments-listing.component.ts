@@ -39,39 +39,39 @@ export class PatientPendingAppointmentsListingComponent implements OnInit {
 		});
 	}
 
-	sortName() {
-		this.sortingOption = "name";
+	sortClinicName() {
+		this.sortingOption = "clinicName";
 		this.sortPendingAppointments();
 	}
-	sortAddress() {
-		this.sortingOption = "address";
+	sortType() {
+		this.sortingOption = "type";
 		this.sortPendingAppointments();
 	}
-	sortCity() {
-		this.sortingOption = "city";
+	sortDuration() {
+		this.sortingOption = "duration";
 		this.sortPendingAppointments();
 	}
-	sortState() {
-		this.sortingOption = "state";
+	sortDate() {
+		this.sortingOption = "date";
 		this.sortPendingAppointments();
 	}
 
 	sortPendingAppointments() {
 		switch (this.sortingOption) {
-			case "name": {
-				this.appointments.sort((a, b) => (a.name > b.name) ? 1 : -1)
+			case "clinicName": {
+				this.appointments.sort((a, b) => (a.clinic.name > b.clinic.name) ? 1 : -1)
 				break;
 			}
-			case "address": {
-				this.appointments.sort((a, b) => (a.address > b.address) ? 1 : -1)
+			case "type": {
+				this.appointments.sort((a, b) => (a.typeOfExamination.name > b.typeOfExamination.name) ? 1 : -1)
 				break;
 			}
-			case "city": {
-				this.appointments.sort((a, b) => (a.city > b.city) ? 1 : -1)
+			case "duration": {
+				this.appointments.sort((a, b) => (a.duration > b.duration) ? 1 : -1)
 				break;
 			}
-			case "state": {
-				this.appointments.sort((a, b) => (a.state > b.state) ? 1 : -1)
+			case "date": {
+				this.appointments.sort((a, b) => (a.startingDateAndTime > b.startingDateAndTime) ? 1 : -1)
 				break;
 			}
 			default: {

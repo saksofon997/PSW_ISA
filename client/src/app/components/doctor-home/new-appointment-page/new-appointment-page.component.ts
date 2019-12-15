@@ -135,7 +135,7 @@ export class NewAppointmentPageComponent implements OnInit {
 
 		let appointment = {
 			startingDateAndTime: this.form.controls.dateAndTime.value.getTime() / 1000,
-			duration: this.form.controls.duration.value * 60,
+			duration: this.form.controls.duration.value * 60 * 1000,
 			typeOfExamination: { id: this.form.controls.typeOfExamination.value },
 			ordination: { id: this.form.controls.ordination.value },
 			price: this.form.controls.price.value,
@@ -144,11 +144,9 @@ export class NewAppointmentPageComponent implements OnInit {
 			doctors: [{id: this.userService.getUser().id}]
 		}
 
-		console.log(appointment);
-
 		if (this.startAppointmentNow) {
 			this.appointmentService.startAppointment(appointment).subscribe(
-				(data) => { alert("SAVED"); /* rutirati na stranicu za evidecniju o pregledu */ },
+				(data) => { alert("Appointment started") /* rutirati na stranicu za evidecniju o pregledu */ },
 				(error) => { alert(error); }
 			);
 		} else {
@@ -157,7 +155,9 @@ export class NewAppointmentPageComponent implements OnInit {
 
 
 	}
+	cancelChanges(){
 
+	}
 	ngOnDestroy() {
 		this.sub.unsubscribe();
 	}

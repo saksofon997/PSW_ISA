@@ -140,7 +140,7 @@ public class DoctorService {
                 continue;
             }
             if (appointment.getStartingDateAndTime() >= startingTimeStamp
-                    && appointment.getStartingDateAndTime() <= startingTimeStamp + duration){
+                    && appointment.getStartingDateAndTime() <= startingTimeStamp + duration/1000){
                 return false;
             }
             if (appointment.getEndingDateAndTime() >= startingTimeStamp){

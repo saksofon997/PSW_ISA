@@ -144,7 +144,7 @@ INSERT INTO public.appointment(
     VALUES (nextval('appointment_id_seq'), 1576097092 , 1576101600, 10 * 60 * 1000, 100, 1, 1, 11, 1, false, 'EX');
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type)
-    VALUES (nextval('appointment_id_seq'), 1576097092, 1576097092, 10 * 60 * 1000, 100, 1, 1, 11, 2, false, 'EX');
+    VALUES (nextval('appointment_id_seq'), 1576097092, 1576098292, 20 * 60 * 1000, 100, 1, 1, 11, 2, false, 'EX');
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type)
     VALUES (nextval('appointment_id_seq'), 1575730800,1575731400, 10 * 60 * 1000, 100, 1, 1, 11, 3, false, 'EX');
