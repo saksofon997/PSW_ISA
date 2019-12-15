@@ -32,7 +32,7 @@ public class AppointmentService {
         Appointment appointment = new Appointment();
 
         appointment.setStartingDateAndTime(appointmentDTO.getStartingDateAndTime());
-        appointment.setEndingDateAndTime(appointmentDTO.getStartingDateAndTime() + appointmentDTO.getDuration());
+        appointment.setEndingDateAndTime(appointmentDTO.getStartingDateAndTime() + appointmentDTO.getDuration()/1000);
         appointment.setDuration(appointmentDTO.getDuration());
         appointment.setPrice(appointmentDTO.getPrice());
         appointment.setCompleted(false);

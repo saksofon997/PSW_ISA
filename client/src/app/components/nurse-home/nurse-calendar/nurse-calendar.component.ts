@@ -162,7 +162,7 @@ export class NurseCalendarComponent implements OnInit {
         start: new Date(appointment.startDate*1000),
         end: new Date(appointment.endDate*1000),
         title: "Vacation",
-        color: colors.red,
+        color: colors.blue,
         actions: this.actions
       }
       this.events.push(eventToAdd);
@@ -179,6 +179,9 @@ export class NurseCalendarComponent implements OnInit {
 		var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
 		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min;
 		return time;
-	  }
+    }
+    close(){
+      this.modal.dismissAll();
+    }
 
 }

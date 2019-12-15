@@ -1,3 +1,4 @@
+import { DialogService } from './../../../services/dialog.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ClinicService } from 'src/app/services/clinic.service';
@@ -24,6 +25,7 @@ export class PrescriptionListingComponent implements OnInit {
 		private activatedRoute: ActivatedRoute,
 		private userService: UserService,
 		private formBuilder: FormBuilder,
+		private confirmationDialogService: DialogService
 	) {
 		this.navigationSubscription = this.router.events.subscribe((e: any) => {
 			if (e instanceof NavigationEnd) {
@@ -59,14 +61,19 @@ export class PrescriptionListingComponent implements OnInit {
 	}
 
 	approvePrescription(prescription) {
-		this.clinicService.approvePrescription(prescription).subscribe(
-			(data) => {
-			  this.getPrescriptions();
-			},
-			(error) => {
-			  alert(error);
+		this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to approve prescription for medication: ' + prescription.medication_name + ' ?', false)
+		.then((confirmed) => {
+			if (confirmed.submited) {
+				this.clinicService.approvePrescription(prescription).subscribe(
+					(data) => {
+					this.getPrescriptions();
+					},
+					(error) => {
+					alert(error);
+					}
+				)
 			}
-		  )
+		});
 	}
 
 	onSearch(){

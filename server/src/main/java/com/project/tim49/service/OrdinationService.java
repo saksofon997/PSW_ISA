@@ -140,7 +140,7 @@ public class OrdinationService {
         List<Appointment> appointments = appointmentRepository.getByOrdinationAndNotCompleted(ordination_id);
         for (Appointment appointment: appointments) {
             if (appointment.getStartingDateAndTime() >= startingTimeStamp
-                    && appointment.getStartingDateAndTime() <= startingTimeStamp + duration){
+                    && appointment.getStartingDateAndTime() <= startingTimeStamp + duration/1000){
                 return false;
             }
             if (appointment.getEndingDateAndTime() >= startingTimeStamp){

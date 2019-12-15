@@ -201,13 +201,14 @@ export class DoctorCalendarComponent implements OnInit{
     });
   }
   populateVacations(data){
+
     data.forEach(vacation => {
       var  eventToAdd = {
         id: vacation.id,
         start: new Date(vacation.startingDateAndTime*1000),
         end: new Date(vacation.endingDateAndTime*1000),
-        title: vacation.typeOfExamination.name,
-        color: colors.red,
+        title: "Vacation",
+        color: colors.blue,
         actions: this.actions
       }
       this.events.push(eventToAdd);
