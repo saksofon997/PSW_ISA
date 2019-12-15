@@ -5,18 +5,22 @@
                 <a class="navbar-brand" routerLink="/">Clinical System</a>
             </ng-container>
             <ng-template #second>
-                <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1; else third"> <a
-                        class="navbar-brand" routerLink="/patient">Clinical System</a> </ng-container>
+                <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('PATIENT')!= -1; else third"> 
+                    <a class="navbar-brand" routerLink="/patient">Clinical System</a> </ng-container>
             </ng-template>
             <ng-template #third>
-                <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('DOCTOR')!= -1; else fourth"> <a
-                        class="navbar-brand" routerLink="/doctor">Clinical System</a> </ng-container>
+                <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('DOCTOR')!= -1; else fourth">
+                     <a class="navbar-brand" routerLink="/doctor">Clinical System</a> </ng-container>
             </ng-template>
             <ng-template #fourth>
-                <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('NURSE')!= -1; else fifth"> <a
-                        class="navbar-brand" routerLink="/nurse">Clinical System</a> </ng-container>
+                <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('NURSE')!= -1; else fifth"> 
+                    <a class="navbar-brand" routerLink="/nurse">Clinical System</a> </ng-container>
             </ng-template>
             <ng-template #fifth>
+                <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINCC')!= -1; else sixth"> 
+                    <a class="navbar-brand" routerLink="/adminCC">Clinical System</a> </ng-container>
+            </ng-template>
+            <ng-template #sixth>
                 <ng-container> <a class="navbar-brand" routerLink="/">Clinical System</a> </ng-container>
             </ng-template>
 
