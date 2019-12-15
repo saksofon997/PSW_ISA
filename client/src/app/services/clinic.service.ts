@@ -126,6 +126,25 @@ export class ClinicService {
 			);
 	}
 
+	searchPrescriptions(prescription: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var searchParamsString = "";
+		searchParamsString += `name=${prescription.name}&surname=${prescription.surname}&medication=${prescription.medication}&clinic_id=${prescription.clinic_id}`
+		return this.http.get(`http://localhost:8080/api/prescriptions/search_prescriptions?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	addClinic(clinic: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',

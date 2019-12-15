@@ -1,13 +1,8 @@
 package com.project.tim49.service;
 
 import com.project.tim49.dto.PrescriptionDTO;
-import com.project.tim49.model.Clinic;
-import com.project.tim49.model.Nurse;
-import com.project.tim49.model.Prescription;
-import com.project.tim49.repository.ClinicRepository;
-import com.project.tim49.repository.NurseRepository;
-import com.project.tim49.repository.PrescriptionRepository;
-import com.project.tim49.repository.TypeOfExaminationRepository;
+import com.project.tim49.model.*;
+import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +37,6 @@ public class PrescriptionService {
 
         clinic.getPrescriptions().forEach(n -> {if(!n.isApproved()) prescriptionDTOS.add(new PrescriptionDTO(n));});
 
-        System.out.println("ovde");
-
         return prescriptionDTOS;
     }
 
@@ -67,5 +60,15 @@ public class PrescriptionService {
         prescriptionRepository.save(prescription);
 
         return new PrescriptionDTO(prescription);
+    }
+
+    public List<PrescriptionDTO> getByQuery(String name, String surname, String medication, Long clinic_id) {
+        List<Prescription> prescriptions = prescriptionRepository.getByQuery(name, surname, medication, clinic_id);
+        List<PrescriptionDTO> prescriptionDTOS = new ArrayList<>();
+        for(Prescription p: prescriptions) {
+            PrescriptionDTO prescriptionDTO = new PrescriptionDTO(p);
+            prescriptionDTOS.add(prescriptionDTO);
+        }
+        return prescriptionDTOS;
     }
 }
