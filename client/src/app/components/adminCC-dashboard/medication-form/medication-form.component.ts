@@ -42,13 +42,16 @@ export class MedicationFormComponent implements OnInit {
 	}
 
 	onSubmit() {
-		let message = this.medication_id ? 'edit' : 'add';
-		this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to ' + message + ' medication with code: ' + this.form.controls.code.value + ' ?', false)
-			.then((confirmed) => {
-				if (confirmed.submited) {
-					this.submitOrEdit();
-				}
-			});
+		if(this.medication_id){
+			this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to ' + 'edit' + ' medication with code: ' + this.form.controls.code.value + ' ?', false)
+				.then((confirmed) => {
+					if (confirmed.submited) {
+						this.submitOrEdit();
+					}
+				});
+		}else{
+			this.submitOrEdit();
+		}
 		
 	}
 	submitOrEdit(){

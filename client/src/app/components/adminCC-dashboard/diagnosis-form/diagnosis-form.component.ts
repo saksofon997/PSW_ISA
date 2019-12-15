@@ -41,15 +41,20 @@ export class DiagnosisFormComponent implements OnInit {
 	}
 
 	onSubmit() {
-	let message = this.diagnosis_id ? 'edit' : 'add';
-	this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to ' + message + ' diagnosis with code: ' + this.form.controls.code.value + ' ?', false)
-		.then((confirmed) => {
-			if (confirmed.submited) {
-				this.submitOrEdit();
-			}
-		});
+	if(this.diagnosis_id){
+		this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to ' + 'edit' + ' diagnosis with code: ' + this.form.controls.code.value + ' ?', false)
+			.then((confirmed) => {
+				if (confirmed.submited) {
+					this.submitOrEdit();
+				}
+			});
+	}else{
+		this.submitOrEdit();
+	}
 	}
 	submitOrEdit() {
+		this.submitted =true;
+
 		if (this.form.invalid) {
 			return;
 		}
