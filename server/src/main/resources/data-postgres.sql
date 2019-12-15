@@ -44,52 +44,52 @@ INSERT INTO public.user_authority(
 
 INSERT INTO public.clinic(
 	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Ulica/broj1', 'Grad1', 'Opis klinike 1', 'Klinika1', 5, 20, 'Srbija');
+	VALUES (nextval('clinic_id_seq'), 'Nikole Pašića/13', 'Novi Sad', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Healty living', 5, 20, 'Srbija');
 INSERT INTO public.clinic(
 	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Ulica/broj2', 'Grad2', 'Opis klinike 2', 'Klinika2', 4, 20, 'Srbija');
+	VALUES (nextval('clinic_id_seq'), 'Šećer sokak/25', 'Sremska Mitrovica', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Health city', 4, 20, 'Srbija');
 INSERT INTO public.clinic(
 	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Ulica/broj3', 'Grad3', 'Opis klinike 3', 'Klinika3', 6, 24, 'Srbija');
+	VALUES (nextval('clinic_id_seq'), 'Bulevar Cara Dušana/1', 'Kraljevo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Medify', 6, 24, 'Srbija');
 INSERT INTO public.clinic(
 	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Ulica/broj4', 'Grad4', 'Opis klinike 4', 'Klinika4', 5, 20, 'Srbija');
+	VALUES (nextval('clinic_id_seq'), 'Konstantinova/118', 'Niš', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Niš general hospital', 5, 20, 'Srbija');
 INSERT INTO public.clinic(
 	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Ulica/broj5', 'Grad5', 'Opis klinike 5', 'Klinika5', 3, 14, 'Srbija');
+	VALUES (nextval('clinic_id_seq'), 'Vladimira Iljiča Lenjina/17', 'Beograd', 'Gloria Lenin.', 'Nomino hospitium Lenin.', 3, 14, 'Srbija');
 
 INSERT INTO public.clinic_center_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'AdresaKcAdmina1', 'Grad1', 'adminkc1@kcv.rs', 'ImeKcAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1010990100010', true, true);
+	VALUES (nextval('users_id_seq'), 'Melhiora Erdujheljija 2', 'Novi Sad', 'adminkc1@kcv.rs', 'Marko', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Perić', '1010990100010', true, true);
 INSERT INTO public.clinic_center_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'AdresaKcAdmina2', 'Grad2', 'adminkc2@kcv.rs', 'ImeKcAdmina2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1012991100010', true, false);
+	VALUES (nextval('users_id_seq'), 'Gundulićeva 5', 'Jajce', 'adminkc2@kcv.rs', 'Ivan', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Nikolovski', '1012991100010', true, false);
 INSERT INTO public.clinic_center_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'AdresaKcAdmina3', 'Grad3', 'adminkc3@kcv.rs', 'ImeKcAdmina3', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime3', '1009992100010', true, false);
+	VALUES (nextval('users_id_seq'), 'Kneza Miloša 3', 'Kosovska Mitrovica', 'adminkc3@kcv.rs', 'Marijana', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Mitrović', '1009992100010', true, false);
 
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica1', 'Grad1', 'adminc1@kcv.rs', 'ImeAdmina1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1011990100010', '1', true, true);
+	VALUES (nextval('users_id_seq'), 'Kolubarska 7', 'Užice', 'adminc1@kcv.rs', 'Jagoda', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Bojović', '1011990100010', '1', true, true);
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica2', 'Grad2', 'adminc2@kcv.rs', 'ImeAdmina2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1110994100010', '1', true, false);
+	VALUES (nextval('users_id_seq'), 'Serdara Janka Vukotića 6', 'Vranje', 'adminc2@kcv.rs', 'Nikola', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Rajić', '1110994100010', '1', true, false);
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica3', 'Grad3', 'adminc3@kcv.rs', 'ImeAdmina3', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime3', '1111992100010', '4', true, false);
+	VALUES (nextval('users_id_seq'), 'Kralja Petra I 50', 'Kruševac', 'adminc3@kcv.rs', 'Svetislav', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Preradović', '1111992100010', '4', true, false);
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica4', 'Grad4', 'adminc4@kcv.rs', 'ImeAdmina4', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime4', '0506990100010', '5', true, false);
+	VALUES (nextval('users_id_seq'), 'Sutjeska', 'Prizren', 'adminc4@kcv.rs', 'Milisav', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Danilović', '0506990100010', '5', true, false);
 INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica5', 'Grad5', 'adminc5@kcv.rs', 'ImeAdmina5', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime5', '1508993100010', '3', true, false);
+	VALUES (nextval('users_id_seq'), 'Vuka Karadžića 37', 'Valjevo', 'adminc5@kcv.rs', 'Jovanka', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Zečević', '1508993100010', '3', true, false);
 
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
-	VALUES (nextval('users_id_seq'), 'DocAddress1', 'Grad1', 'doc1@kcv.rs', 'ImeDoc1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1005990100010', '1', true, true, '12:00', '20:00', 2, 0);
+	VALUES (nextval('users_id_seq'), 'Veljka Petrovića 9', 'Loznica', 'doc1@kcv.rs', 'Rodoljub', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Obilić', '1005990100010', '1', true, true, '12:00', '20:00', 2, 0);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
-	VALUES (nextval('users_id_seq'), 'DocAddress2', 'Grad2', 'doc2@kcv.rs', 'ImeDoc2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1007990100010', '1', true, true, '7:00', '15:00', 0, 0);
+	VALUES (nextval('users_id_seq'), 'Njegoševa 16', 'Šabac', 'doc2@kcv.rs', 'Dragica', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Veričić', '1007990100010', '1', true, true, '7:00', '15:00', 0, 0);
 
 INSERT INTO public.medication_dictionary(
 	id, code, name, deleted)
@@ -113,7 +113,7 @@ INSERT INTO public.diagnosis_dictionary(
 
 INSERT INTO public.type_of_examination(
 	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Pregled prostate', '2000', 1);
+	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '2000', 1);
 INSERT INTO public.type_of_examination(
 	id, name, price, clinic_id_id)
 	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3000', 1);
@@ -123,21 +123,21 @@ INSERT INTO public.type_of_examination(
 
 INSERT INTO public.patient(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica1', 'Grad1', 'patient1@kcv.rs', 'ImePacijenta1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1010997100010', true, true);
+	VALUES (nextval('users_id_seq'), 'Mikloša Švalba 9', 'Subotica', 'patient1@kcv.rs', 'Lajos', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Nagy', '1010997100010', true, true);
 INSERT INTO public.patient(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Ulica2', 'Grad2', 'patient2@kcv.rs', 'ImePacijenta2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '1012996100010', true, false);
+	VALUES (nextval('users_id_seq'), 'Gavrila Principa 14', 'Vršac', 'patient2@kcv.rs', 'Franc', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Ferdinand', '1012996100010', true, false);
 
 
 INSERT INTO public.ordination(
 	id, name, number, clinic_id)
-	VALUES (nextval('ordination_id_seq'), 'Ordinacija1', '20', 1);
+	VALUES (nextval('ordination_id_seq'), 'Ordinacija 1', '20', 1);
 INSERT INTO public.ordination(
 	id, name, number, clinic_id)
-	VALUES (nextval('ordination_id_seq'), 'Ordinacija2', '30', 2);
+	VALUES (nextval('ordination_id_seq'), 'Ordinacija 2', '30', 2);
 INSERT INTO public.ordination(
 	id, name, number, clinic_id)
-	VALUES (nextval('ordination_id_seq'), 'Ordinacija3', '50', 1);
+	VALUES (nextval('ordination_id_seq'), 'Ordinacija 3', '50', 1);
 
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, appointment_type)
@@ -178,10 +178,10 @@ INSERT INTO public.clinics_patients(
 
 INSERT INTO public.nurse(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end)
-	VALUES (nextval('users_id_seq'), 'NurseA1', 'Grad1', 'nurse1@kcv.rs', 'Nurse1', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime1', '1410995100010', '1', true, true, '12:00', '20:00');
+	VALUES (nextval('users_id_seq'), 'Petefi Šandora 4', 'Sombor', 'nurse1@kcv.rs', 'Anikó', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Patarica', '1410995100010', '1', true, true, '12:00', '20:00');
 INSERT INTO public.nurse(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end)
-	VALUES (nextval('users_id_seq'), 'NurseA2', 'Grad2', 'nurse2@kcv.rs', 'Nurse2', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Prezime2', '0110996100010', '1', true, true, '7:00', '15:00');
+	VALUES (nextval('users_id_seq'), 'Karađorđeva', 'Mali Iđoš', 'nurse2@kcv.rs', 'Budimir', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Janković', '0110996100010', '1', true, true, '7:00', '15:00');
 
 INSERT INTO public.prescription(
 	id, medication_id, nurse_id, doctor_id, clinic_id, approved)

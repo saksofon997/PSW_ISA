@@ -83,7 +83,7 @@ public class TypeOfExaminationService {
         // Check if toe with same name already exists
         List<TypeOfExamination> clinicExaminationTypes = clinic.get().getTypesOfExamination();
         for (TypeOfExamination t : clinicExaminationTypes){
-            if(t.getName().equals(typeOfExaminationDTO.getName())){
+            if(t.getName().equals(typeOfExaminationDTO.getName()) && t.getId() != typeOfExaminationDTO.getId()){
                 throw new ValidationException("Type of examination with same name already exists!");
             }
         }
