@@ -24,9 +24,9 @@ public class MedicationController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('DOCTOR') or hasAuthority('NURSE')")
-    public ResponseEntity<List<MedicationDictionary>> getMedications() {
+    public ResponseEntity<List<MedicationDTO>> getMedications() {
 
-        List<MedicationDictionary> medications = medicationService.findAll();
+        List<MedicationDTO> medications = medicationService.findAll();
 
         return new ResponseEntity<>(medications, HttpStatus.OK);
     }
@@ -79,6 +79,8 @@ public class MedicationController {
             medicationService.deleteMedication(id);
             return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }catch (NoSuchElementException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
