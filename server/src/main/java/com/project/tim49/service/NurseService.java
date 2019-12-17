@@ -168,17 +168,11 @@ public class NurseService {
             return false;
         }
 
-        if (startHour > endHour){
-            return false;
-        } else {
-            if (startHour == endHour){
-                if (startMinute >= endMinute){
-                    return false;
-                }
+        if (startHour == endHour){
+            if (startMinute >= endMinute){
+                return false;
             }
         }
-
-
         return true;
     }
 

@@ -1,29 +1,27 @@
 <div class="jumbotron jumbotron-fluid col-lg-8 col-sm-8" style="margin-top:0.5em; padding-top: 0.5em;">
     <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
-        <h3 class="display-8">New Appointment</h3>
-        <p class="lead">Insert informations about new appointment.</p>
+        <h3 class="display-8">New available Appointment</h3>
+        <p class="lead">Insert informations about new available appointment.</p>
     </div>
 </div>
 
 <form *ngIf='form' [formGroup]="form" (ngSubmit)="onSubmit()">
-    <fieldset [disabled]="startAppointmentNow">
-        <div class="form-group row">
-            <label for="dateAndTime" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Date and time</label>
-            <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
-                <div class="col-lg-10 col-sm-10 col-md-10">
-                    <input type="datetime" formControlName="dateAndTime" [owlDateTime]="dt2" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && form.controls.dateAndTime.errors }" id="dateAndTime"
-                        style="border: 0;">
-                    <div *ngIf="submitted && form.controls.dateAndTime.errors" class="invalid-feedback">
-                        <div *ngIf="form.controls.dateAndTime.errors.required">Date and time is required</div>
-                    </div>
+    <div class="form-group row">
+        <label for="dateAndTime" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Date and time</label>
+        <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+            <div class="col-lg-10 col-sm-10 col-md-10">
+                <input type="datetime" formControlName="dateAndTime" [owlDateTime]="dt2" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.dateAndTime.errors }" id="dateAndTime"
+                    style="border: 0;">
+                <div *ngIf="submitted && form.controls.dateAndTime.errors" class="invalid-feedback">
+                    <div *ngIf="form.controls.dateAndTime.errors.required">Date and time is required</div>
                 </div>
-                <span *ngIf="!startAppointmentNow" class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
-                        class="fa fa-calendar"></i> </span>
-                <owl-date-time [showSecondsTimer]="true" #dt2></owl-date-time>
             </div>
+            <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
+                    class="fa fa-calendar"></i> </span>
+            <owl-date-time [showSecondsTimer]="true" #dt2></owl-date-time>
         </div>
-    </fieldset>
+    </div>
 
     <div class="form-group row">
         <label for="duration" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Duration</label>
@@ -74,6 +72,23 @@
     </div>
 
     <div class="form-group row">
+        <label for="doctor" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Doctor</label>
+        <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+            <select formControlName="doctor" class="m-1 form-control"
+                [ngClass]="{ 'is-invalid': submitted && form.controls.doctor.errors }" id="doctor"
+                style="border: 0; width: 100%;">
+                <option value=""></option>
+                <option *ngFor="let doctor of doctors" [value]="doctor.id">
+                    {{doctor.name + " " + doctor.surname}}
+                </option>
+            </select>
+            <div *ngIf="submitted && form.controls.doctor.errors" class="invalid-feedback ml-3">
+                <div *ngIf="form.controls.doctor.errors.required">Please select doctor</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
         <label for="ordination" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Ordination</label>
         <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
             <select formControlName="ordination" class="m-1 form-control"
@@ -90,45 +105,12 @@
         </div>
     </div>
 
-    <div class="accordion col-lg-7 col-sm-7 mb-5 p-0" id="accordionExample">
-        <div class="card">
-            <div class="card-header" id="headingOne">
-                <h2 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-                        aria-expanded="true" aria-controls="collapseOne">
-                        Patient informations
-                    </button>
-                </h2>
-            </div>
-
-            <div id="collapseOne" class="collapse border" aria-labelledby="headingOne"
-                data-parent="#accordionExample">
-                <div class="card-body">
-                    <div class="row">
-                        <label class="col-lg-3"> <b>Name:</b> </label>
-                        <label class="col-lg-9"> {{patient.name}} </label>
-                    </div>
-                    <div class="row">
-                        <label class="col-lg-3"><b>Surname: </b> </label>
-                        <label class="col-lg-9"> {{patient.surname}} </label>
-                    </div>
-                    <div class="row">
-                        <label class="col-lg-3"><b>Upin: </b> </label>
-                        <label class="col-lg-9"> {{patient.upin}} </label>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="col-lg-8 col-sm-10">
         <hr>
     </div>
 
     <div>
-        <button type="submit" *ngIf="!startAppointmentNow" class="btn btn-primary">Create appointment</button>
-        <button type="submit" *ngIf="startAppointmentNow" class="btn btn-primary">Start appointment</button>
+        <button type="submit" class="btn btn-primary">Create appointment</button>
         <button type="button" class="btn btn-outline-primary m-1" (click)='cancelChanges()'>Cancel</button>
     </div>
 </form>

@@ -139,11 +139,19 @@ public class OrdinationService {
 
         List<Appointment> appointments = appointmentRepository.getByOrdinationAndNotCompleted(ordination_id);
         for (Appointment appointment: appointments) {
+            if (appointment.isCompleted() || appointment.isDeleted()){
+                continue;
+            }
+            if ( startingTimeStamp >= appointment.getStartingDateAndTime()
+                    && startingTimeStamp + duration/1000 <= appointment.getEndingDateAndTime()){
+                return false;
+            }
             if (appointment.getStartingDateAndTime() >= startingTimeStamp
                     && appointment.getStartingDateAndTime() <= startingTimeStamp + duration/1000){
                 return false;
             }
-            if (appointment.getEndingDateAndTime() >= startingTimeStamp){
+            if (appointment.getEndingDateAndTime() > startingTimeStamp
+                    && appointment.getEndingDateAndTime() <= startingTimeStamp + duration/1000){
                 return false;
             }
         }
