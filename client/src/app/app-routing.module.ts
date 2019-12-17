@@ -46,6 +46,7 @@ import { NurseCalendarComponent } from './components/nurse-home/nurse-calendar/n
 import { NursePatientListingComponent } from './components/nurse-home/nurse-patient-listing/nurse-patient-listing.component';
 import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
 import { NewAppointmentPageComponent } from './components/doctor-home/new-appointment-page/new-appointment-page.component';
+import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
 
 const routes: Routes = [
 	{
@@ -85,6 +86,7 @@ const routes: Routes = [
 			{path: 'doctors', component: DoctorListingComponent},
 			{path: 'doctor', component: DoctorFormComponent},
 			{path: 'available_appointments', component: AvailableAppointmentListingComponent},
+			{path: 'new_available_appointment', component: NewAvailableAppointmentPageComponent},
 			{path: 'types_of_examination', component: TypeOfExaminationListingComponent},
 			{path: 'type_of_examination_info', component: TypeOfExaminationFormComponent},
 			{path: 'ordinations', component: OrdinationListingComponent},

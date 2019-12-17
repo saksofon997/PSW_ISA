@@ -62,6 +62,7 @@ import { NewAppointmentPageComponent } from './components/doctor-home/new-appoin
 import { NurseCalendarComponent } from './components/nurse-home/nurse-calendar/nurse-calendar.component';
 import { NursePatientListingComponent } from './components/nurse-home/nurse-patient-listing/nurse-patient-listing.component';
 import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
+import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +117,8 @@ import { PrescriptionListingComponent } from './components/nurse-home/prescripti
     NewAppointmentPageComponent,
     NurseCalendarComponent,
     NursePatientListingComponent,
-    PrescriptionListingComponent
+    PrescriptionListingComponent,
+    NewAvailableAppointmentPageComponent
   ],
   imports: [
     BrowserModule,

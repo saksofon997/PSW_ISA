@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.print.Doc;
 import javax.validation.ValidationException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -117,9 +118,11 @@ public class DoctorService {
             throw new ValidationException("No doctor with that ID!");
         }
 
-        //List<Appointment> appointments = doctor.get().getAppointments();
         Set<Appointment> appointments = doctor.get().getAppointments();
         for (Appointment appointment: appointments) {
+            if (appointment.isDeleted()){
+                continue;
+            }
             if (!appointment.isCompleted()){
                 return true;
             }
@@ -136,18 +139,101 @@ public class DoctorService {
 
         Set<Appointment> appointments = doctor.get().getAppointments();
         for (Appointment appointment: appointments) {
-            if (appointment.isCompleted()){
+            if (appointment.isCompleted() || appointment.isDeleted()){
                 continue;
+            }
+            if ( startingTimeStamp >= appointment.getStartingDateAndTime()
+                    && startingTimeStamp + duration/1000 <= appointment.getEndingDateAndTime()){
+                return false;
             }
             if (appointment.getStartingDateAndTime() >= startingTimeStamp
                     && appointment.getStartingDateAndTime() <= startingTimeStamp + duration/1000){
                 return false;
             }
-            if (appointment.getEndingDateAndTime() >= startingTimeStamp){
+            if (appointment.getEndingDateAndTime() > startingTimeStamp
+                    && appointment.getEndingDateAndTime() <= startingTimeStamp + duration/1000){
                 return false;
             }
         }
         return true;
+    }
+
+    public boolean isDuringDoctorWorkingHours(Long doctor_id, long startingTimeStamp, long duration){
+        Optional<Doctor> doctor = doctorRepository.findById(doctor_id);
+        if (!doctor.isPresent()){
+            throw new ValidationException("No doctor with that ID!");
+        }
+        Date startDateTime = new Date(startingTimeStamp * 1000);
+        Date endDateTime = new Date(startingTimeStamp * 1000 + duration);
+        SimpleDateFormat ft = new SimpleDateFormat("HH:mm:ss");
+
+        int shiftStartHour;
+        int shiftStartMinute;
+        try {
+            int[] shiftStart = getHoursAndMinutesFromString(doctor.get().getShiftStart());
+            shiftStartHour = shiftStart[0];
+            shiftStartMinute = shiftStart[1];
+        } catch (NumberFormatException e){
+            throw e;
+        }
+
+        int shiftEndHour;
+        int shiftEndMinute;
+        try {
+            int[] shiftEnd = getHoursAndMinutesFromString(doctor.get().getShiftEnd());
+            shiftEndHour = shiftEnd[0];
+            shiftEndMinute = shiftEnd[1];
+        } catch (NumberFormatException e){
+            throw e;
+        }
+
+        int appointmentStartHour;
+        int appointmentStartMinute;
+        try {
+            int[] appStart = getHoursAndMinutesFromString(ft.format(startDateTime));
+            appointmentStartHour = appStart[0];
+            appointmentStartMinute = appStart[1];
+        } catch (NumberFormatException e){
+            throw e;
+        }
+
+        int appointmentEndHour;
+        int appointmentEndMinute;
+        try {
+            int[] appEnd = getHoursAndMinutesFromString(ft.format(endDateTime));
+            appointmentEndHour = appEnd[0];
+            appointmentEndMinute = appEnd[1];
+        } catch (NumberFormatException e){
+            throw e;
+        }
+
+        if (shiftStartHour < shiftEndHour){ // 09:00 - 17:00
+            if (appointmentStartHour >= shiftStartHour && appointmentStartHour <= shiftEndHour
+                        && appointmentEndHour >= shiftStartHour && appointmentEndHour <= shiftEndHour) {
+                if (appointmentStartHour == shiftStartHour && appointmentStartMinute < shiftStartMinute){
+                    return false;
+                }
+                if (appointmentEndHour == shiftEndHour && appointmentEndMinute > shiftEndMinute){
+                    return false;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } else { // 21:00 - 05:00
+            if (appointmentStartHour > shiftEndHour && appointmentStartHour < shiftStartHour
+                    && appointmentEndHour > shiftEndHour && appointmentEndHour < shiftStartHour) {
+                return false;
+            } else {
+                if (appointmentStartHour == shiftStartHour && appointmentStartMinute < shiftStartMinute){
+                    return false;
+                }
+                if (appointmentEndHour == shiftEndHour && appointmentEndMinute > shiftEndMinute){
+                    return false;
+                }
+                return true;
+            }
+        }
     }
 
     public void deleteDoctor(Long id){
@@ -174,6 +260,48 @@ public class DoctorService {
         real.setNumberOfStars(dto.getNumberOfStars());
         real.setNumberOfReviews(dto.getNumberOfReviews());
         return real;
+    }
+
+    public List<AppointmentDTO> getAppointments(Long id){
+        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        Set<Appointment> appointments = new HashSet<>();
+        List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
+        if (doctor!= null){
+            appointments = doctor.getAppointments();
+            for (Appointment a: appointments) {
+                if (!a.isDeleted()){
+                    appointmentDTOS.add(new AppointmentDTO(a));
+                }
+            }
+        }else{
+            throw new ValidationException("Doctor not found.");
+        }
+        return appointmentDTOS;
+    }
+
+    public AppointmentDTO getOneAppointment(Long id, Long appID){
+        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        Set<Appointment> appointments = new HashSet<>();
+        AppointmentDTO appointmentDTO = null;
+        if (doctor== null){
+            throw new ValidationException("Doctor not found.");
+        }else{
+            appointments = doctor.getAppointments();
+            for (Appointment a: appointments) {
+                if (a.getId().equals(appID)){
+                    appointmentDTO = new AppointmentDTO(a);
+                }
+            }
+        }
+        return appointmentDTO;
+    }
+
+    public DoctorDTO getDoctor(Long id){
+        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        if (doctor != null){
+            return new DoctorDTO(doctor);
+        }
+        throw new NoSuchElementException("Doctor with given id not found.");
     }
 
     public boolean shiftValid(String shiftStart, String shiftEnd){
@@ -209,54 +337,25 @@ public class DoctorService {
             return false;
         }
 
-        if (startHour > endHour){
-            return false;
-        } else {
-            if (startHour == endHour){
-                if (startMinute >= endMinute){
-                    return false;
-                }
+        if (startHour == endHour){
+            if (startMinute >= endMinute){
+                return false;
             }
         }
         return true;
     }
-    public List<AppointmentDTO> getAppointments(Long id){
-        Doctor doctor = doctorRepository.findById(id).orElse(null);
-        Set<Appointment> appointments = new HashSet<>();
-        List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
-        if (doctor!= null){
-            appointments = doctor.getAppointments();
-            for (Appointment a: appointments) {
-                appointmentDTOS.add(new AppointmentDTO(a));
-            }
-        }else{
-            throw new ValidationException("Doctor not found.");
-        }
-        return appointmentDTOS;
-    }
 
-    public AppointmentDTO getOneAppointment(Long id, Long appID){
-        Doctor doctor = doctorRepository.findById(id).orElse(null);
-        Set<Appointment> appointments = new HashSet<>();
-        AppointmentDTO appointmentDTO = null;
-        if (doctor== null){
-            throw new ValidationException("Doctor not found.");
-        }else{
-            appointments = doctor.getAppointments();
-            for (Appointment a: appointments) {
-                if (a.getId().equals(appID)){
-                    appointmentDTO = new AppointmentDTO(a);
-                }
-            }
+    public int[] getHoursAndMinutesFromString(String timeAndMinutes){
+        String[] split = timeAndMinutes.split(":");
+        int hour;
+        int minute;
+        try {
+            hour = Integer.parseInt(split[0]);
+            minute = Integer.parseInt(split[1]);
+        } catch (NumberFormatException e){
+            throw e;
         }
-        return appointmentDTO;
-    }
-
-    public DoctorDTO getDoctor(Long id){
-        Doctor doctor = doctorRepository.findById(id).orElse(null);
-        if (doctor != null){
-            return new DoctorDTO(doctor);
-        }
-        throw new NoSuchElementException("Doctor with given id not found.");
+        int[] retVal = {hour, minute};
+        return retVal;
     }
 }

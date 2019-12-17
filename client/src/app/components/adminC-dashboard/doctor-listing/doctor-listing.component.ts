@@ -55,7 +55,7 @@ export class DoctorListingComponent implements OnInit {
 			(error) => {
 				alert(error);
 			}
-		)
+		);
 	}
 
 	addNewDoctor() {

@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table
-@Inheritance( strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="appointment_type")
+//@Table
+//@Inheritance( strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name="appointment_type")
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,23 +55,18 @@ public class Appointment {
     @Column(name = "completed", nullable = false)
     private boolean completed;
 
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, targetEntity = Doctor.class)
-    @JoinTable(name = "appointment_doctors", inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"), joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"),
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Doctor.class)
+    @JoinTable(name = "appointment_doctors", joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"),
             foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
             inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     public Set<Doctor> doctors;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Patient.class)
-    @JoinTable(name = "patients_pending_appointments", inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
-    public Set<Patient> patients;
-//    @PreRemove
-//    public void removeFromDoctorAppointments(){
-//        System.out.println("doc.getId()");
-//        for (Doctor m : doctors) {
-//            m.getAppointments().remove(this);
-//        }
-//    }
+//    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Patient.class)
+//    @JoinTable(name = "patients_pending_appointments", inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
+//    public Set<Patient> patients;
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
 
     public Long getId() {
         return id;
@@ -159,5 +154,13 @@ public class Appointment {
 
     public void setDoctors(Set<Doctor> doctors) {
         this.doctors = doctors;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

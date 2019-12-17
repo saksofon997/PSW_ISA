@@ -7,10 +7,8 @@ import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.validation.ValidationException;
+import java.util.*;
 
 @Service
 public class AppointmentService {
@@ -28,7 +26,40 @@ public class AppointmentService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public Appointment save(AppointmentDTO appointmentDTO) {
+    public ArrayList<AppointmentDTO> getClinicAvailableAppointments(Long clinic_id){
+        Clinic clinic = clinicRepository.findById(clinic_id).orElseGet(null);
+        if (clinic == null){
+            throw new NoSuchElementException();
+        }
+
+        ArrayList<Appointment> appointments = appointmentRepository.getByClinicAndPatientNullAndDeletedFalse(clinic);
+        ArrayList<AppointmentDTO> appointmentDTOs = new ArrayList<>();
+        for (Appointment app: appointments){
+            appointmentDTOs.add(new AppointmentDTO(app));
+        }
+        return appointmentDTOs;
+    }
+
+    public void startAppointment(AppointmentDTO appointmentDTO) {
+        Appointment appointment = setAppointmentData(appointmentDTO);
+
+        Patient patient = patientRepository.findById(appointmentDTO.getPatient().getId()).get();
+        appointment.setPatient(patient);
+
+        Appointment saved = appointmentRepository.save(appointment);
+
+        patient.getPendingAppointments().add(saved);
+        patientRepository.save(patient);
+    }
+
+    public void createAvailableAppointment(AppointmentDTO appointmentDTO) {
+        Appointment appointment = setAppointmentData(appointmentDTO);
+        appointment.setPatient(null);
+
+        appointmentRepository.save(appointment);
+    }
+
+    private Appointment setAppointmentData(AppointmentDTO appointmentDTO){
         Appointment appointment = new Appointment();
 
         appointment.setStartingDateAndTime(appointmentDTO.getStartingDateAndTime());
@@ -46,25 +77,32 @@ public class AppointmentService {
         Ordination ordination = ordinationRepository.findById(appointmentDTO.getOrdination().getId()).get();
         appointment.setOrdination(ordination);
 
-        Patient patient = patientRepository.findById(appointmentDTO.getPatient().getId()).get();
-        appointment.setPatient(patient);
-
         List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
         Set<Doctor> doctors = new HashSet<>();
         for(DoctorDTO d: doctorDTOS) {
             Doctor doc = doctorRepository.findById(d.getId()).get();
             doctors.add(doc);
         }
-
-        Appointment saved = appointmentRepository.save(appointment);
-
-        patient.getPendingAppointments().add(saved);
-        patientRepository.save(patient);
-        for (Doctor doc: doctors){
-            doc.getAppointments().add(appointment);
-            doctorRepository.save(doc);
-        }
+        appointment.setDoctors(doctors);
 
         return appointment;
+    }
+
+    public void deleteAppointment(Long id) {
+        Optional<Appointment> appointment = appointmentRepository.findById(id);
+        if (!appointment.isPresent()) {
+            throw new ValidationException("No appointment with that ID!");
+        }
+        Appointment forDelete = getReference(id);
+        try {
+            forDelete.setDeleted(true);
+            appointmentRepository.save(forDelete);
+        } catch (Exception e) {
+            throw new NoSuchElementException();
+        }
+    }
+
+    private Appointment getReference(Long id) {
+        return appointmentRepository.getOne(id);
     }
 }

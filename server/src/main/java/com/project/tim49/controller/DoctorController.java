@@ -115,7 +115,7 @@ public class DoctorController {
             @RequestParam(value = "clinic_id", required = false) Long clinic_id
     ) {
         List<DoctorDTO> doctors = doctorService.getByQuery(name, surname, clinic_id);
-        return new ResponseEntity(doctors, HttpStatus.OK);
+        return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
     @GetMapping(path="/appointments/{id}",
@@ -127,10 +127,10 @@ public class DoctorController {
          appointments = doctorService.getAppointments(id);
 
         }catch (ValidationException e){
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity(appointments, HttpStatus.OK);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
     @GetMapping(path="/oneAppointment/{id}/{appID}",

@@ -29,19 +29,11 @@ public class Doctor extends User {
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctores", fetch = FetchType.LAZY)
 //    public List<Appointment> appointments = new ArrayList<Appointment>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, targetEntity = Appointment.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Appointment.class)
     @JoinTable(name = "appointment_doctors", joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"),
             foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
             inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     public Set<Appointment> appointments;
-
-//    @PreRemove
-//    public void removeFromDoctorAppointments(){
-//        System.out.println("doc.getId()");
-//        for (Appointment m : appointments) {
-//            m.getDoctors().remove(this);
-//        }
-//    }
 
     @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY)
     public List<Vacation> vacations = new ArrayList<Vacation>();

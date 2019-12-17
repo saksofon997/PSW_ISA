@@ -72,8 +72,10 @@ public class PatientService {
         Set<Appointment> pendingAppointments = patient.get().getPendingAppointments();
         List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
         for(Appointment app: pendingAppointments) {
-            AppointmentDTO appDTO = new AppointmentDTO(app);
-            appointmentDTOS.add(appDTO);
+            if (!app.isDeleted()){
+                AppointmentDTO appDTO = new AppointmentDTO(app);
+                appointmentDTOS.add(appDTO);
+            }
         }
         return appointmentDTOS;
     }

@@ -65,7 +65,7 @@ public class MedicationService {
         }
     }
 
-    public MedicationDictionary getReference(Long id) {
+    private MedicationDictionary getReference(Long id) {
         return medicationRepository.getOne(id);
     }
 
