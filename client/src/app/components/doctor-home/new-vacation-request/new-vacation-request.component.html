@@ -1,0 +1,52 @@
+<div class="jumbotron jumbotron-fluid col-lg-8 col-sm-8" style="margin-top:0.5em; padding-top: 0.5em;">
+  <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+      <h3 class="display-8">Vaction Request</h3>
+      <p class="lead">Please fill in the required fields.</p>
+  </div>
+</div>
+
+<form *ngIf='form' [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+          <label for="startingDateAndTime" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Starting date and time</label>
+          <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+              <div class="col-lg-10 col-sm-10 col-md-10">
+                  <input type="datetime" formControlName="startingDateAndTime" [owlDateTime]="dt2" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && form.controls.startingDateAndTime.errors }" id="startingDateAndTime"
+                      style="border: 0;">
+                  <div *ngIf="submitted && form.controls.startingDateAndTime.errors" class="invalid-feedback">
+                      <div *ngIf="form.controls.startingDateAndTime.errors.required">Starting date and time is required</div>
+                  </div>
+              </div>
+              <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
+                      class="fa fa-calendar"></i> </span>
+              <owl-date-time [showSecondsTimer]="true" #dt2></owl-date-time>
+          </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="endingDateAndTime" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Ending date and time</label>
+        <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+            <div class="col-lg-10 col-sm-10 col-md-10">
+                <input type="datetime" formControlName="endingDateAndTime" [owlDateTime]="dt22" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.endingDateAndTime.errors }" id="endingDateAndTime"
+                    style="border: 0;">
+                <div *ngIf="submitted && form.controls.endingDateAndTime.errors" class="invalid-feedback">
+                    <div *ngIf="form.controls.endingDateAndTime.errors.required">Ending date and time is required</div>
+                </div>
+            </div>
+            <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt22"> <i
+                    class="fa fa-calendar"></i> </span>
+            <owl-date-time [showSecondsTimer]="true" #dt22></owl-date-time>
+        </div>
+    </div>
+
+  <div class="col-lg-8 col-sm-10">
+      <hr>
+  </div>
+
+  <div>
+      <button type="submit" class="btn btn-primary">Send request</button>
+      <button type="button" class="btn btn-outline-primary m-1" (click)='cancelChanges()'>Cancel</button>
+  </div>
+</form>
+<br><br>

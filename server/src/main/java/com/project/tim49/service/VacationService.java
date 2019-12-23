@@ -65,12 +65,12 @@ public class VacationService {
 
     }
 
-    public VacationDTO createVacationRequest(VacationDTO vacationDTO, Long staff_id) {
-        if(staff_id == null)
+    public VacationDTO createVacationRequest(VacationDTO vacationDTO) {
+        if(vacationDTO.getStaffId() == null)
             throw new ValidationException("Invalid staff ID!");
 
-        Optional<Doctor> doctor = doctorRepository.findById(staff_id);
-        Optional<Nurse> nurse = nurseRepository.findById(staff_id);
+        Optional<Doctor> doctor = doctorRepository.findById(vacationDTO.getStaffId());
+        Optional<Nurse> nurse = nurseRepository.findById(vacationDTO.getStaffId());
 
         if(!doctor.isPresent() && !nurse.isPresent()) {
             throw new NoSuchElementException("No staff with that ID!");
