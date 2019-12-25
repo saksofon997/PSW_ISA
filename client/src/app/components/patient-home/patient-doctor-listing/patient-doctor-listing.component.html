@@ -1,0 +1,62 @@
+<div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
+  <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+      <h3 class="display-8">Clinics</h3>
+      <p class="lead">Here you can find doctors you need.</p>
+  </div>
+</div>
+<table class="table">
+  <thead>
+      <tr>
+          <th scope="col" *ngFor='let param of doctorHeaders'>{{param}}</th>
+          <th scope="col">
+              <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Sort by
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="sortName()" >Name</a>
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="sortSurname()" >Surname</a>
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="sortAddress()">Address</a>
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="sortCity()">City</a>
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="sortState()">State</a>
+                  </div>
+              </div>
+          </th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor='let doctor of doctors'>
+        <mat-expansion-panel (opened)="showAvailibleAppointments(doctor)">
+          <mat-expansion-panel-header>
+            <td> {{doctor.name}} </td>
+            <td> {{doctor.surname}} </td>
+            <td> {{doctor.address}} </td>
+            <td> {{doctor.city}} </td>
+            <td> {{doctor.state}} </td>
+            <td> {{doctor.phoneNumber}} </td>
+          </mat-expansion-panel-header>
+
+            <div *ngIf="showAppts">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col" *ngFor='let param of appointmentHeaders'>{{param}}</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor='let appointment of appointments'>
+                    <td> {{appointment.clinic.name}} </td>
+                    <td> {{appointment.ordination.name}} </td>
+                    <td> {{appointment.ordination.number}} </td>
+                    <td> {{appointment.typeOfExamination.name}} </td>
+                    <td> {{appointment.formatedDateAndTime}} </td>
+                    <td> {{appointment.duration / 1000 / 60}} </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </mat-expansion-panel>
+      </tr>
+  </tbody>
+</table>

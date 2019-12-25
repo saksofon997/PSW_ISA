@@ -33,6 +33,7 @@ import { DialogComponent } from './components/helperComponents/dialog/dialog.com
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { APP_INITIALIZER } from '@angular/core';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -64,6 +65,7 @@ import { NursePatientListingComponent } from './components/nurse-home/nurse-pati
 import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
 import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
+import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
 
 @NgModule({
   declarations: [
@@ -120,7 +122,8 @@ import { NewVacationRequestComponent } from './components/doctor-home/new-vacati
     NursePatientListingComponent,
     PrescriptionListingComponent,
     NewAvailableAppointmentPageComponent,
-    NewVacationRequestComponent
+    NewVacationRequestComponent,
+    PatientDoctorListingComponent,
   ],
   imports: [
     BrowserModule,
@@ -137,6 +140,7 @@ import { NewVacationRequestComponent } from './components/doctor-home/new-vacati
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularFontAwesomeModule,
+    MatExpansionModule,
   ],
   providers: [CookieService, UserService,
     {

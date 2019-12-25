@@ -76,7 +76,7 @@ export class DoctorCalendarComponent implements OnInit{
     let user = JSON.parse(this.cookieService.get('user'));
     this.daystart = parseInt(user.shiftStart);
     this.dayend = parseInt(user.shiftEnd);
-    this.doctorService.getAppointments().subscribe(
+    this.doctorService.getAppointments(null).subscribe(
       (data) => {
        this.populateCalendarEvents(data);
       },

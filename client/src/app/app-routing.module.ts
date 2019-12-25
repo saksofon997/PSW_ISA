@@ -48,6 +48,7 @@ import { PrescriptionListingComponent } from './components/nurse-home/prescripti
 import { NewAppointmentPageComponent } from './components/doctor-home/new-appointment-page/new-appointment-page.component';
 import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
+import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
 
 const routes: Routes = [
 	{
@@ -106,6 +107,7 @@ const routes: Routes = [
 			{path: '', component: PatientClinicListingComponent},
 			{path: 'clinics', component: PatientClinicListingComponent},
 			{path: 'pending_appointments', component: PatientPendingAppointmentsListingComponent},
+			{path: 'doctor_listing', component: PatientDoctorListingComponent},
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['PATIENT']}
@@ -167,17 +169,6 @@ const routes: Routes = [
 		canActivate: [AuthGuardService],
 		data: { roles: ['NURSE']}
 	},
-	// {
-	// 	path: 'doctorHome',
-	// 	component: PatientHomeComponent,
-	// 	children:[
-	// 		{path: '', component: PatientPersonalProfileComponent},
-	// 		{path: 'profile', component: PatientPersonalProfileComponent},
-
-	// 	],
-	// 	canActivate: [AuthGuardService],
-	// 	data: { roles: ['DOCTOR']}
-	// },
 	{
 		path: 'login',
 		component: LoginComponent
@@ -191,27 +182,6 @@ const routes: Routes = [
 		component: ChangePasswordComponent,
 		canDeactivate: [ChangePasswordDeactivateService]
 	}
-	//{
-	// 	path: '',
-	// 	component: HomeComponent,
-	// 	canActivate: [AuthGuardService]
-	// },
-	// {
-	// 	path: 'admin',
-	// 	component: AdminComponent,
-	// 	canActivate: [AuthGuardService],
-	// 	data: { roles: ["clinicalCenterAdmin, clinicAdmin, doctor, nurse, patient"] }
-	// },
-	// {
-	// 	path: 'login',
-	// 	component: LoginComponent
-	// },
-	// {
-	// 	path: 'register',
-	// 	component: RegisterComponent
-	// },
-	// // otherwise redirect to home
-	// { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

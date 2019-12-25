@@ -14,9 +14,11 @@ constructor(private cookieService: CookieService,
             private userService: UserService,
             private http: HttpClient) { }
             
-getAppointments(){
+getAppointments(doctorID: any){
     let user = JSON.parse(this.cookieService.get('user'));
     let id = user["id"];
+    if(doctorID)
+      id = doctorID;
     let headers = new HttpHeaders({
       'Accept': 'application/json',
 			'Authorization': `Bearer ${JSON.parse(this.cookieService.get('token')).accessToken}`

@@ -38,8 +38,9 @@ export class PatientClinicListingComponent implements OnInit {
 		});
   }
 
-  showClinicInfo(clinic: any) {
-		this.router.navigate(['../showClinicInfo'], { relativeTo: this.activatedRoute, state: {data: clinic}});
+  showClinicDoctors(clinic: any) {
+	  let clinicID = clinic.id;
+		this.router.navigate(['../doctor_listing'], { relativeTo: this.activatedRoute, state: {data: clinicID}} );
 	}
 
   sortName() {
