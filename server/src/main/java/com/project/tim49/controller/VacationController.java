@@ -23,18 +23,16 @@ public class VacationController {
     @Autowired
     private EmailService emailService;
 
-    @PostMapping(path = "/{id}",consumes = "application/json", produces= "application/json")
+    @PostMapping(path = "/request",consumes = "application/json", produces= "application/json")
     @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('NURSE')")
-    public ResponseEntity createVacationRequest(@PathVariable("id") Long staff_id,
-                                               @RequestBody VacationDTO vacationDTO) {
+    public ResponseEntity createVacationRequest(@RequestBody VacationDTO vacationDTO) {
 
         if(vacationDTO == null) {
             return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         try{
             VacationDTO newVacation =
-                    vacationService.createVacationRequest(vacationDTO,
-                            staff_id);
+                    vacationService.createVacationRequest(vacationDTO);
             return new ResponseEntity<>(newVacation, HttpStatus.CREATED);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);

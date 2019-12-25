@@ -47,6 +47,7 @@ import { NursePatientListingComponent } from './components/nurse-home/nurse-pati
 import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
 import { NewAppointmentPageComponent } from './components/doctor-home/new-appointment-page/new-appointment-page.component';
 import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
+import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
 
 const routes: Routes = [
 	{
@@ -126,7 +127,8 @@ const routes: Routes = [
 		component: DoctorMyProfileComponent,
 		children:[
 			{path: '', component: DoctorProfileComponent},
-			{path: 'personal', component: DoctorProfileComponent}
+			{path: 'profile', component: DoctorProfileComponent},
+			{path: 'vacation_request', component: NewVacationRequestComponent},
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['DOCTOR']}
@@ -160,7 +162,7 @@ const routes: Routes = [
 		children:[
 			{path: '', component: NursePersonalProfileComponent},
 			{path: 'profile', component: NursePersonalProfileComponent},
-
+			{path: 'vacation_request', component: NewVacationRequestComponent},
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['NURSE']}

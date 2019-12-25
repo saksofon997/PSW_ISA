@@ -5,10 +5,14 @@ import com.project.tim49.model.Vacation;
 public class VacationDTO {
 
     private Long id;
-    private long startDate;
-    private long endDate;
-    private long staffId;
+    private Long startDate;
+    private Long endDate;
+    private Long staffId;
     private boolean approved;
+
+    public VacationDTO(){
+
+    }
 
     public VacationDTO(Vacation vacation) {
         this.id = vacation.getId();
@@ -18,7 +22,7 @@ public class VacationDTO {
         this.approved = vacation.isApproved();
     }
 
-    public VacationDTO(Long id, long startDate, long endDate, long staffId,
+    public VacationDTO(Long id, Long startDate, Long endDate, Long staffId,
                        boolean approved) {
         this.id = id;
         this.startDate = startDate;
@@ -35,27 +39,27 @@ public class VacationDTO {
         this.id = id;
     }
 
-    public long getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(long startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public long getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(long endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 
-    public long getStaffId() {
+    public Long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(long staffId) {
+    public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
 
