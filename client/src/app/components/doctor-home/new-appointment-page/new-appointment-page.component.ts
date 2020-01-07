@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { UserService } from 'src/app/services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
@@ -27,7 +27,8 @@ export class NewAppointmentPageComponent implements OnInit {
 		private clinicService: ClinicService,
 		private patientService: PatientService,
 		private activatedRoute: ActivatedRoute,
-		private appointmentService: AppointmentService) { }
+		private appointmentService: AppointmentService,
+		private router: Router) { }
 
 	ngOnInit() {
 		this.activatedRoute.queryParams.subscribe(params => {
@@ -146,7 +147,11 @@ export class NewAppointmentPageComponent implements OnInit {
 
 		if (this.startAppointmentNow) {
 			this.appointmentService.startAppointment(appointment).subscribe(
-				(data) => { alert("Appointment started") /* rutirati na stranicu za evidecniju o pregledu */ },
+				(data) => { 
+					alert("Appointment created")
+					this.router.navigate([`../../examination`], { queryParams: { patient: this.patient.id }, relativeTo: this.activatedRoute });
+					 /* rutirati na stranicu za evidecniju o pregledu */ 
+					},
 				(error) => { alert(error); }
 			);
 		} else {

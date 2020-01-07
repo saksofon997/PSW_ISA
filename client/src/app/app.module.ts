@@ -64,6 +64,9 @@ import { NursePatientListingComponent } from './components/nurse-home/nurse-pati
 import { PrescriptionListingComponent } from './components/nurse-home/prescription-listing/prescription-listing.component';
 import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
+import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ExaminationComponent } from './components/doctor-home/examination/examination.component';
 
 @NgModule({
   declarations: [
@@ -120,7 +123,8 @@ import { NewVacationRequestComponent } from './components/doctor-home/new-vacati
     NursePatientListingComponent,
     PrescriptionListingComponent,
     NewAvailableAppointmentPageComponent,
-    NewVacationRequestComponent
+    NewVacationRequestComponent,
+    MedicalRecordComponent
   ],
   imports: [
     BrowserModule,
@@ -137,6 +141,10 @@ import { NewVacationRequestComponent } from './components/doctor-home/new-vacati
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularFontAwesomeModule,
+    MatExpansionModule
+  ],
+  exports: [
+    MedicalRecordComponent
   ],
   providers: [CookieService, UserService,
     {
