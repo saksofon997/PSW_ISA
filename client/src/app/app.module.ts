@@ -65,6 +65,7 @@ import { PrescriptionListingComponent } from './components/nurse-home/prescripti
 import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,7 @@ import { MedicalRecordComponent } from './components/patient-profile/medical-rec
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularFontAwesomeModule,
+    MatExpansionModule
   ],
   providers: [CookieService, UserService,
     {

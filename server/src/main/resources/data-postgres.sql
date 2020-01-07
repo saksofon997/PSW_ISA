@@ -121,12 +121,24 @@ INSERT INTO public.type_of_examination(
 	id, name, price, clinic_id_id)
 	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '500', 1);
 
+INSERT INTO public.medical_record(
+	id, alergies, blood_type, diopter, height, sex, weight)
+	VALUES (nextval('medical_record_id_seq'), 'laktoza, kikiriki, penicilin, polen', 'A+', '1.50', '182', 'muski', '75');
+
+INSERT INTO public.examination_report(
+	id, date_and_time, report_description, clinic_id, medical_record_id, doctor_id, type_of_examination_id)
+	VALUES (nextval('examination_report_id_seq'),1576097092, 'Pacijent dosao na pregled, temp 38', 1, 1, 9, 1);
+
+INSERT INTO public.examination_report(
+	id, date_and_time, report_description, clinic_id, medical_record_id, doctor_id, type_of_examination_id)
+	VALUES (nextval('examination_report_id_seq'),1576097092, 'Pacijent dosao na pregled, temp 39', 1, 1, 9, 1);
+
+INSERT INTO public.patient(
+	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged, medical_record_id)
+	VALUES (nextval('users_id_seq'), 'Mikloša Švalba 9', 'Subotica', 'patient1@kcv.rs', 'Lajos', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Nagy', '1010997100010', true, true,1);
 INSERT INTO public.patient(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Mikloša Švalba 9', 'Subotica', 'patient1@kcv.rs', 'Lajos', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Nagy', '1010997100010', true, true);
-INSERT INTO public.patient(
-	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged)
-	VALUES (nextval('users_id_seq'), 'Gavrila Principa 14', 'Vršac', 'patient2@kcv.rs', 'Franc', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Ferdinand', '1012996100010', true, false);
+	VALUES (nextval('users_id_seq'), 'Gavrila Principa 14', 'Vršac', 'patient2@kcv.rs', 'Franc', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Ferdinand', '1012996100010', true, false );
 
 
 INSERT INTO public.ordination(

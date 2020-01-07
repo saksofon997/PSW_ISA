@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 public class MedicalRecord {
    @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="medical_record_id_seq")
    private Long id;
 
    @OneToMany(mappedBy = "medicalRecord", fetch = FetchType.LAZY)
@@ -31,6 +31,8 @@ public class MedicalRecord {
    @Column(name = "weight", nullable = false)
    private String weight;
 
+   @Column(name = "sex", nullable = false)
+   private String sex;
 /** TO BE FILLED UP IF NECESSARY **/
    public Long getId() {
       return id;
@@ -86,5 +88,13 @@ public class MedicalRecord {
 
    public void setWeight(String weight) {
       this.weight = weight;
+   }
+
+   public String getSex() {
+      return sex;
+   }
+
+   public void setSex(String sex) {
+      this.sex = sex;
    }
 }
