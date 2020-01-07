@@ -9,12 +9,18 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ExaminationComponent implements OnInit {
   patient: any;
+  doctor: any;
+  type: any;
+  datetime: any;
   constructor(private patientService: PatientService,
 		private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       let patientID = params['patient'];
+      this.doctor = params['doctor'];
+      this.type = params['type'];
+      this.datetime = params['datetime'];
       this.loadPatientInfo(patientID)
 		});
   }
@@ -26,5 +32,17 @@ export class ExaminationComponent implements OnInit {
 			);
 		});
 		return promise;
-	}
+  }
+  timeConverter(a){
+    a=new Date(a*1000)
+		var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		var year = a.getFullYear();
+		var month = months[a.getMonth()];
+		var date = a.getDate();
+		var hour = a.getHours();
+		var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes(); 
+		var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
+		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min;
+		return time;
+    }
 }

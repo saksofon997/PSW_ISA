@@ -124,7 +124,8 @@ import { ExaminationComponent } from './components/doctor-home/examination/exami
     PrescriptionListingComponent,
     NewAvailableAppointmentPageComponent,
     NewVacationRequestComponent,
-    MedicalRecordComponent
+    MedicalRecordComponent,
+    ExaminationComponent
   ],
   imports: [
     BrowserModule,

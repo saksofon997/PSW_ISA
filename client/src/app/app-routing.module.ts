@@ -120,6 +120,7 @@ const routes: Routes = [
 			{path: 'calendar', component: DoctorCalendarComponent},
 			{path: 'patients', component: PatientListingComponent},
 			{path: 'new_appointment/:patient_id', component: NewAppointmentPageComponent},
+			{path: 'examination', component: ExaminationComponent},
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['DOCTOR']}

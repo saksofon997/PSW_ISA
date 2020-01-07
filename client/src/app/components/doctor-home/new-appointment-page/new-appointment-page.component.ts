@@ -149,7 +149,9 @@ export class NewAppointmentPageComponent implements OnInit {
 			this.appointmentService.startAppointment(appointment).subscribe(
 				(data) => { 
 					alert("Appointment created")
-					this.router.navigate([`../../examination`], { queryParams: { patient: this.patient.id }, relativeTo: this.activatedRoute });
+					let type = this.typesOfExamination.find(element => element.id == this.form.controls.typeOfExamination.value);
+					let doctor = this.userService.getUser().name +" "+ this.userService.getUser().surname
+					this.router.navigate([`../../examination`], { queryParams: { patient: this.patient.id,doctor: doctor, type: type.name, datetime: appointment.startingDateAndTime }, relativeTo: this.activatedRoute });
 					 /* rutirati na stranicu za evidecniju o pregledu */ 
 					},
 				(error) => { alert(error); }
