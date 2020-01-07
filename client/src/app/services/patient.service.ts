@@ -125,12 +125,16 @@ export class PatientService {
         })
       );
   }
-  getMedicalRecord(){
-    let user = JSON.parse(this.cookieService.get('user'));
+  getMedicalRecord(id){
+    if(!id){
+      let user = JSON.parse(this.cookieService.get('user'));
+      id = user.id;
+    }
+    
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/api/patient/getMedicalRecord/${user.id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`http://localhost:8080/api/patient/getMedicalRecord/${id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
