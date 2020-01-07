@@ -5,11 +5,11 @@
     <p class="lead">Here you can see your personal medical record.</p>
   </div>
 </div>
-<mat-accordion>
+<mat-accordion >
   <mat-expansion-panel expanded>
     <mat-expansion-panel-header >
       <mat-panel-title>
-        <p class="h3">Basic information</p>
+        <p class="h3 ">Basic information</p>
           </mat-panel-title>
       <mat-panel-description>
         
@@ -104,10 +104,12 @@
         <mat-expansion-panel>
           <mat-expansion-panel-header style="max-height: 2em;">
             <mat-panel-title>
-              <label class="font-weight-bold">{{"Type: " + examination.typeOfExamination.name + " "}}</label>
+              <label class="font-weight-bold"><img src="assets/images/typeOfExamination.png"
+                style="width: 2em; height: 2em;">{{" " + examination.typeOfExamination.name + " "}}</label>
             </mat-panel-title>
             <mat-panel-description>
-              Created on: {{timeConverter(examination.dateAndTime)}}
+              <img src="assets/images/datetime.png"
+                  style="width: 2em; height: 2em;">{{timeConverter(examination.dateAndTime)}}
             </mat-panel-description>
           </mat-expansion-panel-header>
 
