@@ -96,7 +96,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-<div class="col-10 border-top border-bottom p-0 m-0 mb-2" *ngIf="medicalRecord">
+<div class="col-12 border-top border-bottom p-0 m-0 mb-2" *ngIf="medicalRecord">
   <ul class="list-group list-group-flush">
 
     <li class="list-group-item" *ngFor='let examination of medicalRecord.examinationReport'>
@@ -111,8 +111,8 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <div class="row border-top pt-3 mb-2 mt-2">
-            <label class="col-sm-3 col-form-label font-weight-bold float-left">Doctor:</label>
+          <div class="row border-top  pt-3 mb-2 mt-2">
+            <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Doctor:</label>
             <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
               <div class="input-group mb-3" style="border: 0; height: 1em;">
                 <input type="text" class="form-control input-display"
@@ -125,7 +125,7 @@
             </div>
           </div>
           <div class="row  pt-3 mb-2">
-            <label class="col-sm-3 col-form-label font-weight-bold float-left">Clinic:</label>
+            <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Clinic:</label>
             <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
               <div class="input-group mb-3" style="border: 0; height: 1em;">
                 <input type="text" class="form-control input-display" value='{{examination.clinic.name}} ' disabled />
@@ -137,7 +137,7 @@
             </div>
           </div>
           <div class="row  pt-3 mb-2">
-            <label class="col-sm-3 col-form-label font-weight-bold float-left">Date:</label>
+            <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Date:</label>
             <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
               <div class="input-group mb-3" style="border: 0; height: 1em;">
                 <input type="text" class="form-control input-display"
