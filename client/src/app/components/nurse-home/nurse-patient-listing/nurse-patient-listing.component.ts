@@ -21,6 +21,7 @@ export class NursePatientListingComponent implements OnInit {
   
   modalData: {
 	patientID: any;
+	patientName: any;
     action: string;
   };
 
@@ -76,8 +77,9 @@ export class NursePatientListingComponent implements OnInit {
 	//TODO
 	let action = "Opened";
 	let patientID = patient.id;
-	this.modalData = {patientID, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+	let patientName = patient.name + " " + patient.surname;
+	this.modalData = {patientID,patientName, action };
+    this.modal.open(this.modalContent, { size: 'xl' });
 
   }
   close(){

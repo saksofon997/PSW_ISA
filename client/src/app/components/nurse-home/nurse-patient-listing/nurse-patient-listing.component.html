@@ -84,7 +84,7 @@
       </button>
     </div>
     <div class="modal-body ">
-        <app-medical-record [patientID]="modalData?.patientID"></app-medical-record>
+        <app-medical-record [patientID]="modalData?.patientID" [patientName]="modalData?.patientName" ></app-medical-record>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-secondary" (click)="close()">

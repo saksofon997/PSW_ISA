@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class MedicalRecordComponent implements OnInit {
  @Input() patientID: string;
+ @Input() patientName: string;
   medicalRecord: any;
   constructor(private patientService: PatientService,
 		private router: Router,

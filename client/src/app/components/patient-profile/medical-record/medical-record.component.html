@@ -1,8 +1,9 @@
-<div class="jumbotron jumbotron-fluid col-lg-10 col-sm-10"
-  style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
+<div class="jumbotron jumbotron-fluid col-lg-12 col-sm-12"
+  style="max-height: 4em; margin-top:0.5em; padding-top: 0.5em; ">
   <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
-    <h3 class="display-8">Medical record</h3>
-    <p class="lead">Here you can see your personal medical record.</p>
+    <h4 class="display-8" *ngIf="!patientName">Medical record</h4>
+    <h3 class="display-8" *ngIf="patientName">{{patientName}}</h3>
+    <p class="lead" *ngIf="!patientName">Here you can see your personal medical record.</p>
   </div>
 </div>
 <mat-accordion >
@@ -152,13 +153,13 @@
             </div>
           </div>
           <div class="row  pt-3 mb-2">
-            <label class="col-sm-3 col-form-label font-weight-bold float-left">Report description:</label>
+            <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Report description:</label>
             <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
               <div class="input-group mb-3" style="border: 0; height: 4em;">
                 <textarea type="text" class="form-control input-display" style="height: 5em;"
                   value='{{examination.reportDescription}}' disabled></textarea>
                 <div class="input-group-append">
-                  <span class="input-group-text" style=" height: 2em;"><img src="assets/images/description.png"
+                  <span class="input-group-text" style=" height: 5em;"><img src="assets/images/description.png"
                       style=" width: 1.7em; height: 1.7em;"></span>
                 </div>
               </div>
@@ -174,8 +175,9 @@
                 <ul class="list-group rounded">
                   <li class="list-group-item" *ngFor='let diagnosis of examination.diagnosis'>{{diagnosis.code}} + " " +
                     {{diagnosis.description}}</li>
-                  <li *ngIf="examination.diagnosis && examination.diagnosis.length <1">
-                    <div class="alert alert-info" role="alert">Doctor established no diagnosis.</div>
+                  <li >
+                    <div class="alert alert-info" role="alert"
+                    *ngIf="examination.diagnosis && examination.diagnosis.length <1">Doctor established no diagnosis.</div>
                   </li>
                 </ul>
               </div>
