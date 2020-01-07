@@ -74,6 +74,18 @@ public class PatientController {
         }
     }
 
+    @GetMapping(path = "/getMedicalRecord/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('PATIENT') or hasAuthority('NURSE') or hasAuthority('DOCTOR')")
+    public ResponseEntity getMedicalRecord(@PathVariable Long id) {
+        try {
+            MedicalRecordDTO medicalRecordDTO = patientService.getMedicalRecord(id);
+            return new ResponseEntity<>(medicalRecordDTO, HttpStatus.OK);
+        } catch (ValidationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/search_patients")
     @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('NURSE')")
     public ResponseEntity getAllByQuery(

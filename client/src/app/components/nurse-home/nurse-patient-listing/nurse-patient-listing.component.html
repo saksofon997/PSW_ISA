@@ -75,3 +75,20 @@
       </tr>
   </tbody>
 </table>
+
+<ng-template #modalContent let-close="close">
+    <div class="modal-header">
+      <h4 class="modal-title">Medical record</h4>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body ">
+        <app-medical-record [patientID]="modalData?.patientID" [patientName]="modalData?.patientName" ></app-medical-record>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">
+        Cancel
+      </button>
+    </div>
+  </ng-template>

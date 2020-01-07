@@ -1,0 +1,207 @@
+<div class="jumbotron jumbotron-fluid col-lg-12 col-sm-12"
+  style="max-height: 4em; margin-top:0.5em; padding-top: 0.5em; ">
+  <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+    <h4 class="display-8" *ngIf="!patientName">Medical record</h4>
+    <h3 class="display-8" *ngIf="patientName">{{patientName}}</h3>
+    <p class="lead" *ngIf="!patientName">Here you can see your personal medical record.</p>
+  </div>
+</div>
+<mat-accordion >
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header >
+      <mat-panel-title>
+        <p class="h3 ">Basic information</p>
+          </mat-panel-title>
+      <mat-panel-description>
+        
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+<div class="container " style="margin-top: 0.5em;" *ngIf="medicalRecord">
+  <div class="row justify-content-start">
+    <div class="col-6 border-top border-bottom pt-2">
+      <div class="form-group row ">
+        <label for="Surname" class="col-sm-3 col-form-label font-weight-bold">Blood type</label>
+        <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded pt-2">
+          <div class="input-group mb-3" style="border: 0; height: 1em;">
+            <input type="text" class="form-control input-display" value="{{medicalRecord.bloodType}}" disabled />
+            <div class="input-group-append">
+              <span class="input-group-text" style=" height: 2em;"><img src="assets/images/blood-type.png"
+                  style=" width: 2em; height: 2em;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="Surname" class="col-sm-3 col-form-label font-weight-bold">Diopter</label>
+        <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded">
+          <div class="input-group mb-3" style="border: 0; height: 1em;">
+            <input type="text" class="form-control input-display" value="{{medicalRecord.diopter}}" disabled />
+            <div class="input-group-append">
+              <span class="input-group-text" style="height: 2em;"><img src="assets/images/diopter.png"
+                  style=" width: 2em; height: 2em;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="Surname" class="col-sm-3 col-form-label font-weight-bold">Height</label>
+        <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded">
+          <div class="input-group mb-3" style="border: 0; height: 1em;">
+            <input type="text" class="form-control input-display" value="{{medicalRecord.height}}" disabled />
+            <div class="input-group-append">
+              <span class="input-group-text" style=" height: 2em;"><img src="assets/images/height.png"
+                  style="width: 2em; height: 2em;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="Surname" class="col-sm-3 col-form-label font-weight-bold">Weight</label>
+        <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded">
+          <div class="input-group mb-3" style="border: 0; height: 1em;">
+            <input type="text" class="form-control input-display" value="{{medicalRecord.weight}}" disabled />
+            <div class="input-group-append">
+              <span class="input-group-text" style=" height: 2em;"><img src="assets/images/weight.png"
+                  style=" width: 2em; height: 2em;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 border-top border-bottom pt-2">
+      <div class="bg-white clearfix rounded ">
+        <label class="col-sm-3 col-form-label font-weight-bold float-left">Alergies</label>
+        <img class="float-right" src="assets/images/alergies.png" style=" width: 2em; height: 2em; ">
+      </div>
+      <div class="overflow-auto border rounded" style="max-height: 11.4em;">
+        <ul class="list-group rounded">
+          <li class="list-group-item" *ngFor='let alergie of medicalRecord.alergies.split(",")'>{{alergie}}</li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="col-2"></div>
+  </div>
+</div>
+</mat-expansion-panel>
+</mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header >
+      <mat-panel-title>
+        <p class="h3" style="margin-top: 0.7em;">Examination history</p>  
+          </mat-panel-title>
+      <mat-panel-description>
+        
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+<div class="col-12 border-top border-bottom p-0 m-0 mb-2" *ngIf="medicalRecord">
+  <ul class="list-group list-group-flush">
+
+    <li class="list-group-item" *ngFor='let examination of medicalRecord.examinationReport'>
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header style="max-height: 2em;">
+            <mat-panel-title>
+              <label class="font-weight-bold"><img src="assets/images/typeOfExamination.png"
+                style="width: 2em; height: 2em;">{{" " + examination.typeOfExamination.name + " "}}</label>
+            </mat-panel-title>
+            <mat-panel-description>
+              <img src="assets/images/datetime.png"
+                  style="width: 2em; height: 2em;">{{timeConverter(examination.dateAndTime)}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="row border-top  pt-3 mb-2 mt-2">
+            <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Doctor:</label>
+            <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
+              <div class="input-group mb-3" style="border: 0; height: 1em;">
+                <input type="text" class="form-control input-display"
+                  value='{{examination.performs.name + " " + examination.performs.surname}} ' disabled />
+                <div class="input-group-append">
+                  <span class="input-group-text" style=" height: 2em;"><img src="assets/images/doctor.png"
+                      style=" width: 1.7em; height: 1.7em;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row  pt-3 mb-2">
+            <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Clinic:</label>
+            <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
+              <div class="input-group mb-3" style="border: 0; height: 1em;">
+                <input type="text" class="form-control input-display" value='{{examination.clinic.name}} ' disabled />
+                <div class="input-group-append">
+                  <span class="input-group-text" style=" height: 2em;"><img src="assets/images/clinic.png"
+                      style=" width: 1.7em; height: 1.7em;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row  pt-3 mb-2">
+            <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Date:</label>
+            <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
+              <div class="input-group mb-3" style="border: 0; height: 1em;">
+                <input type="text" class="form-control input-display"
+                  value='{{timeConverter(examination.dateAndTime)}} ' disabled />
+                <div class="input-group-append">
+                  <span class="input-group-text" style=" height: 2em;"><img src="assets/images/datetime.png"
+                      style=" width: 1.7em; height: 1.7em;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row  pt-3 mb-2">
+            <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Report description:</label>
+            <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
+              <div class="input-group mb-3" style="border: 0; height: 4em;">
+                <textarea type="text" class="form-control input-display" style="height: 5em;"
+                  value='{{examination.reportDescription}}' disabled></textarea>
+                <div class="input-group-append">
+                  <span class="input-group-text" style=" height: 5em;"><img src="assets/images/description.png"
+                      style=" width: 1.7em; height: 1.7em;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row  pt-2 mb-1">
+            <div class="col-6 border-top pt-2">
+              <div class="bg-white clearfix rounded ">
+                <label class="col-sm-3 col-form-label font-weight-bold float-left">Diagnoses</label>
+                <img class="float-right" src="assets/images/diagnosis.png" style=" width: 2em; height: 2em; ">
+              </div>
+              <div class="overflow-auto border rounded" style="max-height: 11.4em;">
+                <ul class="list-group rounded">
+                  <li class="list-group-item" *ngFor='let diagnosis of examination.diagnosis'>{{diagnosis.code}} + " " +
+                    {{diagnosis.description}}</li>
+                  <li >
+                    <div class="alert alert-info" role="alert"
+                    *ngIf="examination.diagnosis && examination.diagnosis.length <1">Doctor established no diagnosis.</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-6 border-top pt-2">
+              <div class="bg-white clearfix rounded ">
+                <label class="col-sm-3 col-form-label font-weight-bold float-left">Prescriptions</label>
+                <img class="float-right" src="assets/images/drug.png" style=" width: 2em; height: 2em; ">
+              </div>
+              <div class="overflow-auto border rounded" style="max-height: 11.4em;">
+                <ul class="list-group rounded">
+                  <li class="list-group-item" *ngFor='let prescription of examination.prescription'>
+                    {{prescription.medication_name}}</li>
+                  <li *ngIf="examination.prescription && examination.prescription.length <1">
+                    <div class="alert alert-info" role="alert">Doctor prescribed no medications.</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </li>
+  </ul>
+</div>
+</mat-expansion-panel>
+</mat-accordion>

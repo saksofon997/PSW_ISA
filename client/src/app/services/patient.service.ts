@@ -125,6 +125,25 @@ export class PatientService {
         })
       );
   }
+  getMedicalRecord(id){
+    if(!id){
+      let user = JSON.parse(this.cookieService.get('user'));
+      id = user.id;
+    }
+    
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    return this.http.get(`http://localhost:8080/api/patient/getMedicalRecord/${id}`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
   searchPatients(patient: any){
     let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
