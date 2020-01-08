@@ -69,17 +69,12 @@
             </div>
             <div class="col-6 border-top pt-2">
               <div class="bg-white clearfix rounded ">
-                <label class="col-sm-3 col-form-label font-weight-bold float-left">Prescriptions</label>
+                
                 <img class="float-right" src="assets/images/drug.png" style=" width: 2em; height: 2em; ">
               </div>
+              
               <div class="overflow-auto border rounded" style="max-height: 11.4em;">
-                <ul class="list-group rounded">
-                  <li class="list-group-item" >
-                    </li>
-                  <li >
-                    <div class="alert alert-info" role="alert">Doctor prescribed no medications.</div>
-                  </li>
-                </ul>
+                <ngx-select-dropdown (change)="selectionChanged($event)" formControlName="selectData" [multiple]="true" [config]="config" [options]="prescriptions"></ngx-select-dropdown>
               </div>
             </div>
           </div>

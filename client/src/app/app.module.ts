@@ -67,7 +67,8 @@ import { NewVacationRequestComponent } from './components/doctor-home/new-vacati
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ExaminationComponent } from './components/doctor-home/examination/examination.component';
-
+import { MatSelectModule } from '@angular/material';
+import { SelectDropDownModule } from 'ngx-select-dropdown'
 @NgModule({
   declarations: [
     AppComponent,
@@ -142,7 +143,10 @@ import { ExaminationComponent } from './components/doctor-home/examination/exami
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularFontAwesomeModule,
-    MatExpansionModule
+    MatExpansionModule,
+    FormsModule,
+    MatSelectModule,
+    SelectDropDownModule
   ],
   exports: [
     MedicalRecordComponent
