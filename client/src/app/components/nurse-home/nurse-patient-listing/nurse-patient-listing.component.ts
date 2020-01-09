@@ -33,7 +33,7 @@ export class NursePatientListingComponent implements OnInit {
 		private activatedRoute: ActivatedRoute,
 		private userService: UserService,
 		private formBuilder: FormBuilder,
-		private modal: NgbModal,) { }
+		private modal: NgbModal) { }
 
   ngOnInit() {
 
