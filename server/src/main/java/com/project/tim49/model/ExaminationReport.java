@@ -38,6 +38,26 @@ public class ExaminationReport {
     @JoinTable(name = "examinationReports_prescriptions", joinColumns = @JoinColumn(name = "examinationReports_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
     public List<Prescription> prescription;
 
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_of_examination_id", referencedColumnName = "id")
+    public TypeOfExamination typeOfExamination;
+
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public void setMedicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
+    }
+
+    public TypeOfExamination getTypeOfExamination() {
+        return typeOfExamination;
+    }
+
+    public void setTypeOfExamination(TypeOfExamination typeOfExamination) {
+        this.typeOfExamination = typeOfExamination;
+    }
+
     public long getDateAndTime() {
         return dateAndTime;
     }

@@ -1,9 +1,6 @@
 package com.project.tim49.service;
 
-import com.project.tim49.dto.AppointmentDTO;
-import com.project.tim49.dto.DoctorDTO;
-import com.project.tim49.dto.PatientDTO;
-import com.project.tim49.dto.UserDTO;
+import com.project.tim49.dto.*;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.DoctorRepository;
@@ -109,5 +106,22 @@ public class PatientService {
             patientDTOS.add(patientDTO);
         }
         return patientDTOS;
+    }
+
+    public MedicalRecordDTO getMedicalRecord(Long id){
+        if (id== null){
+            throw  new ValidationException("Patient not recognized.");
+        }
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if (patient == null ) {
+            throw new ValidationException("Patient does not exist.");
+        }
+        MedicalRecord medicalRecord = patient.getMedicalRecord();
+        if (medicalRecord == null){
+            throw new ValidationException("Medical record does not exist.");
+        }
+        MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO(medicalRecord);
+
+        return medicalRecordDTO;
     }
 }
