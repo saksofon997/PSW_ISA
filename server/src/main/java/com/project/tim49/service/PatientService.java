@@ -98,8 +98,8 @@ public class PatientService {
     }
 
 
-    public List<PatientDTO> getByQuery(String name, String surname) {
-        List<Patient> patients = patientRepository.getByQuery(name, surname);
+    public List<PatientDTO> getByQuery(String name, String surname, String upin) {
+        List<Patient> patients = patientRepository.getByQuery(name, surname, upin);
         List<PatientDTO> patientDTOS = new ArrayList<>();
         for(Patient p: patients) {
             PatientDTO patientDTO = new PatientDTO(p);

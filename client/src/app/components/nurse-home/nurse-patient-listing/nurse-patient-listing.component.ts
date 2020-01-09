@@ -8,118 +8,144 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MedicalRecordComponent } from 'src/app/components/patient-profile/medical-record/medical-record.component';
 
 @Component({
-  selector: 'app-nurse-patient-listing',
-  templateUrl: './nurse-patient-listing.component.html',
-  styleUrls: ['./nurse-patient-listing.component.css']
+	selector: 'app-nurse-patient-listing',
+	templateUrl: './nurse-patient-listing.component.html',
+	styleUrls: ['./nurse-patient-listing.component.css']
 })
 export class NursePatientListingComponent implements OnInit {
-@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
-  sortingOption: any;
-  patientsHeaders = ['Name', 'Surname', 'Phone Number', 'E-mail', 'City'];
-  patients: any;
-  navigationSubscription: any;
-  
-  modalData: {
-	patientID: any;
-	patientName: any;
-    action: string;
-  };
+	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+	sortingOption: any;
+	patientsHeaders = ['Name', 'Surname', 'UPIN', 'E-mail', 'City'];
+	patients: any;
+	filteredPatients: any;
+	navigationSubscription: any;
 
-  searchForm: FormGroup;
-  submitted = false;
-  
-  constructor(private patientService: PatientService,
+	modalData: {
+		patientID: any;
+		patientName: any;
+		action: string;
+	};
+
+	searchForm: FormGroup;
+	filterForm: FormGroup;
+	submitted = false;
+
+	constructor(private patientService: PatientService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		private userService: UserService,
 		private formBuilder: FormBuilder,
 		private modal: NgbModal) { }
 
-  ngOnInit() {
+	ngOnInit() {
 
-    this.searchForm = this.formBuilder.group({
+		this.searchForm = this.formBuilder.group({
 			name: [""],
-			surname: [""]
-    });
-    this.getPatients();
-  }
+			surname: [""],
+			upin: [""]
+		});
+		this.filterForm = this.formBuilder.group({
+			name: [""],
+			surname: [""],
+			upin: [""]
+		});
+		this.getPatients();
+		this.onFilterChanges();
+	}
 
-  getPatients() {
+	getPatients() {
 		this.patientService.getClinicPatients().subscribe(
 			(data) => {
 				this.patients = data;
+				this.filteredPatients = data;
 			},
 			(error) => {
 				alert(error);
 			}
 		)
-  }
-  
-  onSearch(){
+	}
+
+	onSearch() {
 		this.submitted = true;
 
 		var patient = {
-			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value: "",
-			surname: this.searchForm.controls.surname.value ? this.searchForm.controls.surname.value: ""
+			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value : "",
+			surname: this.searchForm.controls.surname.value ? this.searchForm.controls.surname.value : "",
+			upin: this.searchForm.controls.upin.value ? this.searchForm.controls.upin.value : ""
 		}
 
 		this.patientService.searchPatients(patient).subscribe(
 			(data) => {
-			  this.patients = data;
+				this.patients = data;
+				this.filteredPatients = data;
 			},
 			(error) => {
-			  alert(error);
+				alert(error);
 			}
-		  )
-  }
-  
-  ShowMedicalRecord(patient){
-	//TODO
-	let action = "Opened";
-	let patientID = patient.id;
-	let patientName = patient.name + " " + patient.surname;
-	this.modalData = {patientID,patientName, action };
-    this.modal.open(this.modalContent, { size: 'xl' });
+		)
+	}
 
-  }
-  close(){
-	this.modal.dismissAll();
-  }
-  timeConverter(a){
-    a=new Date(a*1000)
-		var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	onFilterChanges() {
+		this.filterForm.valueChanges.subscribe(filters => {
+			this.filteredPatients = this.filterPatients(filters);
+		})
+	}
+
+	filterPatients(filters) {
+		return this.patients.filter(patient =>
+			patient.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
+			patient.surname.toLowerCase().indexOf(filters.surname.toLowerCase()) !== -1 &&
+			patient.upin.indexOf(filters.upin) !== -1
+		);
+	}
+
+	ShowMedicalRecord(patient) {
+		//TODO
+		let action = "Opened";
+		let patientID = patient.id;
+		let patientName = patient.name + " " + patient.surname;
+		this.modalData = { patientID, patientName, action };
+		this.modal.open(this.modalContent, { size: 'xl' });
+
+	}
+	close() {
+		this.modal.dismissAll();
+	}
+	timeConverter(a) {
+		a = new Date(a * 1000)
+		var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 		var year = a.getFullYear();
 		var month = months[a.getMonth()];
 		var date = a.getDate();
 		var hour = a.getHours();
-		var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes(); 
+		var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
 		var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
 		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min;
 		return time;
-    }
-  sortName() {
-    this.sortingOption = "name";
-    this.sortPatients();
-  }
-  sortUpin() {
-    this.sortingOption = "upin";
-    this.sortPatients();
-  }
-  sortAddress() {
-    this.sortingOption = "address";
-    this.sortPatients();
-  }
-  sortCity() {
-    this.sortingOption = "city";
-    this.sortPatients();
-  }
-  sortState() {
-    this.sortingOption = "state";
-    this.sortPatients();
-  }
+	}
+	sortName() {
+		this.sortingOption = "name";
+		this.sortPatients();
+	}
+	sortUpin() {
+		this.sortingOption = "upin";
+		this.sortPatients();
+	}
+	sortAddress() {
+		this.sortingOption = "address";
+		this.sortPatients();
+	}
+	sortCity() {
+		this.sortingOption = "city";
+		this.sortPatients();
+	}
+	sortState() {
+		this.sortingOption = "state";
+		this.sortPatients();
+	}
 
-  sortPatients() {
-		switch(this.sortingOption) {
+	sortPatients() {
+		switch (this.sortingOption) {
 			case "name": {
 				this.patients.sort((a, b) => (a.name > b.name) ? 1 : -1)
 				break;
@@ -146,7 +172,7 @@ export class NursePatientListingComponent implements OnInit {
 			}
 		}
 	}
-  ngOnDestroy() {
+	ngOnDestroy() {
 		if (this.navigationSubscription) {
 			this.navigationSubscription.unsubscribe();
 		}

@@ -7,6 +7,7 @@ import com.project.tim49.model.*;
 import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.DoctorRepository;
 import com.project.tim49.repository.LoginRepository;
+import com.project.tim49.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class DoctorService {
 
     @Autowired
     private DoctorRepository doctorRepository;
+    @Autowired
+    private PatientRepository patientRepository;
     @Autowired
     private ClinicRepository clinicRepository;
     @Autowired
@@ -302,6 +305,22 @@ public class DoctorService {
             return new DoctorDTO(doctor);
         }
         throw new NoSuchElementException("Doctor with given id not found.");
+    }
+
+    public boolean canViewPatientMedicalRecord(Long patient_id, Long doctor_id){
+        Patient patient = patientRepository.findById(patient_id).orElse(null);
+        if (patient == null){
+            throw new NoSuchElementException("Patient with given id not found.");
+        }
+
+        for (Appointment appointment: patient.getFinishedAppointments()){
+            for (Doctor doctor: appointment.getDoctors()){
+                if (doctor.getId().equals(doctor_id)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean shiftValid(String shiftStart, String shiftEnd){

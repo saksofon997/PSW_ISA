@@ -12,16 +12,18 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class PatientListingComponent implements OnInit {
 	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
-	patientsHeaders = ['Name', 'Surname', 'Phone Number', 'E-mail', 'City'];
+	patientsHeaders = ['Name', 'Surname', 'UPIN', 'E-mail', 'City'];
 	patients: any;
+	filteredPatients: any;
 	navigationSubscription: any;
 
 	modalData: {
 		patientID: any;
 		patientName: any;
 		action: string;
-	  };
+	};
 	searchForm: FormGroup;
+	filterForm: FormGroup;
 	submitted = false;
 
 	constructor(private patientService: PatientService,
@@ -35,15 +37,23 @@ export class PatientListingComponent implements OnInit {
 
 		this.searchForm = this.formBuilder.group({
 			name: [""],
-			surname: [""]
+			surname: [""],
+			upin: [""]
+		});
+		this.filterForm = this.formBuilder.group({
+			name: [""],
+			surname: [""],
+			upin: [""]
 		});
 		this.getPatients();
+		this.onFilterChanges();
 	}
 
 	getPatients() {
 		this.patientService.getClinicPatients().subscribe(
 			(data) => {
 				this.patients = data;
+				this.filteredPatients = data;
 			},
 			(error) => {
 				alert(error);
@@ -56,12 +66,14 @@ export class PatientListingComponent implements OnInit {
 
 		var patient = {
 			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value : "",
-			surname: this.searchForm.controls.surname.value ? this.searchForm.controls.surname.value : ""
+			surname: this.searchForm.controls.surname.value ? this.searchForm.controls.surname.value : "",
+			upin: this.searchForm.controls.upin.value ? this.searchForm.controls.upin.value : ""
 		}
 
 		this.patientService.searchPatients(patient).subscribe(
 			(data) => {
 				this.patients = data;
+				this.filteredPatients = data;
 			},
 			(error) => {
 				alert(error);
@@ -69,16 +81,35 @@ export class PatientListingComponent implements OnInit {
 		)
 	}
 
-	ShowMedicalRecord(patient){
-		//TODO
-		let action = "Opened";
-		let patientID = patient.id;
-		let patientName = patient.name + " " + patient.surname;
-		this.modalData = {patientID,patientName, action };
-		this.modal.open(this.modalContent, { size: 'xl' });
-	
+	onFilterChanges() {
+		this.filterForm.valueChanges.subscribe(filters => {
+			this.filteredPatients = this.filterPatients(filters);
+		})
 	}
-	close(){
+
+	filterPatients(filters) {
+		return this.patients.filter(patient =>
+			patient.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
+			patient.surname.toLowerCase().indexOf(filters.surname.toLowerCase()) !== -1 &&
+			patient.upin.indexOf(filters.upin) !== -1
+		);
+	}
+
+	ShowMedicalRecord(patient) {
+		this.patientService.checkAuthorityToViewMedicalRecord(patient.id).subscribe(
+			(data) => {
+				let action = "Opened";
+				let patientID = patient.id;
+				let patientName = patient.name + " " + patient.surname;
+				this.modalData = { patientID, patientName, action };
+				this.modal.open(this.modalContent, { size: 'xl' });
+			},
+			(error) => {
+				alert(error);
+			}
+		);
+	}
+	close() {
 		this.modal.dismissAll();
 	}
 	startAppointment(patient_id) {
