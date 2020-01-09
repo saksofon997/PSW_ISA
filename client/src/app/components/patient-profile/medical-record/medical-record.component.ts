@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PatientService } from 'src/app/services/patient.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
@@ -8,6 +8,8 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./medical-record.component.css']
 })
 export class MedicalRecordComponent implements OnInit {
+ @Input() patientID: string;
+ @Input() patientName: string;
   medicalRecord: any;
   constructor(private patientService: PatientService,
 		private router: Router,
@@ -18,7 +20,7 @@ export class MedicalRecordComponent implements OnInit {
     this.getMedicalRecord();
   }
   getMedicalRecord(){
-    this.patientService.getMedicalRecord().subscribe(
+    this.patientService.getMedicalRecord(this.patientID).subscribe(
 			(data) => {
 				this.medicalRecord = data;
 			},

@@ -142,6 +142,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
     AngularFontAwesomeModule,
     MatExpansionModule
   ],
+  exports: [
+    MedicalRecordComponent
+  ],
   providers: [CookieService, UserService,
     {
       provide: APP_INITIALIZER,

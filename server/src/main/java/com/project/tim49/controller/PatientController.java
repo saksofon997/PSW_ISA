@@ -82,7 +82,7 @@ public class PatientController {
             MedicalRecordDTO medicalRecordDTO = patientService.getMedicalRecord(id);
             return new ResponseEntity<>(medicalRecordDTO, HttpStatus.OK);
         } catch (ValidationException e){
-            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
