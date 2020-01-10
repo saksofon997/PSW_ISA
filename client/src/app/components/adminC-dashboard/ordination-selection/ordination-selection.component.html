@@ -1,7 +1,7 @@
 <div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
     <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
         <h3 class="display-8">Ordinations</h3>
-        <p class="lead">Here you can see a list of clinic ordinations.</p>
+        <p class="lead">Select ordination for appointment</p>
     </div>
 </div>
 <p>
@@ -28,6 +28,19 @@
                 <label class="col-sm-2 col-form-label font-weight-bold" for="code">Number: </label>
                 <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
                     <input type="number" class="form-control" formControlName="number" style="border: 0;" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="date" class="col-sm-2 col-form-label font-weight-bold">Date: </label>
+                <div class="row col-lg-6 col-sm-10 col-md-6 shadow-sm p-1 mb-1 ml-1 bg-white rounded col">
+                    <div class="col-lg-10 col-sm-10 col-md-10">
+                        <input type="datetime" formControlName="date" [owlDateTime]="dt2" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.date.errors }" id="date"
+                            style="border: 0;">
+                    </div>
+                    <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
+                            class="fa fa-calendar"></i> </span>
+                    <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
                 </div>
             </div>
             <button class="btn btn-primary ">Search</button>
@@ -57,7 +70,7 @@
         <tr>
             <th scope="col" *ngFor='let param of ordinationsHeaders'>{{param}}</th>
             <th scope="col">
-                <button type="button" class="btn btn-light" (click)="addNewOrdination()">Add</button>
+                <!-- <button type="button" class="btn btn-light" (click)="addNewOrdination()">Add</button> -->
             </th>
         </tr>
     </thead>
@@ -65,7 +78,7 @@
         <tr *ngFor='let ordination of filteredOrdinations'>
             <td> {{ordination.name}} </td>
             <td> {{ordination.number}} </td>
-            <td>
+            <!-- <td>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,7 +91,7 @@
                             (click)="deleteOrdination(ordination)">Delete</a>
                     </div>
                 </div>
-            </td>
+            </td> -->
         </tr>
     </tbody>
 </table>

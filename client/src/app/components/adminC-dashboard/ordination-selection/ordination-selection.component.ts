@@ -5,11 +5,11 @@ import { UserService } from 'src/app/services/user.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
-	selector: 'app-ordination-listing',
-	templateUrl: './ordination-listing.component.html',
-	styleUrls: ['./ordination-listing.component.css']
+	selector: 'app-ordination-selection',
+	templateUrl: './ordination-selection.component.html',
+	styleUrls: ['./ordination-selection.component.css']
 })
-export class OrdinationListingComponent implements OnInit {
+export class OrdinationSelectionComponent implements OnInit {
 	ordinationsHeaders = ['Name', 'Number'];
 	ordinations: any;
 	filteredOrdinations: any;
@@ -52,57 +52,38 @@ export class OrdinationListingComponent implements OnInit {
 		});
 		this.onFilterChanges();
 	}
-	
+
 	getOrdinations() {
 		this.clinicID = this.userService.getUser().clinic_id;
 		this.clinicService.getOrdinations(this.clinicID).subscribe(
 			(data) => {
-			  this.ordinations = data;
-			  this.filteredOrdinations = data;
+				this.ordinations = data;
+				this.filteredOrdinations = data;
 			},
 			(error) => {
-			  alert(error);
+				alert(error);
 			}
-		  )
+		)
 	}
 
-	changeOrdination(ordination) {
-		this.router.navigate(['../ordination_form'], { relativeTo: this.activatedRoute, state: { data: ordination } });
-	}
-
-	addNewOrdination() {
-		this.router.navigate(['../ordination_form'], { relativeTo: this.activatedRoute });
-	}
-
-	deleteOrdination(ordination) {
-		this.clinicService.deleteOrdination(ordination.id).subscribe(
-			(data) => {
-			  this.getOrdinations();
-			},
-			(error) => {
-			  alert(error);
-			}
-		  )
-	}
-
-	onSearch(){
+	onSearch() {
 		this.submitted = true;
 
 		var ordination = {
-			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value: "",
-			number: this.searchForm.controls.number.value ? this.searchForm.controls.number.value: "",
+			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value : "",
+			number: this.searchForm.controls.number.value ? this.searchForm.controls.number.value : "",
 			clinic_id: this.userService.getUser().clinic_id
 		}
 
 		this.clinicService.searchOrdinations(ordination).subscribe(
 			(data) => {
-			  this.ordinations = data;
-			  this.filteredOrdinations = data;
+				this.ordinations = data;
+				this.filteredOrdinations = data;
 			},
 			(error) => {
-			  alert(error);
+				alert(error);
 			}
-		  )
+		)
 	}
 
 	onFilterChanges() {

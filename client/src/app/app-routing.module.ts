@@ -49,6 +49,7 @@ import { NewAppointmentPageComponent } from './components/doctor-home/new-appoin
 import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
+import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 
 const routes: Routes = [
 	{
@@ -92,6 +93,7 @@ const routes: Routes = [
 			{path: 'types_of_examination', component: TypeOfExaminationListingComponent},
 			{path: 'type_of_examination_info', component: TypeOfExaminationFormComponent},
 			{path: 'ordinations', component: OrdinationListingComponent},
+			{path: 'ordinations_TEMP', component: OrdinationSelectionComponent},
 			{path: 'ordination_form', component: OrdinationFormComponent},
 			{path: 'nurse_listing', component: NurseListingComponent},
 			{path: 'nurse_form', component: NurseFormComponent},
