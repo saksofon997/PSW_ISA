@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { PatientService } from 'src/app/services/patient.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -8,6 +8,7 @@ import { take, takeUntil } from 'rxjs/operators';
 import { ClinicalCenterService } from 'src/app/services/clinical-center.service';
 import { CookieService } from 'ngx-cookie-service';
 import { DoctorService } from 'src/app/services/doctor.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-examination',
@@ -15,6 +16,8 @@ import { DoctorService } from 'src/app/services/doctor.service';
   styleUrls: ['./examination.component.css']
 })
 export class ExaminationComponent implements OnInit {
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  
   examinationForm: FormGroup;
   patient: any;
   doctor: any;
@@ -25,6 +28,11 @@ export class ExaminationComponent implements OnInit {
   diagnoses: any;
   reportDescription: any;
   submitted: boolean;
+  modalData: {
+		patientID: any;
+		patientName: any;
+		action: string;
+	  };
   config = {
     displayKey:"code", //if objects array passed which key to be displayed defaults to description
     search:true, //true/false for the search functionlity defaults to false,
@@ -46,7 +54,8 @@ export class ExaminationComponent implements OnInit {
               private formBuilder: FormBuilder,
               private cookieService: CookieService,
               private router: Router,
-              private doctorService: DoctorService) { }
+              private doctorService: DoctorService,
+              private modal: NgbModal) { }
 
 
   @ViewChild('singleSelect', { read: ElementRef, static: true }) singleSelect: MatSelect;
@@ -131,7 +140,6 @@ export class ExaminationComponent implements OnInit {
         name: this.type
       }
     }
-    console.log(report);
     let patientID = this.patient.id;
     this.doctorService.submitReport(report,patientID).subscribe(
       (data) => {
@@ -139,5 +147,17 @@ export class ExaminationComponent implements OnInit {
       },
       (error) => { alert(error);}
     );
+  }
+  ShowMedicalRecord(patient){
+		//TODO
+		let action = "Opened";
+		let patientID = patient.id;
+		let patientName = patient.name + " " + patient.surname;
+		this.modalData = {patientID,patientName, action };
+		this.modal.open(this.modalContent, { size: 'xl' });
+	
+  }
+  close(){
+    
   }
 }
