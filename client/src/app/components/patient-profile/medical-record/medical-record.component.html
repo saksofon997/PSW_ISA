@@ -17,9 +17,9 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <div class="container " style="margin-top: 0.5em;" *ngIf="medicalRecord">
+    <div class="col-12 border" style="margin-top: 0.5em;" *ngIf="medicalRecord">
       <div class="row justify-content-start">
-        <div class="col-6 border-top border-bottom pt-2">
+        <div class="col-8 border-top border-bottom pt-2">
           <div class="form-group row ">
             <label for="Surname" class="col-sm-3 col-form-label font-weight-bold">Blood type</label>
             <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded pt-2">
@@ -97,7 +97,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <div class="col-12 border-top border-bottom p-0 m-0 mb-2" *ngIf="medicalRecord">
+    <div class="col-12 border-top border p-0 m-0 mb-2" *ngIf="medicalRecord">
       <ul class="list-group list-group-flush">
 
         <li class="list-group-item" *ngFor='let examination of medicalRecord.examinationReport'>
@@ -154,7 +154,7 @@
                 </div>
               </div>
               <div class="row  pt-3 mb-2">
-                <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Report
+                <label class="col-sm-3 col-form-label font-weight-bold float-left ">Report
                   description:</label>
                 <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
                   <div class="input-group mb-3" style="border: 0; height: 4em;">
