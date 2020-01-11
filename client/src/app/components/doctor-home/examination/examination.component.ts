@@ -3,7 +3,7 @@ import { PatientService } from 'src/app/services/patient.service';
 import { ActivatedRoute } from '@angular/router';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { take, takeUntil } from 'rxjs/operators';
 import { ClinicalCenterService } from 'src/app/services/clinical-center.service';
 
@@ -13,12 +13,15 @@ import { ClinicalCenterService } from 'src/app/services/clinical-center.service'
   styleUrls: ['./examination.component.css']
 })
 export class ExaminationComponent implements OnInit {
+  examinationForm: FormGroup;
   patient: any;
   doctor: any;
   type: any;
   datetime: any;
   prescriptions: any;
   diagnoses: any;
+  reportDescription: any;
+  submitted: boolean;
   config = {
     displayKey:"code", //if objects array passed which key to be displayed defaults to description
     search:true, //true/false for the search functionlity defaults to false,
@@ -28,7 +31,7 @@ export class ExaminationComponent implements OnInit {
     limitTo: 10, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
     moreText: 'more', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
     noResultsFound: 'No results found!', // text to be displayed when no items are found while searching
-    searchPlaceholder:'Medications', // label thats displayed in search input,
+    searchPlaceholder:'Search medications', // label thats displayed in search input,
     searchOnKey: 'code', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
     clearOnSelection: false, // clears search criteria when an option is selected if set to true, default is false
   }
@@ -36,7 +39,8 @@ export class ExaminationComponent implements OnInit {
 
   constructor(private patientService: PatientService,
               private clinicalCenterService: ClinicalCenterService,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private formBuilder: FormBuilder) { }
 
 
   @ViewChild('singleSelect', { read: ElementRef, static: true }) singleSelect: MatSelect;
@@ -49,6 +53,14 @@ export class ExaminationComponent implements OnInit {
       this.loadPatientInfo(patientID)
       this.loadPrescriptions();
       this.loadDiagnoses();
+    });
+    this.examinationForm = this.formBuilder.group({
+      reportDescription: [this.reportDescription,[Validators.required]],
+      dateAndTime: new FormControl({value:this.timeConverter(this.datetime),disabled:true}),
+      doctor: new FormControl({value:this.doctor,disabled: true}),
+      diagnoses: [],
+      prescriptions:  [],
+      typeOfExamination: new FormControl({value:this.type,disabled:true})
     });
 
   }
@@ -92,5 +104,13 @@ export class ExaminationComponent implements OnInit {
   }
   selectionChanged(event){
 
+  }
+  submit(){
+    this.submitted = true;
+    
+		if (this.examinationForm.invalid) {
+			return;
+    }
+    console.log("Kliknuto");
   }
 }
