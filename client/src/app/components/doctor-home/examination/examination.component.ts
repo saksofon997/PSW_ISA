@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PatientService } from 'src/app/services/patient.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material';
 import { FormControl, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { take, takeUntil } from 'rxjs/operators';
 import { ClinicalCenterService } from 'src/app/services/clinical-center.service';
+import { CookieService } from 'ngx-cookie-service';
+import { DoctorService } from 'src/app/services/doctor.service';
 
 @Component({
   selector: 'app-examination',
@@ -17,7 +19,8 @@ export class ExaminationComponent implements OnInit {
   patient: any;
   doctor: any;
   type: any;
-  datetime: any;
+  typeID: any;
+  datetime: number;
   prescriptions: any;
   diagnoses: any;
   reportDescription: any;
@@ -40,7 +43,10 @@ export class ExaminationComponent implements OnInit {
   constructor(private patientService: PatientService,
               private clinicalCenterService: ClinicalCenterService,
               private activatedRoute: ActivatedRoute,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private cookieService: CookieService,
+              private router: Router,
+              private doctorService: DoctorService) { }
 
 
   @ViewChild('singleSelect', { read: ElementRef, static: true }) singleSelect: MatSelect;
@@ -49,7 +55,8 @@ export class ExaminationComponent implements OnInit {
       let patientID = params['patient'];
       this.doctor = params['doctor'];
       this.type = params['type'];
-      this.datetime = params['datetime'];
+      this.typeID = params['typeID'];
+      this.datetime = Number.parseFloat(params['datetime']);
       this.loadPatientInfo(patientID)
       this.loadPrescriptions();
       this.loadDiagnoses();
@@ -107,10 +114,30 @@ export class ExaminationComponent implements OnInit {
   }
   submit(){
     this.submitted = true;
-    
 		if (this.examinationForm.invalid) {
 			return;
     }
-    console.log("Kliknuto");
+    let doctor = JSON.parse(this.cookieService.get('user'));
+    
+    var report = {
+      performs: doctor,
+			clinic:{id: doctor.clinic_id},
+      reportDescription: this.examinationForm.controls.reportDescription.value,
+      dateAndTime: this.datetime,
+      diagnosis: this.examinationForm.controls.diagnoses.value,
+      medications:  this.examinationForm.controls.prescriptions.value,
+      typeOfExamination: {
+        id: this.typeID,
+        name: this.type
+      }
+    }
+    console.log(report);
+    let patientID = this.patient.id;
+    this.doctorService.submitReport(report,patientID).subscribe(
+      (data) => {
+        this.router.navigate([`../patients`], {relativeTo: this.activatedRoute });
+      },
+      (error) => { alert(error);}
+    );
   }
 }

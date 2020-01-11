@@ -149,4 +149,5 @@ public class DoctorController {
         }
         return new ResponseEntity(appointment, HttpStatus.OK);
     }
+
 }

@@ -38,6 +38,12 @@ public class Doctor extends User {
     @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY)
     public List<Vacation> vacations = new ArrayList<Vacation>();
 
+    @Column(name = "number_of_stars")
+    private int numberOfStars;
+
+    @Column(name = "number_of_reviews")
+    private int numberOfReviews;
+
     public List<Vacation> getVacations() {
         return vacations;
     }
@@ -45,13 +51,6 @@ public class Doctor extends User {
     public void setVacations(List<Vacation> vacations) {
         this.vacations = vacations;
     }
-
-    @Column(name = "number_of_stars")
-    private int numberOfStars;
-
-    @Column(name = "number_of_reviews")
-    private int numberOfReviews;
-
     public String getShiftStart() {
         return shiftStart;
     }

@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExaminationReportDTO {
+
     private String reportDescription;
     private long dateAndTime;
     private DoctorDTO performs;
     private ClinicDTO clinic;
     public List<DiagnosisDTO> diagnosis;
     public List<PrescriptionDTO> prescription;
+    public List<MedicationDTO> medications;
     public TypeOfExaminationDTO typeOfExamination;
 
     public ExaminationReportDTO(ExaminationReport er) {
@@ -32,6 +34,29 @@ public class ExaminationReportDTO {
             this.prescription.add(new PrescriptionDTO(prescription));
         }
         this.typeOfExamination = new TypeOfExaminationDTO(er.getTypeOfExamination());
+    }
+
+    public ExaminationReportDTO() {
+        super();
+    }
+
+    public ExaminationReportDTO(String reportDescription, long dateAndTime, DoctorDTO performs, ClinicDTO clinic, List<DiagnosisDTO> diagnosis, List<PrescriptionDTO> prescription, List<MedicationDTO> medications, TypeOfExaminationDTO typeOfExamination) {
+        this.reportDescription = reportDescription;
+        this.dateAndTime = dateAndTime;
+        this.performs = performs;
+        this.clinic = clinic;
+        this.diagnosis = diagnosis;
+        this.prescription = prescription;
+        this.medications = medications;
+        this.typeOfExamination = typeOfExamination;
+    }
+
+    public List<MedicationDTO> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(List<MedicationDTO> medications) {
+        this.medications = medications;
     }
 
     public String getReportDescription() {

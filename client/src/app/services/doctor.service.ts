@@ -99,4 +99,19 @@ changeDoctor(doctor){
       })
     );
 }
+submitReport(report,patientID){
+  let headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.userService.getToken()}`
+  });
+  return this.http.post(`http://localhost:8080/api/examination/submitReport/${patientID}/`, JSON.stringify(report), { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+}
 }
