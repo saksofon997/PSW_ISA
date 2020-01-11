@@ -35,7 +35,7 @@
                 <div class="row col-lg-6 col-sm-10 col-md-6 shadow-sm p-1 mb-1 ml-1 bg-white rounded col">
                     <div class="col-lg-10 col-sm-10 col-md-10">
                         <input type="datetime" formControlName="date" [owlDateTime]="dt2" class="form-control"
-                            [ngClass]="{ 'is-invalid': submitted && form.controls.date.errors }" id="date"
+                            [ngClass]="{ 'is-invalid': submitted && searchForm.controls.date.errors }" id="date"
                             style="border: 0;">
                     </div>
                     <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
@@ -78,20 +78,22 @@
         <tr *ngFor='let ordination of filteredOrdinations'>
             <td> {{ordination.name}} </td>
             <td> {{ordination.number}} </td>
-            <!-- <td>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Options
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" style="cursor: pointer;"
-                            (click)="changeOrdination(ordination)">Change</a>
-                        <a class="dropdown-item" style="cursor: pointer;"
-                            (click)="deleteOrdination(ordination)">Delete</a>
+            <td> {{ordination.available === undefined ? 'Date not selected': ordination.available ? 'Available': 'Not Available - First available date: '+ ordination.firstAvailableDate}}
+            </td>
+            <td *ngIf="ordination.available" class="collapse" id="availablePeriods{{ordination.id}}">
+                <div class="card card-body">
+                    <div *ngFor="let timeslot of ordination.availablePeriods">
+                        {{ timeslot }}
                     </div>
                 </div>
-            </td> -->
+            </td>
+            <td *ngIf="ordination.available">
+                <button class="btn btn-light" type="button" data-toggle="collapse"
+                    [attr.data-target]="'#availablePeriods'+ordination.id" aria-expanded="false"
+                    aria-controls="filterForm">
+                    Show free timeslots
+                </button>
+            </td>
         </tr>
     </tbody>
 </table>

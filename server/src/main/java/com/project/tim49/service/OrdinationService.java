@@ -1,5 +1,6 @@
 package com.project.tim49.service;
 
+import com.project.tim49.dto.OrdinationAvailabilityDTO;
 import com.project.tim49.dto.OrdinationDTO;
 import com.project.tim49.model.Appointment;
 import com.project.tim49.model.Clinic;
@@ -13,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class OrdinationService {
@@ -166,5 +164,80 @@ public class OrdinationService {
             ordinationDTOS.add(ordinationDTO);
         }
         return ordinationDTOS;
+    }
+
+    public List<OrdinationAvailabilityDTO> getOrdinationsAvailability(String name, String number, long dateStartTimestamp, Long clinic_id) {
+        long dateEndTimestamp = dateStartTimestamp + 24 * 60 * 60;
+
+        List<Ordination> ordinations = ordinationRepository.getByQuery(name, number, clinic_id);
+        List<OrdinationAvailabilityDTO> ordinationDTOS = new ArrayList<>();
+        for(Ordination o: ordinations) {
+            List<Appointment> allAppointments = appointmentRepository.getByOrdinationAndNotCompleted(o.getId());
+
+            OrdinationAvailabilityDTO ordinationDTO = new OrdinationAvailabilityDTO(o);
+            this.setAvailablePeriods(ordinationDTO, allAppointments, dateStartTimestamp, dateEndTimestamp, false);
+
+            if (ordinationDTO.getAvailablePeriods().size() == 0){
+                ordinationDTO.setAvailable(false);
+                for (int i = 1; i < 100; i++){
+                    this.setAvailablePeriods(ordinationDTO, allAppointments, dateEndTimestamp, dateEndTimestamp + 24*60*60, true);
+                    if (ordinationDTO.getAvailablePeriods().size() != 0){
+                        break;
+                    }
+                }
+            } else {
+                ordinationDTO.setAvailable(true);
+            }
+
+            ordinationDTOS.add(ordinationDTO);
+        }
+        return ordinationDTOS;
+    }
+
+    private void setAvailablePeriods(OrdinationAvailabilityDTO ordinationDTO, List<Appointment> allAppointments, long dateStartTimestamp, long dateEndTimestamp, boolean firstAvailableDateFlag) {
+        List<Appointment> selectedAppointmentsByDate = new ArrayList<>();
+        for (Appointment app : allAppointments) {
+            if (app.getStartingDateAndTime() >= dateStartTimestamp && app.getEndingDateAndTime() <= dateEndTimestamp) {
+                selectedAppointmentsByDate.add(app);
+            } else if (app.getStartingDateAndTime() < dateStartTimestamp && app.getEndingDateAndTime() >= dateStartTimestamp) {
+                selectedAppointmentsByDate.add(app);
+            } else if (app.getStartingDateAndTime() < dateEndTimestamp && app.getEndingDateAndTime() >= dateEndTimestamp) {
+                selectedAppointmentsByDate.add(app);
+            }
+        }
+        Comparator<Appointment> compareByStart = Comparator.comparingLong(Appointment::getStartingDateAndTime);
+        selectedAppointmentsByDate.sort(compareByStart);
+
+        if (selectedAppointmentsByDate.isEmpty()) {
+            ordinationDTO.setAvailable(true);
+            ordinationDTO.getAvailablePeriods().add(dateStartTimestamp + ":" + dateEndTimestamp);
+        } else {
+            if (selectedAppointmentsByDate.get(0).getStartingDateAndTime() > dateStartTimestamp) {
+                ordinationDTO.getAvailablePeriods().add(dateStartTimestamp + ":" + selectedAppointmentsByDate.get(0).getStartingDateAndTime());
+            }
+
+            if (selectedAppointmentsByDate.size() > 1) {
+                for (int i = 0; i < selectedAppointmentsByDate.size() - 1; i++) {
+                    if (selectedAppointmentsByDate.get(i).getEndingDateAndTime() != selectedAppointmentsByDate.get(i + 1).getStartingDateAndTime()) {
+                        ordinationDTO.getAvailablePeriods().add(selectedAppointmentsByDate.get(i).getEndingDateAndTime() + ":" + selectedAppointmentsByDate.get(i + 1).getStartingDateAndTime());
+                    }
+                }
+                if (selectedAppointmentsByDate.get(selectedAppointmentsByDate.size() - 1).getEndingDateAndTime() < dateEndTimestamp) {
+                    ordinationDTO.getAvailablePeriods().add(selectedAppointmentsByDate.get(selectedAppointmentsByDate.size() - 1).getEndingDateAndTime() + ":" + dateEndTimestamp);
+                }
+            } else {
+                if (selectedAppointmentsByDate.get(0).getEndingDateAndTime() < dateEndTimestamp) {
+                    ordinationDTO.getAvailablePeriods().add(selectedAppointmentsByDate.get(0).getEndingDateAndTime() + ":" + dateEndTimestamp);
+                }
+            }
+        }
+
+        if (firstAvailableDateFlag && ordinationDTO.getAvailablePeriods().size() != 0){
+            if (selectedAppointmentsByDate.get(0).getStartingDateAndTime() > dateStartTimestamp){
+                ordinationDTO.setFirstAvailableDateTimestamp(selectedAppointmentsByDate.get(0).getStartingDateAndTime());
+            } else {
+                ordinationDTO.setFirstAvailableDateTimestamp(selectedAppointmentsByDate.get(0).getEndingDateAndTime());
+            }
+        }
     }
 }

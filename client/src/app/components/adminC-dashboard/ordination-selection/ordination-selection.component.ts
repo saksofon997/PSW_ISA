@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-ordination-selection',
@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 	styleUrls: ['./ordination-selection.component.css']
 })
 export class OrdinationSelectionComponent implements OnInit {
-	ordinationsHeaders = ['Name', 'Number'];
+	ordinationsHeaders = ['Name', 'Number', 'Status'];
 	ordinations: any;
 	filteredOrdinations: any;
 	navigationSubscription: any;
@@ -44,7 +44,7 @@ export class OrdinationSelectionComponent implements OnInit {
 		this.searchForm = this.formBuilder.group({
 			name: [""],
 			number: [""],
-			date: [""]
+			date: ["", [Validators.required]]
 		});
 		this.filterForm = this.formBuilder.group({
 			name: [""],
@@ -69,16 +69,38 @@ export class OrdinationSelectionComponent implements OnInit {
 	onSearch() {
 		this.submitted = true;
 
+		if (this.searchForm.invalid) {
+			return;
+		}
+
+		console.log(this.searchForm.controls.date.value.getTime() / 1000);
+
 		var ordination = {
 			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value : "",
 			number: this.searchForm.controls.number.value ? this.searchForm.controls.number.value : "",
+			date: this.searchForm.controls.date.value ? this.searchForm.controls.date.value.getTime() / 1000 : "",
 			clinic_id: this.userService.getUser().clinic_id
 		}
 
-		this.clinicService.searchOrdinations(ordination).subscribe(
+		this.clinicService.searchOrdinationsWithDate(ordination).subscribe(
 			(data) => {
 				this.ordinations = data;
-				this.filteredOrdinations = data;
+				for (let i = 0; i < this.ordinations.length; i++) {
+					let ordination = this.ordinations[i];
+					for (let j = 0; j < ordination.availablePeriods.length; j++) {
+
+						let startTime = new Date(ordination.availablePeriods[j].split(':')[0] * 1000);
+						let endTime = new Date(ordination.availablePeriods[j].split(':')[1] * 1000);
+
+						this.ordinations[i].availablePeriods[j] = ("0" + startTime.getHours()).slice(-2) + ":" + ("0" + startTime.getMinutes()).slice(-2) + " - " + ("0" + endTime.getHours()).slice(-2) + ":" + ("0" + endTime.getMinutes()).slice(-2);
+					}
+					if (!ordination.available) {
+						this.ordinations[i].firstAvailableDate = this.timeConverter(ordination.firstAvailableDateTimestamp);
+					}
+				}
+				this.ordinations.sort((x, y) => (x === y)? 0 : x? -1 : 1);
+				this.filteredOrdinations = this.ordinations; 
+
 			},
 			(error) => {
 				alert(error);
@@ -97,6 +119,16 @@ export class OrdinationSelectionComponent implements OnInit {
 			ordination.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
 			ordination.number.toString().indexOf(filters.number.toLowerCase()) !== -1
 		);
+	}
+
+	timeConverter(a) {
+		a = new Date(a * 1000)
+		var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		var year = a.getFullYear();
+		var month = months[a.getMonth()];
+		var date = a.getDate();
+		var time = date + '. ' + month + ' ' + year + '.';
+		return time;
 	}
 
 	ngOnDestroy() {
