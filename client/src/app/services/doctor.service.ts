@@ -114,4 +114,7 @@ submitReport(report,patientID){
       })
     );
 }
+submitBasicInfo(basicInfo,patientID){
+  
+}
 }

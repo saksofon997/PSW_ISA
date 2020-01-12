@@ -68,7 +68,8 @@ import { MedicalRecordComponent } from './components/patient-profile/medical-rec
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ExaminationComponent } from './components/doctor-home/examination/examination.component';
 import { MatSelectModule } from '@angular/material';
-import { SelectDropDownModule } from 'ngx-select-dropdown'
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   declarations: [
     AppComponent,
@@ -146,7 +147,8 @@ import { SelectDropDownModule } from 'ngx-select-dropdown'
     MatExpansionModule,
     FormsModule,
     MatSelectModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+    MatButtonModule
   ],
   exports: [
     MedicalRecordComponent
