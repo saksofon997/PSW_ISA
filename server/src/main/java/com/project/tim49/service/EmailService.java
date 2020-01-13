@@ -68,6 +68,26 @@ public class EmailService {
     }
 
     @Async
+    public void sendVacationRequestApprovedEmail(UserDTO user) throws MailException,
+            InterruptedException {
+        System.out.println("Slanje emaila...");
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(user.getEmail());
+        mail.setFrom("noreply@clinic.com");
+        mail.setSubject("Clinic: Vacation request approved");
+        mail.setText("Dear " + user.getName() + ",\n\nwe are happy to inform you that your vacation request at our " +
+                "clinic has" +
+                " been approved.\n" +
+                "\n\nBest regards,\nClinical center team\n\n\n\n" +
+                "If you don't know what this is about, then someone has probably" +
+                " entered your email address by mistake and you can ignore this e-mail.");
+        javaMailSender.send(mail);
+
+        System.out.println("Email poslat!");
+    }
+
+    @Async
     public void sendVacationRequestDeniedEmail(UserDTO user, String message) throws MailException,
             InterruptedException {
         System.out.println("Slanje emaila...");
