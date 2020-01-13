@@ -1,80 +1,116 @@
 <div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
-  <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
-      <h3 class="display-8">Patients</h3>
-      <p class="lead">Here you can see a list of patients.</p>
-  </div>
+    <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+        <h3 class="display-8">Patients</h3>
+        <p class="lead">Here you can see a list of patients.</p>
+    </div>
 </div>
 <p>
-    <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseExample"
-        aria-expanded="false" aria-controls="collapseExample">
+    <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#searchForm"
+        aria-expanded="false" aria-controls="searchForm">
         Search patients
     </button>
+    &nbsp;&nbsp;&nbsp;
+    <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#filterForm"
+        aria-expanded="false" aria-controls="filterForm">
+        Filter patients
+    </button>
 </p>
-<div class="collapse" id="collapseExample">
+<div class="collapse" id="searchForm">
     <div class="card card-body">
-            <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label font-weight-bold" for="code">Name: </label>
-                    <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-                        <input type="text" [ngClass]="{ 'is-invalid': submitted && searchForm.controls.name.errors }"
-                            class="form-control" formControlName="name" style="border: 0;" />
-                    </div>
+        <form [formGroup]="searchForm" (ngSubmit)="onSearch()" >
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold" for="code">Name: </label>
+                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                    <input type="text" class="form-control" formControlName="name" style="border: 0;" />
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label font-weight-bold" for="code">Surname: </label>
-                    <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-                        <input type="text" [ngClass]="{ 'is-invalid': submitted && searchForm.controls.surname.errors }"
-                            class="form-control" formControlName="surname" style="border: 0;" />
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold" for="code">Surname: </label>
+                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                    <input type="text" class="form-control" formControlName="surname" style="border: 0;" />
                 </div>
-                <button class="btn btn-primary ">Search</button>
-            </form>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold" for="code">Upin: </label>
+                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                    <input type="text" class="form-control" formControlName="upin" style="border: 0;" />
+                </div>
+            </div>
+            <button class="btn btn-primary ">Search</button>
+        </form>
+    </div>
+</div>
+<div class="collapse" id="filterForm">
+    <div class="card card-body">
+        <form [formGroup]="filterForm">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold" for="code">Name: </label>
+                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                    <input type="text" class="form-control" formControlName="name" style="border: 0;" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold" for="code">Surname: </label>
+                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                    <input type="text" class="form-control" formControlName="surname" style="border: 0;" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold" for="code">Upin: </label>
+                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                    <input type="text" class="form-control" formControlName="upin" style="border: 0;" />
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <table class="table">
-  <thead>
-      <tr>
-          <th scope="col" *ngFor='let param of patientsHeaders'>
-            {{param}}
-          </th>
-          <th></th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr *ngFor='let patient of patients'>
-          <td> {{patient.name}} </td>
-          <td> {{patient.surname}} </td>
-          <td> {{patient.phoneNumber}} </td>
-          <td> {{patient.email}} </td>
-          <td> {{patient.city}} </td>
-          <td>
-              <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Options
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" style="cursor: pointer;" (click)="startAppointment(patient.id)">Start appointment</a>
-                      <a class="dropdown-item" style="cursor: pointer;" (click)="ShowMedicalRecord(patient)">Show medical record</a>
-                  </div>
-              </div>
-          </td>
-      </tr>
-  </tbody>
+    <thead>
+        <tr>
+            <th scope="col" *ngFor='let param of patientsHeaders'>
+                {{param}}
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor='let patient of filteredPatients'>
+            <td> {{patient.name}} </td>
+            <td> {{patient.surname}} </td>
+            <td> {{patient.upin}} </td>
+            <td> {{patient.email}} </td>
+            <td> {{patient.city}} </td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Options
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="startAppointment(patient.id)">Start
+                            appointment</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="ShowMedicalRecord(patient)">Show
+                            medical record</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
 </table>
 <ng-template #modalContent let-close="close">
     <div class="modal-header">
-      <h4 class="modal-title">Medical record</h4>
-      <button type="button" class="close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+        <h4 class="modal-title">Medical record</h4>
+        <button type="button" class="close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body ">
-        <app-medical-record [patientID]="modalData?.patientID" [patientName]="modalData?.patientName" ></app-medical-record>
+        <app-medical-record [patientID]="modalData?.patientID" [patientName]="modalData?.patientName">
+        </app-medical-record>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-secondary" (click)="close()">
-        Cancel
-      </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="close()">
+            Cancel
+        </button>
     </div>
-  </ng-template>
+</ng-template>
