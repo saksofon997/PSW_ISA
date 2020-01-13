@@ -49,6 +49,7 @@ import { NewAppointmentPageComponent } from './components/doctor-home/new-appoin
 import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
+import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 
 const routes: Routes = [
 	{
@@ -95,6 +96,7 @@ const routes: Routes = [
 			{path: 'ordination_form', component: OrdinationFormComponent},
 			{path: 'nurse_listing', component: NurseListingComponent},
 			{path: 'nurse_form', component: NurseFormComponent},
+			{path: 'vacation_requests', component: VacationRequestsComponent},
 
 		],
 		canActivate: [AuthGuardService],

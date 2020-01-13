@@ -22,7 +22,7 @@ public class VacationService {
     @Autowired
     ClinicRepository clinicRepository;
 
-    public VacationDTO approveVacationRequest(Long vacation_id) {
+    public UserDTO approveVacationRequest(Long vacation_id) {
         if(vacation_id == null)
             throw new ValidationException("Invalid vacation ID!");
 
@@ -31,9 +31,20 @@ public class VacationService {
         if(vacation == null)
             throw new ValidationException("No vacation with that ID!");
 
+        Optional<Doctor> doctor = doctorRepository.findById(vacation.getMedicalStaff().getId());
+        Optional<Nurse> nurse = nurseRepository.findById(vacation.getMedicalStaff().getId());
+
+        if(!doctor.isPresent() && !nurse.isPresent()) {
+            throw new NoSuchElementException("No staff with that ID!");
+        }
+
+        UserDTO userDTO;
+        userDTO = doctor.map(UserDTO::new).orElseGet(() -> new UserDTO(nurse.get()));
+
         vacation.setApproved(true);
         vacationRepository.save(vacation);
-        return new VacationDTO(vacation);
+
+        return userDTO;
     }
 
     public UserDTO denyVacationRequest(Long vacation_id) {

@@ -70,6 +70,7 @@ public class DoctorService {
         doctor.setAuthorities( authorityService.findByname("DOCTOR") );
         doctor.setPassword(passwordEncoder.encode("123456"));
         doctor.setPasswordChanged(false);
+        doctor.setEnabled(true);
 
         doctorRepository.save(doctor);
     }
