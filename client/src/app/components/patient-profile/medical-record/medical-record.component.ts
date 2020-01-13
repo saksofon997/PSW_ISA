@@ -123,7 +123,18 @@ export class MedicalRecordComponent implements OnInit {
 		let temp = this.allergies;
 		this.allergies = this.allergies.replace(allergie+",", '');
 		if (temp === this.allergies){
+			this.allergies = this.allergies.replace(","+allergie, '');
+		}
+		console.log(this.allergies);
+		if (temp === this.allergies){
 			this.allergies = this.allergies.replace(allergie, '');
+		}
+	}
+	addAllergie(allergie){
+		if ('' === this.allergies){
+			this.allergies = this.allergies.concat(allergie);
+		}else{
+			this.allergies = this.allergies.concat(", "+allergie);
 		}
 	}
 }

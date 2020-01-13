@@ -1,6 +1,7 @@
 package com.project.tim49.controller;
 
 import com.project.tim49.dto.ExaminationReportDTO;
+import com.project.tim49.dto.MedicalRecordDTO;
 import com.project.tim49.model.ExaminationReport;
 import com.project.tim49.service.ExaminationReportService;
 import com.project.tim49.service.PatientService;
@@ -30,6 +31,22 @@ public class ExaminationReportController {
         try {
             reportService.submitReport(examinationReportDTO, id);
             return new ResponseEntity<>(examinationReportDTO, HttpStatus.CREATED);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (NumberFormatException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping(path="/submitBasicInfo/{id}" ,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    public ResponseEntity submitBasicInfo(@PathVariable Long id, @RequestBody MedicalRecordDTO medicalRecordDTO) {
+        if (medicalRecordDTO == null){
+            return new ResponseEntity<>("Invalid basic information.", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        try {
+            reportService.submitBasicInfo(medicalRecordDTO, id);
+            return new ResponseEntity<>(medicalRecordDTO, HttpStatus.CREATED);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         } catch (NumberFormatException e){

@@ -28,6 +28,7 @@ public class ExaminationReportService {
     MedicationRepository medicationsRepository;
     @Autowired
     PrescriptionRepository prescriptionRepository;
+
     public void submitReport(ExaminationReportDTO examinationReportDTO,Long patientID){
         if (examinationReportDTO.getPerforms() == null){
             throw new ValidationException("Invalid doctor!");
@@ -48,6 +49,22 @@ public class ExaminationReportService {
         ExaminationReport saved = reportRepository.save(report);
         Patient p = patient.get();
         p.getMedicalRecord().getExaminationReport().add(saved);
+        patientRepository.save(p);
+    }
+    public void submitBasicInfo(MedicalRecordDTO medicalRecordDTO,Long patientID){
+        Optional<Patient> patient = patientRepository.findById(patientID);
+        if (!patient.isPresent()){
+            throw new ValidationException("No patient with that ID!");
+        }
+        Patient p = patient.get();
+        MedicalRecord medicalRecord = p.getMedicalRecord();
+
+        medicalRecord.setAlergies(medicalRecordDTO.getAlergies());
+        medicalRecord.setBloodType(medicalRecordDTO.getBloodType());
+        medicalRecord.setDiopter(medicalRecordDTO.getDiopter());
+        medicalRecord.setHeight(medicalRecordDTO.getHeight());
+        medicalRecord.setWeight(medicalRecordDTO.getWeight());
+        p.setMedicalRecord(medicalRecord);
         patientRepository.save(p);
     }
 

@@ -115,6 +115,18 @@ submitReport(report,patientID){
     );
 }
 submitBasicInfo(basicInfo,patientID){
-  
+  let headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.userService.getToken()}`
+  });
+  return this.http.post(`http://localhost:8080/api/examination/submitBasicInfo/${patientID}/`, JSON.stringify(basicInfo), { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
 }
 }

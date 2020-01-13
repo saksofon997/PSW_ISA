@@ -16,8 +16,8 @@
 
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <form [formGroup]="basicInfoForm" (ngSubmit)="submitBasicInfo()">
-      <div class="col-12 border" style="margin-top: 0.2em;" *ngIf="medicalRecord">
+    <form [formGroup]="basicInfoForm" (keydown.enter)="$event.target.tagName == 'TEXTAREA'" (ngSubmit)="submitBasicInfo()" *ngIf="medicalRecord">
+      <div class="col-12 border" style="margin-top: 0.2em;" >
         <div class="row justify-content-start">
           <div class="col-8 border-top border-bottom pt-2">
             <div class="form-group row ">
@@ -70,6 +70,7 @@
             </div>
           </div>
           <div class="col-4 border-top border-bottom pt-2">
+            
             <div class="bg-white clearfix rounded ">
               <label class="col-sm-3 col-form-label font-weight-bold float-left">Alergies</label>
               <img class="float-right" src="assets/images/alergies.png" style=" width: 2em; height: 2em; ">
@@ -78,13 +79,20 @@
               <ul class="list-group rounded">
                 <li class="list-group-item" *ngFor='let alergie of allergies.split(",")' (mouseenter)="onHovering($event)"
                   (mouseleave)="onUnovering($event)">
-                  <span class="float-left">{{alergie}}</span>
-                  <button type="button" class="btn float-right" (click)="deleteAllergie(alergie)" hidden=true
+                  <span class="float-left" *ngIf="alergie!==''">{{alergie}}</span>
+                  <button type="button" class="btn float-right" *ngIf="alergie!==''" (click)="deleteAllergie(alergie)" hidden=true
                     style=" width: 1.6em; height: 1.6em; background: url('assets/images/remove.svg')">
                   </button>
                 </li>
-
               </ul>
+             
+            </div>
+            <div class="form-group row ml-1 mt-2 float-bottom" *ngIf="editBasicInfo">
+              <div class="col-sm-11 col-lg-11 shadow-sm p-1 mb-1 bg-white rounded">
+                <div class="input-group mb-3" style="border: 0; height: 1em;">
+                  <input type="text" class="form-control input-display" placeholder="Add an allergie" (keydown.enter)="addAllergie($event.target.value)"/>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-2"></div>
