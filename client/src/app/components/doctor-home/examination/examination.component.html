@@ -58,7 +58,7 @@
           <img class="float-right" src="assets/images/diagnosis.png" style=" width: 1.7em; height: 1.7em; ">
         </div>
         <ngx-select-dropdown (change)="selectionChanged($event)" formControlName="diagnoses" [multiple]="true"
-          [config]="config" [options]="diagnoses"></ngx-select-dropdown>
+          [config]="config2" [options]="diagnoses"></ngx-select-dropdown>
       </div>
       <div class="col-6 border-top pt-2">
         <div class="bg-white clearfix rounded ">
@@ -86,7 +86,8 @@
     </button>
   </div>
   <div class="modal-body ">
-      <app-medical-record [patientID]="modalData?.patientID" [patientName]="modalData?.patientName" [editable]="true"></app-medical-record>
+      <app-medical-record [patientID]="modalData?.patientID" [patientName]="modalData?.patientName"
+       [diagnoses]="diagnoses" [prescriptions]="prescriptions" [editable]="true"></app-medical-record>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="close()">

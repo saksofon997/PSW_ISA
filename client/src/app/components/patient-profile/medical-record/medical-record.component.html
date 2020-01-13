@@ -16,8 +16,9 @@
 
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <form [formGroup]="basicInfoForm" (keydown.enter)="$event.target.tagName == 'TEXTAREA'" (ngSubmit)="submitBasicInfo()" *ngIf="medicalRecord">
-      <div class="col-12 border" style="margin-top: 0.2em;" >
+    <form [formGroup]="basicInfoForm" (keydown.enter)="$event.target.tagName == 'TEXTAREA'"
+      (ngSubmit)="submitBasicInfo()" *ngIf="medicalRecord">
+      <div class="col-12 border" style="margin-top: 0.2em;">
         <div class="row justify-content-start">
           <div class="col-8 border-top border-bottom pt-2">
             <div class="form-group row ">
@@ -70,27 +71,28 @@
             </div>
           </div>
           <div class="col-4 border-top border-bottom pt-2">
-            
+
             <div class="bg-white clearfix rounded ">
               <label class="col-sm-3 col-form-label font-weight-bold float-left">Alergies</label>
               <img class="float-right" src="assets/images/alergies.png" style=" width: 2em; height: 2em; ">
             </div>
             <div class="overflow-auto border rounded" style="max-height: 11.4em;">
               <ul class="list-group rounded">
-                <li class="list-group-item" *ngFor='let alergie of allergies.split(",")' (mouseenter)="onHovering($event)"
-                  (mouseleave)="onUnovering($event)">
+                <li class="list-group-item" *ngFor='let alergie of allergies.split(",")'
+                  (mouseenter)="onHovering($event)" (mouseleave)="onUnovering($event)">
                   <span class="float-left" *ngIf="alergie!==''">{{alergie}}</span>
-                  <button type="button" class="btn float-right" *ngIf="alergie!==''" (click)="deleteAllergie(alergie)" hidden=true
-                    style=" width: 1.6em; height: 1.6em; background: url('assets/images/remove.svg')">
+                  <button type="button" class="btn float-right" *ngIf="alergie!==''" (click)="deleteAllergie(alergie)"
+                    hidden=true style=" width: 1.6em; height: 1.6em; background: url('assets/images/remove.svg')">
                   </button>
                 </li>
               </ul>
-             
+
             </div>
             <div class="form-group row ml-1 mt-2 float-bottom" *ngIf="editBasicInfo">
               <div class="col-sm-11 col-lg-11 shadow-sm p-1 mb-1 bg-white rounded">
                 <div class="input-group mb-3" style="border: 0; height: 1em;">
-                  <input type="text" class="form-control input-display" placeholder="Add an allergie" (keydown.enter)="addAllergie($event.target.value)"/>
+                  <input type="text" class="form-control input-display" placeholder="Add an allergie"
+                    (keydown.enter)="addAllergie($event.target.value)" />
                 </div>
               </div>
             </div>
@@ -101,7 +103,7 @@
       <mat-action-row>
         <button type="button" mat-button *ngIf="editable && !editBasicInfo" (click)="enableInfoEdit()">Edit</button>
         <button type="button" mat-button color="warn" *ngIf="editBasicInfo" (click)="cancelInfoEdit()">Cancel</button>
-        <button type="submit" mat-button *ngIf="editBasicInfo" >Submit & save</button>
+        <button type="submit" mat-button *ngIf="editBasicInfo">Submit & save</button>
       </mat-action-row>
     </form>
   </mat-expansion-panel>
@@ -122,141 +124,165 @@
       <mat-accordion class="example-headers-align">
         <ul style="list-style-type:none;">
           <li *ngFor='let examination of medicalRecord.examinationReport'>
-            <mat-expansion-panel class="example-headers-align" style="margin-top: 0.6em;">
+            <form (keydown.enter)="$event.target.tagName == 'TEXTAREA'" (ngSubmit)="submitBasicInfo()">
+              <mat-expansion-panel class="example-headers-align" style="margin-top: 0.6em;">
 
-              <mat-expansion-panel-header style="max-height: 3em;" class="example-headers-align">
-                <mat-panel-title>
-                  <label class="font-weight-bold"><img src="assets/images/typeOfExamination.png"
-                      style="width: 2em; height: 2em;">{{" " + examination.typeOfExamination.name + " "}}</label>
-                </mat-panel-title>
-                <mat-panel-description>
-                  <span><img src="assets/images/datetime.png"
-                      style="width: 2em; height: 2em;">{{timeConverter(examination.dateAndTime)}}</span>
-                </mat-panel-description>
-              </mat-expansion-panel-header>
+                <mat-expansion-panel-header style="max-height: 3em;" class="example-headers-align">
+                  <mat-panel-title>
+                    <label class="font-weight-bold"><img src="assets/images/typeOfExamination.png"
+                        style="width: 2em; height: 2em;">{{" " + examination.typeOfExamination.name + " "}}</label>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    <span><img src="assets/images/datetime.png"
+                        style="width: 2em; height: 2em;">{{timeConverter(examination.dateAndTime)}}</span>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
 
-              <div class="row border-top  pt-3 mb-2 mt-2">
-                <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Doctor:</label>
-                <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
-                  <div class="input-group mb-3" style="border: 0; height: 1em;">
-                    <input type="text" class="form-control input-display"
-                      value='{{examination.performs.name + " " + examination.performs.surname}} ' disabled />
-                    <div class="input-group-append">
-                      <span class="input-group-text" style=" height: 2em;"><img src="assets/images/doctor.png"
-                          style=" width: 1.7em; height: 1.7em;"></span>
+                <div class="row border-top  pt-3 mb-2 mt-2">
+                  <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Doctor:</label>
+                  <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
+                    <div class="input-group mb-3" style="border: 0; height: 1em;">
+                      <input type="text" class="form-control input-display"
+                        value='{{examination.performs.name + " " + examination.performs.surname}} ' disabled />
+                      <div class="input-group-append">
+                        <span class="input-group-text" style=" height: 2em;"><img src="assets/images/doctor.png"
+                            style=" width: 1.7em; height: 1.7em;"></span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="row  pt-3 mb-2">
-                <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Clinic:</label>
-                <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
-                  <div class="input-group mb-3" style="border: 0; height: 1em;">
-                    <input type="text" class="form-control input-display" value='{{examination.clinic.name}} '
-                      disabled />
-                    <div class="input-group-append">
-                      <span class="input-group-text" style=" height: 2em;"><img src="assets/images/clinic.png"
-                          style=" width: 1.7em; height: 1.7em;"></span>
+                <div class="row  pt-3 mb-2">
+                  <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Clinic:</label>
+                  <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
+                    <div class="input-group mb-3" style="border: 0; height: 1em;">
+                      <input type="text" class="form-control input-display" value='{{examination.clinic.name}} '
+                        disabled />
+                      <div class="input-group-append">
+                        <span class="input-group-text" style=" height: 2em;"><img src="assets/images/clinic.png"
+                            style=" width: 1.7em; height: 1.7em;"></span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="row  pt-3 mb-2">
-                <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Date:</label>
-                <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
-                  <div class="input-group mb-3" style="border: 0; height: 1em;">
-                    <input type="text" class="form-control input-display"
-                      value='{{timeConverter(examination.dateAndTime)}} ' disabled />
-                    <div class="input-group-append">
-                      <span class="input-group-text" style=" height: 2em;"><img src="assets/images/datetime.png"
-                          style=" width: 1.7em; height: 1.7em;"></span>
+                <div class="row  pt-3 mb-2">
+                  <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Date:</label>
+                  <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
+                    <div class="input-group mb-3" style="border: 0; height: 1em;">
+                      <input type="text" class="form-control input-display"
+                        value='{{timeConverter(examination.dateAndTime)}} ' disabled />
+                      <div class="input-group-append">
+                        <span class="input-group-text" style=" height: 2em;"><img src="assets/images/datetime.png"
+                            style=" width: 1.7em; height: 1.7em;"></span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="row  pt-3 mb-2">
-                <label class="col-sm-3 col-form-label font-weight-bold float-left ">Report
-                  description:</label>
-                <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
-                  <div class="input-group mb-3" style="border: 0; height: 4em;">
-                    <textarea type="text" class="form-control input-display" style="height: 5em;"
-                      value='{{examination.reportDescription}}' disabled></textarea>
-                    <div class="input-group-append">
-                      <span class="input-group-text" style=" height: 5em;"><img src="assets/images/description.png"
-                          style=" width: 1.7em; height: 1.7em;"></span>
+                <fieldset [disabled]="changeReport">
+                  <div class="row  pt-3 mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold float-left ">Report
+                      description:</label>
+                    <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
+                      <div class="input-group mb-3" style="border: 0; height: 4em;">
+                        <textarea type="text" class="form-control input-display" (change)="changedReportDesc(examination.reportDescription)" style="height: 5em;"
+                          value='{{examination.reportDescription}}'></textarea>
+                        <div class="input-group-append">
+                          <span class="input-group-text" style=" height: 5em;"><img src="assets/images/description.png"
+                              style=" width: 1.7em; height: 1.7em;"></span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="row  pt-2 mb-1">
-                <div class="col-6 border-top pt-2">
-                  <div class="bg-white clearfix rounded ">
-                    <label class="col-sm-3 col-form-label font-weight-bold float-left">Diagnoses</label>
-                    <img class="float-right" src="assets/images/diagnosis.png" style=" width: 2em; height: 2em; ">
-                  </div>
-                  <div class="overflow-auto border rounded" style="max-height: 11.4em;">
+                  <div class="row  pt-2 mb-1">
+                    <div class="col-6 border-top pt-2">
+                      <div class="bg-white clearfix rounded ">
+                        <label class="col-sm-3 col-form-label font-weight-bold float-left">Diagnoses</label>
+                        <img class="float-right" src="assets/images/diagnosis.png" style=" width: 2em; height: 2em; ">
+                      </div>
+                      <div class="overflow-auto border rounded" style="max-height: 11.4em;">
 
-                    <table class="table table-sm table-hover table-bordered">
-                      <thead style="font-size: 0.8em;">
-                        <tr>
-                          <th>Code</th>
-                          <th>Description</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr class="" *ngFor='let diagnosis of examination.diagnosis'>
-                          <td>{{diagnosis.code}}</td>
-                          <td>{{diagnosis.description}}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                        <table class="table table-sm table-hover table-bordered">
+                          <thead style="font-size: 0.8em;">
+                            <tr>
+                              <th>Code</th>
+                              <th>Description</th>
+                            </tr>
+                          </thead>
+                          <tbody >
+                            <tr class="" *ngFor='let diagnosis of examination.diagnosis'>
+                              <td>{{diagnosis.code}}</td>
+                              <td>{{diagnosis.description}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
 
-                    <div class="alert alert-info" role="alert"
-                      *ngIf="examination.diagnosis && examination.diagnosis.length <1">Doctor established no diagnosis.
+                        <div class="alert alert-info" role="alert"
+                          *ngIf="examination.diagnosis && examination.diagnosis.length <1">Doctor established no
+                          diagnosis.
+                        </div>
+
+
+                      </div>
+                      <div class="form-group row ml-1 mr-1 mt-2 float-bottom" *ngIf="!changeReport">
+                        <div class="col-sm-12 col-lg-12 shadow-sm p-1 mb-1 bg-white rounded">
+                          <ngx-select-dropdown (change)="selectionChangedDiag($event, examination)" [multiple]="true"
+                            [config]="config2" [options]="prescriptions"></ngx-select-dropdown>
+
+                        </div>
+                      </div>
                     </div>
+                    <div class="col-6 border-top pt-2">
+                      <div class="bg-white clearfix rounded ">
+                        <label class="col-sm-3 col-form-label font-weight-bold float-left">Prescriptions</label>
+                        <img class="float-right" src="assets/images/drug.png" style=" width: 2em; height: 2em; ">
+                      </div>
+                      <div class="overflow-auto border rounded" style="max-height: 11.4em;">
+                        <table class="table table-sm table-hover table-bordered">
+                          <thead style="font-size: 0.8em;">
+                            <tr>
+                              <th>Code</th>
+                              <th>Name</th>
+                            </tr>
+                          </thead>
+                          <tbody >
+                            <tr class="" *ngFor='let prescription of examination.prescription'>
+                              <td>{{prescription.medication_code}}</td>
+                              <td>{{prescription.medication_name}}</td>
+                            </tr>
 
+                          </tbody>
+                        </table>
 
-                  </div>
-                </div>
-                <div class="col-6 border-top pt-2">
-                  <div class="bg-white clearfix rounded ">
-                    <label class="col-sm-3 col-form-label font-weight-bold float-left">Prescriptions</label>
-                    <img class="float-right" src="assets/images/drug.png" style=" width: 2em; height: 2em; ">
-                  </div>
-                  <div class="overflow-auto border rounded" style="max-height: 11.4em;">
-                    <table class="table table-sm table-hover table-bordered">
-                      <thead style="font-size: 0.8em;">
-                        <tr>
-                          <th>Code</th>
-                          <th>Name</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr class="" *ngFor='let prescription of examination.prescription'>
-                          <td>{{prescription.medication_code}}</td>
-                          <td>{{prescription.medication_name}}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                        <div class="alert alert-info" role="alert"
+                          *ngIf="examination.prescription && examination.prescription.length <1">
+                          Doctor prescribed no medications.
+                        </div>
 
-                    <div class="alert alert-info" role="alert"
-                      *ngIf="examination.prescription && examination.prescription.length <1">
-                      Doctor prescribed no medications.
+                      </div>
+                      <div class="form-group row ml-1 mr-1 mt-2 float-bottom" *ngIf="!changeReport">
+                        <div class="col-sm-12 col-lg-12 shadow-sm p-1 mb-1 bg-white rounded">
+                          <ngx-select-dropdown (change)="selectionChangedMed($event, examination)" [multiple]="true"
+                            [config]="config2" [options]="prescriptions"></ngx-select-dropdown>
+
+                        </div>
+                      </div>
                     </div>
-
                   </div>
-                </div>
-              </div>
-              <mat-action-row>
-                <button mat-button *ngIf="editable && !editBasicInfo" (click)="enableInfoEdit()">Edit</button>
-                <button mat-button color="warn" *ngIf="editBasicInfo" (click)="cancelInfoEdit()">Cancel</button>
-                <button type="submit" mat-button *ngIf="editBasicInfo" (click)="enableInfoEdit()">Submit</button>
-              </mat-action-row>
-            </mat-expansion-panel>
+                </fieldset>
+                <mat-action-row>
+                  <button mat-button *ngIf="editable && changeReport"
+                    (click)="enableReportEdit(examination)">Edit</button>
+                  <button mat-button color="warn" *ngIf="!changeReport"
+                    (click)="cancelReportEdit(examination.dateAndTime)">Cancel</button>
+                  <button type="submit" mat-button *ngIf="!changeReport" (click)="enableReportEdit()">Submit &
+                    save</button>
+                </mat-action-row>
+              </mat-expansion-panel>
+            </form>
           </li>
         </ul>
       </mat-accordion>
 
     </div>
+
   </mat-expansion-panel>
 </mat-accordion>

@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, OnInit, Input } from '@angular/core';
 import { PatientService } from 'src/app/services/patient.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,11 +15,40 @@ export class MedicalRecordComponent implements OnInit {
 	@Input() patientID: string;
 	@Input() patientName: string;
 	@Input() editable: boolean;
-
+	@Input() diagnoses: any;
+	@Input() prescriptions: any;
 	basicInfoForm: FormGroup;
 	editBasicInfo: boolean;
+	changeReport: boolean;
 	medicalRecord: any;
 	allergies: any;
+	tempReport:any;
+	config1 = {
+		displayKey:"code", //if objects array passed which key to be displayed defaults to description
+		search:true, //true/false for the search functionlity defaults to false,
+		height: '8em', //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
+		placeholder:'Select', // text to be displayed when no item is selected defaults to Select,
+		customComparator: ()=>{},// a custom function using which user wants to sort the items. default is undefined and Array.sort() will be used in that case,
+		limitTo: 10, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
+		moreText: 'more', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
+		noResultsFound: 'No results found!', // text to be displayed when no items are found while searching
+		searchPlaceholder:'Search medications', // label thats displayed in search input,
+		searchOnKey: 'code', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
+		clearOnSelection: false, // clears search criteria when an option is selected if set to true, default is false
+	  }
+	config2 = {
+	displayKey:"code", //if objects array passed which key to be displayed defaults to description
+	search:true, //true/false for the search functionlity defaults to false,
+	height: '8em', //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
+	placeholder:'Select', // text to be displayed when no item is selected defaults to Select,
+	customComparator: ()=>{},// a custom function using which user wants to sort the items. default is undefined and Array.sort() will be used in that case,
+	limitTo: 10, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
+	moreText: 'more', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
+	noResultsFound: 'No results found!', // text to be displayed when no items are found while searching
+	searchPlaceholder:'Search diagnoses', // label thats displayed in search input,
+	searchOnKey: 'code', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
+	clearOnSelection: false, // clears search criteria when an option is selected if set to true, default is false
+	}
 	constructor(private patientService: PatientService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -41,6 +71,7 @@ export class MedicalRecordComponent implements OnInit {
 		this.basicInfoForm.controls.diopter.disable();
 		this.basicInfoForm.controls.height.disable();
 		this.basicInfoForm.controls.weight.disable();
+		this.changeReport = true;
 	}
 	getMedicalRecord() {
 		this.patientService.getMedicalRecord(this.patientID).subscribe(
@@ -82,10 +113,7 @@ export class MedicalRecordComponent implements OnInit {
 	cancelInfoEdit() {
 		this.editable = true;
 		this.editBasicInfo = false;
-		this.basicInfoForm.controls.bloodType.disable();
-		this.basicInfoForm.controls.diopter.disable();
-		this.basicInfoForm.controls.height.disable();
-		this.basicInfoForm.controls.weight.disable();
+		this.ngOnInit();
 	}
 	submitBasicInfo() {
 		if (this.basicInfoForm.invalid) {
@@ -103,7 +131,32 @@ export class MedicalRecordComponent implements OnInit {
 		let patientID = this.patientID;
 		this.doctorService.submitBasicInfo(basicInfo, patientID).subscribe(
 			(data) => {
-				this.router.navigate([`../patients`], { relativeTo: this.activatedRoute });
+				this.ngOnInit();
+			},
+			(error) => { alert(error); }
+		);
+	}
+	enableReportEdit(reportToChange) {
+		this.editable = false;
+		this.changeReport = false;
+		this.tempReport = reportToChange;
+	}
+	cancelReportEdit(dateTime) {
+		this.editable = true;
+		this.changeReport = true;
+		this.ngOnInit();
+	}
+	submitReportEdit() {
+		if (this.basicInfoForm.invalid) {
+			return;
+		}
+		let doctor = JSON.parse(this.cookieService.get('user'));
+
+		
+		let patientID = this.patientID;
+		this.doctorService.submitChangedReport(this.tempReport, patientID).subscribe(
+			(data) => {
+				this.ngOnInit();
 			},
 			(error) => { alert(error); }
 		);
@@ -136,5 +189,27 @@ export class MedicalRecordComponent implements OnInit {
 		}else{
 			this.allergies = this.allergies.concat(", "+allergie);
 		}
+	}
+	selectionChangedMed(event,med){
+		this.tempReport.prescription = [];
+		let doctor = JSON.parse(this.cookieService.get('user'));
+		event.value.forEach(element => {
+			this.tempReport.prescription.push({
+				medication_name:element.name,
+				medication_code:element.code,
+				doctor_id:doctor.id,
+				doctor_name:doctor.name,
+				doctor_surname:doctor.surname,
+				approved:false
+			})
+		});
+
+	}
+	selectionChangedDiag(event,diag){
+		this.tempReport.diagnosis = event.value;
+	}
+	changedReportDesc(event){
+		console.log(event);
+		this.tempReport.reportDescription = event;
 	}
 }

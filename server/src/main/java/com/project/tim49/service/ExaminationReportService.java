@@ -68,6 +68,39 @@ public class ExaminationReportService {
         patientRepository.save(p);
     }
 
+    public void submitChangedReport(ExaminationReportDTO examinationReportDTO,Long patientID){
+        Optional<Patient> patient = patientRepository.findById(patientID);
+        if (!patient.isPresent()){
+            throw new ValidationException("No patient with that ID!");
+        }
+        Patient p = patient.get();
+        MedicalRecord medicalRecord = p.getMedicalRecord();
+        List<ExaminationReport> er = medicalRecord.getExaminationReport();
+        for (ExaminationReport e: er) {
+            if(e.getDateAndTime() == examinationReportDTO.getDateAndTime()){
+                e.setReportDescription(examinationReportDTO.getReportDescription());
+                List<DiagnosisDictionary> diagnosisDictionaries = new ArrayList<>();
+                for (DiagnosisDTO diagnosisDTO: examinationReportDTO.getDiagnosis()) {
+                    DiagnosisDictionary dictionary = new DiagnosisDictionary();
+                    dictionary.setCode(diagnosisDTO.getCode());
+                    dictionary.setDescription(diagnosisDTO.getDescription());
+                    diagnosisDictionaries.add(dictionary);
+                }
+                e.getDiagnosis().addAll(diagnosisDictionaries);
+//                List<Prescription> prescriptions = new ArrayList<>();
+//                for (PrescriptionDTO prescriptionDTO: examinationReportDTO.getPrescription()) {
+//                    Prescription prescription = new Prescription();
+//                    prescription.set(prescriptionDTO.getCode());
+//                    prescription.setDescription(prescriptionDTO.getDescription());
+//                    diagnosisDictionaries.add(dictionary);
+//                }
+//                e.getDiagnosis().addAll(diagnosisDictionaries);
+            }
+        }
+        medicalRecord.setExaminationReport(er);
+        p.setMedicalRecord(medicalRecord);
+        patientRepository.save(p);
+    }
     private ExaminationReport setReportData(ExaminationReportDTO examinationReportDTO,Clinic clinic, Patient patient,Doctor doctor){
         ExaminationReport report = new ExaminationReport();
 

@@ -53,4 +53,22 @@ public class ExaminationReportController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping(path="/submitChangedReport/{id}" ,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    public ResponseEntity submitChangedReport(@PathVariable Long id, @RequestBody ExaminationReportDTO examinationReportDTO) {
+        if (examinationReportDTO == null){
+            return new ResponseEntity<>("Invalid report information.", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        try {
+            reportService.submitChangedReport(examinationReportDTO, id);
+            return new ResponseEntity<>(examinationReportDTO, HttpStatus.CREATED);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (NumberFormatException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
