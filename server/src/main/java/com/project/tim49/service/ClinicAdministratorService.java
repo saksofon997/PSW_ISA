@@ -58,6 +58,7 @@ public class ClinicAdministratorService {
         admin.setAuthorities( authorityService.findByname("ADMINCC") );
         admin.setPassword(passwordEncoder.encode("123456"));
         admin.setPasswordChanged(false);
+        admin.setEnabled(true);
 
         clinicAdministratorRepository.save(admin);
     }

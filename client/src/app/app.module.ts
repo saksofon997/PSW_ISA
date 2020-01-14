@@ -67,9 +67,10 @@ import { NewVacationRequestComponent } from './components/doctor-home/new-vacati
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ExaminationComponent } from './components/doctor-home/examination/examination.component';
-import { MatSelectModule } from '@angular/material';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import {MatButtonModule} from '@angular/material/button';
+import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -127,7 +128,8 @@ import {MatButtonModule} from '@angular/material/button';
     NewAvailableAppointmentPageComponent,
     NewVacationRequestComponent,
     MedicalRecordComponent,
-    ExaminationComponent
+    ExaminationComponent,
+    VacationRequestsComponent
   ],
   imports: [
     BrowserModule,
@@ -146,7 +148,6 @@ import {MatButtonModule} from '@angular/material/button';
     AngularFontAwesomeModule,
     MatExpansionModule,
     FormsModule,
-    MatSelectModule,
     SelectDropDownModule,
     MatButtonModule
   ],

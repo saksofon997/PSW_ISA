@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
         patient.setEnabled(true);
         List<Authority> auth = authService.findByname("PATIENT");
         patient.setAuthorities(auth);
+        patient.setPasswordChanged(true);
         // karton?
 
         patient = patientRepository.save(patient);

@@ -61,11 +61,13 @@ public class VacationController {
 
     @PutMapping(path="/approve/{id}")
     @PreAuthorize("hasAuthority('ADMINC')")
-    public ResponseEntity<Object> approveVacationRequest(@PathVariable("id") Long vacation_id) {
+    public ResponseEntity<Object> approveVacationRequest(@PathVariable("id") Long vacation_id) throws InterruptedException {
         if(vacation_id == null)
             return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
-        VacationDTO approved = vacationService.approveVacationRequest(vacation_id);
-        return new ResponseEntity<>(approved, HttpStatus.OK);
+        UserDTO user = vacationService.approveVacationRequest(vacation_id);
+        this.emailService.sendVacationRequestApprovedEmail(user);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping(path="/deny/{id}")
@@ -76,9 +78,10 @@ public class VacationController {
         try{
             UserDTO denied = vacationService.denyVacationRequest(vacation_id);
             this.emailService.sendVacationRequestDeniedEmail(denied, message);
+
+            return new ResponseEntity<>("", HttpStatus.OK);
         }catch(InterruptedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
-        return null;
     }
 }

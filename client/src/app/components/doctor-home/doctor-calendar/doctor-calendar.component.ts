@@ -87,7 +87,7 @@ export class DoctorCalendarComponent implements OnInit{
 
     this.doctorService.getVacations().subscribe(
       (data) => {
-       this.populateCalendarEvents(data);
+       this.populateVacations(data);
       },
       (error) => { 
         alert(error);
@@ -204,9 +204,8 @@ export class DoctorCalendarComponent implements OnInit{
 
     data.forEach(vacation => {
       var  eventToAdd = {
-        id: vacation.id,
-        start: new Date(vacation.startingDateAndTime*1000),
-        end: new Date(vacation.endingDateAndTime*1000),
+        start: new Date(vacation.startDate*1000),
+        end: new Date(vacation.endDate*1000),
         title: "Vacation",
         color: colors.blue,
         actions: this.actions
