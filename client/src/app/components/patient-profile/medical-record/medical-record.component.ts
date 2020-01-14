@@ -18,11 +18,13 @@ export class MedicalRecordComponent implements OnInit {
 	@Input() diagnoses: any;
 	@Input() prescriptions: any;
 	basicInfoForm: FormGroup;
+	reportForm: FormGroup;
 	editBasicInfo: boolean;
 	changeReport: boolean;
 	medicalRecord: any;
 	allergies: any;
-	tempReport:any;
+	tempDiagnosis:any;
+	optionsDiagnosis:any;
 	config1 = {
 		displayKey:"code", //if objects array passed which key to be displayed defaults to description
 		search:true, //true/false for the search functionlity defaults to false,
@@ -62,16 +64,22 @@ export class MedicalRecordComponent implements OnInit {
 			height: new FormControl({ value: "", validator: Validators.required, disabled: true }),
 			weight: new FormControl({ value: "", validator: Validators.required, disabled: true })
 		});
+		this.reportForm = new FormGroup({
+			bloodType: new FormControl({ value: "", validator: Validators.required, disabled: true }),
+			diopter: new FormControl({ value: "", disabled: true, validator: Validators.required, }),
+			height: new FormControl({ value: "", validator: Validators.required, disabled: true }),
+			weight: new FormControl({ value: "", validator: Validators.required, disabled: true })
+		});
 	}
 
 	ngOnInit() {
 		this.getMedicalRecord();
+		this.changeReport = true;
 
 		this.basicInfoForm.controls.bloodType.disable();
 		this.basicInfoForm.controls.diopter.disable();
 		this.basicInfoForm.controls.height.disable();
 		this.basicInfoForm.controls.weight.disable();
-		this.changeReport = true;
 	}
 	getMedicalRecord() {
 		this.patientService.getMedicalRecord(this.patientID).subscribe(
@@ -116,6 +124,8 @@ export class MedicalRecordComponent implements OnInit {
 		this.ngOnInit();
 	}
 	submitBasicInfo() {
+		this.editable = true;
+		this.editBasicInfo = false;
 		if (this.basicInfoForm.invalid) {
 			return;
 		}
@@ -139,22 +149,23 @@ export class MedicalRecordComponent implements OnInit {
 	enableReportEdit(reportToChange) {
 		this.editable = false;
 		this.changeReport = false;
-		this.tempReport = reportToChange;
+		this.tempDiagnosis = [];
+		this.optionsDiagnosis = this.diagnoses;
+		reportToChange.diagnosis.forEach(element => {
+			this.optionsDiagnosis = this.optionsDiagnosis.filter(obj => obj.id !== element.id);
+		});
+		
 	}
 	cancelReportEdit(dateTime) {
 		this.editable = true;
 		this.changeReport = true;
 		this.ngOnInit();
 	}
-	submitReportEdit() {
-		if (this.basicInfoForm.invalid) {
-			return;
-		}
-		let doctor = JSON.parse(this.cookieService.get('user'));
-
-		
+	submitReportEdit(examination) {
+		this.editable = true;
+		this.changeReport = true;
 		let patientID = this.patientID;
-		this.doctorService.submitChangedReport(this.tempReport, patientID).subscribe(
+		this.doctorService.submitChangedReport(examination, patientID).subscribe(
 			(data) => {
 				this.ngOnInit();
 			},
@@ -190,26 +201,32 @@ export class MedicalRecordComponent implements OnInit {
 			this.allergies = this.allergies.concat(", "+allergie);
 		}
 	}
-	selectionChangedMed(event,med){
-		this.tempReport.prescription = [];
-		let doctor = JSON.parse(this.cookieService.get('user'));
-		event.value.forEach(element => {
-			this.tempReport.prescription.push({
-				medication_name:element.name,
-				medication_code:element.code,
-				doctor_id:doctor.id,
-				doctor_name:doctor.name,
-				doctor_surname:doctor.surname,
-				approved:false
-			})
-		});
 
+	selectionChangedDiag(event,examination){
+		for (let diagnosis of this.tempDiagnosis){
+			examination.diagnosis = examination.diagnosis.filter(obj => obj.id !== diagnosis.id);
+		}
+		event.value.forEach(element => {
+			examination.diagnosis.push(element);
+			this.tempDiagnosis.push(element);
+		});
 	}
-	selectionChangedDiag(event,diag){
-		this.tempReport.diagnosis = event.value;
+	changedReportDesc(event, examination){
+		examination.reportDescription = event.srcElement.value;
 	}
-	changedReportDesc(event){
-		console.log(event);
-		this.tempReport.reportDescription = event;
+	panelClosed(){
+		if(this.editable==false && this.changeReport==false){
+			this.editable = true;
+			this.changeReport = true;
+			this.ngOnInit();
+		}
+		
+	}
+	deleteDiagnosis(diagnosis, examination){
+		examination.diagnosis = examination.diagnosis.filter(obj => obj.id !== diagnosis.id);
+		this.optionsDiagnosis = this.diagnoses;
+		examination.diagnosis.forEach(element => {
+			this.optionsDiagnosis = this.optionsDiagnosis.filter(obj => obj.id !== element.id);
+		});
 	}
 }

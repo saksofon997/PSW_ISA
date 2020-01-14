@@ -125,7 +125,7 @@
         <ul style="list-style-type:none;">
           <li *ngFor='let examination of medicalRecord.examinationReport'>
             <form (keydown.enter)="$event.target.tagName == 'TEXTAREA'" (ngSubmit)="submitBasicInfo()">
-              <mat-expansion-panel class="example-headers-align" style="margin-top: 0.6em;">
+              <mat-expansion-panel class="example-headers-align" style="margin-top: 0.6em;" (closed)="panelClosed()">
 
                 <mat-expansion-panel-header style="max-height: 3em;" class="example-headers-align">
                   <mat-panel-title>
@@ -183,7 +183,7 @@
                       description:</label>
                     <div class="col-sm-8 col-lg-8 shadow-sm p-1 mb-1 bg-white rounded ">
                       <div class="input-group mb-3" style="border: 0; height: 4em;">
-                        <textarea type="text" class="form-control input-display" (change)="changedReportDesc(examination.reportDescription)" style="height: 5em;"
+                        <textarea type="text" class="form-control input-display" (change)="changedReportDesc($event,examination)" style="height: 5em;"
                           value='{{examination.reportDescription}}'></textarea>
                         <div class="input-group-append">
                           <span class="input-group-text" style=" height: 5em;"><img src="assets/images/description.png"
@@ -211,6 +211,8 @@
                             <tr class="" *ngFor='let diagnosis of examination.diagnosis'>
                               <td>{{diagnosis.code}}</td>
                               <td>{{diagnosis.description}}</td>
+                              <td *ngIf="!changeReport"><button class="btn"  (click)="deleteDiagnosis(diagnosis, examination)"
+                                style=" width: 1.6em; height: 1.6em; background: url('assets/images/remove.svg')"></button></td>
                             </tr>
                           </tbody>
                         </table>
@@ -225,7 +227,7 @@
                       <div class="form-group row ml-1 mr-1 mt-2 float-bottom" *ngIf="!changeReport">
                         <div class="col-sm-12 col-lg-12 shadow-sm p-1 mb-1 bg-white rounded">
                           <ngx-select-dropdown (change)="selectionChangedDiag($event, examination)" [multiple]="true"
-                            [config]="config2" [options]="prescriptions"></ngx-select-dropdown>
+                            [config]="config2" [options]="optionsDiagnosis"></ngx-select-dropdown>
 
                         </div>
                       </div>
@@ -258,13 +260,6 @@
                         </div>
 
                       </div>
-                      <div class="form-group row ml-1 mr-1 mt-2 float-bottom" *ngIf="!changeReport">
-                        <div class="col-sm-12 col-lg-12 shadow-sm p-1 mb-1 bg-white rounded">
-                          <ngx-select-dropdown (change)="selectionChangedMed($event, examination)" [multiple]="true"
-                            [config]="config2" [options]="prescriptions"></ngx-select-dropdown>
-
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </fieldset>
@@ -273,7 +268,7 @@
                     (click)="enableReportEdit(examination)">Edit</button>
                   <button mat-button color="warn" *ngIf="!changeReport"
                     (click)="cancelReportEdit(examination.dateAndTime)">Cancel</button>
-                  <button type="submit" mat-button *ngIf="!changeReport" (click)="enableReportEdit()">Submit &
+                  <button type="submit" mat-button *ngIf="!changeReport" (click)="submitReportEdit(examination)">Submit &
                     save</button>
                 </mat-action-row>
               </mat-expansion-panel>

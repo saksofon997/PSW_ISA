@@ -75,26 +75,17 @@ public class ExaminationReportService {
         }
         Patient p = patient.get();
         MedicalRecord medicalRecord = p.getMedicalRecord();
+        System.out.println(medicalRecord.getAlergies());
         List<ExaminationReport> er = medicalRecord.getExaminationReport();
         for (ExaminationReport e: er) {
             if(e.getDateAndTime() == examinationReportDTO.getDateAndTime()){
                 e.setReportDescription(examinationReportDTO.getReportDescription());
                 List<DiagnosisDictionary> diagnosisDictionaries = new ArrayList<>();
                 for (DiagnosisDTO diagnosisDTO: examinationReportDTO.getDiagnosis()) {
-                    DiagnosisDictionary dictionary = new DiagnosisDictionary();
-                    dictionary.setCode(diagnosisDTO.getCode());
-                    dictionary.setDescription(diagnosisDTO.getDescription());
+                    DiagnosisDictionary dictionary = diagnosisRepository.findOneByCode(diagnosisDTO.getCode());
                     diagnosisDictionaries.add(dictionary);
                 }
-                e.getDiagnosis().addAll(diagnosisDictionaries);
-//                List<Prescription> prescriptions = new ArrayList<>();
-//                for (PrescriptionDTO prescriptionDTO: examinationReportDTO.getPrescription()) {
-//                    Prescription prescription = new Prescription();
-//                    prescription.set(prescriptionDTO.getCode());
-//                    prescription.setDescription(prescriptionDTO.getDescription());
-//                    diagnosisDictionaries.add(dictionary);
-//                }
-//                e.getDiagnosis().addAll(diagnosisDictionaries);
+                e.setDiagnosis(diagnosisDictionaries);
             }
         }
         medicalRecord.setExaminationReport(er);
