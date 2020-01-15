@@ -11,7 +11,6 @@ import { UserService } from './user.service';
 	providedIn: 'root'
 })
 export class ClinicalCenterService {
-
 	constructor(private cookieService: CookieService,
 		private userService: UserService,
 		private http: HttpClient,
@@ -132,6 +131,26 @@ export class ClinicalCenterService {
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.delete(`http://localhost:8080/api/diagnosis/delete/${id}`, { headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+                catchError((response) => {
+                    return throwError(response.error);
+                })
+			);
+	}
+
+	searchClinics(criteria: any) {
+		//TODO
+		throw new Error("Method not implemented.");
+	}
+
+	getTypesOfExamination() {
+		let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.get('http://localhost:8080/api/examinationTypes/getAll', { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;

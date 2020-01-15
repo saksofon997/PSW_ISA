@@ -1,5 +1,6 @@
 package com.project.tim49.service;
 
+import com.project.tim49.dto.ClinicDTO;
 import com.project.tim49.dto.TypeOfExaminationDTO;
 import com.project.tim49.model.Appointment;
 import com.project.tim49.model.Clinic;
@@ -116,4 +117,16 @@ public class TypeOfExaminationService {
         return typeDTOS;
     }
 
+    public List<TypeOfExaminationDTO> findAllInCC() {
+        List<Clinic> clinics = clinicRepository.findAll();
+        List<TypeOfExaminationDTO> examinationTypesAll = new ArrayList<>();
+
+        for (Clinic clinic : clinics) {
+            List<TypeOfExamination> examinationTypes = clinic.getTypesOfExamination();
+            for(TypeOfExamination toe : examinationTypes){
+                examinationTypesAll.add(new TypeOfExaminationDTO(toe));
+            }
+        }
+        return examinationTypesAll;
+    }
 }
