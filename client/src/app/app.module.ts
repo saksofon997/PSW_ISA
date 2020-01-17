@@ -67,6 +67,7 @@ import { NewVacationRequestComponent } from './components/doctor-home/new-vacati
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
+import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +126,8 @@ import { VacationRequestsComponent } from './components/adminC-dashboard/vacatio
     NewAvailableAppointmentPageComponent,
     NewVacationRequestComponent,
     MedicalRecordComponent,
-    VacationRequestsComponent
+    VacationRequestsComponent,
+    PatientDoctorListingComponent,
   ],
   imports: [
     BrowserModule,

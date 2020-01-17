@@ -154,7 +154,8 @@
         <tr *ngFor='let clinic of clinicsFiltered'>
             <td> {{clinic.name}} </td>
             <td> {{clinic.address}} </td>
-            <td> {{clinic.type.price}}</td>
+            <td> {{clinic.id}} <!--{{clinic.type.price}} --></td>
+            <!-- Prikaz tacnog vremena koje je izabrano?? -->
             <td>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -170,3 +171,21 @@
         </tr>
     </tbody>
 </table>
+
+<ng-template #modalContent let-close="close">
+    <div class="modal-header">
+        <h4 class="modal-title">Clinic Info</h4>
+        <button type="button" class="close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body ">
+        <app-medical-record [patientID]="modalData?.clinicID" [patientName]="modalData?.clinicName">
+        </app-medical-record>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="close()">
+            Close
+        </button>
+    </div>
+</ng-template>

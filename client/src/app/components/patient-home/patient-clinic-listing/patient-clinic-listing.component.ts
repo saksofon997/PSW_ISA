@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { PatientService } from 'src/app/services/patient.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClinicalCenterService } from 'src/app/services/clinical-center.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-patient-clinic-listing',
@@ -22,6 +23,15 @@ export class PatientClinicListingComponent implements OnInit {
 	form: FormGroup;
 	filterForm: FormGroup;
 	submitted = false;
+	dateVar: any;
+	TOEVar: any;
+
+	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+	modalData: {
+		clinicID: any;
+		clinicName: any;
+		action: string;
+	};
 
 	clinicsFiltered: any
 
@@ -37,11 +47,13 @@ export class PatientClinicListingComponent implements OnInit {
 			private formBuilder: FormBuilder,
 			private clinicalCenterService: ClinicalCenterService,
 			private clinicService: ClinicService,
+			private modal: NgbModal,
 		) {   }
 
 	ngOnInit() {
 		this.createFormGroups();
 		this.loadData();
+		this.onFilterChanges();
 	}
 
 	//LOAD METHODS
@@ -143,17 +155,26 @@ export class PatientClinicListingComponent implements OnInit {
 	filterClinics(filters) {
 		return this.clinics.filter(clinic =>
 			clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
-			clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1 &&
-			clinic.price.indexOf(filters.price) !== -1
+			clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
+			// && clinic.type.price.indexOf(filters.price) !== -1
 		);
 	}
 
 	onSearch() {
+
+		//TESTING
+		this.notSearched = !this.notSearched;
+		return;
+		//TESTING
+
 		this.submitted = true;
 
 		if (this.form.invalid) {
 			return;
 		}
+
+		this.dateVar = this.form.controls.date.value.getTime() / 1000;
+		this.TOEVar = this.form.controls.typeOfExamination.value;
 
 		var criteria = {
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
@@ -163,8 +184,30 @@ export class PatientClinicListingComponent implements OnInit {
 		}
 
 		//SEND SEARCH REQUEST
-		//fill clinicsSearched with new DTO
+		//fill clinics with new DTO (TODO)
 		//fill clinicsFiltered
+	}
+
+	//OTHER FUNCTIONS
+
+	showClinicInfo(clinic) {
+		let action = "Opened";
+		let clinicID = clinic.id;
+		let clinicName = clinic.name;
+		this.modalData = { clinicID, clinicName, action };
+		this.modal.open(this.modalContent, { size: 'xl' });
+	}
+
+	showDoctors(clinic) {
+		let clinic_id = clinic.id;
+		let date = this.dateVar;
+		//TODO - specijalizacija doktora
+		let TOE = this.TOEVar;
+		this.router.navigate([`../doctors/${clinic_id}/${TOE}/${date}`], {relativeTo: this.activatedRoute });
+	}
+
+	close() {
+		this.modal.dismissAll();
 	}
 
 	ngOnDestroy() {
