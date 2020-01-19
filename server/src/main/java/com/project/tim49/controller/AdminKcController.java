@@ -94,6 +94,20 @@ public class AdminKcController {
                     HttpStatus.OK);
     }
 
+    @PutMapping(path = "/rateClinic")
+    public ResponseEntity rateClinic(
+            @RequestParam(value = "clinic_id", required = true) Long clinic_id,
+            @RequestParam(value = "patient_id", required = true) Long patient_id,
+            @RequestParam(value = "stars", required = true) int stars
+    ) {
+        try {
+            this.clinicService.rateClinic(clinic_id, patient_id, stars);
+            return new ResponseEntity<>(clinic_id, HttpStatus.OK);
+        } catch (ValidationException | NoSuchElementException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping(path = "/getClinics",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ADMINCC') or hasAuthority('ADMINC') or hasAuthority('PATIENT')")

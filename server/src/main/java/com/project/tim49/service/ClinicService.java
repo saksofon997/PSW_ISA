@@ -2,11 +2,10 @@ package com.project.tim49.service;
 
 import com.project.tim49.dto.ClinicDTO;
 import com.project.tim49.dto.DoctorDTO;
-import com.project.tim49.model.Appointment;
-import com.project.tim49.model.Clinic;
-import com.project.tim49.model.Doctor;
-import com.project.tim49.model.Patient;
+import com.project.tim49.model.*;
+import com.project.tim49.repository.ClinicPatientRepository;
 import com.project.tim49.repository.ClinicRepository;
+import com.project.tim49.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +21,10 @@ public class ClinicService {
 
     @Autowired
     private ClinicRepository clinicRepository;
+    @Autowired
+    private ClinicPatientRepository clinicPatientRepository;
+    @Autowired
+    private PatientRepository patientRepository;
 
     public ClinicDTO findOneDTO(Long id) {
 
@@ -111,9 +114,9 @@ public class ClinicService {
             Clinic forDelete = findOne(id);
             if(forDelete != null) {
                 List<Appointment> clinicAppointments = forDelete.getAppointment();
-                for (Patient p: forDelete.getPatients()){
+                for (ClinicPatient cp: forDelete.getPatients()){
                     ArrayList<Appointment> pendingApp = new ArrayList<Appointment>();
-                    pendingApp.addAll(p.getPendingAppointments());
+                    pendingApp.addAll(cp.getPatient().getPendingAppointments());
                     for (int i=0; i<pendingApp.size(); i++){
                         if (clinicAppointments.contains(pendingApp.get(i))){
                             throw new IllegalStateException("Clinic has pending appointments and can not be deleted!");
@@ -130,5 +133,39 @@ public class ClinicService {
             throw new ValidationException("Clinic does not exist!");
         }
         throw new ValidationException("Clinic ID has null value!");
+    }
+
+    public void rateClinic(Long clinic_id, Long patient_id, int stars){
+        if (clinic_id == null || patient_id == null || stars == 0 || stars < 0 || stars > 5){
+            throw new ValidationException("Invalid parameters.");
+        }
+        Clinic clinic = clinicRepository.findById(clinic_id).orElse(null);
+        if (clinic == null ) {
+            throw new NoSuchElementException("Clinic does not exist.");
+        }
+        Patient patient = patientRepository.findById(patient_id).orElse(null);
+        if (patient == null ) {
+            throw new NoSuchElementException("Patient does not exist.");
+        }
+        boolean hadAppointmentsInClinic = false;
+        for (Appointment appointment: patient.getFinishedAppointments()){
+            if (appointment.getClinic().getId().equals(clinic_id)){
+                hadAppointmentsInClinic = true;
+                break;
+            }
+        }
+        if (!hadAppointmentsInClinic){
+            throw new ValidationException("You can only rate clinic in which you already had finished appointments!");
+        }
+        ClinicPatient clinicPatient = clinicPatientRepository.getByClinicAndPatient(clinic_id, patient_id);
+        if (clinicPatient == null || clinicPatient.isRated()){
+            throw new ValidationException("You can only rate clinic once!");
+        }
+
+        clinicPatient.setRated(true);
+        //clinicPatientRepository.save(clinicPatient);
+        clinic.setNumberOfStars(clinic.getNumberOfStars() + stars);
+        clinic.setNumberOfReviews(clinic.getNumberOfReviews() + 1);
+        clinicRepository.save(clinic);
     }
 }

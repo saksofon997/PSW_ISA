@@ -136,6 +136,9 @@
                   <span class="input-group-text" style=" height: 2em;"><img src="assets/images/clinic.png"
                       style=" width: 1.7em; height: 1.7em;"></span>
                 </div>
+                <div *ngIf="this.patientName === undefined">
+                  <star-rating value='{{examination.clinic.numberOfStars / examination.clinic.numberOfReviews}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="24px" readonly="false" (rate)="onRateClinic($event, examination.clinic)"></star-rating>
+                </div>
               </div>
             </div>
           </div>

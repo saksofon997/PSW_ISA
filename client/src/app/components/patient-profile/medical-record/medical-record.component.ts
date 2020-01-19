@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PatientService } from 'src/app/services/patient.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { StarRatingComponent } from 'ng-starrating';
+import { ClinicService } from 'src/app/services/clinic.service';
+
 @Component({
   selector: 'app-medical-record',
   templateUrl: './medical-record.component.html',
@@ -12,6 +15,7 @@ export class MedicalRecordComponent implements OnInit {
  @Input() patientName: string;
   medicalRecord: any;
   constructor(private patientService: PatientService,
+		private clinicService: ClinicService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		private userService: UserService,) { }
@@ -40,5 +44,19 @@ export class MedicalRecordComponent implements OnInit {
 		var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
 		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min;
 		return time;
-    }
+	}
+	
+	onRateClinic($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}, clinic) {
+		let user = this.userService.getUser();
+    	let user_id = user["id"];
+		this.clinicService.rateClinic(clinic.id, user_id, $event.newValue).subscribe(
+			(data) => {
+				alert("Clinic successfully rated!");
+			},
+			(error) => { 
+				alert(error);
+				this.getMedicalRecord();
+			}
+		)
+	  }
 }

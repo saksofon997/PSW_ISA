@@ -206,12 +206,12 @@ INSERT INTO public.appointment_doctors(
     appointment_id, doctor_id)
     VALUES (6, 9);
 
-INSERT INTO public.clinics_patients(
-    clinic_id, patient_id)
-    VALUES (1, 11);
-INSERT INTO public.clinics_patients(
-    clinic_id, patient_id)
-    VALUES (1, 12);
+INSERT INTO public.clinic_patient(
+    clinic_id, patient_id, rated)
+    VALUES (1, 11, false);
+INSERT INTO public.clinic_patient(
+    clinic_id, patient_id, rated)
+    VALUES (1, 12, false);
 
 INSERT INTO public.nurse(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end)
