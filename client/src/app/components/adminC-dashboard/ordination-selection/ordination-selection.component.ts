@@ -72,9 +72,7 @@ export class OrdinationSelectionComponent implements OnInit {
 		if (this.searchForm.invalid) {
 			return;
 		}
-
-		console.log(this.searchForm.controls.date.value.getTime() / 1000);
-
+		
 		var ordination = {
 			name: this.searchForm.controls.name.value ? this.searchForm.controls.name.value : "",
 			number: this.searchForm.controls.number.value ? this.searchForm.controls.number.value : "",

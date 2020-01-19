@@ -180,7 +180,7 @@ public class OrdinationService {
             if (ordinationDTO.getAvailablePeriods().size() == 0){
                 ordinationDTO.setAvailable(false);
                 for (int i = 1; i < 100; i++){
-                    this.setAvailablePeriods(ordinationDTO, allAppointments, dateEndTimestamp, dateEndTimestamp + 24*60*60, true);
+                    this.setAvailablePeriods(ordinationDTO, allAppointments, dateStartTimestamp + 24*60*60*i, dateEndTimestamp + 24*60*60*i, true);
                     if (ordinationDTO.getAvailablePeriods().size() != 0){
                         break;
                     }
