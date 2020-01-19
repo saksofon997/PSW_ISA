@@ -142,11 +142,26 @@ public class DoctorController {
             appointment = doctorService.getOneAppointment(id, appID);
 
         }catch (ValidationException e){
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         if(appointment == null){
-            return new ResponseEntity("Appointment not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Appointment not found", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(appointment, HttpStatus.OK);
+        return new ResponseEntity<>(appointment, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/canViewMedicalRecord/{patient_id}/{doctor_id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    public ResponseEntity canViewMedicalRecord(@PathVariable Long patient_id, @PathVariable Long doctor_id) {
+        try {
+            if (doctorService.canViewPatientMedicalRecord(patient_id, doctor_id)){
+                return new ResponseEntity<>("", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("You are not allowed to see the medical record of this patient", HttpStatus.FORBIDDEN);
+            }
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

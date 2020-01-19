@@ -172,7 +172,9 @@ INSERT INTO public.appointment(
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
     VALUES (nextval('appointment_id_seq'), 1576854000,1576854600, 10 * 60 * 1000, 100, 1, 1, null, 2, false, false);
-
+INSERT INTO public.appointment(
+    id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
+    VALUES (nextval('appointment_id_seq'), 1576854000,1576854600, 10 * 60 * 1000, 100, 1, 1, 11, 2, true, false);
 
 INSERT INTO public.patients_pending_appointments(
     patient_id, appointment_id)
@@ -186,6 +188,10 @@ INSERT INTO public.patients_pending_appointments(
 INSERT INTO public.patients_pending_appointments(
     patient_id, appointment_id)
     VALUES (11, 4);
+
+INSERT INTO public.patients_finished_appointments(
+    patient_id, appointment_id)
+    VALUES (11, 6);
 
 INSERT INTO public.appointment_doctors(
     appointment_id, doctor_id)
@@ -208,6 +214,9 @@ INSERT INTO public.appointment_doctors(
 INSERT INTO public.appointment_doctors(
     appointment_id, doctor_id)
     VALUES (7, 9);
+INSERT INTO public.appointment_doctors(
+    appointment_id, doctor_id)
+    VALUES (8, 9);
 
 INSERT INTO public.clinics_patients(
     clinic_id, patient_id)

@@ -150,8 +150,26 @@ export class PatientService {
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		var searchParamsString = "";
-		searchParamsString += `name=${patient.name}&surname=${patient.surname}`
+		searchParamsString += `name=${patient.name}&surname=${patient.surname}&upin=${patient.upin}`
 		return this.http.get(`http://localhost:8080/api/patient/search_patients?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+  }
+
+  checkAuthorityToViewMedicalRecord(patient_id){
+    let user = JSON.parse(this.cookieService.get('user'));
+    let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    return this.http.get(`http://localhost:8080/api/doctor/canViewMedicalRecord/${patient_id}/${user.id}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {

@@ -17,7 +17,7 @@ public class Patient extends User {
    @JoinColumn(name = "medicalRecord_id", referencedColumnName = "id")
    public MedicalRecord medicalRecord;
 
-   @ManyToMany
+   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Appointment.class)
    @JoinTable(name = "patients_finished_appointments", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
    public Set<Appointment> finishedAppointments;
 

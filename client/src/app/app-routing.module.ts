@@ -50,6 +50,7 @@ import { NewAvailableAppointmentPageComponent } from './components/adminC-dashbo
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
 import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
+import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 
 const routes: Routes = [
 	{
@@ -68,7 +69,7 @@ const routes: Routes = [
 		data: { roles: ['ADMINCC']}
 	},
 	{
-		path: 'adminCC', 
+		path: 'adminCC',
 		component: ClinicListingComponent,
 		children:[
 			{path: 'clinicAdmins', component: ClinicAdministratorsListingComponent},
@@ -97,6 +98,7 @@ const routes: Routes = [
 			{path: 'ordination_form', component: OrdinationFormComponent},
 			{path: 'nurse_listing', component: NurseListingComponent},
 			{path: 'nurse_form', component: NurseFormComponent},
+			{path: 'vacation_requests', component: VacationRequestsComponent},
 
 		],
 		canActivate: [AuthGuardService],

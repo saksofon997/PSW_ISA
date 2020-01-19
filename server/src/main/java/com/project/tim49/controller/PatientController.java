@@ -90,9 +90,10 @@ public class PatientController {
     @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('NURSE')")
     public ResponseEntity getAllByQuery(
             @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "surname", required = false) String surname
+            @RequestParam(value = "surname", required = false) String surname,
+            @RequestParam(value = "upin", required = false) String upin
     ) {
-        List<PatientDTO> patientDTOS = patientService.getByQuery(name, surname);
-        return new ResponseEntity(patientDTOS, HttpStatus.OK);
+        List<PatientDTO> patientDTOS = patientService.getByQuery(name, surname, upin);
+        return new ResponseEntity<>(patientDTOS, HttpStatus.OK);
     }
 }
