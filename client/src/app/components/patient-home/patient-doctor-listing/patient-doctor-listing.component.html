@@ -1,7 +1,7 @@
 <div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
   <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
       <h3 class="display-8">Doctors</h3>
-      <p class="lead">Here you can see a list of this clinic centers doctors.</p>
+      <p class="lead">Here you can see a list of this clinics doctors.</p>
   </div>
 </div>
 <p>
@@ -132,7 +132,7 @@
                       Options
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show availible appointments</a>
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctorInfo(doctor)">Show availible appointments</a>
                   </div>
               </div>
           </td>
@@ -148,8 +148,36 @@
       </button>
   </div>
   <div class="modal-body ">
-      <app-medical-record [patientID]="modalData?.doctorID" [patientName]="modalData?.doctorName">
-      </app-medical-record>
+    <div class="row">
+        <label class="col-lg-3"> <b>Name:</b> </label>
+        <label class="col-lg-9"> {{modalData.doctorName}} </label>
+    </div>
+    <div class="row">
+        <label class="col-lg-3"><b>Surname: </b> </label>
+        <label class="col-lg-9"> {{modalData.doctorSurname}} </label>
+    </div>
+    <div class="row">
+        <label class="col-lg-3"><b>Rating: </b> </label>
+        <label class="col-lg-9"> {{modalData.doctorID}} </label>
+    </div>
+    <div>
+        <table>
+            <tbody>
+                <tr>
+                    <td> 12.00 </td>
+                    <td> 14.00 </td>
+                    <td> Lokacija </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary" type="button" aria-haspopup="true" (click)="showAppointmentPage(app)">
+                                Select
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+    </div>
   </div>
   <div class="modal-footer">
       <button type="button" class="btn btn-outline-secondary" (click)="close()">

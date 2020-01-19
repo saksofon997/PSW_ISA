@@ -6,6 +6,7 @@ import { PatientService } from 'src/app/services/patient.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClinicalCenterService } from 'src/app/services/clinical-center.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { resolve } from 'url';
 
 @Component({
   selector: 'app-patient-clinic-listing',
@@ -30,10 +31,14 @@ export class PatientClinicListingComponent implements OnInit {
 	modalData: {
 		clinicID: any;
 		clinicName: any;
+		clinicAddress: any;
+		location: Number[];
 		action: string;
 	};
 
 	clinicsFiltered: any
+
+	locationModal: any;
 
 	clinicsSearched: any;
 	clinicsSearchedHeaders = ['Name', 'Address', 'Price'];
@@ -164,6 +169,8 @@ export class PatientClinicListingComponent implements OnInit {
 
 		//TESTING
 		this.notSearched = !this.notSearched;
+		this.dateVar = this.form.controls.date.value.getTime() / 1000;
+		this.TOEVar = this.form.controls.typeOfExamination.value;
 		return;
 		//TESTING
 
@@ -192,18 +199,41 @@ export class PatientClinicListingComponent implements OnInit {
 
 	showClinicInfo(clinic) {
 		let action = "Opened";
-		let clinicID = clinic.id;
+		let clinicID = clinic.id; //RATING
 		let clinicName = clinic.name;
-		this.modalData = { clinicID, clinicName, action };
-		this.modal.open(this.modalContent, { size: 'xl' });
+		let clinicAddress = clinic.address;
+		let clinicCity = clinic.city;
+		let clinicState = clinic.state;
+
+		this.loadClinicLocation(clinicAddress, clinicCity, clinicState).then(() => {
+			let chars: string;
+			chars = this.locationModal.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
+			let res = chars.split(' ');
+			let location : Number[];
+			location = [0, 0];
+			location[0] = Number(res[1]);
+			location[1] = Number(res[0]);
+			this.modalData = { clinicID, clinicName, clinicAddress, location, action };
+			this.modal.open(this.modalContent, { size: 'xl' });
+		}, () => alert("Error loading data"))
+	}
+
+	loadClinicLocation(clinicAddress, clinicCity, clinicState){
+		let promise = new Promise((resolve, reject) => {
+			this.clinicService.getClinicLocation(clinicAddress, clinicCity, clinicState).subscribe(
+				(data) => { this.locationModal = data; resolve();},
+				(error) => { alert(error); reject(); }
+			);
+		});
+		return promise;
 	}
 
 	showDoctors(clinic) {
 		let clinic_id = clinic.id;
-		let date = this.dateVar;
-		//TODO - specijalizacija doktora
+		let dateP = this.dateVar;
+		//TODO - specijalizacija doktor
 		let TOE = this.TOEVar;
-		this.router.navigate([`../doctors/${clinic_id}/${TOE}/${date}`], {relativeTo: this.activatedRoute });
+		this.router.navigate([`doctors/${clinic_id}`], { queryParams: { TOE: clinic_id, date: dateP }, relativeTo: this.activatedRoute });
 	}
 
 	close() {

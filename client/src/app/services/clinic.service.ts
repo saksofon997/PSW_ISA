@@ -395,6 +395,25 @@ export class ClinicService {
 			);
 	}
 
+	getClinicLocation(address: string, city: string, state: string) {
+		address = address.replace(/ /g, '+');
+		address = encodeURIComponent(address);
+		city = city.replace(/ /g, '+');
+		city = encodeURIComponent(city);
+		state = state.replace(/ /g, '+');
+		state = encodeURIComponent(state);
+
+		return this.http.get(`https://geocode-maps.yandex.ru/1.x/?format=json&apikey=396fefe7-95c2-486a-ae3e-c8f062813962&geocode=${address},${city},${state}&lang=en_US`, { observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	searchTypesOfExamination(type: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',

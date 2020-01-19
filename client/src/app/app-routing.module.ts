@@ -109,7 +109,7 @@ const routes: Routes = [
 		children:[
 			{path: '', component: PatientClinicListingComponent},
 			{path: 'clinics', component: PatientClinicListingComponent},
-			{path: 'doctors', component: PatientDoctorListingComponent},
+			{path: 'doctors/:clinic_id', component: PatientDoctorListingComponent},
 			{path: 'pending_appointments', component: PatientPendingAppointmentsListingComponent},
 		],
 		canActivate: [AuthGuardService],

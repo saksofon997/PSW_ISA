@@ -180,8 +180,23 @@
         </button>
     </div>
     <div class="modal-body ">
-        <app-medical-record [patientID]="modalData?.clinicID" [patientName]="modalData?.clinicName">
-        </app-medical-record>
+        <div class="row">
+            <label class="col-lg-3"> <b>Name:</b> </label>
+            <label class="col-lg-9"> {{modalData.clinicName}} </label>
+        </div>
+        <div class="row">
+            <label class="col-lg-3"><b>Address: </b> </label>
+            <label class="col-lg-9"> {{modalData.clinicAddress}} </label>
+        </div>
+        <div class="row">
+            <label class="col-lg-3"><b>Rating: </b> </label>
+            <label class="col-lg-9"> {{modalData.clinicID}} </label>
+        </div>
+        <div style="height: 500px; width: 500px;">
+            <angular-yandex-map [center]="modalData.location">
+              <angular-yandex-placemark [geometry]="modalData.location"></angular-yandex-placemark>
+            </angular-yandex-map>
+          </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" (click)="close()">

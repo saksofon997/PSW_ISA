@@ -36,6 +36,8 @@ import { MatTableModule } from '@angular/material/table';
 import { APP_INITIALIZER } from '@angular/core';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { AngularYandexMapsModule } from 'angular8-yandex-maps';
+import { HttpParameterCodec } from "@angular/common/http";
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
@@ -144,7 +146,8 @@ import { PatientDoctorListingComponent } from './components/patient-home/patient
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularFontAwesomeModule,
-    MatExpansionModule
+    MatExpansionModule,
+    AngularYandexMapsModule.forRoot("396fefe7-95c2-486a-ae3e-c8f062813962"),
   ],
   exports: [
     MedicalRecordComponent

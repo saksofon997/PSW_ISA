@@ -15,8 +15,12 @@ export class PatientDoctorListingComponent implements OnInit {
 
 	doctors: any;
 	doctorHeaders = ['Name', 'Surname', 'Rating'];
-	typesOfExamination: any
-	doctorsFiltered: any
+	typesOfExamination: any;
+	doctorsFiltered: any;
+
+	clinic_id_param: any;
+	TOE_param: any;
+	date_param: any;
 	
 	navigationSubscription: any;
 	sortingOption: any;
@@ -24,11 +28,13 @@ export class PatientDoctorListingComponent implements OnInit {
 	filterForm: FormGroup;
 	submitted = false;
 	private sub: any;
+	notSearched = true;
 
 	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 	modalData: {
 		doctorID: any;
 		doctorName: any;
+		doctorSurname: any;
 		action: string;
 	};
 
@@ -42,25 +48,32 @@ export class PatientDoctorListingComponent implements OnInit {
 		private modal: NgbModal,) { }
 
   ngOnInit() {
-    this.sub = this.activatedRoute.params.subscribe(params => {
-		let clinic_id_param = +params['clinic_id'];
+		this.sub = this.activatedRoute.params.subscribe(params => {
+			this.clinic_id_param = +params['clinic_id'];
+			});
 
-		let date_param = +params['date'];
-		this.createFormGroups();
-		//this.loadData(clinic_id_param);
-		this.onFilterChanges();
+		this.activatedRoute.queryParams.subscribe(params => {
+			this.TOE_param = +params['TOE'];
+			this.date_param = +params['date'];
 		});
+
+		if(!this.clinic_id_param)
+			alert("ERROR, NO CLINIC ID!");
+
+		this.createFormGroups();
+
+		this.loadData(this.clinic_id_param);
+
+		this.onFilterChanges();
   	}
 
   	//LOADING METHODS
 
-	createFormGroup() {
-		throw new Error("Method not implemented.");
-	}
-
 	createFormGroups() {
 		let date;
 		date = new Date();
+		if(this.date_param)
+			date = this.date_param * 1000;
 
 		this.form = this.formBuilder.group({
 			date: [date, [Validators.required,]],
@@ -76,31 +89,33 @@ export class PatientDoctorListingComponent implements OnInit {
 		});
 	}
 
-	// loadData(clinic_id) {
-	// 	let promise = new Promise((resolve, reject) => {
-	// 		this.loadClinics().then(() => {
-	// 			this.loadTypesOfExamination().then(() => {
-	// 				resolve();
-	// 			}, () => reject());
-	// 		}, () => reject());
-
-	// 	});
-	// 	return promise;
-	// }
-
-	// loadTypesOfExamination() {
-	// 	let promise = new Promise((resolve, reject) => {
-	// 		this.clinicalCenterService.getTypesOfExamination().subscribe(
-	// 			(data) => { this.typesOfExamination = data; resolve(); },
-	// 			(error) => { alert(error); reject(); }
-	// 		);
-	// 	});
-	// 	return promise;
-	// }
-
-	loadClinics() {
+	loadData(clinic_id) {
 		let promise = new Promise((resolve, reject) => {
-			this.patientService.getClinics().subscribe(
+			this.loadDoctors().then(() => {
+				this.loadTypesOfExamination().then(() => {
+					resolve();
+				}, () => reject());
+			}, () => reject());
+
+		});
+		return promise;
+	}
+
+	loadTypesOfExamination() {
+		let promise = new Promise((resolve, reject) => {
+		let clinic_id = this.clinic_id_param;
+			this.clinicService.getTypesOfExamination(clinic_id).subscribe(
+				(data) => { this.typesOfExamination = data; resolve(); },
+				(error) => { alert(error); reject(); }
+			);
+		});
+		return promise;
+	}
+
+	loadDoctors() {
+		let promise = new Promise((resolve, reject) => {
+			let clinic_id = this.clinic_id_param;
+			this.clinicService.getDoctors(clinic_id).subscribe(
 				(data) => { this.doctors = data;
 							this.doctorsFiltered = data;
 							this.doctorsFiltered.sort((a, b) => (a.id > b.id) ? 1 : -1); resolve(); },
@@ -114,19 +129,19 @@ export class PatientDoctorListingComponent implements OnInit {
 
 	sortName() {
 		this.sortingOption = "name";
-		this.sortClinics();
+		this.sortDoctors();
 	}
 	sortSurname() {
 		this.sortingOption = "address";
-		this.sortClinics();
+		this.sortDoctors();
 	}
 
 	sortRating() {
 		this.sortingOption = "rating";
-		this.sortClinics();
+		this.sortDoctors();
 	}
 
-	sortClinics() {
+	sortDoctors() {
 		switch(this.sortingOption) {
 			case "name": {
 				this.doctorsFiltered.sort((a, b) => (a.name > b.name) ? 1 : -1)
@@ -136,7 +151,7 @@ export class PatientDoctorListingComponent implements OnInit {
 				this.doctorsFiltered.sort((a, b) => (a.surname > b.surname) ? 1 : -1)
 				break;
 			}
-			case "rating": { //TODO, doctor rating
+			case "rating": { //TODO, doctor rating!!!
 				this.doctorsFiltered.sort((a, b) => (a.id > b.id) ? 1 : -1)
 				break;
 			}
@@ -150,7 +165,7 @@ export class PatientDoctorListingComponent implements OnInit {
 	onFilterChanges() {
 		this.filterForm.valueChanges.subscribe(filters => {
 			this.doctorsFiltered = this.filterDoctors(filters);
-		})
+		});
 	}
 
 	filterDoctors(filters) {
@@ -166,6 +181,7 @@ export class PatientDoctorListingComponent implements OnInit {
   onSearch() {
 
 		//TESTING
+		this.notSearched = !this.notSearched;
 		return;
 		//TESTING
 
@@ -190,10 +206,13 @@ export class PatientDoctorListingComponent implements OnInit {
 
 	showDoctorInfo(doctor) {
 		let action = "Opened";
-		let doctorID = doctor.id;
-		let doctorName = doctor.name + " " + doctor.surname;
-		this.modalData = { doctorID, doctorName, action };
+		let doctorID = doctor.id; //rating
+		let doctorName = doctor.name;
+		let doctorSurname = doctor.surname
+		this.modalData = { doctorID, doctorName, doctorSurname, action };
 		this.modal.open(this.modalContent, { size: 'xl' });
+
+		//show availible appointments
 	}
 
   close() {
