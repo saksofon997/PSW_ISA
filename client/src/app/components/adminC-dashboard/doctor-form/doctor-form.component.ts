@@ -11,7 +11,8 @@ import { ClinicService } from 'src/app/services/clinic.service';
 })
 export class DoctorFormComponent implements OnInit {
 
-  loginForm: FormGroup;
+  doctorForm: FormGroup;
+  typesOfExamination: any;
 
   submitted = false;
 
@@ -22,6 +23,8 @@ export class DoctorFormComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit() {
+    this.loadTypesOfExamination();
+
     var doctor = history.state.data;
 
     var email = "";
@@ -34,9 +37,9 @@ export class DoctorFormComponent implements OnInit {
     var shiftStart = "";
     var shiftEnd = "";
     var upin = "";
+    var specialization = 0;
 
-
-    this.loginForm = this.formBuilder.group({
+    this.doctorForm = this.formBuilder.group({
       email: [email, [Validators.required, Validators.email]],
       name: [name, [Validators.required]],
       surname: [surname, [Validators.required]],
@@ -47,28 +50,40 @@ export class DoctorFormComponent implements OnInit {
       shiftStart: [shiftStart, [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
       shiftEnd: [shiftEnd, [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
       upin: [upin, [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
+      specialization: [specialization]
     });
   }
+
+  loadTypesOfExamination() {
+			let clinic_id = this.userService.getUser().clinic_id;
+			this.clinicService.getTypesOfExamination(clinic_id).subscribe(
+				(data) => { this.typesOfExamination = data; },
+				(error) => { alert(error); }
+			);
+	}
 
   onSubmit() {
     this.submitted = true;
 
-    if (this.loginForm.invalid) {
+    if (this.doctorForm.invalid) {
       return;
     }
 
     var doctor = {
-      email: this.loginForm.controls.email.value,
-      name: this.loginForm.controls.name.value,
-      surname: this.loginForm.controls.surname.value,
-      address: this.loginForm.controls.address.value,
-      city: this.loginForm.controls.city.value,
-      state: this.loginForm.controls.state.value,
-      phoneNumber: this.loginForm.controls.phoneNumber.value,
-      shiftStart: this.loginForm.controls.shiftStart.value,
-      shiftEnd: this.loginForm.controls.shiftEnd.value,
-      upin: this.loginForm.controls.upin.value,
-      clinic_id: this.userService.getUser().clinic_id
+      email: this.doctorForm.controls.email.value,
+      name: this.doctorForm.controls.name.value,
+      surname: this.doctorForm.controls.surname.value,
+      address: this.doctorForm.controls.address.value,
+      city: this.doctorForm.controls.city.value,
+      state: this.doctorForm.controls.state.value,
+      phoneNumber: this.doctorForm.controls.phoneNumber.value,
+      shiftStart: this.doctorForm.controls.shiftStart.value,
+      shiftEnd: this.doctorForm.controls.shiftEnd.value,
+      upin: this.doctorForm.controls.upin.value,
+      clinic_id: this.userService.getUser().clinic_id,
+      specialization: {
+        id: this.doctorForm.controls.specialization.value
+      }
     }
 
 

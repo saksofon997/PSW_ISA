@@ -84,9 +84,19 @@ INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
 	VALUES (nextval('users_id_seq'), 'Vuka Karadžića 37', 'Valjevo', 'adminc5@kcv.rs', 'Jovanka', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Zečević', '1508993100010', '3', true, false);
 
+INSERT INTO public.type_of_examination(
+	id, name, price, clinic_id_id)
+	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '2000', 1);
+INSERT INTO public.type_of_examination(
+	id, name, price, clinic_id_id)
+	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3000', 1);
+INSERT INTO public.type_of_examination(
+	id, name, price, clinic_id_id)
+	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '500', 1);
+
 INSERT INTO public.doctor(
-	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
-	VALUES (nextval('users_id_seq'), 'Veljka Petrovića 9', 'Loznica', 'doc1@kcv.rs', 'Rodoljub', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Obilić', '1005990100010', '1', true, true, '12:00', '20:00', 2, 0);
+	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, specialization, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
+	VALUES (nextval('users_id_seq'), 'Veljka Petrovića 9', 'Loznica', 'doc1@kcv.rs', 'Rodoljub', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Obilić', '1005990100010', '1', '1', true, true, '12:00', '20:00', 2, 0);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
 	VALUES (nextval('users_id_seq'), 'Njegoševa 16', 'Šabac', 'doc2@kcv.rs', 'Dragica', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Veričić', '1007990100010', '1', true, true, '7:00', '15:00', 0, 0);
@@ -110,16 +120,6 @@ INSERT INTO public.diagnosis_dictionary(
 INSERT INTO public.diagnosis_dictionary(
 	id, code, description)
 	VALUES (nextval('diagnosis_dictionary_id_seq'), 'A31.1', 'Infekcija kože uzrokovana mikobakterijama');
-
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '2000', 1);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3000', 1);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '500', 1);
 
 INSERT INTO public.medical_record(
 	id, alergies, blood_type, diopter, height, sex, weight)

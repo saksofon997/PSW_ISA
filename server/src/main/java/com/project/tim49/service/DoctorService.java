@@ -4,16 +4,14 @@ import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.ClinicAdministratorDTO;
 import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.model.*;
-import com.project.tim49.repository.ClinicRepository;
-import com.project.tim49.repository.DoctorRepository;
-import com.project.tim49.repository.LoginRepository;
-import com.project.tim49.repository.PatientRepository;
+import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
 import javax.validation.ValidationException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -27,6 +25,8 @@ public class DoctorService {
     private PatientRepository patientRepository;
     @Autowired
     private ClinicRepository clinicRepository;
+    @Autowired
+    private TypeOfExaminationRepository typeOfExaminationRepository;
     @Autowired
     private LoginRepository userRepository;
     @Autowired
@@ -63,6 +63,14 @@ public class DoctorService {
             throw new ValidationException("No clinic with that ID!");
         }
 
+        Optional<TypeOfExamination> specialization = Optional.empty();
+        if (doctorDTO.getSpecialization() != null){
+            specialization = typeOfExaminationRepository.findById(doctorDTO.getSpecialization().getId());
+            if (!specialization.isPresent()){
+                throw new ValidationException("No type of examination with that ID!");
+            }
+        }
+
         User user = userRepository.findOneByEmail(doctorDTO.getEmail());
         if (user != null){
             throw new ValidationException("User with this email already exists!");
@@ -70,6 +78,7 @@ public class DoctorService {
 
         Doctor doctor = docDTOtoReal(doctorDTO);
         doctor.setClinic(clinic.get());
+        specialization.ifPresent(doctor::setSpecialization);
         doctor.setAuthorities( authorityService.findByname("DOCTOR") );
         doctor.setPassword(passwordEncoder.encode("123456"));
         doctor.setPasswordChanged(false);
