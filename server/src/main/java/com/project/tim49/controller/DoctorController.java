@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sun.plugin.dom.exception.InvalidStateException;
 
 import javax.validation.ValidationException;
 import java.util.ArrayList;
@@ -165,4 +166,20 @@ public class DoctorController {
         }
     }
 
+    @PutMapping(path = "/rateDoctor")
+    @PreAuthorize("hasAuthority('PATIENT')")
+    public ResponseEntity rateDoctor(
+            @RequestParam(value = "doctor_id", required = true) Long doctor_id,
+            @RequestParam(value = "patient_id", required = true) Long patient_id,
+            @RequestParam(value = "stars", required = true) int stars
+    ) {
+        try {
+            this.doctorService.rateDoctor(doctor_id, patient_id, stars);
+            return new ResponseEntity<>(doctor_id, HttpStatus.OK);
+        } catch (ValidationException | NoSuchElementException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (InvalidStateException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

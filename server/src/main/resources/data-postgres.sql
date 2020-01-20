@@ -96,7 +96,7 @@ INSERT INTO public.type_of_examination(
 
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, specialization, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
-	VALUES (nextval('users_id_seq'), 'Veljka Petrovića 9', 'Loznica', 'doc1@kcv.rs', 'Rodoljub', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Obilić', '1005990100010', '1', '1', true, true, '12:00', '20:00', 2, 0);
+	VALUES (nextval('users_id_seq'), 'Veljka Petrovića 9', 'Loznica', 'doc1@kcv.rs', 'Rodoljub', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Obilić', '1005990100010', '1', '1', true, true, '12:00', '20:00', 5, 1);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
 	VALUES (nextval('users_id_seq'), 'Njegoševa 16', 'Šabac', 'doc2@kcv.rs', 'Dragica', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Veričić', '1007990100010', '1', true, true, '7:00', '23:00', 0, 0);
@@ -218,12 +218,16 @@ INSERT INTO public.appointment_doctors(
     appointment_id, doctor_id)
     VALUES (8, 9);
 
-INSERT INTO public.clinics_patients(
-    clinic_id, patient_id)
-    VALUES (1, 11);
-INSERT INTO public.clinics_patients(
-    clinic_id, patient_id)
-    VALUES (1, 12);
+INSERT INTO public.clinic_patient(
+    clinic_id, patient_id, rated, stars)
+    VALUES (1, 11, false, 0);
+INSERT INTO public.clinic_patient(
+    clinic_id, patient_id, rated, stars)
+    VALUES (1, 12, false, 0);
+
+INSERT INTO public.doctor_patient(
+    doctor_id, patient_id, rated, stars)
+    VALUES (9, 11, false, 0);
 
 INSERT INTO public.nurse(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end)

@@ -89,10 +89,10 @@ public class PatientService {
         if (clinic == null ) {
             throw new ValidationException("Clinic for this doctor does not exist.");
         }
-        List<Patient> patients = clinic.getPatients();
+        Set<ClinicPatient> patients = clinic.getPatients();
         List<PatientDTO> patientDTOS = new ArrayList<>();
-        for (Patient patient: patients) {
-            patientDTOS.add(new PatientDTO(patient));
+        for (ClinicPatient clinicPatient: patients) {
+            patientDTOS.add(new PatientDTO(clinicPatient.getPatient()));
         }
         return patientDTOS;
     }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +42,9 @@ public class Doctor extends User {
 
     @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY)
     public List<Vacation> vacations = new ArrayList<Vacation>();
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    private Set<DoctorPatient> patients = new HashSet<>();
 
     @Column(name = "number_of_stars")
     private int numberOfStars;
@@ -109,5 +113,13 @@ public class Doctor extends User {
 
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
+    }
+
+    public Set<DoctorPatient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(Set<DoctorPatient> patients) {
+        this.patients = patients;
     }
 }

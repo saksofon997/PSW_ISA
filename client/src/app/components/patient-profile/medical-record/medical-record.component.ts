@@ -6,6 +6,9 @@ import { UserService } from 'src/app/services/user.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { DoctorService } from 'src/app/services/doctor.service';
 import { CookieService } from 'ngx-cookie-service';
+import { StarRatingComponent } from 'ng-starrating';
+import { ClinicService } from 'src/app/services/clinic.service';
+
 @Component({
 	selector: 'app-medical-record',
 	templateUrl: './medical-record.component.html',
@@ -52,11 +55,12 @@ export class MedicalRecordComponent implements OnInit {
 	clearOnSelection: false, // clears search criteria when an option is selected if set to true, default is false
 	}
 	constructor(private patientService: PatientService,
+              private clinicService: ClinicService,
+              private doctorService: DoctorService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		private userService: UserService,
 		private formBuilder: FormBuilder,
-		private doctorService: DoctorService,
 		private cookieService: CookieService) {
 		this.basicInfoForm = new FormGroup({
 			bloodType: new FormControl({ value: "", validator: Validators.required, disabled: true }),
@@ -154,7 +158,7 @@ export class MedicalRecordComponent implements OnInit {
 		reportToChange.diagnosis.forEach(element => {
 			this.optionsDiagnosis = this.optionsDiagnosis.filter(obj => obj.id !== element.id);
 		});
-		
+
 	}
 	cancelReportEdit(dateTime) {
 		this.editable = true;
@@ -219,7 +223,7 @@ export class MedicalRecordComponent implements OnInit {
 			this.changeReport = true;
 			this.ngOnInit();
 		}
-		
+
 	}
 	deleteDiagnosis(diagnosis, examination){
 		examination.diagnosis = examination.diagnosis.filter(obj => obj.id !== diagnosis.id);
@@ -228,4 +232,30 @@ export class MedicalRecordComponent implements OnInit {
 			this.optionsDiagnosis = this.optionsDiagnosis.filter(obj => obj.id !== element.id);
 		});
 	}
+  onRateClinic($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}, clinic_id) {
+    let user = this.userService.getUser();
+    let user_id = user["id"];
+    this.clinicService.rateClinic(clinic_id, user_id, $event.newValue).subscribe(
+      (data) => {
+        alert("Clinic successfully rated!");
+      },
+      (error) => {
+        alert(error);
+        this.getMedicalRecord();
+      }
+    )
+  }
+  onRateDoctor($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}, doctor_id) {
+    let user = this.userService.getUser();
+    let user_id = user["id"];
+    this.doctorService.rateDoctor(doctor_id, user_id, $event.newValue).subscribe(
+      (data) => {
+        alert("Doctor successfully rated!");
+      },
+      (error) => {
+        alert(error);
+        this.getMedicalRecord();
+      }
+    )
+  }
 }

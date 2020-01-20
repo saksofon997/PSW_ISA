@@ -483,4 +483,21 @@ export class ClinicService {
 			})
 		);
 	}
+
+	rateClinic(clinic_id, patient_id, stars){
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var rateParamsString = "";
+		rateParamsString += `clinic_id=${clinic_id}&patient_id=${patient_id}&stars=${stars}`
+		return this.http.put(`http://localhost:8080/api/admin/rateClinic?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
 }

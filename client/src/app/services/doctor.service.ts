@@ -13,7 +13,7 @@ export class DoctorService {
 constructor(private cookieService: CookieService,
             private userService: UserService,
             private http: HttpClient) { }
-            
+
 getAppointments(){
     let user = JSON.parse(this.cookieService.get('user'));
     let id = user["id"];
@@ -144,4 +144,20 @@ submitBasicInfo(basicInfo,patientID){
       })
     );
 }
+  rateDoctor(doctor_id, patient_id, stars){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    var rateParamsString = "";
+    rateParamsString += `doctor_id=${doctor_id}&patient_id=${patient_id}&stars=${stars}`
+    return this.http.put(`http://localhost:8080/api/doctor/rateDoctor?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+  }
 }

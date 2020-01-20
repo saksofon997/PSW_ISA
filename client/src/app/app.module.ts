@@ -36,6 +36,7 @@ import { MatTableModule } from '@angular/material/table';
 import { APP_INITIALIZER } from '@angular/core';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { RatingModule } from 'ng-starrating';
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
@@ -151,7 +152,8 @@ import { VacationRequestsComponent } from './components/adminC-dashboard/vacatio
     MatExpansionModule,
     FormsModule,
     SelectDropDownModule,
-    MatButtonModule
+    MatButtonModule,
+    RatingModule
   ],
   exports: [
     MedicalRecordComponent
