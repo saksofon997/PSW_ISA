@@ -28,6 +28,7 @@ export class ExaminationComponent implements OnInit {
   diagnoses: any;
   reportDescription: any;
   submitted: boolean;
+  appointment: any;
   modalData: {
 		patientID: any;
 		patientName: any;
@@ -78,6 +79,7 @@ export class ExaminationComponent implements OnInit {
       this.doctor = params['doctor'];
       this.type = params['type'];
       this.typeID = params['typeID'];
+      this.appointment = params['appointment'];
       this.datetime = Number.parseFloat(params['datetime']);
       this.loadPatientInfo(patientID)
       this.loadPrescriptions();
@@ -154,7 +156,7 @@ export class ExaminationComponent implements OnInit {
       }
     }
     let patientID = this.patient.id;
-    this.doctorService.submitReport(report,patientID).subscribe(
+    this.doctorService.submitReport(report,patientID,this.appointment).subscribe(
       (data) => {
         this.router.navigate([`../patients`], {relativeTo: this.activatedRoute });
       },

@@ -21,15 +21,15 @@ public class ExaminationReportController {
     @Autowired
     ExaminationReportService reportService;
 
-    @PostMapping(path="/submitReport/{id}" ,
+    @PostMapping(path="/submitReport/{id}/{appoID}" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('DOCTOR')")
-    public ResponseEntity submitExaminationReport(@PathVariable Long id, @RequestBody ExaminationReportDTO examinationReportDTO) {
+    public ResponseEntity submitExaminationReport(@PathVariable Long id,@PathVariable Long appoID, @RequestBody ExaminationReportDTO examinationReportDTO) {
         if (examinationReportDTO == null){
             return new ResponseEntity<>("Invalid report", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         try {
-            reportService.submitReport(examinationReportDTO, id);
+            reportService.submitReport(examinationReportDTO, id, appoID);
             return new ResponseEntity<>(examinationReportDTO, HttpStatus.CREATED);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);

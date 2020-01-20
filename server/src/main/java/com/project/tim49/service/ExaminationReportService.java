@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ExaminationReportService {
@@ -28,8 +29,10 @@ public class ExaminationReportService {
     MedicationRepository medicationsRepository;
     @Autowired
     PrescriptionRepository prescriptionRepository;
+    @Autowired
+    AppointmentRepository appointmentRepository;
 
-    public void submitReport(ExaminationReportDTO examinationReportDTO,Long patientID){
+    public void submitReport(ExaminationReportDTO examinationReportDTO,Long patientID,Long appoID){
         if (examinationReportDTO.getPerforms() == null){
             throw new ValidationException("Invalid doctor!");
         }
@@ -49,6 +52,19 @@ public class ExaminationReportService {
         ExaminationReport saved = reportRepository.save(report);
         Patient p = patient.get();
         p.getMedicalRecord().getExaminationReport().add(saved);
+
+        Appointment toRemove = new Appointment();
+        for(Appointment a:  p.getPendingAppointments()){
+            if(a.getId().equals(appoID)){
+                toRemove = a;
+            }
+        }
+        toRemove = appointmentRepository.getOne(toRemove.getId());
+        toRemove.setCompleted(true);
+        Appointment savedAppo = appointmentRepository.save(toRemove);
+        p.getFinishedAppointments().add(toRemove);
+        p.getPendingAppointments().remove(toRemove);
+
         patientRepository.save(p);
     }
     public void submitBasicInfo(MedicalRecordDTO medicalRecordDTO,Long patientID){
@@ -75,7 +91,6 @@ public class ExaminationReportService {
         }
         Patient p = patient.get();
         MedicalRecord medicalRecord = p.getMedicalRecord();
-        System.out.println(medicalRecord.getAlergies());
         List<ExaminationReport> er = medicalRecord.getExaminationReport();
         for (ExaminationReport e: er) {
             if(e.getDateAndTime() == examinationReportDTO.getDateAndTime()){
