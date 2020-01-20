@@ -18,6 +18,7 @@ public class DoctorDTO extends UserDTO{
     private String shiftStart;
     private String shiftEnd;
     private Long clinic_id;
+    private TypeOfExaminationDTO specialization;
     private int numberOfStars;
     private int numberOfReviews;
 
@@ -37,6 +38,9 @@ public class DoctorDTO extends UserDTO{
         this.shiftStart = doctor.getShiftStart();
         this.shiftEnd = doctor.getShiftEnd();
         this.clinic_id = doctor.getClinic().getId();
+        if (doctor.getSpecialization() != null){
+            this.specialization = new TypeOfExaminationDTO(doctor.getSpecialization());
+        }
         this.numberOfStars = doctor.getNumberOfStars();
         this.numberOfReviews = doctor.getNumberOfReviews();
         for (GrantedAuthority auth: doctor.getAuthorities()) {
@@ -138,6 +142,14 @@ public class DoctorDTO extends UserDTO{
 
     public void setClinic_id(Long clinic_id) {
         this.clinic_id = clinic_id;
+    }
+
+    public TypeOfExaminationDTO getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(TypeOfExaminationDTO specialization) {
+        this.specialization = specialization;
     }
 
     public int getNumberOfStars() {

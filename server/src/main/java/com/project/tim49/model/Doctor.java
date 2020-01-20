@@ -23,6 +23,10 @@ public class Doctor extends User {
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public Clinic clinic;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "specialization", referencedColumnName = "id")
+    public TypeOfExamination specialization;
+
 //    @OnDelete(action = OnDeleteAction.CASCADE)
 //    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
 //    public List<Appointment> appointments = new ArrayList<Appointment>();
@@ -37,14 +41,6 @@ public class Doctor extends User {
 
     @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY)
     public List<Vacation> vacations = new ArrayList<Vacation>();
-
-    public List<Vacation> getVacations() {
-        return vacations;
-    }
-
-    public void setVacations(List<Vacation> vacations) {
-        this.vacations = vacations;
-    }
 
     @Column(name = "number_of_stars")
     private int numberOfStars;
@@ -76,6 +72,14 @@ public class Doctor extends User {
         this.clinic = clinic;
     }
 
+    public TypeOfExamination getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(TypeOfExamination specialization) {
+        this.specialization = specialization;
+    }
+
     public Set<Appointment> getAppointments() {
         return appointments;
     }
@@ -98,5 +102,13 @@ public class Doctor extends User {
 
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
+    }
+
+    public List<Vacation> getVacations() {
+        return vacations;
+    }
+
+    public void setVacations(List<Vacation> vacations) {
+        this.vacations = vacations;
     }
 }
