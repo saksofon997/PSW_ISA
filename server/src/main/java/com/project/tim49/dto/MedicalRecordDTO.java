@@ -16,6 +16,19 @@ public class MedicalRecordDTO {
     private String weight;
     private String sex;
 
+    public MedicalRecordDTO() {
+    }
+
+    public MedicalRecordDTO(List<ExaminationReportDTO> examinationReport, String bloodType, String diopter, String alergies, String height, String weight, String sex) {
+        this.examinationReport = examinationReport;
+        this.bloodType = bloodType;
+        this.diopter = diopter;
+        this.alergies = alergies;
+        this.height = height;
+        this.weight = weight;
+        this.sex = sex;
+    }
+
     public MedicalRecordDTO(MedicalRecord mr) {
         this.examinationReport = new ArrayList<ExaminationReportDTO>();
         this.bloodType = mr.getBloodType();

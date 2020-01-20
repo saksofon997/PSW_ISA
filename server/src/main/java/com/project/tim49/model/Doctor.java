@@ -48,6 +48,13 @@ public class Doctor extends User {
     @Column(name = "number_of_reviews")
     private int numberOfReviews;
 
+    public List<Vacation> getVacations() {
+        return vacations;
+    }
+
+    public void setVacations(List<Vacation> vacations) {
+        this.vacations = vacations;
+    }
     public String getShiftStart() {
         return shiftStart;
     }
@@ -102,13 +109,5 @@ public class Doctor extends User {
 
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
-    }
-
-    public List<Vacation> getVacations() {
-        return vacations;
-    }
-
-    public void setVacations(List<Vacation> vacations) {
-        this.vacations = vacations;
     }
 }

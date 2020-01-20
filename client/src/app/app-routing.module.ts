@@ -49,6 +49,7 @@ import { NewAppointmentPageComponent } from './components/doctor-home/new-appoin
 import { NewAvailableAppointmentPageComponent } from './components/adminC-dashboard/new-available-appointment-page/new-available-appointment-page.component';
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
+import { ExaminationComponent } from './components/doctor-home/examination/examination.component';
 import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 
@@ -123,6 +124,7 @@ const routes: Routes = [
 			{path: 'calendar', component: DoctorCalendarComponent},
 			{path: 'patients', component: PatientListingComponent},
 			{path: 'new_appointment/:patient_id', component: NewAppointmentPageComponent},
+			{path: 'examination', component: ExaminationComponent},
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['DOCTOR']}
