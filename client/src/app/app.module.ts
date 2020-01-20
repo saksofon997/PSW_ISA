@@ -67,6 +67,10 @@ import { NewAvailableAppointmentPageComponent } from './components/adminC-dashbo
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ExaminationComponent } from './components/doctor-home/examination/examination.component';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import {MatButtonModule} from '@angular/material/button';
+import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 
 @NgModule({
@@ -126,6 +130,8 @@ import { VacationRequestsComponent } from './components/adminC-dashboard/vacatio
     NewAvailableAppointmentPageComponent,
     NewVacationRequestComponent,
     MedicalRecordComponent,
+    ExaminationComponent,
+    OrdinationSelectionComponent,
     VacationRequestsComponent
   ],
   imports: [
@@ -144,6 +150,9 @@ import { VacationRequestsComponent } from './components/adminC-dashboard/vacatio
     OwlNativeDateTimeModule,
     AngularFontAwesomeModule,
     MatExpansionModule,
+    FormsModule,
+    SelectDropDownModule,
+    MatButtonModule,
     RatingModule
   ],
   exports: [

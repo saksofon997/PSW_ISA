@@ -12,6 +12,7 @@ import sun.plugin.dom.exception.InvalidStateException;
 
 import javax.print.Doc;
 import javax.validation.ValidationException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -27,6 +28,8 @@ public class DoctorService {
     private ClinicRepository clinicRepository;
     @Autowired
     private DoctorPatientRepository doctorPatientRepository;
+    @Autowired
+    private TypeOfExaminationRepository typeOfExaminationRepository;
     @Autowired
     private LoginRepository userRepository;
     @Autowired
@@ -63,6 +66,14 @@ public class DoctorService {
             throw new ValidationException("No clinic with that ID!");
         }
 
+        Optional<TypeOfExamination> specialization = Optional.empty();
+        if (doctorDTO.getSpecialization() != null){
+            specialization = typeOfExaminationRepository.findById(doctorDTO.getSpecialization().getId());
+            if (!specialization.isPresent()){
+                throw new ValidationException("No type of examination with that ID!");
+            }
+        }
+
         User user = userRepository.findOneByEmail(doctorDTO.getEmail());
         if (user != null){
             throw new ValidationException("User with this email already exists!");
@@ -70,6 +81,7 @@ public class DoctorService {
 
         Doctor doctor = docDTOtoReal(doctorDTO);
         doctor.setClinic(clinic.get());
+        specialization.ifPresent(doctor::setSpecialization);
         doctor.setAuthorities( authorityService.findByname("DOCTOR") );
         doctor.setPassword(passwordEncoder.encode("123456"));
         doctor.setPasswordChanged(false);

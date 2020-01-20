@@ -13,7 +13,7 @@ export class DoctorService {
 constructor(private cookieService: CookieService,
             private userService: UserService,
             private http: HttpClient) { }
-            
+
 getAppointments(){
     let user = JSON.parse(this.cookieService.get('user'));
     let id = user["id"];
@@ -99,20 +99,65 @@ changeDoctor(doctor){
       })
     );
 }
-rateDoctor(doctor_id, patient_id, stars){
+submitReport(report,patientID, appointmentID){
   let headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${this.userService.getToken()}`
   });
-  var rateParamsString = "";
-  rateParamsString += `doctor_id=${doctor_id}&patient_id=${patient_id}&stars=${stars}`
-  return this.http.put(`http://localhost:8080/api/doctor/rateDoctor?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
-    map(response => {
-      return response.body;
-    }),
-    catchError((response) => {
-      return throwError(response.error);
-    })
-  );
+  return this.http.post(`http://localhost:8080/api/examination/submitReport/${patientID}/${appointmentID}`, JSON.stringify(report), { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
 }
+submitChangedReport(report,patientID){
+  let headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.userService.getToken()}`
+  });
+  return this.http.post(`http://localhost:8080/api/examination/submitChangedReport/${patientID}/`, JSON.stringify(report), { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+}
+submitBasicInfo(basicInfo,patientID){
+  let headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.userService.getToken()}`
+  });
+  return this.http.post(`http://localhost:8080/api/examination/submitBasicInfo/${patientID}/`, JSON.stringify(basicInfo), { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+}
+  rateDoctor(doctor_id, patient_id, stars){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.userService.getToken()}`
+    });
+    var rateParamsString = "";
+    rateParamsString += `doctor_id=${doctor_id}&patient_id=${patient_id}&stars=${stars}`
+    return this.http.put(`http://localhost:8080/api/doctor/rateDoctor?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+  }
 }

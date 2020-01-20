@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { UserService } from 'src/app/services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
@@ -27,7 +27,8 @@ export class NewAppointmentPageComponent implements OnInit {
 		private clinicService: ClinicService,
 		private patientService: PatientService,
 		private activatedRoute: ActivatedRoute,
-		private appointmentService: AppointmentService) { }
+		private appointmentService: AppointmentService,
+		private router: Router) { }
 
 	ngOnInit() {
 		this.activatedRoute.queryParams.subscribe(params => {
@@ -134,6 +135,7 @@ export class NewAppointmentPageComponent implements OnInit {
 		let clinic_id = doctor.clinic_id;
 
 		let appointment = {
+			id: null,
 			startingDateAndTime: this.form.controls.dateAndTime.value.getTime() / 1000,
 			duration: this.form.controls.duration.value * 60 * 1000,
 			typeOfExamination: { id: this.form.controls.typeOfExamination.value },
@@ -146,7 +148,14 @@ export class NewAppointmentPageComponent implements OnInit {
 
 		if (this.startAppointmentNow) {
 			this.appointmentService.startAppointment(appointment).subscribe(
-				(data) => { alert("Appointment started") /* rutirati na stranicu za evidecniju o pregledu */ },
+				(data: any) => { 
+					alert("Appointment created")
+					let appo = data;
+					let type = this.typesOfExamination.find(element => element.id == this.form.controls.typeOfExamination.value);
+					let doctor = this.userService.getUser().name +" "+ this.userService.getUser().surname
+					this.router.navigate([`../../examination`], { queryParams: { patient: this.patient.id,doctor: doctor, type: type.name, typeID : type.id, datetime: appointment.startingDateAndTime, appointment: appo.id }, relativeTo: this.activatedRoute });
+					 /* rutirati na stranicu za evidecniju o pregledu */ 
+					},
 				(error) => { alert(error); }
 			);
 		} else {

@@ -64,9 +64,9 @@ public class AppointmentController {
             if (!ordinationAvailable){
                 return new ResponseEntity<>("Ordination is not available", HttpStatus.BAD_REQUEST);
             }
-            appointmentService.startAppointment(appointmentDTO);
+            AppointmentDTO returnValue = appointmentService.startAppointment(appointmentDTO);
 
-            return new ResponseEntity<>(appointmentDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         } catch (NumberFormatException e){

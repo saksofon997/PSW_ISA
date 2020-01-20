@@ -12,11 +12,13 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class OrdinationListingComponent implements OnInit {
 	ordinationsHeaders = ['Name', 'Number'];
 	ordinations: any;
+	filteredOrdinations: any;
 	navigationSubscription: any;
 	clinicID: any;
 	clinicName: any;
 
 	searchForm: FormGroup;
+	filterForm: FormGroup;
 	submitted = false;
 
 	constructor(private clinicService: ClinicService,
@@ -41,8 +43,14 @@ export class OrdinationListingComponent implements OnInit {
 
 		this.searchForm = this.formBuilder.group({
 			name: [""],
+			number: [""],
+			date: [""]
+		});
+		this.filterForm = this.formBuilder.group({
+			name: [""],
 			number: [""]
 		});
+		this.onFilterChanges();
 	}
 	
 	getOrdinations() {
@@ -50,6 +58,7 @@ export class OrdinationListingComponent implements OnInit {
 		this.clinicService.getOrdinations(this.clinicID).subscribe(
 			(data) => {
 			  this.ordinations = data;
+			  this.filteredOrdinations = data;
 			},
 			(error) => {
 			  alert(error);
@@ -88,11 +97,25 @@ export class OrdinationListingComponent implements OnInit {
 		this.clinicService.searchOrdinations(ordination).subscribe(
 			(data) => {
 			  this.ordinations = data;
+			  this.filteredOrdinations = data;
 			},
 			(error) => {
 			  alert(error);
 			}
 		  )
+	}
+
+	onFilterChanges() {
+		this.filterForm.valueChanges.subscribe(filters => {
+			this.filteredOrdinations = this.filterOrdinations(filters);
+		})
+	}
+
+	filterOrdinations(filters) {
+		return this.ordinations.filter(ordination =>
+			ordination.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
+			ordination.number.toString().indexOf(filters.number.toLowerCase()) !== -1
+		);
 	}
 
 	ngOnDestroy() {

@@ -40,7 +40,7 @@ public class AppointmentService {
         return appointmentDTOs;
     }
 
-    public void startAppointment(AppointmentDTO appointmentDTO) {
+    public AppointmentDTO startAppointment(AppointmentDTO appointmentDTO) {
         Appointment appointment = setAppointmentData(appointmentDTO);
 
         Patient patient = patientRepository.findById(appointmentDTO.getPatient().getId()).get();
@@ -50,6 +50,7 @@ public class AppointmentService {
 
         patient.getPendingAppointments().add(saved);
         patientRepository.save(patient);
+        return new AppointmentDTO(saved);
     }
 
     public void createAvailableAppointment(AppointmentDTO appointmentDTO) {
