@@ -470,9 +470,9 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		var searchParamsString = "";
-		searchParamsString += `clinic_id=${clinic_id}&patient_id=${patient_id}&stars=${stars}`
-		return this.http.put(`http://localhost:8080/api/admin/rateClinic?${searchParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
+		var rateParamsString = "";
+		rateParamsString += `clinic_id=${clinic_id}&patient_id=${patient_id}&stars=${stars}`
+		return this.http.put(`http://localhost:8080/api/admin/rateClinic?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),

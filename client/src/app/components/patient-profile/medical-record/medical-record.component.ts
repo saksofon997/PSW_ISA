@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { StarRatingComponent } from 'ng-starrating';
 import { ClinicService } from 'src/app/services/clinic.service';
+import { DoctorService } from 'src/app/services/doctor.service';
 
 @Component({
   selector: 'app-medical-record',
@@ -16,6 +17,7 @@ export class MedicalRecordComponent implements OnInit {
   medicalRecord: any;
   constructor(private patientService: PatientService,
 		private clinicService: ClinicService,
+		private doctorService: DoctorService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		private userService: UserService,) { }
@@ -46,12 +48,25 @@ export class MedicalRecordComponent implements OnInit {
 		return time;
 	}
 	
-	onRateClinic($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}, clinic) {
+	onRateClinic($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}, clinic_id) {
 		let user = this.userService.getUser();
     	let user_id = user["id"];
-		this.clinicService.rateClinic(clinic.id, user_id, $event.newValue).subscribe(
+		this.clinicService.rateClinic(clinic_id, user_id, $event.newValue).subscribe(
 			(data) => {
 				alert("Clinic successfully rated!");
+			},
+			(error) => { 
+				alert(error);
+				this.getMedicalRecord();
+			}
+		)
+	  }
+	onRateDoctor($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}, doctor_id) {
+		let user = this.userService.getUser();
+    	let user_id = user["id"];
+		this.doctorService.rateDoctor(doctor_id, user_id, $event.newValue).subscribe(
+			(data) => {
+				alert("Doctor successfully rated!");
 			},
 			(error) => { 
 				alert(error);

@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@IdClass(ClinicPatient.ClinicPatientId.class)
-public class ClinicPatient implements Serializable {
+@IdClass(DoctorPatient.DoctorPatientId.class)
+public class DoctorPatient implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn
-    public Clinic clinic;
+    public Doctor doctor;
 
     @Id
     @ManyToOne
@@ -23,17 +23,17 @@ public class ClinicPatient implements Serializable {
     @Column(name = "stars")
     private int stars;
 
-    public ClinicPatient(){
+    public DoctorPatient(){
         this.rated = false;
         this.stars = 0;
     }
 
-    public Clinic getClinic() {
-        return clinic;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setClinic(Clinic clinic) {
-        this.clinic = clinic;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Patient getPatient() {
@@ -60,16 +60,16 @@ public class ClinicPatient implements Serializable {
         this.stars = stars;
     }
 
-    public static class ClinicPatientId implements Serializable {
+    public static class DoctorPatientId implements Serializable {
 
-        private Clinic clinic;
+        private Doctor doctor;
         private Patient patient;
 
-        public ClinicPatientId() {
+        public DoctorPatientId() {
         }
 
-        public ClinicPatientId(Clinic clinic, Patient patient) {
-            this.clinic = clinic;
+        public DoctorPatientId(Doctor doctor, Patient patient) {
+            this.doctor = doctor;
             this.patient = patient;
         }
 
@@ -79,17 +79,17 @@ public class ClinicPatient implements Serializable {
             if (o == this) {
                 return true;
             }
-            if (!(o instanceof ClinicPatient)) {
+            if (!(o instanceof DoctorPatient)) {
                 return false;
             }
-            ClinicPatient cliPat = (ClinicPatient) o;
-            return Objects.equals(clinic, cliPat.getClinic()) &&
-                    Objects.equals(patient, cliPat.getPatient());
+            DoctorPatient docPat = (DoctorPatient) o;
+            return Objects.equals(doctor, docPat.getDoctor()) &&
+                    Objects.equals(patient, docPat.getPatient());
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(clinic, patient);
+            return Objects.hash(doctor, patient);
         }
     }
 }

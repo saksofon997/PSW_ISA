@@ -1,8 +1,6 @@
 package com.project.tim49.repository;
 
-import com.project.tim49.model.Clinic;
 import com.project.tim49.model.ClinicPatient;
-import com.project.tim49.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

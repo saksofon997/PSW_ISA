@@ -29,6 +29,9 @@ public class Patient extends User {
    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
    private Set<ClinicPatient> clinics = new HashSet<>();
 
+   @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+   private Set<DoctorPatient> doctors = new HashSet<>();
+
    public MedicalRecord getMedicalRecord() {
       return medicalRecord;
    }
@@ -59,5 +62,13 @@ public class Patient extends User {
 
    public void setClinics(Set<ClinicPatient> clinics) {
       this.clinics = clinics;
+   }
+
+   public Set<DoctorPatient> getDoctors() {
+      return doctors;
+   }
+
+   public void setDoctors(Set<DoctorPatient> doctors) {
+      this.doctors = doctors;
    }
 }

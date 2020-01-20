@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sun.plugin.dom.exception.InvalidStateException;
 import sun.rmi.server.UnicastRef2;
 import sun.text.normalizer.UTF16;
 
@@ -83,10 +84,7 @@ public class AdminKcController {
     public ResponseEntity deleteClinic(@PathVariable Long id) {
         try{
             clinicService.deleteClinic(id);
-        }catch (IllegalStateException e){
-            return new ResponseEntity<>(e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
-        }catch (ValidationException e){
+        }catch (IllegalStateException | ValidationException e){
             return new ResponseEntity<>(e.getMessage(),
                     HttpStatus.BAD_REQUEST);
         }
@@ -95,6 +93,7 @@ public class AdminKcController {
     }
 
     @PutMapping(path = "/rateClinic")
+    @PreAuthorize("hasAuthority('PATIENT')")
     public ResponseEntity rateClinic(
             @RequestParam(value = "clinic_id", required = true) Long clinic_id,
             @RequestParam(value = "patient_id", required = true) Long patient_id,
@@ -105,6 +104,8 @@ public class AdminKcController {
             return new ResponseEntity<>(clinic_id, HttpStatus.OK);
         } catch (ValidationException | NoSuchElementException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (InvalidStateException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

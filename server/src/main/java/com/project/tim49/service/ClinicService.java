@@ -8,6 +8,7 @@ import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.plugin.dom.exception.InvalidStateException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
@@ -158,14 +159,19 @@ public class ClinicService {
             throw new ValidationException("You can only rate clinic in which you already had finished appointments!");
         }
         ClinicPatient clinicPatient = clinicPatientRepository.getByClinicAndPatient(clinic_id, patient_id);
-        if (clinicPatient == null || clinicPatient.isRated()){
-            throw new ValidationException("You can only rate clinic once!");
+        if (clinicPatient == null){
+            throw new InvalidStateException("Database error");
+        }
+        if (clinicPatient.isRated()){
+            clinic.setNumberOfStars(clinic.getNumberOfStars() - clinicPatient.getStars() + stars);
+            clinicPatient.setStars(stars);
+        } else {
+            clinicPatient.setRated(true);
+            clinicPatient.setStars(stars);
+            clinic.setNumberOfStars(clinic.getNumberOfStars() + stars);
+            clinic.setNumberOfReviews(clinic.getNumberOfReviews() + 1);
         }
 
-        clinicPatient.setRated(true);
-        //clinicPatientRepository.save(clinicPatient);
-        clinic.setNumberOfStars(clinic.getNumberOfStars() + stars);
-        clinic.setNumberOfReviews(clinic.getNumberOfReviews() + 1);
         clinicRepository.save(clinic);
     }
 }
