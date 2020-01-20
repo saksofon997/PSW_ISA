@@ -126,6 +126,25 @@ export class ClinicService {
 			);
 	}
 
+	searchOrdinationsWithDate(ordination: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var searchParamsString = "";
+		searchParamsString += `name=${ordination.name}&number=${ordination.number}&date=${ordination.date}&clinic_id=${ordination.clinic_id}`
+		return this.http.get(`http://localhost:8080/api/ordinations/search_ordinations_with_date?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	searchPrescriptions(prescription: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',

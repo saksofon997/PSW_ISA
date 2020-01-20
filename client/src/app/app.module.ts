@@ -69,6 +69,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ExaminationComponent } from './components/doctor-home/examination/examination.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import {MatButtonModule} from '@angular/material/button';
+import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 
 @NgModule({
@@ -129,6 +130,7 @@ import { VacationRequestsComponent } from './components/adminC-dashboard/vacatio
     NewVacationRequestComponent,
     MedicalRecordComponent,
     ExaminationComponent,
+    OrdinationSelectionComponent,
     VacationRequestsComponent
   ],
   imports: [
