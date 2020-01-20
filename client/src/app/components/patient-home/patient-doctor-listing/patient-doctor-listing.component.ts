@@ -15,6 +15,7 @@ export class PatientDoctorListingComponent implements OnInit {
 
 	doctors: any;
 	doctorHeaders = ['Name', 'Surname', 'Rating'];
+	availibleApptHeaders = ['From', 'To'];
 	typesOfExamination: any;
 	doctorsFiltered: any;
 
@@ -35,6 +36,10 @@ export class PatientDoctorListingComponent implements OnInit {
 		doctorID: any;
 		doctorName: any;
 		doctorSurname: any;
+		doctorEmail: any;
+		doctorPhone: any;
+		doctorShiftStart: any;
+		doctorShiftEnd: any;
 		action: string;
 	};
 
@@ -54,7 +59,7 @@ export class PatientDoctorListingComponent implements OnInit {
 
 		this.activatedRoute.queryParams.subscribe(params => {
 			this.TOE_param = +params['TOE'];
-			this.date_param = +params['date'];
+			this.date_param = params['date'];
 		});
 
 		if(!this.clinic_id_param)
@@ -70,11 +75,13 @@ export class PatientDoctorListingComponent implements OnInit {
   	//LOADING METHODS
 
 	createFormGroups() {
-		let date;
-		date = new Date();
-		if(this.date_param)
-			date = this.date_param * 1000;
-
+		let date: Date;
+		if(!this.date_param) {
+			date = new Date();
+		} else {
+			date = this.date_param;
+		}
+		
 		this.form = this.formBuilder.group({
 			date: [date, [Validators.required,]],
 			name: [""],
@@ -209,7 +216,11 @@ export class PatientDoctorListingComponent implements OnInit {
 		let doctorID = doctor.id; //rating
 		let doctorName = doctor.name;
 		let doctorSurname = doctor.surname
-		this.modalData = { doctorID, doctorName, doctorSurname, action };
+		let doctorEmail = doctor.email;
+		let doctorPhone = doctor.phoneNumber;
+		let doctorShiftStart = doctor.shiftStart;
+		let doctorShiftEnd = doctor.shiftEnd;
+		this.modalData = { doctorID, doctorName, doctorSurname, doctorEmail, doctorPhone, doctorShiftStart, doctorShiftEnd, action };
 		this.modal.open(this.modalContent, { size: 'xl' });
 
 		//show availible appointments

@@ -124,6 +124,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show clinics doctors</a>
                     </div>
                 </div>
             </td>
@@ -179,24 +180,36 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="modal-body ">
-        <div class="row">
-            <label class="col-lg-3"> <b>Name:</b> </label>
-            <label class="col-lg-9"> {{modalData.clinicName}} </label>
+    <div class="modal-body">
+        <div class="row mx-auto">
+            <div class="col">
+                <div class="card" style="height: 32em;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"> {{modalData.clinicName}} </h5><hr style="width:75%">
+                        <p class="card-text"> {{modalData.clinicAddress}} </p><hr style="width:50%">
+                        <p class="card-text"> {{modalData.clinicCity}} </p><hr style="width:50%">
+                        <p class="card-text"> {{modalData.clinicState}} </p><hr style="width:50%">
+                        <p class="card-text text-muted">Rating:</p><hr style="width:50%">
+                        <p class="card-text"> {{modalData.clinicID}} </p><hr style="width:50%"><br>
+                        <p class="card-text" style="padding: 5px 25px 5px;"> {{modalData.clinicDescription}} </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card" style="height: 32em;">
+                    <div class="card-body text-center">
+                        <div style="height: 25em; width: 100%;">
+                            <angular-yandex-map [center]="modalData.location" [zoom]="16">
+                                <angular-yandex-placemark [geometry]="modalData.location"></angular-yandex-placemark>
+                            </angular-yandex-map>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center text-muted">
+                        <label class="card-text">Location on maps</label>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row">
-            <label class="col-lg-3"><b>Address: </b> </label>
-            <label class="col-lg-9"> {{modalData.clinicAddress}} </label>
-        </div>
-        <div class="row">
-            <label class="col-lg-3"><b>Rating: </b> </label>
-            <label class="col-lg-9"> {{modalData.clinicID}} </label>
-        </div>
-        <div style="height: 500px; width: 500px;">
-            <angular-yandex-map [center]="modalData.location">
-              <angular-yandex-placemark [geometry]="modalData.location"></angular-yandex-placemark>
-            </angular-yandex-map>
-          </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" (click)="close()">

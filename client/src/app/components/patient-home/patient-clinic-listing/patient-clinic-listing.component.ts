@@ -32,6 +32,9 @@ export class PatientClinicListingComponent implements OnInit {
 		clinicID: any;
 		clinicName: any;
 		clinicAddress: any;
+		clinicCity: any;
+		clinicState: any;
+		clinicDescription: any;
 		location: Number[];
 		action: string;
 	};
@@ -169,7 +172,7 @@ export class PatientClinicListingComponent implements OnInit {
 
 		//TESTING
 		this.notSearched = !this.notSearched;
-		this.dateVar = this.form.controls.date.value.getTime() / 1000;
+		this.dateVar = this.form.controls.date.value.getTime();
 		this.TOEVar = this.form.controls.typeOfExamination.value;
 		return;
 		//TESTING
@@ -204,6 +207,7 @@ export class PatientClinicListingComponent implements OnInit {
 		let clinicAddress = clinic.address;
 		let clinicCity = clinic.city;
 		let clinicState = clinic.state;
+		let clinicDescription = clinic.description;
 
 		this.loadClinicLocation(clinicAddress, clinicCity, clinicState).then(() => {
 			let chars: string;
@@ -213,7 +217,7 @@ export class PatientClinicListingComponent implements OnInit {
 			location = [0, 0];
 			location[0] = Number(res[1]);
 			location[1] = Number(res[0]);
-			this.modalData = { clinicID, clinicName, clinicAddress, location, action };
+			this.modalData = { clinicID, clinicName, clinicAddress, clinicCity, clinicState, clinicDescription, location, action };
 			this.modal.open(this.modalContent, { size: 'xl' });
 		}, () => alert("Error loading data"))
 	}
