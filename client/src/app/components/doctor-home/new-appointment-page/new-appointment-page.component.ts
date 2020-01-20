@@ -148,7 +148,6 @@ export class NewAppointmentPageComponent implements OnInit {
 		if (this.startAppointmentNow) {
 			this.appointmentService.startAppointment(appointment).subscribe(
 				(data) => { 
-					console.log("ODJE");
 					alert("Appointment created")
 					let type = this.typesOfExamination.find(element => element.id == this.form.controls.typeOfExamination.value);
 					let doctor = this.userService.getUser().name +" "+ this.userService.getUser().surname
