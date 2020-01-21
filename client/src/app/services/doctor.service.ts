@@ -21,7 +21,7 @@ getAppointments(){
       'Accept': 'application/json',
 			'Authorization': `Bearer ${JSON.parse(this.cookieService.get('token')).accessToken}`
     });
-    return this.http.get(`http://localhost:8080/api/doctor/appointments/${id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/doctor/appointments/${id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -38,7 +38,7 @@ getOneAppointment(appID){
       'Accept': 'application/json',
 			'Authorization': `Bearer ${JSON.parse(this.cookieService.get('token')).accessToken}`
     });
-    return this.http.get(`http://localhost:8080/api/doctor/oneAppointment/${id}/${appID}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/doctor/oneAppointment/${id}/${appID}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -57,7 +57,7 @@ getVacations(){
       'Accept': 'application/json',
 			'Authorization': `Bearer ${JSON.parse(this.cookieService.get('token')).accessToken}`
     });
-    return this.http.get(`http://localhost:8080/api/vacations/${id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/vacations/${id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -74,7 +74,7 @@ getDoctor() {
   let headers = new HttpHeaders({
     'Authorization': `Bearer ${this.userService.getToken()}`
   });
-  return this.http.get(`http://localhost:8080/api/doctor/getDoctor/${id}`, { headers: headers, observe: 'response' })
+  return this.http.get(`/api/doctor/getDoctor/${id}`, { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
         return response.body;
@@ -89,7 +89,7 @@ changeDoctor(doctor){
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${this.userService.getToken()}`
   });
-  return this.http.put(`http://localhost:8080/api/doctor/change`, JSON.stringify(doctor), { headers: headers, observe: 'response' })
+  return this.http.put(`/api/doctor/change`, JSON.stringify(doctor), { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
         return response.body;

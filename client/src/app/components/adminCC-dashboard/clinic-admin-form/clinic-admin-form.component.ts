@@ -19,7 +19,7 @@ export class ClinicAdminFormComponent implements OnInit {
               private activatedRoute: ActivatedRoute, 
               private formBuilder: FormBuilder,
               private cookieService: CookieService) { }
-
+  submitted: boolean;
   ngOnInit() {
     
     this.form = this.formBuilder.group({
@@ -38,7 +38,7 @@ export class ClinicAdminFormComponent implements OnInit {
 		});
   }
   public onSubmit(){
-
+    this.submitted = true;
     var adminC = {
       id: null,
 			email: this.form.controls.email.value,

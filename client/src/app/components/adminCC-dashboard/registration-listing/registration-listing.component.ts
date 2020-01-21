@@ -65,7 +65,7 @@ export class RegistrationListingComponent implements OnInit {
       })
       .catch(() => this.router.navigate(['../registrationRequests'], { relativeTo: this.activatedRoute }))
   }
-  showRequestInfo() {
+  showRequestInfo(info: any) {
     //to do 
   }
 }

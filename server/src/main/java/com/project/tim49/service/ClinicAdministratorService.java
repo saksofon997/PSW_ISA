@@ -8,6 +8,7 @@ import com.project.tim49.repository.ClinicAdministratorRepository;
 import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +34,7 @@ public class ClinicAdministratorService {
     private LoginRepository userRepository;
     @Autowired
     private AuthorityService authorityService;
+    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 

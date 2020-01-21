@@ -23,7 +23,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post(`http://localhost:8080/api/ordinations/${clinic_id}`, ordination, { headers: headers, observe: 'response' }).pipe(
+		return this.http.post(`/api/ordinations/${clinic_id}`, ordination, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -38,7 +38,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.put(`http://localhost:8080/api/ordinations/change`, ordination, { headers: headers, observe: 'response' }).pipe(
+		return this.http.put(`/api/ordinations/change`, ordination, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -52,7 +52,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/ordinations/delete/${id}`, { headers: headers, observe: 'response' }).pipe(
+		return this.http.delete(`/api/ordinations/delete/${id}`, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -68,7 +68,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.put(`http://localhost:8080/api/prescriptions/approve/${id}`, JSON.stringify(prescription), { headers: headers, observe: 'response' }).pipe(
+		return this.http.put(`/api/prescriptions/approve/${id}`, JSON.stringify(prescription), { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -82,7 +82,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/ordinations/${clinicID}`, { headers: headers, observe: 'response' })
+		return this.http.get(`/api/ordinations/${clinicID}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -97,7 +97,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/prescriptions/${clinicID}`, { headers: headers, observe: 'response' })
+		return this.http.get(`/api/prescriptions/${clinicID}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -114,7 +114,7 @@ export class ClinicService {
 		});
 		var searchParamsString = "";
 		searchParamsString += `name=${ordination.name}&number=${ordination.number}&clinic_id=${ordination.clinic_id}`
-		return this.http.get(`http://localhost:8080/api/ordinations/search_ordinations?${searchParamsString}`,
+		return this.http.get(`/api/ordinations/search_ordinations?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
@@ -133,7 +133,7 @@ export class ClinicService {
 		});
 		var searchParamsString = "";
 		searchParamsString += `name=${prescription.name}&surname=${prescription.surname}&medication=${prescription.medication}&clinic_id=${prescription.clinic_id}`
-		return this.http.get(`http://localhost:8080/api/prescriptions/search_prescriptions?${searchParamsString}`,
+		return this.http.get(`/api/prescriptions/search_prescriptions?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
@@ -150,7 +150,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('http://localhost:8080/api/admin/addClinic', JSON.stringify(clinic), { headers: headers, observe: 'response' })
+		return this.http.post('/api/admin/addClinic', JSON.stringify(clinic), { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -164,7 +164,7 @@ export class ClinicService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get('http://localhost:8080/api/admin/getClinics', { headers: headers, observe: 'response' })
+		return this.http.get('/api/admin/getClinics', { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -179,7 +179,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/admin/getClinic/${id}`, { headers: headers, observe: 'response' })
+		return this.http.get(`/api/admin/getClinic/${id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -195,7 +195,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.put(`http://localhost:8080/api/admin/editClinic`, changedClinic, { headers: headers, observe: 'response' })
+		return this.http.put(`/api/admin/editClinic`, changedClinic, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -210,7 +210,7 @@ export class ClinicService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/admin/getClinicAdmins/${id}`, { headers: headers, observe: 'response' })
+		return this.http.get(`/api/admin/getClinicAdmins/${id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -225,7 +225,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('http://localhost:8080/api/doctor', JSON.stringify(doctor), { headers: headers, observe: 'response' }).pipe(
+		return this.http.post('/api/doctor', JSON.stringify(doctor), { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -240,7 +240,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('http://localhost:8080/api/nurse', JSON.stringify(nurse), { headers: headers, observe: 'response' }).pipe(
+		return this.http.post('/api/nurse', JSON.stringify(nurse), { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -255,7 +255,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/nurse/delete/${id}`, { headers: headers, observe: 'response' }).pipe(
+		return this.http.delete(`/api/nurse/delete/${id}`, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -270,7 +270,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/doctor/delete/${id}`, { headers: headers, observe: 'response' }).pipe(
+		return this.http.delete(`/api/doctor/delete/${id}`, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -285,7 +285,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('http://localhost:8080/api/clinicAdmin/add', JSON.stringify(admin), { headers: headers, observe: 'response' }).pipe(
+		return this.http.post('/api/clinicAdmin/add', JSON.stringify(admin), { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -299,7 +299,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/admin/deleteClinic/${clinic.id}`, { headers: headers, observe: 'response' }).pipe(
+		return this.http.delete(`/api/admin/deleteClinic/${clinic.id}`, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -314,7 +314,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/doctor/getClinicDoctors/${clinic_id}`, { headers: headers, observe: 'response' })
+		return this.http.get(`/api/doctor/getClinicDoctors/${clinic_id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -330,7 +330,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/nurse/getClinicNurses/${clinic_id}`, { headers: headers, observe: 'response' })
+		return this.http.get(`/api/nurse/getClinicNurses/${clinic_id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -348,7 +348,7 @@ export class ClinicService {
 		});
 		var searchParamsString = "";
 		searchParamsString += `name=${doctor.name}&surname=${doctor.surname}&clinic_id=${doctor.clinic_id}`
-		return this.http.get(`http://localhost:8080/api/doctor/search_doctors?${searchParamsString}`,
+		return this.http.get(`/api/doctor/search_doctors?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
@@ -367,7 +367,7 @@ export class ClinicService {
 		});
 		var searchParamsString = "";
 		searchParamsString += `name=${nurse.name}&surname=${nurse.surname}&clinic_id=${nurse.clinic_id}`
-		return this.http.get(`http://localhost:8080/api/nurse/search_nurse?${searchParamsString}`,
+		return this.http.get(`/api/nurse/search_nurse?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
@@ -384,7 +384,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/examinationTypes/${clinic_id}`, { headers: headers, observe: 'response' })
+		return this.http.get(`/api/examinationTypes/${clinic_id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -408,7 +408,7 @@ export class ClinicService {
 		if (type.maxPrice !== ""){
 			searchParamsString += `&max_price=${type.maxPrice}`
 		}
-		return this.http.get(`http://localhost:8080/api/examinationTypes/search_types?${searchParamsString}`,
+		return this.http.get(`/api/examinationTypes/search_types?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
@@ -425,7 +425,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/examinationTypes/delete/${typeOfExamination_id}`, { headers: headers, observe: 'response' }).pipe(
+		return this.http.delete(`/api/examinationTypes/delete/${typeOfExamination_id}`, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -440,7 +440,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.put(`http://localhost:8080/api/examinationTypes/change`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
+		return this.http.put(`/api/examinationTypes/change`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
@@ -455,7 +455,7 @@ export class ClinicService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post(`http://localhost:8080/api/examinationTypes/${clinic_id}`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
+		return this.http.post(`/api/examinationTypes/${clinic_id}`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),

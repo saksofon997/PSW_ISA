@@ -15,8 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import sun.rmi.server.UnicastRef2;
-import sun.text.normalizer.UTF16;
 
 import javax.validation.ValidationException;
 import java.util.ArrayList;

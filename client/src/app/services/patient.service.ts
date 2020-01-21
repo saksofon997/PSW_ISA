@@ -20,7 +20,7 @@ export class PatientService {
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/api/patient/${id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/patient/${id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -34,7 +34,7 @@ export class PatientService {
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/api/patient/${patient_id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/patient/${patient_id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -49,7 +49,7 @@ export class PatientService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.put(`http://localhost:8080/api/patient/change`, JSON.stringify(patient), { headers: headers, observe: 'response' })
+    return this.http.put(`/api/patient/change`, JSON.stringify(patient), { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -65,7 +65,7 @@ export class PatientService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/api/admin/getClinics`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/admin/getClinics`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -81,7 +81,7 @@ export class PatientService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/api/admin/getClinic/${clinic_id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/admin/getClinic/${clinic_id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -99,7 +99,7 @@ export class PatientService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/api/patient/getPendingAppointments/${id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/patient/getPendingAppointments/${id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -115,7 +115,7 @@ export class PatientService {
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/api/patient/getClinicPatients/${id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/patient/getClinicPatients/${id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -134,7 +134,7 @@ export class PatientService {
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/api/patient/getMedicalRecord/${id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/patient/getMedicalRecord/${id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -151,7 +151,7 @@ export class PatientService {
 		});
 		var searchParamsString = "";
 		searchParamsString += `name=${patient.name}&surname=${patient.surname}&upin=${patient.upin}`
-		return this.http.get(`http://localhost:8080/api/patient/search_patients?${searchParamsString}`,
+		return this.http.get(`/api/patient/search_patients?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
@@ -169,7 +169,7 @@ export class PatientService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.get(`http://localhost:8080/api/doctor/canViewMedicalRecord/${patient_id}/${user.id}`,
+    return this.http.get(`/api/doctor/canViewMedicalRecord/${patient_id}/${user.id}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {

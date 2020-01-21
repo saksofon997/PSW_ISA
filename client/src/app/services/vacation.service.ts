@@ -19,7 +19,7 @@ export class VacationService {
 	let headers = new HttpHeaders({
 		'Authorization': `Bearer ${this.userService.getToken()}`
 	});
-	return this.http.post(`http://localhost:8080/api/vacations/request`, vacation, { headers: headers, observe: 'response' })
+	return this.http.post(`/api/vacations/request`, vacation, { headers: headers, observe: 'response' })
 		.pipe(
 			map(response => {
 				return response.body;

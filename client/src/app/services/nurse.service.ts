@@ -20,7 +20,7 @@ getNurse() {
   let headers = new HttpHeaders({
     'Authorization': `Bearer ${this.userService.getToken()}`
   });
-  return this.http.get(`http://localhost:8080/api/nurse/${id}`, { headers: headers, observe: 'response' })
+  return this.http.get(`/api/nurse/${id}`, { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
         return response.body;
@@ -36,7 +36,7 @@ changeNurse(nurse) {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${this.userService.getToken()}`
   });
-  return this.http.put(`http://localhost:8080/api/nurse/change`, JSON.stringify(nurse), { headers: headers, observe: 'response' })
+  return this.http.put(`/api/nurse/change`, JSON.stringify(nurse), { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
         return response.body;
@@ -54,7 +54,7 @@ getVacations(){
       'Accept': 'application/json',
 			'Authorization': `Bearer ${JSON.parse(this.cookieService.get('token')).accessToken}`
     });
-    return this.http.get(`http://localhost:8080/api/vacations/${id}`, { headers: headers, observe: 'response' })
+    return this.http.get(`/api/vacations/${id}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;

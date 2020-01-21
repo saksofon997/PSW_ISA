@@ -9,6 +9,7 @@ import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.LoginRepository;
 import com.project.tim49.repository.NurseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class NurseService {
     private LoginRepository userRepository;
     @Autowired
     private AuthorityService authorityService;
+    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 

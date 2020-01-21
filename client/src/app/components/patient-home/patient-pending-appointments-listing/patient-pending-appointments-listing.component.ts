@@ -102,4 +102,7 @@ export class PatientPendingAppointmentsListingComponent implements OnInit {
 			this.navigationSubscription.unsubscribe();
 		}
 	}
+	showClinicInfo(info: any){
+		//to do
+	}
 }
