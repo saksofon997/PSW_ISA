@@ -92,7 +92,7 @@ searchDoctors(criteria: { clinic_id: any; name: any; surname: any; rating: any; 
   });
   var searchParamsString = "";
   searchParamsString += `clinic_id=${criteria.clinic_id}&name=${criteria.name}&surname=${criteria.surname}&rating=${criteria.rating}&typeOfExamination=${criteria.typeOfExamination}&date=${criteria.date}`
-  return this.http.get(`http://localhost:8080/api/doctor/searchDoctors?${searchParamsString}`,
+  return this.http.get(`/api/doctor/searchDoctors?${searchParamsString}`,
             { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
@@ -124,7 +124,7 @@ submitReport(report,patientID, appointmentID){
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${this.userService.getToken()}`
   });
-  return this.http.post(`http://localhost:8080/api/examination/submitReport/${patientID}/${appointmentID}`, JSON.stringify(report), { headers: headers, observe: 'response' })
+  return this.http.post(`/api/examination/submitReport/${patientID}/${appointmentID}`, JSON.stringify(report), { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
         return response.body;
@@ -139,7 +139,7 @@ submitChangedReport(report,patientID){
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${this.userService.getToken()}`
   });
-  return this.http.post(`http://localhost:8080/api/examination/submitChangedReport/${patientID}/`, JSON.stringify(report), { headers: headers, observe: 'response' })
+  return this.http.post(`/api/examination/submitChangedReport/${patientID}/`, JSON.stringify(report), { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
         return response.body;
@@ -154,7 +154,7 @@ submitBasicInfo(basicInfo,patientID){
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${this.userService.getToken()}`
   });
-  return this.http.post(`http://localhost:8080/api/examination/submitBasicInfo/${patientID}/`, JSON.stringify(basicInfo), { headers: headers, observe: 'response' })
+  return this.http.post(`/api/examination/submitBasicInfo/${patientID}/`, JSON.stringify(basicInfo), { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
         return response.body;
@@ -171,7 +171,7 @@ submitBasicInfo(basicInfo,patientID){
     });
     var rateParamsString = "";
     rateParamsString += `doctor_id=${doctor_id}&patient_id=${patient_id}&stars=${stars}`
-    return this.http.put(`http://localhost:8080/api/doctor/rateDoctor?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
+    return this.http.put(`/api/doctor/rateDoctor?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
       map(response => {
         return response.body;
       }),

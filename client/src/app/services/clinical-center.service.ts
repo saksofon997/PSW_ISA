@@ -150,7 +150,7 @@ export class ClinicalCenterService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get('http://localhost:8080/api/examinationTypes/getAll', { headers: headers, observe: 'response' })
+		return this.http.get('/api/examinationTypes/getAll', { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;

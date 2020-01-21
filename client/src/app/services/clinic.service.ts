@@ -133,7 +133,7 @@ export class ClinicService {
 		});
 		var searchParamsString = "";
 		searchParamsString += `name=${ordination.name}&number=${ordination.number}&date=${ordination.date}&clinic_id=${ordination.clinic_id}`
-		return this.http.get(`http://localhost:8080/api/ordinations/search_ordinations_with_date?${searchParamsString}`,
+		return this.http.get(`/api/ordinations/search_ordinations_with_date?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
@@ -171,7 +171,7 @@ export class ClinicService {
 		});
 		var searchParamsString = "";
 		searchParamsString += `name=${criteria.name}&address=${criteria.address}&typeOfExamination=${criteria.typeOfExamination}&date=${criteria.date}`
-		return this.http.get(`http://localhost:8080/api/clinic/searchClinics?${searchParamsString}`,
+		return this.http.get(`/api/clinic/searchClinics?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
@@ -529,7 +529,7 @@ export class ClinicService {
 		});
 		var rateParamsString = "";
 		rateParamsString += `clinic_id=${clinic_id}&patient_id=${patient_id}&stars=${stars}`
-		return this.http.put(`http://localhost:8080/api/admin/rateClinic?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
+		return this.http.put(`/api/admin/rateClinic?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
