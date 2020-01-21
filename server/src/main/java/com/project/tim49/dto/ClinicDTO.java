@@ -10,6 +10,8 @@ public class ClinicDTO {
     private String city;
     private String state;
     private String description;
+    private int numberOfStars;
+    private int numberOfReviews;
 
     public ClinicDTO(){
 
@@ -22,6 +24,8 @@ public class ClinicDTO {
         this.city = clinic.getCity();
         this.state = clinic.getState();
         this.description = clinic.getDescription();
+        this.numberOfStars = clinic.getNumberOfStars();
+        this.numberOfReviews = clinic.getNumberOfReviews();
     }
 
     public Long getId() {
@@ -70,5 +74,21 @@ public class ClinicDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getNumberOfStars() {
+        return numberOfStars;
+    }
+
+    public void setNumberOfStars(int numberOfStars) {
+        this.numberOfStars = numberOfStars;
+    }
+
+    public int getNumberOfReviews() {
+        return numberOfReviews;
+    }
+
+    public void setNumberOfReviews(int numberOfReviews) {
+        this.numberOfReviews = numberOfReviews;
     }
 }

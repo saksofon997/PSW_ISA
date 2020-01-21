@@ -38,6 +38,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { AngularYandexMapsModule } from 'angular8-yandex-maps';
 import { HttpParameterCodec } from "@angular/common/http";
+import { RatingModule } from 'ng-starrating';
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
@@ -68,6 +69,10 @@ import { NewAvailableAppointmentPageComponent } from './components/adminC-dashbo
 import { NewVacationRequestComponent } from './components/doctor-home/new-vacation-request/new-vacation-request.component';
 import { MedicalRecordComponent } from './components/patient-profile/medical-record/medical-record.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ExaminationComponent } from './components/doctor-home/examination/examination.component';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import {MatButtonModule} from '@angular/material/button';
+import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
 
@@ -130,6 +135,8 @@ import { PatientDoctorListingComponent } from './components/patient-home/patient
     MedicalRecordComponent,
     VacationRequestsComponent,
     PatientDoctorListingComponent,
+    ExaminationComponent,
+    OrdinationSelectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -148,6 +155,11 @@ import { PatientDoctorListingComponent } from './components/patient-home/patient
     AngularFontAwesomeModule,
     MatExpansionModule,
     AngularYandexMapsModule.forRoot("396fefe7-95c2-486a-ae3e-c8f062813962"),
+    MatExpansionModule,
+    FormsModule,
+    SelectDropDownModule,
+    MatButtonModule,
+    RatingModule
   ],
   exports: [
     MedicalRecordComponent

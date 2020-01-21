@@ -1,5 +1,6 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.dto.OrdinationAvailabilityDTO;
 import com.project.tim49.dto.OrdinationDTO;
 import com.project.tim49.service.OrdinationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,18 @@ public class OrdinationController {
             @RequestParam(value = "clinic_id", required = false) Long clinic_id
     ) {
         List<OrdinationDTO> ordinations = ordinationService.getByQuery(name, number, clinic_id);
-        return new ResponseEntity(ordinations, HttpStatus.OK);
+        return new ResponseEntity<>(ordinations, HttpStatus.OK);
+    }
+
+    @GetMapping("/search_ordinations_with_date")
+    @PreAuthorize("hasAuthority('ADMINC')")
+    public ResponseEntity searchOrdinationsWithDate(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "number", required = false) String number,
+            @RequestParam(value = "date", required = false) long date,
+            @RequestParam(value = "clinic_id", required = false) Long clinic_id
+    ) {
+        List<OrdinationAvailabilityDTO> ordinations = ordinationService.getOrdinationsAvailability(name, number, date, clinic_id);
+        return new ResponseEntity<>(ordinations, HttpStatus.OK);
     }
 }

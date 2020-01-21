@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +23,10 @@ public class Doctor extends User {
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public Clinic clinic;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "specialization", referencedColumnName = "id")
+    public TypeOfExamination specialization;
 
 //    @OnDelete(action = OnDeleteAction.CASCADE)
 //    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
@@ -38,13 +43,8 @@ public class Doctor extends User {
     @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY)
     public List<Vacation> vacations = new ArrayList<Vacation>();
 
-    public List<Vacation> getVacations() {
-        return vacations;
-    }
-
-    public void setVacations(List<Vacation> vacations) {
-        this.vacations = vacations;
-    }
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    private Set<DoctorPatient> patients = new HashSet<>();
 
     @Column(name = "number_of_stars")
     private int numberOfStars;
@@ -52,6 +52,13 @@ public class Doctor extends User {
     @Column(name = "number_of_reviews")
     private int numberOfReviews;
 
+    public List<Vacation> getVacations() {
+        return vacations;
+    }
+
+    public void setVacations(List<Vacation> vacations) {
+        this.vacations = vacations;
+    }
     public String getShiftStart() {
         return shiftStart;
     }
@@ -76,6 +83,14 @@ public class Doctor extends User {
         this.clinic = clinic;
     }
 
+    public TypeOfExamination getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(TypeOfExamination specialization) {
+        this.specialization = specialization;
+    }
+
     public Set<Appointment> getAppointments() {
         return appointments;
     }
@@ -98,5 +113,13 @@ public class Doctor extends User {
 
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
+    }
+
+    public Set<DoctorPatient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(Set<DoctorPatient> patients) {
+        this.patients = patients;
     }
 }
