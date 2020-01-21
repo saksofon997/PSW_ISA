@@ -59,8 +59,10 @@ export class PatientClinicListingComponent implements OnInit {
 		) {   }
 
 	ngOnInit() {
-		this.createFormGroups();
 		this.loadData();
+
+		this.createFormGroups();
+
 		this.onFilterChanges();
 	}
 
@@ -235,9 +237,13 @@ export class PatientClinicListingComponent implements OnInit {
 	showDoctors(clinic) {
 		let clinic_id = clinic.id;
 		let dateP = this.dateVar;
-		//TODO - specijalizacija doktor
-		let TOE = this.TOEVar;
-		this.router.navigate([`doctors/${clinic_id}`], { queryParams: { TOE: clinic_id, date: dateP }, relativeTo: this.activatedRoute });
+		let TOEP = this.TOEVar;
+		this.router.navigate([`../doctors/${clinic_id}`], { queryParams: { TOE: TOEP, date: dateP }, relativeTo: this.activatedRoute });
+	}
+
+	showClinicsDoctors(clinic) {
+		let clinic_id = clinic.id; 
+		this.router.navigate([`../doctors/${clinic_id}`], {  relativeTo: this.activatedRoute });
 	}
 
 	close() {
@@ -245,8 +251,6 @@ export class PatientClinicListingComponent implements OnInit {
 	}
 
 	ngOnDestroy() {
-		if (this.navigationSubscription) {
-			this.navigationSubscription.unsubscribe();
-		}
+		
 	}
 }

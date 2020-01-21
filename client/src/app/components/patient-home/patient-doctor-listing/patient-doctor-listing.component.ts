@@ -20,7 +20,7 @@ export class PatientDoctorListingComponent implements OnInit {
 	doctorsFiltered: any;
 
 	clinic_id_param: any;
-	TOE_param: any;
+	TOE_param: number;
 	date_param: any;
 	
 	navigationSubscription: any;
@@ -59,15 +59,15 @@ export class PatientDoctorListingComponent implements OnInit {
 
 		this.activatedRoute.queryParams.subscribe(params => {
 			this.TOE_param = +params['TOE'];
-			this.date_param = params['date'];
+			this.date_param = +params['date'];
 		});
 
 		if(!this.clinic_id_param)
 			alert("ERROR, NO CLINIC ID!");
 
-		this.createFormGroups();
-
 		this.loadData(this.clinic_id_param);
+
+		this.createFormGroups();
 
 		this.onFilterChanges();
   	}
@@ -75,13 +75,11 @@ export class PatientDoctorListingComponent implements OnInit {
   	//LOADING METHODS
 
 	createFormGroups() {
-		let date: Date;
-		if(!this.date_param) {
-			date = new Date();
-		} else {
-			date = this.date_param;
-		}
-		
+		let date = new Date();
+
+		if(this.date_param)
+			date = new Date(this.date_param);
+
 		this.form = this.formBuilder.group({
 			date: [date, [Validators.required,]],
 			name: [""],
@@ -94,6 +92,9 @@ export class PatientDoctorListingComponent implements OnInit {
 			surname: [""],
 			rating: [""],
 		});
+
+		if(this.TOE_param)
+			this.form.controls['typeOfExamination'].setValue(this.TOE_param);
 	}
 
 	loadData(clinic_id) {
@@ -231,9 +232,6 @@ export class PatientDoctorListingComponent implements OnInit {
 	}
 
 	ngOnDestroy() {
-		if (this.navigationSubscription) {
-			this.navigationSubscription.unsubscribe();
-		}
 	}
 
 }

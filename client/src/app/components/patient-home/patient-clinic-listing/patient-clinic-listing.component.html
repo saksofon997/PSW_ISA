@@ -63,7 +63,7 @@
                         <select formControlName="typeOfExamination" class="m-1 form-control"
                             [ngClass]="{ 'is-invalid': submitted && form.controls.typeOfExamination.errors }" id="typeOfExamination"
                             style="border: 0; width: 100%;">
-                            <option value=""></option>
+                            <!--<option value=""></option>-->
                             <option *ngFor="let type of typesOfExamination" [value]="type.id">{{type.name}}
                             </option>
                         </select>
@@ -124,7 +124,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show clinics doctors</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicsDoctors(clinic)">Show clinics doctors</a>
                     </div>
                 </div>
             </td>
@@ -164,8 +164,8 @@
                         Options
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show availible doctors</a>
                         <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show availible doctors</a>
                     </div>
                 </div>
             </td>
