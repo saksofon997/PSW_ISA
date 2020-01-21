@@ -1,5 +1,6 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.config.WebSecurityConfig;
 import com.project.tim49.dto.*;
 import com.project.tim49.model.*;
 import com.project.tim49.security.TokenUtils;
@@ -40,9 +41,7 @@ public class AuthenticationController {
 
     @Autowired
     TokenUtils tokenUtils;
-
-    @Lazy
-    @Autowired
+    
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -50,6 +49,15 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+
+    public AuthenticationController(){
+        try {
+            authenticationManager =(new WebSecurityConfig()).authenticationManagerBean();
+        }catch (Exception e){
+
+        }
+
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
