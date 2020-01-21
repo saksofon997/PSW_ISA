@@ -5,11 +5,13 @@ import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.Patient;
 import com.project.tim49.model.User;
 import com.project.tim49.model.UserRequest;
+import org.springframework.stereotype.Service;
 
 
 import javax.validation.ValidationException;
 import java.util.List;
 
+@Service
 public interface UserService {
     User findById(Long id);
     User findByEmail(String email);
