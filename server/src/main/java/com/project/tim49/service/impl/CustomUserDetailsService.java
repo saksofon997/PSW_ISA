@@ -28,6 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Lazy
     @Autowired
     private AuthenticationManager authenticationManager;
 
