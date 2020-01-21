@@ -27,6 +27,21 @@ export class AppointmentService {
 			);
 	}
 
+	scheduleNewAppointment(appointment) {
+		let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.post('/api/appointment/scheduleNewAppointment', appointment, { headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	createAvailableAppointment(appointment) {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`

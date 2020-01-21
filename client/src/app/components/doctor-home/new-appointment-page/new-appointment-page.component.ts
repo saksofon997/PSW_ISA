@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { UserService } from 'src/app/services/user.service';
@@ -13,8 +13,10 @@ import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 	styleUrls: ['./new-appointment-page.component.css']
 })
 export class NewAppointmentPageComponent implements OnInit {
-	doctor: any;
-	patient: any;
+	@Input() doctor: any;
+	@Input() patient: any;
+	@Output() notifyParent: EventEmitter<any> = new EventEmitter();
+
 	typesOfExamination: any;
 	ordinations: any;
 
@@ -42,6 +44,9 @@ export class NewAppointmentPageComponent implements OnInit {
 
 		this.sub = this.activatedRoute.params.subscribe(params => {
 			let patient_id = +params['patient_id'];
+			if (!patient_id){
+				patient_id = this.patient;
+			}
 
 			this.loadData(patient_id).then(() => {
 				this.createFormGroup();
@@ -149,7 +154,7 @@ export class NewAppointmentPageComponent implements OnInit {
 		if (this.startAppointmentNow) {
 			this.appointmentService.startAppointment(appointment).subscribe(
 				(data: any) => { 
-					alert("Appointment created")
+					alert("Appointment created");
 					let appo = data;
 					let type = this.typesOfExamination.find(element => element.id == this.form.controls.typeOfExamination.value);
 					let doctor = this.userService.getUser().name +" "+ this.userService.getUser().surname
@@ -159,7 +164,13 @@ export class NewAppointmentPageComponent implements OnInit {
 				(error) => { alert(error); }
 			);
 		} else {
-
+			this.appointmentService.scheduleNewAppointment(appointment).subscribe(
+				(data: any) => { 
+					alert("Appointment scheduled");
+					this.notifyParent.emit('Some value to send to the parent');
+					},
+				(error) => { alert(error);  }
+			)
 		}
 
 
