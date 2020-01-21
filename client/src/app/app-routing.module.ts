@@ -52,6 +52,7 @@ import { MedicalRecordComponent } from './components/patient-profile/medical-rec
 import { ExaminationComponent } from './components/doctor-home/examination/examination.component';
 import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
+import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
 
 const routes: Routes = [
 	{
@@ -111,6 +112,7 @@ const routes: Routes = [
 		children:[
 			{path: '', component: PatientClinicListingComponent},
 			{path: 'clinics', component: PatientClinicListingComponent},
+			{path: 'doctors/:clinic_id', component: PatientDoctorListingComponent},
 			{path: 'pending_appointments', component: PatientPendingAppointmentsListingComponent},
 		],
 		canActivate: [AuthGuardService],

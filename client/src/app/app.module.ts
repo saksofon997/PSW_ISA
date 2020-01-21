@@ -36,6 +36,8 @@ import { MatTableModule } from '@angular/material/table';
 import { APP_INITIALIZER } from '@angular/core';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { AngularYandexMapsModule } from 'angular8-yandex-maps';
+import { HttpParameterCodec } from "@angular/common/http";
 import { RatingModule } from 'ng-starrating';
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
@@ -72,6 +74,7 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import {MatButtonModule} from '@angular/material/button';
 import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
+import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
 
 @NgModule({
   declarations: [
@@ -130,9 +133,10 @@ import { VacationRequestsComponent } from './components/adminC-dashboard/vacatio
     NewAvailableAppointmentPageComponent,
     NewVacationRequestComponent,
     MedicalRecordComponent,
+    VacationRequestsComponent,
+    PatientDoctorListingComponent,
     ExaminationComponent,
     OrdinationSelectionComponent,
-    VacationRequestsComponent
   ],
   imports: [
     BrowserModule,
@@ -149,6 +153,8 @@ import { VacationRequestsComponent } from './components/adminC-dashboard/vacatio
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularFontAwesomeModule,
+    MatExpansionModule,
+    AngularYandexMapsModule.forRoot("396fefe7-95c2-486a-ae3e-c8f062813962"),
     MatExpansionModule,
     FormsModule,
     SelectDropDownModule,
