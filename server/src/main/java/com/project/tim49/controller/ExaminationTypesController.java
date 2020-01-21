@@ -22,9 +22,18 @@ public class ExaminationTypesController {
     TypeOfExaminationService examinationTypesService;
 
     @GetMapping(path="/{id}")
-    @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('DOCTOR') or hasAuthority('NURSE')")
-    public ResponseEntity<List<DiagnosisDictionary>> getExaminationTypes(@PathVariable("id") Long clinic_id) {
+    @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('DOCTOR') or hasAuthority('PATIENT') or hasAuthority" +
+            "('NURSE')")
+    public ResponseEntity<List<TypeOfExaminationDTO>> getExaminationTypes(@PathVariable("id") Long clinic_id) {
         List<TypeOfExaminationDTO> examinationTypes = examinationTypesService.findAll(clinic_id);
+        return new ResponseEntity(examinationTypes, HttpStatus.OK);
+    }
+
+    @GetMapping(path="/getAll")
+    @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('DOCTOR') or hasAuthority('PATIENT') or hasAuthority" +
+            "('NURSE')")
+    public ResponseEntity<List<TypeOfExaminationDTO>> getExaminationTypes() {
+        List<TypeOfExaminationDTO> examinationTypes = examinationTypesService.findAllInCC();
         return new ResponseEntity(examinationTypes, HttpStatus.OK);
     }
 

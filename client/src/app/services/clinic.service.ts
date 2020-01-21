@@ -164,6 +164,25 @@ export class ClinicService {
 			);
 	}
 
+	searchClinics(criteria: { name: any; address: any; typeOfExamination: { id: any; }; date: number; }) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var searchParamsString = "";
+		searchParamsString += `name=${criteria.name}&address=${criteria.address}&typeOfExamination=${criteria.typeOfExamination}&date=${criteria.date}`
+		return this.http.get(`http://localhost:8080/api/clinic/searchClinics?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	addClinic(clinic: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
@@ -404,6 +423,25 @@ export class ClinicService {
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.get(`/api/examinationTypes/${clinic_id}`, { headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
+	getClinicLocation(address: string, city: string, state: string) {
+		address = address.replace(/ /g, '+');
+		address = encodeURIComponent(address);
+		city = city.replace(/ /g, '+');
+		city = encodeURIComponent(city);
+		state = state.replace(/ /g, '+');
+		state = encodeURIComponent(state);
+
+		return this.http.get(`https://geocode-maps.yandex.ru/1.x/?format=json&apikey=396fefe7-95c2-486a-ae3e-c8f062813962&geocode=${address},${city},${state}&lang=en_US`, { observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;

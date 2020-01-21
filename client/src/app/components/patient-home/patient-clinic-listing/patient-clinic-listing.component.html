@@ -4,7 +4,97 @@
         <p class="lead">Here you can see a list of existing clinics.</p>
     </div>
 </div>
-<table class="table">
+<p>
+    <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#searchForm"
+        aria-expanded="false" aria-controls="searchForm">
+        Search
+    </button>
+    &nbsp;&nbsp;&nbsp;
+    <button *ngIf="!notSearched" class="btn btn-light" type="button" data-toggle="collapse" data-target="#filterForm"
+        aria-expanded="false" aria-controls="filterForm">
+        Filter
+    </button>
+</p>
+<div class="collapse" id="filterForm">
+    <div class="card card-body">
+        <form [formGroup]="filterForm">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold" for="name">Name: </label>
+                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                    <input type="text" class="form-control" formControlName="name" style="border: 0;" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold" for="address">Address: </label>
+                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                    <input type="text" class="form-control" formControlName="address" style="border: 0;" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold" for="price">Price: </label>
+                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                    <input type="text" class="form-control" formControlName="price" style="border: 0;" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="collapse" id="searchForm">
+    <div class="card card-body">
+            <form [formGroup]="form" (ngSubmit)="onSearch()">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label font-weight-bold" for="code">Name: </label>
+                    <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                        <input type="text" class="form-control" formControlName="name" style="border: 0;" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label font-weight-bold" for="code">Address: </label>
+                    <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
+                        <input type="text" class="form-control" formControlName="address" style="border: 0;" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="typeOfExamination" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Type of
+                        examination: </label>
+                    <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+                        <select formControlName="typeOfExamination" class="m-1 form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.typeOfExamination.errors }" id="typeOfExamination"
+                            style="border: 0; width: 100%;">
+                            <!--<option value=""></option>-->
+                            <option *ngFor="let type of typesOfExamination" [value]="type.id">{{type.name}}
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && form.controls.typeOfExamination.errors" class="invalid-feedback ml-3">
+                            <div *ngIf="form.controls.typeOfExamination.errors.required">Please select type of examination</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="date" class="col-sm-2 col-form-label font-weight-bold">Date: </label>
+                    <div class="row col-lg-6 col-sm-10 col-md-6 shadow-sm p-1 mb-1 ml-1 bg-white rounded col">
+                        <div class="col-lg-10 col-sm-10 col-md-10">
+                            <input type="datetime" formControlName="date" [owlDateTime]="dt2" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && form.controls.date.errors }" id="date"
+                                style="border: 0;">
+                        </div>
+                        <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
+                                class="fa fa-calendar"></i> </span>
+                        <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+                        <div *ngIf="submitted && form.controls.date.errors" class="invalid-feedback ml-3">
+                            <div *ngIf="form.controls.date.errors.required">Please select a date</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary ">Search</button>
+            </form>
+    </div>
+</div>
+<table class="table" *ngIf="notSearched">
     <thead>
         <tr>
             <th scope="col" *ngFor='let param of clinicHeaders'>{{param}}</th>
@@ -17,20 +107,15 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" style="cursor: pointer;" (click)="sortName()" >Name</a>
                         <a class="dropdown-item" style="cursor: pointer;" (click)="sortAddress()">Address</a>
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="sortCity()">City</a>
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="sortState()">State</a>
                     </div>
                 </div>
             </th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor='let clinic of clinics'>
+        <tr *ngFor='let clinic of clinicsFiltered'>
             <td> {{clinic.name}} </td>
             <td> {{clinic.address}} </td>
-            <td> {{clinic.city}} </td>
-            <td> {{clinic.state}} </td>
-            <td> {{clinic.description}} </td>
             <td>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -38,11 +123,97 @@
                         Options
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show info</a>
-
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicsDoctors(clinic)">Show clinics doctors</a>
                     </div>
                 </div>
             </td>
         </tr>
     </tbody>
 </table>
+
+<table class="table" *ngIf="!notSearched">
+    <thead>
+        <tr>
+            <th scope="col" *ngFor='let param of clinicsSearchedHeaders'>{{param}}</th>
+            <th scope="col">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort by
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="sortName()" >Name</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="sortAddress()">Address</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="sortPrice()">Price</a>
+                    </div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor='let clinic of clinicsFiltered'>
+            <td> {{clinic.name}} </td>
+            <td> {{clinic.address}} </td>
+            <td> {{clinic.id}} <!--{{clinic.type.price}} --></td>
+            <!-- Prikaz tacnog vremena koje je izabrano?? -->
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Options
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show availible doctors</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<ng-template #modalContent let-close="close">
+    <div class="modal-header">
+        <h4 class="modal-title">Clinic Info</h4>
+        <button type="button" class="close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row mx-auto">
+            <div class="col">
+                <div class="card" style="height: 32em;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"> {{modalData.clinicName}} </h5><hr style="width:75%">
+                        <p class="card-text"> {{modalData.clinicAddress}} </p><hr style="width:50%">
+                        <p class="card-text"> {{modalData.clinicCity}} </p><hr style="width:50%">
+                        <p class="card-text"> {{modalData.clinicState}} </p><hr style="width:50%">
+                        <p class="card-text text-muted">Rating:</p><hr style="width:50%">
+                        <p class="card-text"> {{modalData.clinicID}} </p><hr style="width:50%"><br>
+                        <p class="card-text" style="padding: 5px 25px 5px;"> {{modalData.clinicDescription}} </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card" style="height: 32em;">
+                    <div class="card-body text-center">
+                        <div style="height: 25em; width: 100%;">
+                            <angular-yandex-map [center]="modalData.location" [zoom]="16">
+                                <angular-yandex-placemark [geometry]="modalData.location"></angular-yandex-placemark>
+                            </angular-yandex-map>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center text-muted">
+                        <label class="card-text">Location on maps</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="close()">
+            Close
+        </button>
+    </div>
+</ng-template>

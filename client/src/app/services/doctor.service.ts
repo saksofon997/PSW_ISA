@@ -84,6 +84,26 @@ getDoctor() {
       })
     );
 }
+
+searchDoctors(criteria: { clinic_id: any; name: any; surname: any; rating: any; typeOfExamination: { id: any; }; date: number; }) {
+  let headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.userService.getToken()}`
+  });
+  var searchParamsString = "";
+  searchParamsString += `clinic_id=${criteria.clinic_id}&name=${criteria.name}&surname=${criteria.surname}&rating=${criteria.rating}&typeOfExamination=${criteria.typeOfExamination}&date=${criteria.date}`
+  return this.http.get(`http://localhost:8080/api/doctor/searchDoctors?${searchParamsString}`,
+            { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+}
+
 changeDoctor(doctor){
   let headers = new HttpHeaders({
     'Content-Type': 'application/json',
