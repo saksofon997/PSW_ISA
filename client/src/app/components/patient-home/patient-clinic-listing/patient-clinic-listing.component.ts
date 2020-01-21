@@ -59,6 +59,8 @@ export class PatientClinicListingComponent implements OnInit {
 		) {   }
 
 	ngOnInit() {
+		this.notSearched = true;
+
 		this.loadData();
 
 		this.createFormGroups();
@@ -163,11 +165,18 @@ export class PatientClinicListingComponent implements OnInit {
 	}
 
 	filterClinics(filters) {
-		return this.clinics.filter(clinic =>
-			clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
-			clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
-			// && clinic.type.price.indexOf(filters.price) !== -1
-		);
+		if(this.notSearched){
+			return this.clinics.filter(clinic =>
+				clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
+				clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
+			);
+		} else {
+			return this.clinicsSearched.filter(clinic =>
+				clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
+				clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
+				&& clinic.type.price.indexOf(filters.price) !== -1
+			);
+		}
 	}
 
 	onSearch() {
@@ -195,9 +204,15 @@ export class PatientClinicListingComponent implements OnInit {
 			date: this.form.controls.date.value.getTime() / 1000
 		}
 
-		//SEND SEARCH REQUEST
-		//fill clinics with new DTO (TODO)
-		//fill clinicsFiltered
+		this.clinicService.searchClinics(criteria).subscribe(
+			(data) => {
+				this.clinicsSearched = data;
+				this.clinicsFiltered = data;
+			},
+			(error) => {
+				alert(error);
+			}
+		)
 	}
 
 	//OTHER FUNCTIONS

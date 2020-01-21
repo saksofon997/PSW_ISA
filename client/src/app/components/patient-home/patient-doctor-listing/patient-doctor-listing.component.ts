@@ -5,6 +5,7 @@ import { ClinicService } from 'src/app/services/clinic.service';
 import { PatientService } from 'src/app/services/patient.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DoctorService } from 'src/app/services/doctor.service';
 
 @Component({
   selector: 'app-patient-doctor-listing',
@@ -48,7 +49,7 @@ export class PatientDoctorListingComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
 		private userService: UserService,
 		private clinicService: ClinicService,
-		private patientService: PatientService,
+		private doctorService: DoctorService,
 		private activatedRoute: ActivatedRoute,
 		private modal: NgbModal,) { }
 
@@ -180,7 +181,7 @@ export class PatientDoctorListingComponent implements OnInit {
 		return this.doctors.filter(doctor =>
 			doctor.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
 			doctor.surname.toLowerCase().indexOf(filters.surname.toLowerCase()) !== -1
-			// && doctor.rating.indexOf(filters.rating) !== -1
+			&& (Math.ceil(doctor.numberOfStars/doctor.numberOfReviews)).toString().indexOf(filters.rating) !== -1
 		);
 	}
 
@@ -200,6 +201,7 @@ export class PatientDoctorListingComponent implements OnInit {
 		}
 
 		var criteria = {
+			clinic_id: this.clinic_id_param,
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
 			surname: this.form.controls.surname.value ? this.form.controls.surname.value : "",
 			rating: this.form.controls.rating.value ? this.form.controls.rating.value : "",
@@ -207,9 +209,15 @@ export class PatientDoctorListingComponent implements OnInit {
 			date: this.form.controls.date.value.getTime() / 1000
 		}
 
-		//SEND SEARCH REQUEST
-		//fill doctors
-		//fill doctorsFiltered
+		this.doctorService.searchDoctors(criteria).subscribe(
+			(data) => {
+				this.doctors = data;
+				this.doctorsFiltered = data;
+			},
+			(error) => {
+				alert(error);
+			}
+		)
 	}
 
 	showDoctorInfo(doctor) {

@@ -145,6 +145,25 @@ export class ClinicService {
 			);
 	}
 
+	searchClinics(criteria: { name: any; address: any; typeOfExamination: { id: any; }; date: number; }) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var searchParamsString = "";
+		searchParamsString += `name=${criteria.name}&address=${criteria.address}&typeOfExamination=${criteria.typeOfExamination}&date=${criteria.date}`
+		return this.http.get(`http://localhost:8080/api/clinic/searchClinics?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	addClinic(clinic: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
