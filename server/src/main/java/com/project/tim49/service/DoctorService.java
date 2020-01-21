@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sun.plugin.dom.exception.InvalidStateException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.print.Doc;
 import javax.validation.ValidationException;
 import java.lang.reflect.Type;
@@ -364,7 +364,7 @@ public class DoctorService {
         }
         DoctorPatient doctorPatient = doctorPatientRepository.getByDoctorAndPatient(doctor_id, patient_id);
         if (doctorPatient == null){
-            throw new InvalidStateException("Database error");
+            throw new EntityNotFoundException("Database error");
         }
         if (doctorPatient.isRated()){
             doctor.setNumberOfStars(doctor.getNumberOfStars() - doctorPatient.getStars() + stars);
