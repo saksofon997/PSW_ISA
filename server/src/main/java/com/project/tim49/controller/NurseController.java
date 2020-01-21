@@ -34,7 +34,7 @@ public class NurseController {
 
     @PutMapping(path="/change" )
     @PreAuthorize("hasAuthority('NURSE') or hasAuthority('ADMINC')")
-    public ResponseEntity changeDoctor(@RequestBody NurseDTO nurseDTO){
+    public ResponseEntity changeNurse(@RequestBody NurseDTO nurseDTO){
 
         if (nurseDTO == null || nurseDTO.getId() == null){
             return new ResponseEntity<>("Invalid data", HttpStatus.UNPROCESSABLE_ENTITY);

@@ -84,12 +84,22 @@ INSERT INTO public.clinic_administrator(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged)
 	VALUES (nextval('users_id_seq'), 'Vuka Karadžića 37', 'Valjevo', 'adminc5@kcv.rs', 'Jovanka', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Zečević', '1508993100010', '3', true, false);
 
+INSERT INTO public.type_of_examination(
+	id, name, price, clinic_id_id)
+	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '2000', 1);
+INSERT INTO public.type_of_examination(
+	id, name, price, clinic_id_id)
+	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3000', 1);
+INSERT INTO public.type_of_examination(
+	id, name, price, clinic_id_id)
+	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '500', 1);
+
+INSERT INTO public.doctor(
+	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, specialization, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
+	VALUES (nextval('users_id_seq'), 'Veljka Petrovića 9', 'Loznica', 'doc1@kcv.rs', 'Rodoljub', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Obilić', '1005990100010', '1', '1', true, true, '12:00', '20:00', 5, 1);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
-	VALUES (nextval('users_id_seq'), 'Veljka Petrovića 9', 'Loznica', 'doc1@kcv.rs', 'Rodoljub', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Obilić', '1005990100010', '1', true, true, '12:00', '20:00', 2, 0);
-INSERT INTO public.doctor(
-	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews)
-	VALUES (nextval('users_id_seq'), 'Njegoševa 16', 'Šabac', 'doc2@kcv.rs', 'Dragica', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Veričić', '1007990100010', '1', true, true, '7:00', '15:00', 0, 0);
+	VALUES (nextval('users_id_seq'), 'Njegoševa 16', 'Šabac', 'doc2@kcv.rs', 'Dragica', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Veričić', '1007990100010', '1', true, true, '7:00', '23:00', 0, 0);
 
 INSERT INTO public.medication_dictionary(
 	id, code, name, deleted)
@@ -110,16 +120,6 @@ INSERT INTO public.diagnosis_dictionary(
 INSERT INTO public.diagnosis_dictionary(
 	id, code, description)
 	VALUES (nextval('diagnosis_dictionary_id_seq'), 'A31.1', 'Infekcija kože uzrokovana mikobakterijama');
-
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '2000', 1);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3000', 1);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '500', 1);
 
 INSERT INTO public.medical_record(
 	id, alergies, blood_type, diopter, height, sex, weight)
@@ -153,10 +153,16 @@ INSERT INTO public.ordination(
 
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1576097092 , 1576101600, 10 * 60 * 1000, 100, 1, 1, 11, 1, false, false);
+    VALUES (nextval('appointment_id_seq'), 1578823900, 1578825100, 20 * 60 * 1000, 100, 1, 1, 11, 2, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1576097092, 1576098292, 20 * 60 * 1000, 100, 1, 1, 11, 2, false, false);
+    VALUES (nextval('appointment_id_seq'), 1578823200 , 1578823800, 10 * 60 * 1000, 100, 1, 1, 11, 1, false, false);
+INSERT INTO public.appointment(
+    id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
+    VALUES (nextval('appointment_id_seq'), 1579388400 , 1579737600, 10 * 60 * 1000, 100, 1, 1, 11, 1, false, false);
+INSERT INTO public.appointment(
+    id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
+    VALUES (nextval('appointment_id_seq'), 1578870000 , 1578963600, 10 * 60 * 1000, 100, 1, 1, 11, 1, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
     VALUES (nextval('appointment_id_seq'), 1575730800,1575731400, 10 * 60 * 1000, 100, 1, 1, 11, 3, false, false);
@@ -205,13 +211,23 @@ INSERT INTO public.appointment_doctors(
 INSERT INTO public.appointment_doctors(
     appointment_id, doctor_id)
     VALUES (6, 9);
+INSERT INTO public.appointment_doctors(
+    appointment_id, doctor_id)
+    VALUES (7, 9);
+INSERT INTO public.appointment_doctors(
+    appointment_id, doctor_id)
+    VALUES (8, 9);
 
-INSERT INTO public.clinics_patients(
-    clinic_id, patient_id)
-    VALUES (1, 11);
-INSERT INTO public.clinics_patients(
-    clinic_id, patient_id)
-    VALUES (1, 12);
+INSERT INTO public.clinic_patient(
+    clinic_id, patient_id, rated, stars)
+    VALUES (1, 11, false, 0);
+INSERT INTO public.clinic_patient(
+    clinic_id, patient_id, rated, stars)
+    VALUES (1, 12, false, 0);
+
+INSERT INTO public.doctor_patient(
+    doctor_id, patient_id, rated, stars)
+    VALUES (9, 11, false, 0);
 
 INSERT INTO public.nurse(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, enabled, passwordchanged, shift_start, shift_end)

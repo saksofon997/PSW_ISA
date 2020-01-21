@@ -1,0 +1,97 @@
+<div class="jumbotron jumbotron-fluid col-lg-12 col-sm-12"
+  style="max-height: 1em; margin-top:0.5em; padding-top: 0.5em;">
+  <div class="container-fluid" style="max-height: 1em; margin-bottom: 0.5em;">
+    <h3 class="display-8">Examination report</h3>
+  </div>
+</div>
+<form [formGroup]="examinationForm" (ngSubmit)="submit()" >
+  <div class="col-12 border-top border-bottom p-0 m-0 mb-3 pb-3 pt-3">
+
+    <label class="font-weight-bold"><img src="assets/images/typeOfExamination.png"
+        style="width: 2em; height: 2em;">{{type}}</label>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="assets/images/datetime.png" style="width: 2em; height: 2em;">{{timeConverter(datetime)}}
+    
+    <div class="row border-top  pt-3 mb-3 ml-1 mr-1">
+      <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Doctor:</label>
+      <div class="col-sm-10 col-lg-9 shadow-sm p-1 mb-1 bg-white rounded ">
+        <div class="input-group mb-3" style="border: 0; height: 1em;">
+          <input type="text" class="form-control input-display"  formControlName="doctor"  />
+          <div class="input-group-append">
+            <span class="input-group-text" style=" height: 2.35em;"><img src="assets/images/doctor.png"
+                style=" width: 1.7em; height: 1.7em;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row  mb-3 ml-1 mr-1">
+      <label class="col-sm-3 col-form-label font-weight-bold float-left border-bottom">Date:</label>
+      <div class="col-sm-10 col-lg-9 shadow-sm p-1 mb-1 bg-white rounded ">
+        <div class="input-group mb-3" style="border: 0; height: 1em;">
+          <input type="text" class="form-control input-display" formControlName="dateAndTime"  />
+          <div class="input-group-append">
+            <span class="input-group-text" style=" height: 2.35em;"><img src="assets/images/datetime.png"
+                style=" width: 1.7em; height: 1.7em;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row  pt-3 mb-3 ml-1 mr-1">
+      <label class="col-sm-3 col-form-label font-weight-bold float-left">Report description:</label>
+      <div class="col-sm-10 col-lg-9 shadow-sm p-1 mb-1 bg-white rounded ">
+        <div class="input-group mb-3" style="border: 0; height: 7em;">
+          <textarea type="text" class="form-control input-display" style="height: 8em;" formControlName="reportDescription"></textarea>
+          <div *ngIf="submitted && examinationForm.controls.reportDescription.errors" class="invalid-feedback">
+            <div *ngIf="examinationForm.controls.reportDescription.errors.required">Report has to have a description!</div>
+          </div>
+          <div class="input-group-append">
+            <span class="input-group-text" style=" height: 8em;"><img src="assets/images/description.png"
+                style=" width: 1.7em; height: 1.7em;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row  pt-2 mb-1 pl-1 pr-1">
+      <div class="col-6 border-top pt-2">
+        <div class="bg-white clearfix rounded ">
+          <label class="pl-1 col-form-label font-weight-bold float-left">Diagnoses</label>
+          <img class="float-right" src="assets/images/diagnosis.png" style=" width: 1.7em; height: 1.7em; ">
+        </div>
+        <ngx-select-dropdown (change)="selectionChanged($event)" formControlName="diagnoses" [multiple]="true"
+          [config]="config2" [options]="diagnoses"></ngx-select-dropdown>
+      </div>
+      <div class="col-6 border-top pt-2">
+        <div class="bg-white clearfix rounded ">
+          <label class="pl-1 col-form-label font-weight-bold float-left">Medications</label>
+          <img class="float-right" src="assets/images/drug.png" style=" width: 1.7em; height: 1.7em; ">
+        
+          <ngx-select-dropdown (change)="selectionChanged($event)" formControlName="prescriptions" [multiple]="true"
+          [config]="config" [options]="prescriptions"></ngx-select-dropdown>
+
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary btn-md mt-2 mb-4">Submit & save report</button>
+  <button type="button" class="btn btn-info btn-md mt-2 float-right ml-1 mb-4" (click)="ShowMedicalRecord(patient)">Medical record</button>
+  <button type="button" class="btn btn-secondary btn-md mt-2 float-right mr-1 mb-4">Schedule appointment</button>
+</form>
+<ng-template #modalContent let-close="close">
+  <div class="modal-header">
+    <h4 class="modal-title">Medical record</h4>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body ">
+      <app-medical-record [patientID]="modalData?.patientID" [patientName]="modalData?.patientName"
+       [diagnoses]="diagnoses" [prescriptions]="prescriptions" [editable]="true"></app-medical-record>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">
+      Cancel
+    </button>
+  </div>
+</ng-template>

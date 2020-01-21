@@ -4,17 +4,16 @@ import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.ClinicAdministratorDTO;
 import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.model.*;
-import com.project.tim49.repository.ClinicRepository;
-import com.project.tim49.repository.DoctorRepository;
-import com.project.tim49.repository.LoginRepository;
-import com.project.tim49.repository.PatientRepository;
+import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import sun.plugin.dom.exception.InvalidStateException;
 
 import javax.print.Doc;
 import javax.validation.ValidationException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -28,6 +27,10 @@ public class DoctorService {
     private PatientRepository patientRepository;
     @Autowired
     private ClinicRepository clinicRepository;
+    @Autowired
+    private DoctorPatientRepository doctorPatientRepository;
+    @Autowired
+    private TypeOfExaminationRepository typeOfExaminationRepository;
     @Autowired
     private LoginRepository userRepository;
     @Autowired
@@ -65,6 +68,14 @@ public class DoctorService {
             throw new ValidationException("No clinic with that ID!");
         }
 
+        Optional<TypeOfExamination> specialization = Optional.empty();
+        if (doctorDTO.getSpecialization() != null){
+            specialization = typeOfExaminationRepository.findById(doctorDTO.getSpecialization().getId());
+            if (!specialization.isPresent()){
+                throw new ValidationException("No type of examination with that ID!");
+            }
+        }
+
         User user = userRepository.findOneByEmail(doctorDTO.getEmail());
         if (user != null){
             throw new ValidationException("User with this email already exists!");
@@ -72,6 +83,7 @@ public class DoctorService {
 
         Doctor doctor = docDTOtoReal(doctorDTO);
         doctor.setClinic(clinic.get());
+        specialization.ifPresent(doctor::setSpecialization);
         doctor.setAuthorities( authorityService.findByname("DOCTOR") );
         doctor.setPassword(passwordEncoder.encode("123456"));
         doctor.setPasswordChanged(false);
@@ -324,6 +336,47 @@ public class DoctorService {
             }
         }
         return false;
+    }
+
+    public void rateDoctor(Long doctor_id, Long patient_id, int stars){
+        if (doctor_id == null || patient_id == null || stars == 0 || stars < 0 || stars > 5){
+            throw new ValidationException("Invalid parameters.");
+        }
+        Doctor doctor = doctorRepository.findById(doctor_id).orElse(null);
+        if (doctor == null ) {
+            throw new NoSuchElementException("Doctor does not exist.");
+        }
+        Patient patient = patientRepository.findById(patient_id).orElse(null);
+        if (patient == null ) {
+            throw new NoSuchElementException("Patient does not exist.");
+        }
+        boolean hadAppointmentsWithDoctor = false;
+        for (Appointment appointment: patient.getFinishedAppointments()){
+            for (Doctor doc: appointment.getDoctors()){
+                if (doc.getId().equals(doctor_id)){
+                    hadAppointmentsWithDoctor = true;
+                    break;
+                }
+            }
+        }
+        if (!hadAppointmentsWithDoctor){
+            throw new ValidationException("You can only rate doctor you had appointments with!");
+        }
+        DoctorPatient doctorPatient = doctorPatientRepository.getByDoctorAndPatient(doctor_id, patient_id);
+        if (doctorPatient == null){
+            throw new InvalidStateException("Database error");
+        }
+        if (doctorPatient.isRated()){
+            doctor.setNumberOfStars(doctor.getNumberOfStars() - doctorPatient.getStars() + stars);
+            doctorPatient.setStars(stars);
+        } else {
+            doctorPatient.setRated(true);
+            doctorPatient.setStars(stars);
+            doctor.setNumberOfStars(doctor.getNumberOfStars() + stars);
+            doctor.setNumberOfReviews(doctor.getNumberOfReviews() + 1);
+        }
+
+        doctorRepository.save(doctor);
     }
 
     public boolean shiftValid(String shiftStart, String shiftEnd){

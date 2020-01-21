@@ -8,7 +8,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Clinic {
@@ -45,9 +47,11 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<ClinicAdministrator> clinicAdministrator;
 
-   @ManyToMany(cascade = CascadeType.DETACH)
-   @JoinTable(name = "clinics_patients", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
-   public List<Patient> patients;
+//   @ManyToMany(cascade = CascadeType.DETACH)
+//   @JoinTable(name = "clinics_patients", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
+//   public List<Patient> patients;
+   @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL)
+   private Set<ClinicPatient> patients = new HashSet<>();
 
    @OnDelete(action = OnDeleteAction.CASCADE)
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
@@ -157,11 +161,11 @@ public class Clinic {
       this.clinicAdministrator = clinicAdministrator;
    }
 
-   public List<Patient> getPatients() {
+   public Set<ClinicPatient> getPatients() {
       return patients;
    }
 
-   public void setPatients(List<Patient> patients) {
+   public void setPatients(Set<ClinicPatient> patients) {
       this.patients = patients;
    }
 

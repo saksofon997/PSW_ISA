@@ -7,6 +7,7 @@ public class PrescriptionDTO {
 
     private Long medication_id;
     private String medication_name;
+    private String medication_code;
 
     private Long nurse_id;
     private String nurse_name;
@@ -22,9 +23,10 @@ public class PrescriptionDTO {
         
     }
 
-    public PrescriptionDTO(Long id, Long medication_id, String medication_name, Long nurse_id, String nurse_name, String nurse_surname, Long doctor_id, String doctor_name, String doctor_surname, boolean approved) {
+    public PrescriptionDTO(Long id, Long medication_id,String medication_code, String medication_name, Long nurse_id, String nurse_name, String nurse_surname, Long doctor_id, String doctor_name, String doctor_surname, boolean approved) {
         this.id = id;
         this.medication_id = medication_id;
+        this.medication_code = medication_code;
         this.medication_name = medication_name;
         this.nurse_id = nurse_id;
         this.nurse_name = nurse_name;
@@ -38,14 +40,30 @@ public class PrescriptionDTO {
     public PrescriptionDTO(Prescription prescription) {
         this.id = prescription.getId();
         this.medication_id = prescription.getMedication().getId();
+        this.medication_code = prescription.getMedication().getCode();
         this.medication_name = prescription.getMedication().getName();
-        this.nurse_id = prescription.getApproves().getId();
-        this.nurse_name = prescription.getApproves().getName();
-        this.nurse_surname = prescription.getApproves().getSurname();
+        if(prescription.isApproved()){
+            this.nurse_id = prescription.getApproves().getId();
+            this.nurse_name = prescription.getApproves().getName();
+            this.nurse_surname = prescription.getApproves().getSurname();
+        }else {
+            this.nurse_id = null;
+            this.nurse_name = "";
+            this.nurse_surname = "";
+        }
+
         this.doctor_id = prescription.getPerforms().getId();
         this.doctor_name = prescription.getPerforms().getName();
         this.doctor_surname = prescription.getPerforms().getSurname();
         this.approved = prescription.isApproved();
+    }
+
+    public String getMedication_code() {
+        return medication_code;
+    }
+
+    public void setMedication_code(String medication_code) {
+        this.medication_code = medication_code;
     }
 
     public String getMedication_name() {

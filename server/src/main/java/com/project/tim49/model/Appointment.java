@@ -46,7 +46,7 @@ public class Appointment {
     // NEEDED?
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
-    public Patient patient     ;
+    public Patient patient;
 
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "type_of_examination_id", referencedColumnName = "id")

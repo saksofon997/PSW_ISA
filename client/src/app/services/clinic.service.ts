@@ -126,6 +126,25 @@ export class ClinicService {
 			);
 	}
 
+	searchOrdinationsWithDate(ordination: any) {
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var searchParamsString = "";
+		searchParamsString += `name=${ordination.name}&number=${ordination.number}&date=${ordination.date}&clinic_id=${ordination.clinic_id}`
+		return this.http.get(`http://localhost:8080/api/ordinations/search_ordinations_with_date?${searchParamsString}`,
+							{ headers: headers, observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
 	searchPrescriptions(prescription: any) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
@@ -456,6 +475,23 @@ export class ClinicService {
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		return this.http.post(`/api/examinationTypes/${clinic_id}`, typeOfExamination, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
+	rateClinic(clinic_id, patient_id, stars){
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		var rateParamsString = "";
+		rateParamsString += `clinic_id=${clinic_id}&patient_id=${patient_id}&stars=${stars}`
+		return this.http.put(`http://localhost:8080/api/admin/rateClinic?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),

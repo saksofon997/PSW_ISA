@@ -81,15 +81,29 @@ public class AdminKcController {
     public ResponseEntity deleteClinic(@PathVariable Long id) {
         try{
             clinicService.deleteClinic(id);
-        }catch (IllegalStateException e){
-            return new ResponseEntity<>(e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
-        }catch (ValidationException e){
+        }catch (IllegalStateException | ValidationException e){
             return new ResponseEntity<>(e.getMessage(),
                     HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(id,
                     HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/rateClinic")
+    @PreAuthorize("hasAuthority('PATIENT')")
+    public ResponseEntity rateClinic(
+            @RequestParam(value = "clinic_id", required = true) Long clinic_id,
+            @RequestParam(value = "patient_id", required = true) Long patient_id,
+            @RequestParam(value = "stars", required = true) int stars
+    ) {
+        try {
+            this.clinicService.rateClinic(clinic_id, patient_id, stars);
+            return new ResponseEntity<>(clinic_id, HttpStatus.OK);
+        } catch (ValidationException | NoSuchElementException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (InvalidStateException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(path = "/getClinics",
