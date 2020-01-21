@@ -15,6 +15,7 @@ import com.project.tim49.repository.UserRepository;
 import com.project.tim49.service.AuthorityService;
 import com.project.tim49.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 

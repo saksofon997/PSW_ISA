@@ -86,7 +86,7 @@ export class UserService {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		});
-		return this.http.post('http://localhost:8080/auth/login', user, { headers, observe: 'response' })
+		return this.http.post('/auth/login', user, { headers, observe: 'response' })
 			.pipe(
 				map((response) => {
 					const userState = response.body;
@@ -122,7 +122,7 @@ export class UserService {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		});
-		return this.http.post('http://localhost:8080/auth/signup', registerRequest, { headers, observe: 'response' })
+		return this.http.post('/auth/signup', registerRequest, { headers, observe: 'response' })
 			.pipe(
 				map((response) => {
 					const userState = response.body;
@@ -149,7 +149,7 @@ export class UserService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.getToken()}`
 		});
-		return this.http.post('http://localhost:8080/auth/change-password', JSON.stringify(passwordChanger), { headers, observe: 'response' })
+		return this.http.post('/auth/change-password', JSON.stringify(passwordChanger), { headers, observe: 'response' })
 			.pipe(
 				map((response) => {
 					this.passwordChanged = true;
@@ -165,7 +165,7 @@ export class UserService {
 			const headers = new HttpHeaders({
 				'Authorization': `Bearer ${this.getToken()}`
 			});
-			return this.http.post('http://localhost:8080/auth/refresh', {}, { headers, observe: 'response' })
+			return this.http.post('/auth/refresh', {}, { headers, observe: 'response' })
 				.pipe(
 					map((response) => {
 						const userState = response.body;

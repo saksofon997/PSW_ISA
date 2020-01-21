@@ -13,6 +13,7 @@ export class DialogComponent implements OnInit {
   @Input() btnOkText: string;
   @Input() btnCancelText: string;
   @Input() userInput: boolean;
+  submitted: boolean;
   form: FormGroup;
   constructor(private activeModal: NgbActiveModal,private formBuilder: FormBuilder) { }
 
@@ -38,6 +39,7 @@ export class DialogComponent implements OnInit {
     this.activeModal.close(response);
   }
   public onSubmit(){
+    this.submitted=true;
     var response={
       explanation: this.form.controls.explanation.value,
       submited:true

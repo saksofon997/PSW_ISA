@@ -21,7 +21,7 @@ export class ClinicalCenterService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get('http://localhost:8080/api/medication', { headers: headers, observe: 'response' })
+		return this.http.get('/api/medication', { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -37,7 +37,7 @@ export class ClinicalCenterService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('http://localhost:8080/api/medication', medication, { headers: headers, observe: 'response' })
+		return this.http.post('/api/medication', medication, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -53,7 +53,7 @@ export class ClinicalCenterService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.put(`http://localhost:8080/api/medication/change`, changedMedication, { headers: headers, observe: 'response' })
+		return this.http.put(`/api/medication/change`, changedMedication, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -68,7 +68,7 @@ export class ClinicalCenterService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/medication/delete/${id}`, { headers: headers, observe: 'response' })
+		return this.http.delete(`/api/medication/delete/${id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -83,7 +83,7 @@ export class ClinicalCenterService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get('http://localhost:8080/api/diagnosis', { headers: headers, observe: 'response' })
+		return this.http.get('/api/diagnosis', { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -99,7 +99,7 @@ export class ClinicalCenterService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('http://localhost:8080/api/diagnosis', diagnosis, { headers: headers, observe: 'response' })
+		return this.http.post('/api/diagnosis', diagnosis, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -115,7 +115,7 @@ export class ClinicalCenterService {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.put(`http://localhost:8080/api/diagnosis/change`, changedDiagnosis, { headers: headers, observe: 'response' })
+		return this.http.put(`/api/diagnosis/change`, changedDiagnosis, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -130,7 +130,7 @@ export class ClinicalCenterService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/diagnosis/delete/${id}`, { headers: headers, observe: 'response' })
+		return this.http.delete(`/api/diagnosis/delete/${id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -150,7 +150,7 @@ export class ClinicalCenterService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get('http://localhost:8080/api/examinationTypes/getAll', { headers: headers, observe: 'response' })
+		return this.http.get('/api/examinationTypes/getAll', { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;

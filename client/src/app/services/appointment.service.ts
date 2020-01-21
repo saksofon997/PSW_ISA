@@ -16,7 +16,7 @@ export class AppointmentService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('http://localhost:8080/api/appointment/startAppointment', appointment, { headers: headers, observe: 'response' })
+		return this.http.post('/api/appointment/startAppointment', appointment, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -31,7 +31,7 @@ export class AppointmentService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('http://localhost:8080/api/appointment/createAvailableAppointment', appointment, { headers: headers, observe: 'response' })
+		return this.http.post('/api/appointment/createAvailableAppointment', appointment, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -46,7 +46,7 @@ export class AppointmentService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`http://localhost:8080/api/appointment/getClinicAvailableAppointments/${clinic_id}`, { headers: headers, observe: 'response' })
+		return this.http.get(`/api/appointment/getClinicAvailableAppointments/${clinic_id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -61,7 +61,7 @@ export class AppointmentService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`http://localhost:8080/api/appointment/deleteAvailableAppointment/${appointment_id}`, { headers: headers, observe: 'response' })
+		return this.http.delete(`/api/appointment/deleteAvailableAppointment/${appointment_id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
