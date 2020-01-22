@@ -181,38 +181,43 @@ export class PatientClinicListingComponent implements OnInit {
 
 	onSearch() {
 
-		//TESTING
-		this.notSearched = !this.notSearched;
-		this.dateVar = this.form.controls.date.value.getTime();
-		this.TOEVar = this.form.controls.typeOfExamination.value;
-		return;
-		//TESTING
-
 		this.submitted = true;
 
 		if (this.form.invalid) {
 			return;
 		}
 
-		this.dateVar = this.form.controls.date.value.getTime() / 1000;
+		this.dateVar = this.form.controls.date.value.getTime();
 		this.TOEVar = this.form.controls.typeOfExamination.value;
 
 		var criteria = {
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
 			address: this.form.controls.address.value ? this.form.controls.address.value : "",
-			typeOfExamination: {id: this.form.controls.typeOfExamination.value},
-			date: this.form.controls.date.value.getTime() / 1000
+			typeOfExamination: this.form.controls.typeOfExamination.value,
+			date: this.form.controls.date.value.getTime()
 		}
 
-		this.clinicService.searchClinics(criteria).subscribe(
-			(data) => {
-				this.clinicsSearched = data;
-				this.clinicsFiltered = data;
-			},
-			(error) => {
-				alert(error);
-			}
-		)
+		this.searchClinics(criteria).then(() => {
+			this.notSearched = false;
+		}, () => alert("Error searching clinics"))
+		
+	}
+
+	searchClinics(criteria: any) {
+		let promise = new Promise((resolve, reject) => {
+			this.clinicService.searchClinics(criteria).subscribe(
+				(data) => {
+					this.clinicsSearched = data;
+					this.clinicsFiltered = data;
+					resolve();
+				},
+				(error) => {
+					alert(error);
+					reject();
+				}
+			);
+		});
+		return promise;
 	}
 
 	//OTHER FUNCTIONS
