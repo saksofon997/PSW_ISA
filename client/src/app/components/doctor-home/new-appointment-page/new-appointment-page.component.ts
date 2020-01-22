@@ -173,8 +173,8 @@ export class NewAppointmentPageComponent implements OnInit {
 		} else {
 			this.appointmentService.scheduleNewAppointment(appointment).subscribe(
 				(data: any) => { 
-					alert("Appointment scheduled");
-					this.notifyParent.emit('Some value to send to the parent');
+					alert("Appointment request created");
+					this.notifyParent.emit();
 					},
 				(error) => { alert(error);  }
 			)

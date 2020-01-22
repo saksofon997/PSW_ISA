@@ -75,6 +75,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
+import { TokenInterceptor } from './services/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { PatientDoctorListingComponent } from './components/patient-home/patient
     PatientDoctorListingComponent,
     ExaminationComponent,
     OrdinationSelectionComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -167,8 +169,13 @@ import { PatientDoctorListingComponent } from './components/patient-home/patient
   providers: [CookieService, UserService,
     {
       provide: APP_INITIALIZER,
-      useFactory: (userService: UserService) => function() { /*userService.refreshToken()*/},
+      useFactory: (userService: UserService) => function() { userService.refreshToken()},
       deps: [UserService],
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
       multi: true
     }], //UserService, AuthGuardService
   bootstrap: [AppComponent],
