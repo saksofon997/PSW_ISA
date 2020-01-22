@@ -2,6 +2,7 @@ package com.project.tim49.service;
 
 import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.DoctorDTO;
+import com.project.tim49.dto.PatientDTO;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

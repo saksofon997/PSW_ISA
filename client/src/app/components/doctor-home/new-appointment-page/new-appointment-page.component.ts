@@ -91,11 +91,15 @@ export class NewAppointmentPageComponent implements OnInit {
 
 	loadOrdinations() {
 		let promise = new Promise((resolve, reject) => {
-			let clinic_id = this.userService.getUser().clinic_id;
-			this.clinicService.getOrdinations(clinic_id).subscribe(
-				(data) => { this.ordinations = data; resolve(); },
-				(error) => { alert(error); reject(); }
-			);
+			if (this.startAppointmentNow){
+				let clinic_id = this.userService.getUser().clinic_id;
+				this.clinicService.getOrdinations(clinic_id).subscribe(
+					(data) => { this.ordinations = data; resolve(); },
+					(error) => { alert(error); reject(); }
+				);
+			} else {
+				resolve();
+			}
 		});
 		return promise;
 	}
@@ -110,10 +114,13 @@ export class NewAppointmentPageComponent implements OnInit {
 			dateAndTime: [date, [Validators.required,]],
 			duration: [, [Validators.required,]],
 			typeOfExamination: [, [Validators.required,]],
-			ordination: [, [Validators.required,]],
+			ordination: [,],
 			price: [, [Validators.required,]],
 		});
 
+		if (this.startAppointmentNow) {
+			this.form.controls['ordination'].setValidators([Validators.required]);
+		}
 	}
 
 	setPriceFromTypeOfExamination() {

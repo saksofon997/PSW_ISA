@@ -1,8 +1,11 @@
 package com.project.tim49.service;
 
+import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.dto.RegistrationDTO;
 import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.User;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -10,6 +13,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class EmailService {
@@ -102,6 +107,26 @@ public class EmailService {
                 "Here is an explanation from our team:\n\n" +
                 ""+message+
                 "\n\nPlease contact our support for further assistance.\n\nBest regards,\nClinical center team\n\n\n\n" +
+                "If you don't know what this is about, then someone has probably" +
+                " entered your email address by mistake and you can ignore this e-mail.");
+        javaMailSender.send(mail);
+
+        System.out.println("Email poslat!");
+    }
+
+    @Async
+    public void sendNewAppointmentScheduled(UserDTO patient, DoctorDTO doctor, DateTime date) throws MailException,
+            InterruptedException {
+        System.out.println("Slanje emaila...");
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(patient.getEmail());
+        mail.setFrom("noreply@clinic.com");
+        mail.setSubject("Clinic: New appointment scheduled");
+        mail.setText("Dear " + patient.getName() + ",\n\nDoctor " + doctor.getName() + " " + doctor.getSurname() +
+                " has scheduled a new appointment on " + date.toString(DateTimeFormat.forPattern("dd.MM.yyyy.")) +
+                "\n\nYou will receive additional info about this appointment when it gets approved by clinic administrator." +
+                "\n\nBest regards,\nClinical center team\n\n\n\n" +
                 "If you don't know what this is about, then someone has probably" +
                 " entered your email address by mistake and you can ignore this e-mail.");
         javaMailSender.send(mail);

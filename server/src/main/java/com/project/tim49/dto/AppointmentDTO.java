@@ -1,6 +1,7 @@
 package com.project.tim49.dto;
 
 import com.project.tim49.model.Appointment;
+import com.project.tim49.model.AppointmentRequest;
 import com.project.tim49.model.Doctor;
 
 import java.util.ArrayList;
@@ -40,6 +41,23 @@ public class AppointmentDTO {
             this.doctors.add(new DoctorDTO(doctor));
         }
         this.completed = appointment.isCompleted();
+    }
+
+    public AppointmentDTO(AppointmentRequest appointment){
+        this.id = appointment.getId();
+        this.startingDateAndTime = appointment.getStartingDateAndTime();
+        this.endingDateAndTime = appointment.getEndingDateAndTime();
+        this.duration = appointment.getDuration();
+        this.price = appointment.getPrice();
+        this.clinic = new ClinicDTO(appointment.getClinic());
+        if (appointment.getPatient() != null){
+            this.patient = new PatientDTO(appointment.getPatient());
+        }
+        this.typeOfExamination = new TypeOfExaminationDTO(appointment.getTypeOfExamination());
+        this.doctors = new ArrayList<>();
+        if (appointment.getDoctor() != null){
+            this.doctors.add(new DoctorDTO(appointment.getDoctor()));
+        }
     }
 
     public Long getId() {
