@@ -174,17 +174,15 @@ public class ClinicService {
 
 
     public List<ClinicsSearchResultDTO> getByQuery(String name, String address, long toe, long startTimestamp) {
-        if(startTimestamp <= 0)
-            throw new ValidationException("Invalid date");
+
+        long endTimestamp = startTimestamp + 24 * 60 * 60;
+
+        List<Clinic> clinics = clinicRepository.getByQuery(name, address);
 
         TypeOfExamination selectedToe = examinationRepository.findById(toe).orElse(null);
 
         if(selectedToe == null)
             throw new ValidationException("Selected type of examination does not exist");
-
-        long endTimestamp = startTimestamp + 24 * 60 * 60;
-
-        List<Clinic> clinics = clinicRepository.getByQuery(name, address);
 
         List<ClinicsSearchResultDTO> selected = new ArrayList<>();
 
@@ -221,7 +219,7 @@ public class ClinicService {
                     apptsdocs.sort(compareByStart);
 
                     for(int i = 0; i < apptsdocs.size() - 1; i++){
-                        if((apptsdocs.get(i+1).getEndingDateAndTime() - apptsdocs.get(i).getStartingDateAndTime()) >= 600) {
+                        if((apptsdocs.get(i).getEndingDateAndTime() - apptsdocs.get(i+1).getStartingDateAndTime()) >= 600) {
                             ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
                             sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
                             selected.add(sel);

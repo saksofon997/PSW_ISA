@@ -2,6 +2,7 @@ package com.project.tim49.service;
 
 import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.ClinicAdministratorDTO;
+import com.project.tim49.dto.DoctorAvailabilityDTO;
 import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
@@ -17,6 +18,8 @@ import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorService {
@@ -33,6 +36,8 @@ public class DoctorService {
     private TypeOfExaminationRepository typeOfExaminationRepository;
     @Autowired
     private LoginRepository userRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
     @Autowired
     private AuthorityService authorityService;
     @Lazy
@@ -434,8 +439,188 @@ public class DoctorService {
         return retVal;
     }
 
+    public List<DoctorDTO> returnListDTO(List<Doctor> doctors) {
+        List<DoctorDTO> doctorDTOS = new ArrayList<>();
+        for(Doctor d: doctors) {
+            DoctorDTO doctorDTO = new DoctorDTO(d);
+            doctorDTOS.add(doctorDTO);
+        }
+        return doctorDTOS;
+    }
+
     public List<DoctorDTO> getByAdvancedQuery(String name, String surname, Long clinic_id, long rating, Long toe, long date) {
-        //TODO
-        return null;
+        List<Doctor> doctors = doctorRepository.getByQuery(name, surname, clinic_id);
+
+        if(doctors.isEmpty())
+            return returnListDTO(doctors);
+
+        List<Doctor> selected = new ArrayList<>();
+        selected = doctors;
+
+        if(rating != -1) {
+            Predicate<Doctor> byRating = doctor -> (doctor.getNumberOfStars()/doctor.getNumberOfReviews()) >= rating;
+
+            selected = selected.stream().filter(byRating).collect(Collectors.toList());
+            if(selected.isEmpty())
+                return returnListDTO(selected);
+        }
+        if(toe != -1) {
+            Predicate<Doctor> byToe = doctor -> doctor.getSpecialization().getId().equals(toe);
+
+            selected = selected.stream().filter(byToe).collect(Collectors.toList());
+            if(selected.isEmpty()) {
+                return returnListDTO(selected);
+            }
+        }
+        if(date != -1) {
+            //if hes available for at least 10 minutes that day, times wont be empty, so he stays in the list
+            for(Doctor doc : selected) {
+                List<String> times = getAvailableTimes(doc, date);
+                if(times.isEmpty()){
+                    selected.remove(doc);
+                }
+            }
+        }
+        return returnListDTO(selected);
+    }
+
+    public DoctorAvailabilityDTO getAvailability(Long doctor_id, long date) {
+        Doctor doctor = doctorRepository.findById(doctor_id).orElse(null);
+        if (doctor == null){
+            throw new NoSuchElementException("Doctor with given id not found.");
+        }
+
+        List<String> times = getAvailableTimes(doctor, date);
+
+        DoctorAvailabilityDTO doctorAvailabilityDTO = new DoctorAvailabilityDTO(doctor_id, true, times);
+
+        if(times.isEmpty())
+            doctorAvailabilityDTO.setAvailable(false);
+
+        return doctorAvailabilityDTO;
+    }
+
+    //Returns list of timestamps with doctors availability during 24h
+    public List<String> getAvailableTimes(Doctor doctor, long startingTimeStamp){
+        long duration = 600;
+        long endingTimeStamp = startingTimeStamp + 24*60*60;
+
+        //all appointments that day
+        List<Appointment> appointments = appointmentRepository.getByTimesAndNotCompleted(startingTimeStamp, endingTimeStamp);
+
+        Predicate<Appointment> byDoc = appt -> appt.getDoctors().contains(doctor);
+
+        //all appointments that day with our doctor
+        appointments = appointments.stream().filter(byDoc).collect(Collectors.toList());
+
+        //all appointments that day with our doctor sorted by starting time
+        Comparator<Appointment> compareByStart = Comparator.comparingLong(Appointment::getStartingDateAndTime);
+        appointments.sort(compareByStart);
+
+        List<String> times = new ArrayList<>();
+
+        for(long iter = startingTimeStamp; iter < endingTimeStamp; iter+=duration) {
+            //thanks mihajlo
+            if(isAvailableVer(appointments, iter) && isDuringDoctorWorkingHoursVer(doctor, iter));
+                times.add(String.valueOf(iter));
+        }
+
+        return times;
+    }
+
+    public boolean isAvailableVer(List<Appointment> appointments, long startingTimeStamp){
+        for (Appointment appointment: appointments) {
+            if (appointment.isCompleted() || appointment.isDeleted()){
+                continue;
+            }
+            if ( startingTimeStamp >= appointment.getStartingDateAndTime()
+                    && startingTimeStamp + 600 <= appointment.getEndingDateAndTime()){
+                return false;
+            }
+            if (appointment.getStartingDateAndTime() >= startingTimeStamp
+                    && appointment.getStartingDateAndTime() <= startingTimeStamp + 600){
+                return false;
+            }
+            if (appointment.getEndingDateAndTime() > startingTimeStamp
+                    && appointment.getEndingDateAndTime() <= startingTimeStamp + 600){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isDuringDoctorWorkingHoursVer(Doctor doctor, long startingTimeStamp){
+
+        Date startDateTime = new Date(startingTimeStamp * 1000);
+        Date endDateTime = new Date((startingTimeStamp+600) * 1000);
+        SimpleDateFormat ft = new SimpleDateFormat("HH:mm:ss");
+
+        int shiftStartHour;
+        int shiftStartMinute;
+        try {
+            int[] shiftStart = getHoursAndMinutesFromString(doctor.getShiftStart());
+            shiftStartHour = shiftStart[0];
+            shiftStartMinute = shiftStart[1];
+        } catch (NumberFormatException e){
+            throw e;
+        }
+
+        int shiftEndHour;
+        int shiftEndMinute;
+        try {
+            int[] shiftEnd = getHoursAndMinutesFromString(doctor.getShiftEnd());
+            shiftEndHour = shiftEnd[0];
+            shiftEndMinute = shiftEnd[1];
+        } catch (NumberFormatException e){
+            throw e;
+        }
+
+        int appointmentStartHour;
+        int appointmentStartMinute;
+        try {
+            int[] appStart = getHoursAndMinutesFromString(ft.format(startDateTime));
+            appointmentStartHour = appStart[0];
+            appointmentStartMinute = appStart[1];
+        } catch (NumberFormatException e){
+            throw e;
+        }
+
+        int appointmentEndHour;
+        int appointmentEndMinute;
+        try {
+            int[] appEnd = getHoursAndMinutesFromString(ft.format(endDateTime));
+            appointmentEndHour = appEnd[0];
+            appointmentEndMinute = appEnd[1];
+        } catch (NumberFormatException e){
+            throw e;
+        }
+
+        if (shiftStartHour < shiftEndHour){ // 09:00 - 17:00
+            if (appointmentStartHour >= shiftStartHour && appointmentStartHour <= shiftEndHour
+                    && appointmentEndHour >= shiftStartHour && appointmentEndHour <= shiftEndHour) {
+                if (appointmentStartHour == shiftStartHour && appointmentStartMinute < shiftStartMinute){
+                    return false;
+                }
+                if (appointmentEndHour == shiftEndHour && appointmentEndMinute > shiftEndMinute){
+                    return false;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } else { // 21:00 - 05:00
+            if (appointmentStartHour > shiftEndHour && appointmentStartHour < shiftStartHour
+                    && appointmentEndHour > shiftEndHour && appointmentEndHour < shiftStartHour) {
+                return false;
+            } else {
+                if (appointmentStartHour == shiftStartHour && appointmentStartMinute < shiftStartMinute){
+                    return false;
+                }
+                if (appointmentEndHour == shiftEndHour && appointmentEndMinute > shiftEndMinute){
+                    return false;
+                }
+                return true;
+            }
+        }
     }
 }

@@ -36,6 +36,7 @@ export class PatientClinicListingComponent implements OnInit {
 		clinicState: any;
 		clinicDescription: any;
 		location: Number[];
+		rating: any;
 		action: string;
 	};
 
@@ -187,14 +188,14 @@ export class PatientClinicListingComponent implements OnInit {
 			return;
 		}
 
-		this.dateVar = this.form.controls.date.value.getTime();
+		this.dateVar = this.form.controls.date.value.getTime() / 1000;
 		this.TOEVar = this.form.controls.typeOfExamination.value;
 
 		var criteria = {
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
 			address: this.form.controls.address.value ? this.form.controls.address.value : "",
 			typeOfExamination: this.form.controls.typeOfExamination.value,
-			date: this.form.controls.date.value.getTime()
+			date: this.form.controls.date.value.getTime() / 1000
 		}
 
 		this.searchClinics(criteria).then(() => {
@@ -224,12 +225,13 @@ export class PatientClinicListingComponent implements OnInit {
 
 	showClinicInfo(clinic) {
 		let action = "Opened";
-		let clinicID = clinic.id; //RATING
+		let clinicID = clinic.id;
 		let clinicName = clinic.name;
 		let clinicAddress = clinic.address;
 		let clinicCity = clinic.city;
 		let clinicState = clinic.state;
 		let clinicDescription = clinic.description;
+		let rating = clinic.numberOfStars / clinic.numberOfReviews;
 
 		this.loadClinicLocation(clinicAddress, clinicCity, clinicState).then(() => {
 			let chars: string;
@@ -239,7 +241,7 @@ export class PatientClinicListingComponent implements OnInit {
 			location = [0, 0];
 			location[0] = Number(res[1]);
 			location[1] = Number(res[0]);
-			this.modalData = { clinicID, clinicName, clinicAddress, clinicCity, clinicState, clinicDescription, location, action };
+			this.modalData = { clinicID, clinicName, clinicAddress, clinicCity, clinicState, clinicDescription, location, rating, action };
 			this.modal.open(this.modalContent, { size: 'xl' });
 		}, () => alert("Error loading data"))
 	}

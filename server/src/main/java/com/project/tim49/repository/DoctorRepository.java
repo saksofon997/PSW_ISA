@@ -13,4 +13,11 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             "and (?2 is null or upper(doctor.surname) like concat('%', upper(?2), '%')) " +
             "and (doctor.clinic.id = ?3)")
     List<Doctor> getByQuery(String name, String surname, Long clinic_id);
+
+    @Query("select doctor from Doctor doctor where " +
+            "(?1 is null or upper(doctor.name) like concat('%', upper(?1), '%')) " +
+            "and (?2 is null or upper(doctor.surname) like concat('%', upper(?2), '%')) " +
+            "and (doctor.clinic.id = ?3)" +
+            "and (doctor.specialization.id = ?4)")
+    List<Doctor> getByAdvancedQuery(String name, String surname, Long clinic_id, Long toe);
 }

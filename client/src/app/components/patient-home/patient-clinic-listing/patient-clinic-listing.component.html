@@ -164,7 +164,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show availible doctors</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show available doctors</a>
                     </div>
                 </div>
             </td>
@@ -190,7 +190,7 @@
                         <p class="card-text"> {{modalData.clinicCity}} </p><hr style="width:50%">
                         <p class="card-text"> {{modalData.clinicState}} </p><hr style="width:50%">
                         <p class="card-text text-muted">Rating:</p><hr style="width:50%">
-                        <p class="card-text"> {{modalData.clinicID}} </p><hr style="width:50%"><br>
+                        <star-rating value='{{modalData.rating}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="24px" readonly="true"></star-rating><hr style="width:50%"><br>
                         <p class="card-text" style="padding: 5px 25px 5px;"> {{modalData.clinicDescription}} </p>
                     </div>
                 </div>
