@@ -119,6 +119,20 @@ public class DoctorController {
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
+    @GetMapping("/searchDoctors")
+    @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('PATIENT')")
+    public ResponseEntity searchDoctorsAsPatient(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "surname", required = false) String surname,
+            @RequestParam(value = "clinic_id", required = true) Long clinic_id,
+            @RequestParam(value = "rating", required = false) long rating,
+            @RequestParam(value = "typeOfExamination", required = false) Long toe,
+            @RequestParam(value = "date", required = false) long date
+    ) {
+        List<DoctorDTO> doctors = doctorService.getByAdvancedQuery(name, surname, clinic_id, rating, toe, date);
+        return new ResponseEntity<>(doctors, HttpStatus.OK);
+    }
+
     @GetMapping(path="/appointments/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('DOCTOR')")

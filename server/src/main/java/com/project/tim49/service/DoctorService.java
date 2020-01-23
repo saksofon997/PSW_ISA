@@ -433,4 +433,9 @@ public class DoctorService {
         int[] retVal = {hour, minute};
         return retVal;
     }
+
+    public List<DoctorDTO> getByAdvancedQuery(String name, String surname, Long clinic_id, long rating, Long toe, long date) {
+        //TODO
+        return null;
+    }
 }

@@ -85,7 +85,7 @@ getDoctor() {
     );
 }
 
-searchDoctors(criteria: { clinic_id: any; name: any; surname: any; rating: any; typeOfExamination: { id: any; }; date: number; }) {
+searchDoctors(criteria: { clinic_id: any; name: any; surname: any; rating: any; typeOfExamination: any; date: number; }) {
   let headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${this.userService.getToken()}`

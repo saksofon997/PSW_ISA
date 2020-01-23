@@ -176,12 +176,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td> 12.00 </td>
-                                <td> 14.00 </td>
+                            <tr *ngFor='let time of availibleTimes'> <!--must contain doctor id!-->
+                                <td> {{time.start}} </td>
+                                <td> {{time.end}} </td>
                                 <td>
                                     <div class="dropdown">
-                                        <button class="btn btn-secondary" type="button" aria-haspopup="true" (click)="showAppointmentPage(app)">
+                                        <button class="btn btn-secondary" type="button" aria-haspopup="true" (click)="showAppointmentPage(time)">
                                             Select
                                         </button>
                                     </div>

@@ -174,7 +174,7 @@ export class PatientClinicListingComponent implements OnInit {
 			return this.clinicsSearched.filter(clinic =>
 				clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
 				clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
-				&& clinic.type.price.indexOf(filters.price) !== -1
+				&& clinic.type.price.toString().indexOf(filters.price) !== -1
 			);
 		}
 	}

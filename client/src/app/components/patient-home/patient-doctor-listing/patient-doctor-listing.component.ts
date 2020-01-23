@@ -94,8 +94,10 @@ export class PatientDoctorListingComponent implements OnInit {
 			rating: [""],
 		});
 
-		if(this.TOE_param)
+		if(this.TOE_param) {
 			this.form.controls['typeOfExamination'].setValue(this.TOE_param);
+			this.onSearch();
+		}
 	}
 
 	loadData(clinic_id) {
@@ -160,8 +162,8 @@ export class PatientDoctorListingComponent implements OnInit {
 				this.doctorsFiltered.sort((a, b) => (a.surname > b.surname) ? 1 : -1)
 				break;
 			}
-			case "rating": { //TODO, doctor rating!!!
-				this.doctorsFiltered.sort((a, b) => (a.id > b.id) ? 1 : -1)
+			case "rating": {
+				this.doctorsFiltered.sort((a, b) => ((a.numberOfStars/a.numberOfReviews) > (b.numberOfStars/b.numberOfReviews)) ? 1 : -1)
 				break;
 			}
 			default: {
@@ -187,12 +189,7 @@ export class PatientDoctorListingComponent implements OnInit {
 
   	//OTHER METHODS
 
-  onSearch() {
-
-		//TESTING
-		this.notSearched = !this.notSearched;
-		return;
-		//TESTING
+    onSearch() {
 
 		this.submitted = true;
 
@@ -205,24 +202,35 @@ export class PatientDoctorListingComponent implements OnInit {
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
 			surname: this.form.controls.surname.value ? this.form.controls.surname.value : "",
 			rating: this.form.controls.rating.value ? this.form.controls.rating.value : "",
-			typeOfExamination: {id: this.form.controls.typeOfExamination.value},
-			date: this.form.controls.date.value.getTime() / 1000
+			typeOfExamination: this.form.controls.typeOfExamination.value,
+			date: this.form.controls.date.value.getTime()
 		}
 
-		this.doctorService.searchDoctors(criteria).subscribe(
-			(data) => {
-				this.doctors = data;
-				this.doctorsFiltered = data;
-			},
-			(error) => {
-				alert(error);
-			}
-		)
+		this.searchDoctors(criteria).then(() => {
+			this.notSearched = false;
+		}, () => alert("Error searching doctors"))
+	}
+
+	searchDoctors(criteria: any) {
+		let promise = new Promise((resolve, reject) => {
+			this.doctorService.searchDoctors(criteria).subscribe(
+				(data) => {
+					this.doctors = data;
+					this.doctorsFiltered = data;
+					resolve();
+				},
+				(error) => {
+					alert(error);
+					reject();
+				}
+			);
+		});
+		return promise;
 	}
 
 	showDoctorInfo(doctor) {
 		let action = "Opened";
-		let doctorID = doctor.id; //rating
+		let doctorID = Math.floor(doctor.numberOfStars/doctor.numberOfReviews);
 		let doctorName = doctor.name;
 		let doctorSurname = doctor.surname
 		let doctorEmail = doctor.email;
