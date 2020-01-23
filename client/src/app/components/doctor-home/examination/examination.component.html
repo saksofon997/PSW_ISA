@@ -76,7 +76,7 @@
   </div>
   <button type="submit" class="btn btn-primary btn-md mt-2 mb-4">Submit & save report</button>
   <button type="button" class="btn btn-info btn-md mt-2 float-right ml-1 mb-4" (click)="ShowMedicalRecord(patient)">Medical record</button>
-  <button type="button" class="btn btn-secondary btn-md mt-2 float-right mr-1 mb-4">Schedule appointment</button>
+  <button type="button" class="btn btn-secondary btn-md mt-2 float-right mr-1 mb-4" (click)="scheduleNewAppointment(patient)">Schedule appointment</button>
 </form>
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
@@ -88,6 +88,23 @@
   <div class="modal-body ">
       <app-medical-record [patientID]="modalData?.patientID" [patientName]="modalData?.patientName"
        [diagnoses]="diagnoses" [prescriptions]="prescriptions" [editable]="true"></app-medical-record>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">
+      Cancel
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #newAppointmentModal let-close="close">
+  <div class="modal-header">
+    <h4 class="modal-title">Schedule new appointment</h4>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body ">
+      <app-new-appointment-page [doctor]="doctor" [patient]="patient.id" (notifyParent)="close()"></app-new-appointment-page>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="close()">

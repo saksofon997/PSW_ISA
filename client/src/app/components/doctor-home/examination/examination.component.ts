@@ -17,7 +17,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ExaminationComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
-  
+  @ViewChild('newAppointmentModal', { static: true }) newAppointmentModal: TemplateRef<any>;
+
   examinationForm: FormGroup;
   patient: any;
   doctor: any;
@@ -171,6 +172,10 @@ export class ExaminationComponent implements OnInit {
 		this.modalData = {patientID,patientName, action };
 		this.modal.open(this.modalContent, { size: 'xl' });
 	
+  }
+  scheduleNewAppointment(patient){
+    let action = "Opened";
+		this.modal.open(this.newAppointmentModal, { size: 'lg' });
   }
   close(){
     

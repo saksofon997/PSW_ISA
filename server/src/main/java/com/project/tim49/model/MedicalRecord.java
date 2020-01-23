@@ -11,7 +11,8 @@ import java.util.List;
 public class MedicalRecord {
    @Id
    //@SequenceGenerator(name="medical_record_id_seq",sequenceName="medical_record_id_seq", allocationSize=1)
-   @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="medical_record_id_seq")
+   //@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="medical_record_id_seq")
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
    @OneToMany(mappedBy = "medicalRecord", fetch = FetchType.LAZY)

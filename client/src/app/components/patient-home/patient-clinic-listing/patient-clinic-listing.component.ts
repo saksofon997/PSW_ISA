@@ -253,12 +253,29 @@ export class PatientClinicListingComponent implements OnInit {
 		let clinic_id = clinic.id;
 		let dateP = this.dateVar;
 		let TOEP = this.TOEVar;
-		this.router.navigate([`../doctors/${clinic_id}`], { queryParams: { TOE: TOEP, date: dateP }, relativeTo: this.activatedRoute });
+		if (this.router.url.indexOf('clinics') === -1){
+			this.router.navigate([`doctors/${clinic_id}`], { queryParams: { TOE: TOEP, date: dateP }, relativeTo: this.activatedRoute });
+		} else {
+			this.router.navigate([`../doctors/${clinic_id}`], { queryParams: { TOE: TOEP, date: dateP }, relativeTo: this.activatedRoute });
+		}
 	}
 
 	showClinicsDoctors(clinic) {
 		let clinic_id = clinic.id; 
-		this.router.navigate([`../doctors/${clinic_id}`], {  relativeTo: this.activatedRoute });
+
+		if (this.router.url.indexOf('clinics') === -1){
+			this.router.navigate([`doctors/${clinic_id}`], {  relativeTo: this.activatedRoute });
+		} else {
+			this.router.navigate([`../doctors/${clinic_id}`], {  relativeTo: this.activatedRoute });
+		}
+	}
+
+	showAwailableAppointments(clinic_id) {
+		if (this.router.url.indexOf('clinics') === -1){
+			this.router.navigate([`available_appointments/${clinic_id}`], {  relativeTo: this.activatedRoute });
+		} else {
+			this.router.navigate([`../available_appointments/${clinic_id}`], {  relativeTo: this.activatedRoute });
+		}
 	}
 
 	close() {

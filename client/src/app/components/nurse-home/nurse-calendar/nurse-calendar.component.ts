@@ -78,11 +78,12 @@ export class NurseCalendarComponent implements OnInit {
     this.nurseService.getVacations().subscribe(
       (data) => {
        this.populateCalendarEvents(data);
+       this.refresh.next();
       },
       (error) => { 
         alert(error);
       }
-    );
+    ); 
   }
 
   actions: CalendarEventAction[] = [

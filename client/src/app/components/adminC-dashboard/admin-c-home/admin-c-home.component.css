@@ -1,0 +1,5 @@
+.container {
+    margin-bottom: 1em;
+}
+
+li+li { border-left: 1px solid #0000FF }

@@ -79,6 +79,7 @@ export class DoctorCalendarComponent implements OnInit{
     this.doctorService.getAppointments().subscribe(
       (data) => {
        this.populateCalendarEvents(data);
+       this.refresh.next();
       },
       (error) => { 
         alert(error);
@@ -88,6 +89,7 @@ export class DoctorCalendarComponent implements OnInit{
     this.doctorService.getVacations().subscribe(
       (data) => {
        this.populateVacations(data);
+       this.refresh.next();
       },
       (error) => { 
         alert(error);
