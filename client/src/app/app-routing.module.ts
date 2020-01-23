@@ -53,6 +53,9 @@ import { ExaminationComponent } from './components/doctor-home/examination/exami
 import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
+import { AdminCHomeComponent } from './components/adminC-dashboard/admin-c-home/admin-c-home.component';
+import { AppointmentRequestsComponent } from './components/adminC-dashboard/appointment-requests/appointment-requests.component';
+import { PatientAvailableAppointmentsComponent } from './components/patient-home/patient-available-appointments/patient-available-appointments.component';
 
 const routes: Routes = [
 	{
@@ -91,8 +94,6 @@ const routes: Routes = [
 			{path: 'clinic', component: ClinicProfileInfoComponent},
 			{path: 'doctors', component: DoctorListingComponent},
 			{path: 'doctor', component: DoctorFormComponent},
-			{path: 'available_appointments', component: AvailableAppointmentListingComponent},
-			{path: 'new_available_appointment', component: NewAvailableAppointmentPageComponent},
 			{path: 'types_of_examination', component: TypeOfExaminationListingComponent},
 			{path: 'type_of_examination_info', component: TypeOfExaminationFormComponent},
 			{path: 'ordinations', component: OrdinationListingComponent},
@@ -100,7 +101,23 @@ const routes: Routes = [
 			{path: 'ordination_form', component: OrdinationFormComponent},
 			{path: 'nurse_listing', component: NurseListingComponent},
 			{path: 'nurse_form', component: NurseFormComponent},
+
+		],
+		canActivate: [AuthGuardService],
+		data: { roles: ['ADMINC']}
+	},
+	{
+		path: 'clinic_admin_home',
+		component: AdminCHomeComponent,
+		children:[
+			{path: '', component: AppointmentRequestsComponent},
+			{path: 'appointment_requests', component: AppointmentRequestsComponent},
+			{path: 'available_appointments', component: AvailableAppointmentListingComponent},
+			{path: 'new_available_appointment', component: NewAvailableAppointmentPageComponent},
 			{path: 'vacation_requests', component: VacationRequestsComponent},
+
+			{path: 'ordinations_TEMP', component: OrdinationSelectionComponent}, // Za testiranje, uklopiti kasnije kad se odrade appointment requestovi
+
 
 		],
 		canActivate: [AuthGuardService],
@@ -114,6 +131,8 @@ const routes: Routes = [
 			{path: 'clinics', component: PatientClinicListingComponent},
 			{path: 'doctors/:clinic_id', component: PatientDoctorListingComponent},
 			{path: 'pending_appointments', component: PatientPendingAppointmentsListingComponent},
+			{path: 'available_appointments/:clinic_id', component: PatientAvailableAppointmentsComponent},
+
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['PATIENT']}

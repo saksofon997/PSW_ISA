@@ -14,6 +14,7 @@ public class AppointmentDTO {
     private long endingDateAndTime;
     private long duration;
     private double price;
+    private double discount;
     private OrdinationDTO ordination;
     private ClinicDTO clinic;
     private PatientDTO patient;
@@ -30,6 +31,7 @@ public class AppointmentDTO {
         this.endingDateAndTime = appointment.getEndingDateAndTime();
         this.duration = appointment.getDuration();
         this.price = appointment.getPrice();
+        this.discount = appointment.getDiscount();
         this.ordination = new OrdinationDTO(appointment.getOrdination());
         this.clinic = new ClinicDTO(appointment.getClinic());
         if (appointment.getPatient() != null){
@@ -106,6 +108,14 @@ public class AppointmentDTO {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
     }
 
     public OrdinationDTO getOrdination() {

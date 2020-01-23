@@ -4,14 +4,7 @@ package com.project.tim49.model; /**********************************************
  * Purpose: Defines the Class Appointment
  ***********************************************************************/
 
-import com.project.tim49.repository.DoctorRepository;
-import com.project.tim49.service.DoctorService;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
-import javax.print.Doc;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,6 +27,9 @@ public class Appointment {
 
     @Column(name = "price", nullable = false)
     private double price;
+
+    @Column(name = "discount", nullable = false)
+    private double discount;
 
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "ordination_id")
@@ -98,6 +94,14 @@ public class Appointment {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
     }
 
     public Ordination getOrdination() {

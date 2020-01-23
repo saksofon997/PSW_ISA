@@ -76,6 +76,9 @@ import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordi
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
 import { TokenInterceptor } from './services/token.interceptor';
+import { AdminCHomeComponent } from './components/adminC-dashboard/admin-c-home/admin-c-home.component';
+import { AppointmentRequestsComponent } from './components/adminC-dashboard/appointment-requests/appointment-requests.component';
+import { PatientAvailableAppointmentsComponent } from './components/patient-home/patient-available-appointments/patient-available-appointments.component';
 
 @NgModule({
   declarations: [
@@ -138,6 +141,9 @@ import { TokenInterceptor } from './services/token.interceptor';
     PatientDoctorListingComponent,
     ExaminationComponent,
     OrdinationSelectionComponent,
+    AdminCHomeComponent,
+    AppointmentRequestsComponent,
+    PatientAvailableAppointmentsComponent,
     
   ],
   imports: [
