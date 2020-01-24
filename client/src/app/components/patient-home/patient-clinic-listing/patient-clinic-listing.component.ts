@@ -24,8 +24,6 @@ export class PatientClinicListingComponent implements OnInit {
 	form: FormGroup;
 	filterForm: FormGroup;
 	submitted = false;
-	dateVar: any;
-	TOEVar: any;
 
 	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 	modalData: {
@@ -166,18 +164,11 @@ export class PatientClinicListingComponent implements OnInit {
 	}
 
 	filterClinics(filters) {
-		if(this.notSearched){
-			return this.clinics.filter(clinic =>
-				clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
-				clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
-			);
-		} else {
-			return this.clinicsSearched.filter(clinic =>
-				clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
-				clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
-				&& clinic.type.price.toString().indexOf(filters.price) !== -1
-			);
-		}
+		return this.clinicsSearched.filter(clinic =>
+			clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
+			clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
+			&& clinic.type.price.toString().indexOf(filters.price) !== -1
+		);
 	}
 
 	onSearch() {
@@ -188,14 +179,11 @@ export class PatientClinicListingComponent implements OnInit {
 			return;
 		}
 
-		this.dateVar = this.form.controls.date.value.getTime() / 1000;
-		this.TOEVar = this.form.controls.typeOfExamination.value;
-
 		var criteria = {
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
 			address: this.form.controls.address.value ? this.form.controls.address.value : "",
 			typeOfExamination: this.form.controls.typeOfExamination.value,
-			date: this.form.controls.date.value.getTime() / 1000
+			date: this.form.controls.date.value.getTime().toString().substr(0, 10)
 		}
 
 		this.searchClinics(criteria).then(() => {
@@ -258,8 +246,8 @@ export class PatientClinicListingComponent implements OnInit {
 
 	showDoctors(clinic) {
 		let clinic_id = clinic.id;
-		let dateP = this.dateVar;
-		let TOEP = this.TOEVar;
+		let dateP = this.form.controls.date.value.getTime().toString().substr(0, 13)
+		let TOEP = this.form.controls.typeOfExamination.value ? this.form.controls.typeOfExamination.value : -1;
 		this.router.navigate([`../doctors/${clinic_id}`], { queryParams: { TOE: TOEP, date: dateP }, relativeTo: this.activatedRoute });
 	}
 

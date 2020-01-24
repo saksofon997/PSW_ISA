@@ -6,6 +6,7 @@ import { PatientService } from 'src/app/services/patient.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DoctorService } from 'src/app/services/doctor.service';
+import { StarRatingComponent } from 'ng-starrating';
 
 @Component({
   selector: 'app-patient-doctor-listing',
@@ -33,8 +34,10 @@ export class PatientDoctorListingComponent implements OnInit {
 	filterForm: FormGroup;
 	submitted = false;
 	private sub: any;
+
+	starRatingFilter = 0;
+	starRatingSearch = 0;
 	notSearched = true;
-	sentDate = false;
 
 	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 	modalData: {
@@ -88,7 +91,6 @@ export class PatientDoctorListingComponent implements OnInit {
 
 		if(this.date_param) {
 			date = new Date(this.date_param);
-			this.sentDate = true;
 		}
 
 		this.form = this.formBuilder.group({
@@ -192,11 +194,22 @@ export class PatientDoctorListingComponent implements OnInit {
 		return this.doctors.filter(doctor =>
 			doctor.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
 			doctor.surname.toLowerCase().indexOf(filters.surname.toLowerCase()) !== -1
-			&& (Math.ceil(doctor.numberOfStars/doctor.numberOfReviews)).toString().toLowerCase().indexOf(filters.rating.toLowerCase()) !== -1 //ispraviti na starrating
+			&& (doctor.numberOfStars/doctor.numberOfReviews) >= this.starRatingFilter
 		);
 	}
 
-  	//OTHER METHODS
+	//OTHER METHODS
+	  
+	onRateSearch($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}) {
+		this.starRatingSearch = $event.newValue;
+	}
+
+	onRateFilter($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}) {
+		this.starRatingFilter = $event.newValue;
+		this.filterForm.valueChanges.subscribe(filters => {
+			this.doctorsFiltered = this.filterDoctors(filters);
+		});
+	}
 
     onSearch() {
 
@@ -206,19 +219,14 @@ export class PatientDoctorListingComponent implements OnInit {
 			return;
 		}
 
-		this.date_param = this.form.controls.date.value.getTime() / 1000 ? this.form.controls.date.value.getTime() / 1000: -1;
-
 		var criteria = {
 			clinic_id: this.clinic_id_param,
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
 			surname: this.form.controls.surname.value ? this.form.controls.surname.value : "",
-			rating: this.form.controls.rating.value ? this.form.controls.rating.value : -1,
+			rating: this.starRatingSearch ? this.starRatingSearch : -1,
 			typeOfExamination: this.form.controls.typeOfExamination.value ? this.form.controls.typeOfExamination.value : -1,
-			date: this.form.controls.date.value.getTime() / 1000
+			date: this.form.controls.date.value.getTime().toString().substr(0, 10)
 		}
-
-		if(!this.sentDate && this.notSearched)
-			criteria.date = criteria.date * 1000;
 
 		this.searchDoctors(criteria).then(() => {
 			this.notSearched = false;
@@ -258,9 +266,9 @@ export class PatientDoctorListingComponent implements OnInit {
 		availableTimes = ["0","0"];
 		let available = false;
 
-		this.date_param = this.form.controls.date.value.getTime() / 1000 ? this.form.controls.date.value.getTime() / 1000: -1;
+		let date_param = this.form.controls.date.value.getTime().toString().substr(0, 10);
 
-		this.getAvailableTimes(doctor.id, this.date_param).then(() => {
+		this.getAvailableTimes(doctor.id, date_param).then(() => {
 			
 			if(this.availability.available) {
 				for (let i = 0; i < this.availability.availableTimes.length; i++) {

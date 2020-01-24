@@ -553,7 +553,8 @@ public class DoctorService {
 
         Date startDateTime = new Date(startingTimeStamp * 1000);
         Date endDateTime = new Date((startingTimeStamp+600) * 1000);
-        SimpleDateFormat ft = new SimpleDateFormat("HH:mm:ss");
+
+        Calendar calendar = GregorianCalendar.getInstance();
 
         int shiftStartHour;
         int shiftStartMinute;
@@ -561,6 +562,7 @@ public class DoctorService {
             int[] shiftStart = getHoursAndMinutesFromString(doctor.getShiftStart());
             shiftStartHour = shiftStart[0];
             shiftStartMinute = shiftStart[1];
+            System.out.println("Doctors shift start: " + shiftStartHour + ":" + shiftStartMinute);
         } catch (NumberFormatException e){
             throw e;
         }
@@ -571,6 +573,7 @@ public class DoctorService {
             int[] shiftEnd = getHoursAndMinutesFromString(doctor.getShiftEnd());
             shiftEndHour = shiftEnd[0];
             shiftEndMinute = shiftEnd[1];
+            System.out.println("Doctors shift end: " + shiftEndHour + ":" + shiftEndMinute);
         } catch (NumberFormatException e){
             throw e;
         }
@@ -578,9 +581,10 @@ public class DoctorService {
         int appointmentStartHour;
         int appointmentStartMinute;
         try {
-            int[] appStart = getHoursAndMinutesFromString(ft.format(startDateTime));
-            appointmentStartHour = appStart[0];
-            appointmentStartMinute = appStart[1];
+            calendar.setTime(startDateTime);
+            appointmentStartHour = calendar.get(Calendar.HOUR_OF_DAY);
+            appointmentStartMinute = calendar.get(Calendar.MINUTE);
+            System.out.println("Appointment start: " + appointmentStartHour + ":" + appointmentStartMinute);
         } catch (NumberFormatException e){
             throw e;
         }
@@ -588,9 +592,10 @@ public class DoctorService {
         int appointmentEndHour;
         int appointmentEndMinute;
         try {
-            int[] appEnd = getHoursAndMinutesFromString(ft.format(endDateTime));
-            appointmentEndHour = appEnd[0];
-            appointmentEndMinute = appEnd[1];
+            calendar.setTime(endDateTime);
+            appointmentEndHour = calendar.get(Calendar.HOUR_OF_DAY);
+            appointmentEndMinute = calendar.get(Calendar.MINUTE);
+            System.out.println("Appointment end: " + appointmentEndHour + ":" + appointmentEndMinute);
         } catch (NumberFormatException e){
             throw e;
         }
