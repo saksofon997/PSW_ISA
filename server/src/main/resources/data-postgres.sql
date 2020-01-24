@@ -156,13 +156,13 @@ INSERT INTO public.appointment(
     VALUES (nextval('appointment_id_seq'), 1578823900, 1578825100, 20 * 60 * 1000, 100, 0, 1, 1, 11, 2, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1578823200 , 1578823800, 10 * 60 * 1000, 100, 0, 1, 1, 11, 1, false, false);
+    VALUES (nextval('appointment_id_seq'), 1579957200 , 1579957800, 10 * 60 * 1000, 100, 0, 1, 1, 11, 1, false, false);
 -- INSERT INTO public.appointment(
 --     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
 --     VALUES (nextval('appointment_id_seq'), 1579388400 , 1579737600, 10 * 60 * 1000, 100, 1, 1, 11, 1, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1578870000 , 1578963600, 10 * 60 * 1000, 100, 0, 1, 1, 11, 1, false, false);
+    VALUES (nextval('appointment_id_seq'), 1579960800 , 1579961400, 10 * 60 * 1000, 100, 0, 1, 1, 11, 1, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
     VALUES (nextval('appointment_id_seq'), 1575730800,1575731400, 10 * 60 * 1000, 100, 0, 1, 1, 11, 3, false, false);
@@ -175,6 +175,13 @@ INSERT INTO public.appointment(
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
     VALUES (nextval('appointment_id_seq'), 1576854000,1576854600, 10 * 60 * 1000, 100, 0, 1, 1, 11, 2, true, false);
+
+INSERT INTO public.appointment_request(
+    id, starting_date_and_time, ending_date_and_time, duration, price, doctor_id, clinic_id, patient_id, type_of_examination_id, approved)
+    VALUES (nextval('appointment_request_id_seq'), 1579957200, 1579957800, 10 * 60 * 1000, 500, 9, 1, 11, 3, false);
+    INSERT INTO public.appointment_request(
+    id, starting_date_and_time, ending_date_and_time, duration, price, doctor_id, clinic_id, patient_id, type_of_examination_id, approved)
+    VALUES (nextval('appointment_request_id_seq'), 1579960800, 1579962000, 20 * 60 * 1000, 2000, 10, 1, 11, 2, false);
 
 INSERT INTO public.patients_pending_appointments(
     patient_id, appointment_id)

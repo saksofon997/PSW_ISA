@@ -91,7 +91,7 @@ public class AppointmentService {
         return appointment;
     }
 
-    public void choseAvailableAppointment(Long appointment_id, Long patient_id) {
+    public AppointmentDTO choseAvailableAppointment(Long appointment_id, Long patient_id) {
         Optional<Patient> patient = patientRepository.findById(patient_id);
         if (!patient.isPresent()) {
             throw new ValidationException("No patient with that ID!");
@@ -105,6 +105,8 @@ public class AppointmentService {
             Appointment saved = appointmentRepository.save(appointment);
             patient.get().getPendingAppointments().add(saved);
             patientRepository.save(patient.get());
+
+            return new AppointmentDTO(saved);
         } catch (Exception e) {
             throw new NoSuchElementException();
         }

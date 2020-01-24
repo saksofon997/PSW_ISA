@@ -182,6 +182,7 @@ export class UserService {
 					catchError((response) => {
 						this.removeUser();
 						this.removeToken();
+						this.router.navigate(['/login']);
 						return throwError(response.error);
 					})
 				);

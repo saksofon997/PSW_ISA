@@ -116,7 +116,7 @@ const routes: Routes = [
 			{path: 'new_available_appointment', component: NewAvailableAppointmentPageComponent},
 			{path: 'vacation_requests', component: VacationRequestsComponent},
 
-			{path: 'ordinations_TEMP', component: OrdinationSelectionComponent}, // Za testiranje, uklopiti kasnije kad se odrade appointment requestovi
+			{path: 'ordination_selection', component: OrdinationSelectionComponent}, // Za testiranje, uklopiti kasnije kad se odrade appointment requestovi
 
 
 		],

@@ -24,6 +24,7 @@ export class NewAppointmentPageComponent implements OnInit {
 	form: FormGroup;
 	submitted: boolean;
 	private sub: any;
+	now: Date;
 	constructor(private formBuilder: FormBuilder,
 		private userService: UserService,
 		private clinicService: ClinicService,
@@ -34,8 +35,11 @@ export class NewAppointmentPageComponent implements OnInit {
 
 	ngOnInit() {
 		this.activatedRoute.queryParams.subscribe(params => {
-			let time = params['time'];
-			if (time) {
+			let flag = params['time'];
+			let time = 1000 * 60 * 10;
+			let date = new Date();
+			this.now = new Date(Math.round(date.getTime() / time) * time);
+			if (flag) {
 				this.startAppointmentNow = true;
 			} else {
 				this.startAppointmentNow = false;

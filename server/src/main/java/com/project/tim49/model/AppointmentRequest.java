@@ -17,7 +17,7 @@ public class AppointmentRequest {
     @Column(name = "approved", nullable = false)
     private boolean approved;
 
-    @Column(name = "startingDateAndTime", nullable = false)
+    @Column(name = "starting_date_and_time", nullable = false)
     private long startingDateAndTime;
 
     @Column(name = "ending_date_and_time", nullable = false)

@@ -30,10 +30,10 @@ export class AppointmentRequestsComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.activatedRoute.params.subscribe((params) => {
-			this.clinicID = params.id;
-			this.clinicName = params.name;
-		});
+		// this.activatedRoute.params.subscribe((params) => {
+		// 	this.clinicID = params.id;
+		// 	this.clinicName = params.name;
+		// });
 	}
 
 	getAppointmentRequests() {
@@ -50,6 +50,14 @@ export class AppointmentRequestsComponent implements OnInit {
 				alert(error);
 			}
 		);
+	}
+
+	selectOrdination(appointment){
+		if (this.router.url.indexOf('appointment_requests') === -1){
+			this.router.navigate(['ordination_selection'], { relativeTo: this.activatedRoute, state: {data: appointment}});
+		} else {
+			this.router.navigate(['../ordination_selection'], { relativeTo: this.activatedRoute, state: {data: appointment}});
+		}
 	}
 
 	// TODO: povezati sa ordinations_TEMP i izborom sale kao i odbijanje zahteva

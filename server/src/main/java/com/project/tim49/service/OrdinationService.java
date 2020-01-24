@@ -210,24 +210,59 @@ public class OrdinationService {
 
         if (selectedAppointmentsByDate.isEmpty()) {
             ordinationDTO.setAvailable(true);
-            ordinationDTO.getAvailablePeriods().add(dateStartTimestamp + ":" + dateEndTimestamp);
+            long periodStart = dateStartTimestamp;
+            long periodEnd = periodStart + 10 * 60;
+            while (periodEnd <= dateEndTimestamp){
+                ordinationDTO.getAvailablePeriods().add(periodStart + ":" + periodEnd);
+                periodStart += 10 * 60;
+                periodEnd += 10 * 60;
+            }
+            //ordinationDTO.getAvailablePeriods().add(dateStartTimestamp + ":" + dateEndTimestamp);
         } else {
             if (selectedAppointmentsByDate.get(0).getStartingDateAndTime() > dateStartTimestamp) {
-                ordinationDTO.getAvailablePeriods().add(dateStartTimestamp + ":" + selectedAppointmentsByDate.get(0).getStartingDateAndTime());
+                long periodStart = dateStartTimestamp;
+                long periodEnd = periodStart + 10 * 60;
+                while (periodEnd <= selectedAppointmentsByDate.get(0).getStartingDateAndTime()){
+                    ordinationDTO.getAvailablePeriods().add(periodStart + ":" + periodEnd);
+                    periodStart += 10 * 60;
+                    periodEnd += 10 * 60;
+                }
+                //ordinationDTO.getAvailablePeriods().add(dateStartTimestamp + ":" + selectedAppointmentsByDate.get(0).getStartingDateAndTime());
             }
 
             if (selectedAppointmentsByDate.size() > 1) {
                 for (int i = 0; i < selectedAppointmentsByDate.size() - 1; i++) {
                     if (selectedAppointmentsByDate.get(i).getEndingDateAndTime() != selectedAppointmentsByDate.get(i + 1).getStartingDateAndTime()) {
-                        ordinationDTO.getAvailablePeriods().add(selectedAppointmentsByDate.get(i).getEndingDateAndTime() + ":" + selectedAppointmentsByDate.get(i + 1).getStartingDateAndTime());
+                        long periodStart = selectedAppointmentsByDate.get(i).getEndingDateAndTime();
+                        long periodEnd = periodStart + 10 * 60;
+                        while (periodEnd <= selectedAppointmentsByDate.get(i + 1).getStartingDateAndTime()){
+                            ordinationDTO.getAvailablePeriods().add(periodStart + ":" + periodEnd);
+                            periodStart += 10 * 60;
+                            periodEnd += 10 * 60;
+                        }
+                        //ordinationDTO.getAvailablePeriods().add(selectedAppointmentsByDate.get(i).getEndingDateAndTime() + ":" + selectedAppointmentsByDate.get(i + 1).getStartingDateAndTime());
                     }
                 }
                 if (selectedAppointmentsByDate.get(selectedAppointmentsByDate.size() - 1).getEndingDateAndTime() < dateEndTimestamp) {
-                    ordinationDTO.getAvailablePeriods().add(selectedAppointmentsByDate.get(selectedAppointmentsByDate.size() - 1).getEndingDateAndTime() + ":" + dateEndTimestamp);
+                    long periodStart = selectedAppointmentsByDate.get(selectedAppointmentsByDate.size() - 1).getEndingDateAndTime();
+                    long periodEnd = periodStart + 10 * 60;
+                    while (periodEnd <= dateEndTimestamp){
+                        ordinationDTO.getAvailablePeriods().add(periodStart + ":" + periodEnd);
+                        periodStart += 10 * 60;
+                        periodEnd += 10 * 60;
+                    }
+                    //ordinationDTO.getAvailablePeriods().add(selectedAppointmentsByDate.get(selectedAppointmentsByDate.size() - 1).getEndingDateAndTime() + ":" + dateEndTimestamp);
                 }
             } else {
                 if (selectedAppointmentsByDate.get(0).getEndingDateAndTime() < dateEndTimestamp) {
-                    ordinationDTO.getAvailablePeriods().add(selectedAppointmentsByDate.get(0).getEndingDateAndTime() + ":" + dateEndTimestamp);
+                    long periodStart = selectedAppointmentsByDate.get(0).getEndingDateAndTime();
+                    long periodEnd = periodStart + 10 * 60;
+                    while (periodEnd <= dateEndTimestamp){
+                        ordinationDTO.getAvailablePeriods().add(periodStart + ":" + periodEnd);
+                        periodStart += 10 * 60;
+                        periodEnd += 10 * 60;
+                    }
+                    //ordinationDTO.getAvailablePeriods().add(selectedAppointmentsByDate.get(0).getEndingDateAndTime() + ":" + dateEndTimestamp);
                 }
             }
         }
