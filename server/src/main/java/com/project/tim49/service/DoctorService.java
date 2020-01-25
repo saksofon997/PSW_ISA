@@ -562,7 +562,7 @@ public class DoctorService {
             int[] shiftStart = getHoursAndMinutesFromString(doctor.getShiftStart());
             shiftStartHour = shiftStart[0];
             shiftStartMinute = shiftStart[1];
-            System.out.println("Doctors shift start: " + shiftStartHour + ":" + shiftStartMinute);
+            //System.out.println("Doctors shift start: " + shiftStartHour + ":" + shiftStartMinute);
         } catch (NumberFormatException e){
             throw e;
         }
@@ -573,7 +573,7 @@ public class DoctorService {
             int[] shiftEnd = getHoursAndMinutesFromString(doctor.getShiftEnd());
             shiftEndHour = shiftEnd[0];
             shiftEndMinute = shiftEnd[1];
-            System.out.println("Doctors shift end: " + shiftEndHour + ":" + shiftEndMinute);
+            //System.out.println("Doctors shift end: " + shiftEndHour + ":" + shiftEndMinute);
         } catch (NumberFormatException e){
             throw e;
         }
@@ -584,7 +584,7 @@ public class DoctorService {
             calendar.setTime(startDateTime);
             appointmentStartHour = calendar.get(Calendar.HOUR_OF_DAY);
             appointmentStartMinute = calendar.get(Calendar.MINUTE);
-            System.out.println("Appointment start: " + appointmentStartHour + ":" + appointmentStartMinute);
+            //System.out.println("Appointment start: " + appointmentStartHour + ":" + appointmentStartMinute);
         } catch (NumberFormatException e){
             throw e;
         }
@@ -595,7 +595,7 @@ public class DoctorService {
             calendar.setTime(endDateTime);
             appointmentEndHour = calendar.get(Calendar.HOUR_OF_DAY);
             appointmentEndMinute = calendar.get(Calendar.MINUTE);
-            System.out.println("Appointment end: " + appointmentEndHour + ":" + appointmentEndMinute);
+            //System.out.println("Appointment end: " + appointmentEndHour + ":" + appointmentEndMinute);
         } catch (NumberFormatException e){
             throw e;
         }
