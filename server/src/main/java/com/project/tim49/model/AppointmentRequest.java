@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 public class AppointmentRequest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,22 +20,29 @@ public class AppointmentRequest {
     @Column(name = "startingDateAndTime", nullable = false)
     private long startingDateAndTime;
 
+    @Column(name = "ending_date_and_time", nullable = false)
+    private long endingDateAndTime;
+
     @Column(name = "duration", nullable = false)
     private long duration;
 
     @Column(name = "price", nullable = false)
     private double price;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "clinic_id")
+    public Clinic clinic;
+
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "patient_id")
     public Patient patient;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ordination_id", referencedColumnName = "id")
-    public Ordination ordination;
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "doctor_id")
+    public Doctor doctor;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "typeOfExamination_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_of_examination_id", referencedColumnName = "id")
     public TypeOfExamination typeOfExamination;
 
     public Long getId() {
@@ -61,6 +69,14 @@ public class AppointmentRequest {
         this.startingDateAndTime = startingDateAndTime;
     }
 
+    public long getEndingDateAndTime() {
+        return endingDateAndTime;
+    }
+
+    public void setEndingDateAndTime(long endingDateAndTime) {
+        this.endingDateAndTime = endingDateAndTime;
+    }
+
     public long getDuration() {
         return duration;
     }
@@ -77,20 +93,28 @@ public class AppointmentRequest {
         this.price = price;
     }
 
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
     public Patient getPatient() {
         return patient;
     }
 
     public void setPatient(Patient patient) {
         this.patient = patient;
-    }
-
-    public Ordination getOrdination() {
-        return ordination;
-    }
-
-    public void setOrdination(Ordination ordination) {
-        this.ordination = ordination;
     }
 
     public TypeOfExamination getTypeOfExamination() {

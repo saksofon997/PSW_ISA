@@ -1,27 +1,22 @@
 <div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
     <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
-        <h3 class="display-8">Available appointments</h3>
-        <p class="lead">Here you can see, add or delete available appointments.</p>
+        <h3 class="display-8">Appointment requests</h3>
+        <p class="lead">Here you can work with appointment requests.</p>
     </div>
 </div>
 <table class="table">
     <thead>
         <tr>
             <th scope="col" *ngFor='let param of appointmentHeaders'>{{param}}</th>
-            <th scope="col">
-                <button type="button" class="btn btn-light" (click)="addNewAppointment()">Add</button>
-            </th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor='let appointment of appointments'>
-            <td> {{appointment.doctors[0].name + " " + appointment.doctors[0].surname}} </td>
-            <td> {{appointment.ordination.name + " - " + appointment.ordination.number}} </td>
+            <td> {{ appointment.doctors[0] ? appointment.doctors[0].name + " " + appointment.doctors[0].surname : "" }} </td>
+            <td> {{ appointment.patient ? appointment.patient.name + " " + appointment.patient.surname : "" }} </td>
             <td> {{appointment.typeOfExamination.name}} </td>
             <td> {{appointment.formatedDateAndTime}} </td>
             <td> {{appointment.duration / 1000 / 60}} </td>
-            <td> {{appointment.price}} </td>
-            <td> {{appointment.discount}} </td>
             <td>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -30,7 +25,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" style="cursor: pointer;"
-                            (click)="deleteAppointment(appointment)">Delete</a>
+                            (click)="rejectRequest(appointment)">Reject</a>
                     </div>
                 </div>
             </td>

@@ -2,6 +2,7 @@ package com.project.tim49.service;
 
 import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.DoctorDTO;
+import com.project.tim49.dto.PatientDTO;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,7 @@ public class AppointmentService {
         appointment.setEndingDateAndTime(appointmentDTO.getStartingDateAndTime() + appointmentDTO.getDuration()/1000);
         appointment.setDuration(appointmentDTO.getDuration());
         appointment.setPrice(appointmentDTO.getPrice());
+        appointment.setDiscount(appointmentDTO.getDiscount());
         appointment.setCompleted(false);
 
         TypeOfExamination type = typeOfExaminationRepository.findById(appointmentDTO.getTypeOfExamination().getId()).get();
@@ -87,6 +89,25 @@ public class AppointmentService {
         appointment.setDoctors(doctors);
 
         return appointment;
+    }
+
+    public void choseAvailableAppointment(Long appointment_id, Long patient_id) {
+        Optional<Patient> patient = patientRepository.findById(patient_id);
+        if (!patient.isPresent()) {
+            throw new ValidationException("No patient with that ID!");
+        }
+        Appointment appointment = appointmentRepository.getOne(appointment_id);
+        if (appointment.getPatient() != null) {
+            throw new ValidationException("Appointment already taken");
+        }
+        try {
+            appointment.setPatient(patient.get());
+            Appointment saved = appointmentRepository.save(appointment);
+            patient.get().getPendingAppointments().add(saved);
+            patientRepository.save(patient.get());
+        } catch (Exception e) {
+            throw new NoSuchElementException();
+        }
     }
 
     public void deleteAppointment(Long id) {

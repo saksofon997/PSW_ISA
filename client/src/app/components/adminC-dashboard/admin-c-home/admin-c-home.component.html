@@ -1,0 +1,21 @@
+<div class='row'>
+	<ul class="nav nav-pills container" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+		<li class="nav-item">
+			<a class="nav-link active" data-toggle="pill" [routerLink]="['./appointment_requests']" href="#v-pills-calendar" role="tab"
+				aria-controls="v-pills-home" aria-selected="true">Appointment requests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" [routerLink]="['./available_appointments']" role="tab" aria-controls="v-pills-home"
+              aria-selected="true">Available appointments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" [routerLink]="['./vacation_requests']" role="tab" aria-controls="v-pills-home"
+              aria-selected="true">Vacation requests</a>
+          </li>
+	</ul>
+
+	<div class="tab-content " style='width: 100%;' id="v-pills-tabContent">
+		<router-outlet></router-outlet>
+	</div>
+
+</div>

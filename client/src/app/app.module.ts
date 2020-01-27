@@ -75,6 +75,10 @@ import {MatButtonModule} from '@angular/material/button';
 import { OrdinationSelectionComponent } from './components/adminC-dashboard/ordination-selection/ordination-selection.component';
 import { VacationRequestsComponent } from './components/adminC-dashboard/vacation-requests/vacation-requests.component';
 import { PatientDoctorListingComponent } from './components/patient-home/patient-doctor-listing/patient-doctor-listing.component';
+import { TokenInterceptor } from './services/token.interceptor';
+import { AdminCHomeComponent } from './components/adminC-dashboard/admin-c-home/admin-c-home.component';
+import { AppointmentRequestsComponent } from './components/adminC-dashboard/appointment-requests/appointment-requests.component';
+import { PatientAvailableAppointmentsComponent } from './components/patient-home/patient-available-appointments/patient-available-appointments.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +141,10 @@ import { PatientDoctorListingComponent } from './components/patient-home/patient
     PatientDoctorListingComponent,
     ExaminationComponent,
     OrdinationSelectionComponent,
+    AdminCHomeComponent,
+    AppointmentRequestsComponent,
+    PatientAvailableAppointmentsComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -167,8 +175,13 @@ import { PatientDoctorListingComponent } from './components/patient-home/patient
   providers: [CookieService, UserService,
     {
       provide: APP_INITIALIZER,
-      useFactory: (userService: UserService) => function() { /*userService.refreshToken()*/},
+      useFactory: (userService: UserService) => function() { userService.refreshToken()},
       deps: [UserService],
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
       multi: true
     }], //UserService, AuthGuardService
   bootstrap: [AppComponent],

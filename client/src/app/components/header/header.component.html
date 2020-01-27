@@ -21,6 +21,10 @@
                     <a class="navbar-brand" routerLink="/adminCC">Clinical System</a> </ng-container>
             </ng-template>
             <ng-template #sixth>
+                <ng-container *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINC')!= -1; else seventh"> 
+                    <a class="navbar-brand" routerLink="/clinic_admin_home">Clinical System</a> </ng-container>
+            </ng-template>
+            <ng-template #seventh>
                 <ng-container> <a class="navbar-brand" routerLink="/">Clinical System</a> </ng-container>
             </ng-template>
 
@@ -55,6 +59,11 @@
                              </ng-container>
                         </ng-template>
                         <ng-template #sixth>
+                            <ng-container  *ngIf="userService.checkLoggedIn().roles.indexOf('ADMINC')!= -1; else seventh">
+                                <a class="nav-link" routerLink="/clinic_admin_home">Home</a>
+                             </ng-container>
+                        </ng-template>
+                        <ng-template #seventh>
                             <ng-container>
                                 <a class="nav-link" routerLink="/">Home</a>
                              </ng-container>

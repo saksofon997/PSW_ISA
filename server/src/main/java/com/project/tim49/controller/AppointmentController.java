@@ -124,4 +124,19 @@ public class AppointmentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
+    @PutMapping(path="/choseAvailableAppointment/{appointment_id}/{patient_id}")
+    @PreAuthorize("hasAuthority('PATIENT')")
+    public ResponseEntity choseAvailableAppointment(@PathVariable("appointment_id") Long appointment_id, @PathVariable("patient_id") Long patient_id) {
+        if (appointment_id == null || patient_id == null){
+            return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);
+        }
+
+        try{
+            appointmentService.choseAvailableAppointment(appointment_id, patient_id);
+            return new ResponseEntity<>(appointment_id, HttpStatus.OK);
+        } catch (ValidationException | NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
 }

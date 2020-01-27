@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { ClinicService } from 'src/app/services/clinic.service';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
-  selector: 'app-available-appointment-listing',
-  templateUrl: './available-appointment-listing.component.html',
-  styleUrls: ['./available-appointment-listing.component.css']
+	selector: 'app-patient-available-appointments',
+	templateUrl: './patient-available-appointments.component.html',
+	styleUrls: ['./patient-available-appointments.component.css']
 })
-export class AvailableAppointmentListingComponent implements OnInit {
+export class PatientAvailableAppointmentsComponent implements OnInit {
 	appointmentHeaders = ['Doctor', 'Ordination name and number', 'Type', 'Date and time', 'Duration (minutes)', 'Price', 'Discount'];
 	appointments: any;
 	navigationSubscription: any;
@@ -24,20 +24,21 @@ export class AvailableAppointmentListingComponent implements OnInit {
 	) {
 		this.navigationSubscription = this.router.events.subscribe((e: any) => {
 			if (e instanceof NavigationEnd) {
-				this.clinicID = this.userService.getUser().clinic_id;
-				this.getAppointments();
+				this.activatedRoute.params.subscribe((params) => {
+					this.clinicID = +params['clinic_id'];
+					this.getAppointments();
+				});
+
 			}
 		});
 	}
 
 	ngOnInit() {
 		this.activatedRoute.params.subscribe((params) => {
-			this.clinicID = params.id;
-			this.clinicName = params.name;
+			this.clinicID = +params['clinic_id'];
 		});
 	}
 	getAppointments() {
-		this.clinicID = this.userService.getUser().clinic_id;
 		this.appointmentService.getClinicAvailableAppointments(this.clinicID).subscribe(
 			(data) => {
 				this.appointments = data;
@@ -52,24 +53,17 @@ export class AvailableAppointmentListingComponent implements OnInit {
 		);
 	}
 
-	addNewAppointment() {
-		this.router.navigate(['../new_available_appointment'], { relativeTo: this.activatedRoute });
-	}
-
-	deleteAppointment(appointment) {
-		this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to delete available appointment: ' + appointment.doctors[0].name+' '+appointment.doctors[0].surname+' '+appointment.ordination.name  + '?', false)
-			.then((confirmed) => {
-				if (confirmed.submited) {
-					this.appointmentService.deleteAvailableAppointment(appointment.id).subscribe(
-						(data) => {
-							this.getAppointments();
-						},
-						(error) => {
-							alert(error);
-						}
-					)
-				}
-			});
+	chooseAvailableAppointment(appointment) {
+		let patient_id = this.userService.getUser().id;
+		this.appointmentService.choseAvailableAppointment(appointment.id, patient_id).subscribe(
+			(data) => {
+				alert("Successfully selected an appointment");
+				this.getAppointments();
+			},
+			(error) => {
+				alert(error);
+			}
+		);
 	}
 
 	timeConverter(UNIX_timestamp) {

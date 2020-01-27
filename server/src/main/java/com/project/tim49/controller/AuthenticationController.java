@@ -41,6 +41,7 @@ public class AuthenticationController {
     @Autowired
     TokenUtils tokenUtils;
 
+    @Lazy
     @Autowired
     private AuthenticationManager authenticationManager;
 

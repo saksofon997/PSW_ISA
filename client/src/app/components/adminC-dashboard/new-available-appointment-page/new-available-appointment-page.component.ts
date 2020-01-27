@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppointmentService } from 'src/app/services/appointment.service';
 
 @Component({
-  selector: 'app-new-available-appointment-page',
-  templateUrl: './new-available-appointment-page.component.html',
-  styleUrls: ['./new-available-appointment-page.component.css']
+	selector: 'app-new-available-appointment-page',
+	templateUrl: './new-available-appointment-page.component.html',
+	styleUrls: ['./new-available-appointment-page.component.css']
 })
 export class NewAvailableAppointmentPageComponent implements OnInit {
 	doctors: any;
@@ -33,13 +33,13 @@ export class NewAvailableAppointmentPageComponent implements OnInit {
 
 	loadData() {
 		let promise = new Promise((resolve, reject) => {
-				this.loadTypesOfExamination().then(() => {
-					this.loadOrdinations().then(() => {
-						this.loadClinicDoctors().then(() => {
-							resolve();
-						}, () => reject());
+			this.loadTypesOfExamination().then(() => {
+				this.loadOrdinations().then(() => {
+					this.loadClinicDoctors().then(() => {
+						resolve();
 					}, () => reject());
 				}, () => reject());
+			}, () => reject());
 
 		});
 		return promise;
@@ -85,8 +85,9 @@ export class NewAvailableAppointmentPageComponent implements OnInit {
 			typeOfExamination: [, [Validators.required,]],
 			ordination: [, [Validators.required,]],
 			price: [, [Validators.required,]],
+			discount: [0, []],
 			doctor: [, [Validators.required,]]
-		});
+		}, { validator: checkIfDiscountIsLargerThanPrice });
 
 	}
 
@@ -97,6 +98,12 @@ export class NewAvailableAppointmentPageComponent implements OnInit {
 			return;
 		}
 		this.form.controls['price'].setValue(type.price);
+	}
+
+	discountValidator(control: FormControl) {
+		if (this.form.controls['discount'].value > this.form.controls['price'].value) {
+			return null
+		}
 	}
 
 	onSubmit() {
@@ -119,8 +126,9 @@ export class NewAvailableAppointmentPageComponent implements OnInit {
 			typeOfExamination: { id: this.form.controls.typeOfExamination.value },
 			ordination: { id: this.form.controls.ordination.value },
 			price: this.form.controls.price.value,
+			discount: this.form.controls.discount.value,
 			clinic: { id: clinic_id },
-			doctors: [{id: this.form.controls.doctor.value}]
+			doctors: [{ id: this.form.controls.doctor.value }]
 		}
 
 
@@ -130,7 +138,15 @@ export class NewAvailableAppointmentPageComponent implements OnInit {
 		);
 
 	}
-	cancelChanges(){
+	cancelChanges() {
 		this.router.navigate(['../available_appointments'], { relativeTo: this.activatedRoute });
+	}
+}
+
+function checkIfDiscountIsLargerThanPrice(c: AbstractControl) {
+	if (c.get('discount').value <= c.get('price').value) {
+		return null;
+	} else {
+		return { 'invalidDiscount': true };
 	}
 }
