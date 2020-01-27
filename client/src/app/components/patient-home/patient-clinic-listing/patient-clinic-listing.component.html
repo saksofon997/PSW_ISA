@@ -156,8 +156,7 @@
         <tr *ngFor='let clinic of clinicsFiltered'>
             <td> {{clinic.name}} </td>
             <td> {{clinic.address}} </td>
-            <td> {{clinic.id}} <!--{{clinic.type.price}} --></td>
-            <!-- Prikaz tacnog vremena koje je izabrano?? -->
+            <td> {{clinic.typeOfExamination.price}}</td>
             <td>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -166,17 +165,18 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show availible doctors</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show available doctors</a>
                     </div>
                 </div>
             </td>
         </tr>
     </tbody>
 </table>
+<br><br>
 
 <ng-template #modalContent let-close="close">
     <div class="modal-header">
-        <h4 class="modal-title">Clinic Info</h4>
+        <h4 class="modal-title">Clinic Information</h4>
         <button type="button" class="close" (click)="close()">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -191,7 +191,7 @@
                         <p class="card-text"> {{modalData.clinicCity}} </p><hr style="width:50%">
                         <p class="card-text"> {{modalData.clinicState}} </p><hr style="width:50%">
                         <p class="card-text text-muted">Rating:</p><hr style="width:50%">
-                        <p class="card-text"> {{modalData.clinicID}} </p><hr style="width:50%"><br>
+                        <star-rating value='{{modalData.rating}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="24px" readonly="true"></star-rating><hr style="width:50%"><br>
                         <p class="card-text" style="padding: 5px 25px 5px;"> {{modalData.clinicDescription}} </p>
                     </div>
                 </div>

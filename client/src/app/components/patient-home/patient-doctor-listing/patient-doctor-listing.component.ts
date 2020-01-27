@@ -6,6 +6,7 @@ import { PatientService } from 'src/app/services/patient.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DoctorService } from 'src/app/services/doctor.service';
+import { StarRatingComponent } from 'ng-starrating';
 
 @Component({
   selector: 'app-patient-doctor-listing',
@@ -16,7 +17,10 @@ export class PatientDoctorListingComponent implements OnInit {
 
 	doctors: any;
 	doctorHeaders = ['Name', 'Surname', 'Rating'];
-	availibleApptHeaders = ['From', 'To'];
+
+	availibleApptHeaders = ['From'];
+	availability: any;
+
 	typesOfExamination: any;
 	doctorsFiltered: any;
 
@@ -30,10 +34,14 @@ export class PatientDoctorListingComponent implements OnInit {
 	filterForm: FormGroup;
 	submitted = false;
 	private sub: any;
+
+	starRatingFilter = 0;
+	starRatingSearch = 0;
 	notSearched = true;
 
 	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 	modalData: {
+		clinicID: any;
 		doctorID: any;
 		doctorName: any;
 		doctorSurname: any;
@@ -41,6 +49,9 @@ export class PatientDoctorListingComponent implements OnInit {
 		doctorPhone: any;
 		doctorShiftStart: any;
 		doctorShiftEnd: any;
+		availableTimes: any;
+		available: any;
+		rating: any;
 		action: string;
 	};
 
@@ -78,8 +89,9 @@ export class PatientDoctorListingComponent implements OnInit {
 	createFormGroups() {
 		let date = new Date();
 
-		if(this.date_param)
+		if(this.date_param) {
 			date = new Date(this.date_param);
+		}
 
 		this.form = this.formBuilder.group({
 			date: [date, [Validators.required,]],
@@ -94,8 +106,9 @@ export class PatientDoctorListingComponent implements OnInit {
 			rating: [""],
 		});
 
-		if(this.TOE_param)
+		if(this.TOE_param) {
 			this.form.controls['typeOfExamination'].setValue(this.TOE_param);
+		}
 	}
 
 	loadData(clinic_id) {
@@ -160,8 +173,8 @@ export class PatientDoctorListingComponent implements OnInit {
 				this.doctorsFiltered.sort((a, b) => (a.surname > b.surname) ? 1 : -1)
 				break;
 			}
-			case "rating": { //TODO, doctor rating!!!
-				this.doctorsFiltered.sort((a, b) => (a.id > b.id) ? 1 : -1)
+			case "rating": {
+				this.doctorsFiltered.sort((a, b) => ((a.numberOfStars/a.numberOfReviews) > (b.numberOfStars/b.numberOfReviews)) ? 1 : -1)
 				break;
 			}
 			default: {
@@ -181,18 +194,24 @@ export class PatientDoctorListingComponent implements OnInit {
 		return this.doctors.filter(doctor =>
 			doctor.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
 			doctor.surname.toLowerCase().indexOf(filters.surname.toLowerCase()) !== -1
-			&& (Math.ceil(doctor.numberOfStars/doctor.numberOfReviews)).toString().indexOf(filters.rating) !== -1
+			&& (doctor.numberOfStars/doctor.numberOfReviews) >= this.starRatingFilter
 		);
 	}
 
-  	//OTHER METHODS
+	//OTHER METHODS
+	  
+	onRateSearch($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}) {
+		this.starRatingSearch = $event.newValue;
+	}
 
-  onSearch() {
+	onRateFilter($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}) {
+		this.starRatingFilter = $event.newValue;
+		this.filterForm.valueChanges.subscribe(filters => {
+			this.doctorsFiltered = this.filterDoctors(filters);
+		});
+	}
 
-		//TESTING
-		this.notSearched = !this.notSearched;
-		return;
-		//TESTING
+    onSearch() {
 
 		this.submitted = true;
 
@@ -204,35 +223,93 @@ export class PatientDoctorListingComponent implements OnInit {
 			clinic_id: this.clinic_id_param,
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
 			surname: this.form.controls.surname.value ? this.form.controls.surname.value : "",
-			rating: this.form.controls.rating.value ? this.form.controls.rating.value : "",
-			typeOfExamination: {id: this.form.controls.typeOfExamination.value},
-			date: this.form.controls.date.value.getTime() / 1000
+			rating: this.starRatingSearch ? this.starRatingSearch : -1,
+			typeOfExamination: this.form.controls.typeOfExamination.value ? this.form.controls.typeOfExamination.value : -1,
+			date: this.form.controls.date.value.getTime().toString().substr(0, 10)
 		}
 
-		this.doctorService.searchDoctors(criteria).subscribe(
-			(data) => {
-				this.doctors = data;
-				this.doctorsFiltered = data;
-			},
-			(error) => {
-				alert(error);
-			}
-		)
+		this.searchDoctors(criteria).then(() => {
+			this.notSearched = false;
+		}, () => alert("Error searching doctors"))
+	}
+
+	searchDoctors(criteria: any) {
+		let promise = new Promise((resolve, reject) => {
+			this.doctorService.searchDoctors(criteria).subscribe(
+				(data) => {
+					this.doctors = data;
+					this.doctorsFiltered = data;
+					resolve();
+				},
+				(error) => {
+					alert(error);
+					reject();
+				}
+			);
+		});
+		return promise;
 	}
 
 	showDoctorInfo(doctor) {
+
 		let action = "Opened";
-		let doctorID = doctor.id; //rating
+		let clinicID = this.clinic_id_param;
+		let doctorID = doctor.id;
 		let doctorName = doctor.name;
 		let doctorSurname = doctor.surname
 		let doctorEmail = doctor.email;
 		let doctorPhone = doctor.phoneNumber;
 		let doctorShiftStart = doctor.shiftStart;
 		let doctorShiftEnd = doctor.shiftEnd;
-		this.modalData = { doctorID, doctorName, doctorSurname, doctorEmail, doctorPhone, doctorShiftStart, doctorShiftEnd, action };
-		this.modal.open(this.modalContent, { size: 'xl' });
+		let rating = doctor.numberOfStars / doctor.numberOfReviews;
+		let availableTimes: string[];
+		availableTimes = ["0","0"];
+		let available = false;
 
-		//show availible appointments
+		let date_param = this.form.controls.date.value.getTime().toString().substr(0, 10);
+
+		this.getAvailableTimes(doctor.id, date_param).then(() => {
+			
+			if(this.availability.available) {
+				for (let i = 0; i < this.availability.availableTimes.length; i++) {
+					availableTimes[i] = this.timeConverter(this.availability.availableTimes[i]);
+				}
+				available = true;
+			}
+
+			this.modalData = { clinicID, doctorID, doctorName, doctorSurname, doctorEmail, doctorPhone, doctorShiftStart, doctorShiftEnd, availableTimes, available, rating, action };
+			this.modal.open(this.modalContent, { size: 'xl' });
+
+		}, () => alert("Error getting availability"))
+	}
+
+	getAvailableTimes(id: any, date: any) {
+		let promise = new Promise((resolve, reject) => {
+			this.doctorService.getAvailability(id, date).subscribe(
+				(data) => {
+					this.availability = data;
+					resolve();
+				},
+				(error) => {
+					console.log(error);
+					reject();
+				}
+			);
+		});
+		return promise;
+	}
+
+	timeConverter(a) {
+		a = new Date(a * 1000)
+		var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		var year = a.getFullYear();
+		var month = months[a.getMonth()];
+		var date = a.getDate();
+		var hour = a.getHours();
+		var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
+		var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
+		var time = hour + ':' + min;
+		return time;
 	}
 
   close() {

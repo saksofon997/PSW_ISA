@@ -32,9 +32,7 @@
           </div>
           <div class="form-group row">
               <label class="col-sm-2 col-form-label font-weight-bold" for="rating">Rating: </label>
-              <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-                  <input type="text" class="form-control" formControlName="rating" style="border: 0;" />
-              </div>
+              <star-rating value='{{starRatingFilter}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="22px" readonly="false" (rate)="onRateFilter($event)"></star-rating>
           </div>
       </form>
   </div>
@@ -58,10 +56,8 @@
 
               <div class="form-group row">
                 <label class="col-sm-2 col-form-label font-weight-bold" for="rating">Rating: </label>
-                <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-                    <input type="text" class="form-control" formControlName="rating" style="border: 0;" />
-                </div>
-            </div>
+                <star-rating value='{{starRatingSearch}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="22px" readonly="false" (rate)="onRateSearch($event)"></star-rating>
+              </div>
 
               <div class="form-group row">
                   <label for="typeOfExamination" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Type of
@@ -124,7 +120,7 @@
       <tr *ngFor='let doctor of doctorsFiltered'>
           <td> {{doctor.name}} </td>
           <td> {{doctor.surname}} </td>
-          <td> {{doctor.id}} </td>
+          <td> <star-rating value='{{doctor.numberOfStars / doctor.numberOfReviews}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="20px" readonly="true"></star-rating> </td>
           <td>
               <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -132,17 +128,18 @@
                       Options
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctorInfo(doctor)">Show availible appointments</a>
+                      <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctorInfo(doctor)">Show more</a>
                   </div>
               </div>
           </td>
       </tr>
   </tbody>
 </table>
+<br><br>
 
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
-      <h4 class="modal-title">Availible appointments</h4>
+      <h4 class="modal-title">More info</h4>
       <button type="button" class="close" (click)="close()">
           <span aria-hidden="true">&times;</span>
       </button>
@@ -158,29 +155,28 @@
                     <p class="card-text text-muted">Working hours:</p><hr style="width:50%">
                     <p class="card-text"> {{modalData.doctorShiftStart}} - {{modalData.doctorShiftEnd}} </p><hr style="width:50%">
                     <p class="card-text text-muted">Rating:</p><hr style="width:50%">
-                    <p class="card-text"> {{modalData.doctorID}} </p><hr style="width:50%"><br>
+                    <star-rating value='{{modalData.rating}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="24px" readonly="true"></star-rating><hr style="width:50%"><br>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col" *ngIf="!notSearched">
             <div class="card" style="height: 32em;">
                 <div class="card-header text-center text-muted">
-                    <label class="card-text">Availible times</label>
+                    <label class="card-text">Availability</label>
                 </div>
-                <div class="card-body text-center">
-                    <table style="width: 100%;">
+                <div class="card-body text-center" style="overflow-y: scroll;">
+                    <table style="width: 100%;" *ngIf="modalData.available">
                         <thead>
                             <tr>
                                 <th scope="col" *ngFor='let param of availibleApptHeaders'>{{param}}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td> 12.00 </td>
-                                <td> 14.00 </td>
+                            <tr *ngFor='let time of modalData.availableTimes'>
+                                <td> {{time}} </td>
                                 <td>
                                     <div class="dropdown">
-                                        <button class="btn btn-secondary" type="button" aria-haspopup="true" (click)="showAppointmentPage(app)">
+                                        <button class="btn btn-secondary" type="button" aria-haspopup="true" (click)="showAppointmentPage(time, modalData.doctorID, modalData.clinicID)">
                                             Select
                                         </button>
                                     </div>
@@ -188,6 +184,7 @@
                             </tr>
                         </tbody>
                       </table>
+                      <h5 *ngIf="!modalData.available">The doctor is not available that day.</h5>
                 </div>
             </div>
         </div>

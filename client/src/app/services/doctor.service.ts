@@ -42,7 +42,6 @@ getOneAppointment(appID){
       .pipe(
         map(response => {
           return response.body;
-          console.log(response.body);
         }),
         catchError((response) => {
           return throwError(response.error);
@@ -85,7 +84,7 @@ getDoctor() {
     );
 }
 
-searchDoctors(criteria: { clinic_id: any; name: any; surname: any; rating: any; typeOfExamination: { id: any; }; date: number; }) {
+searchDoctors(criteria: { clinic_id: any; name: any; surname: any; rating: any; typeOfExamination: any; date: number; }) {
   let headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${this.userService.getToken()}`
@@ -93,6 +92,25 @@ searchDoctors(criteria: { clinic_id: any; name: any; surname: any; rating: any; 
   var searchParamsString = "";
   searchParamsString += `clinic_id=${criteria.clinic_id}&name=${criteria.name}&surname=${criteria.surname}&rating=${criteria.rating}&typeOfExamination=${criteria.typeOfExamination}&date=${criteria.date}`
   return this.http.get(`/api/doctor/searchDoctors?${searchParamsString}`,
+            { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+}
+
+getAvailability(id: any, date: any) {
+  let headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.userService.getToken()}`
+  });
+  var searchParamsString = "";
+  searchParamsString += `doctor_id=${id}&date=${date}`
+  return this.http.get(`/api/doctor/getAvailability?${searchParamsString}`,
             { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
