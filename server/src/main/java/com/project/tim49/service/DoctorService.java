@@ -521,8 +521,9 @@ public class DoctorService {
 
         for(long iter = startingTimeStamp; iter < endingTimeStamp; iter+=duration) {
             //thanks mihajlo
-            if(isAvailableVer(appointments, iter) && isDuringDoctorWorkingHoursVer(doctor, iter));
+            if(isAvailableVer(appointments, iter) && isDuringDoctorWorkingHoursVer(doctor, iter)) {
                 times.add(String.valueOf(iter));
+            }
         }
 
         return times;
