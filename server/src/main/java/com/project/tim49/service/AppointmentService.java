@@ -57,7 +57,6 @@ public class AppointmentService {
     public void createAvailableAppointment(AppointmentDTO appointmentDTO) {
         Appointment appointment = setAppointmentData(appointmentDTO);
         appointment.setPatient(null);
-
         appointmentRepository.save(appointment);
     }
 

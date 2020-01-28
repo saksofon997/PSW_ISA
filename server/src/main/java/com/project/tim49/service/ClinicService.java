@@ -4,7 +4,10 @@ import com.project.tim49.dto.*;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
@@ -41,6 +44,22 @@ public class ClinicService {
         return clinicRepository.findById(id).orElseGet(null);
     }
 
+    public List<ClinicAdministratorDTO> getClinicAdmins(Long id) {
+        Clinic clinic = findOne(id);
+
+        if (clinic == null) {
+            throw new NoSuchElementException();
+        }
+
+        List<ClinicAdministrator> admins = clinic.getClinicAdministrator();
+
+        List<ClinicAdministratorDTO> adminsDTO = new ArrayList<>();
+        for (ClinicAdministrator admin : admins) {
+            adminsDTO.add(new ClinicAdministratorDTO(admin));
+        }
+        return adminsDTO;
+
+    }
     public List<DoctorDTO> getClinicDoctors(Long id){
         Clinic clinic = clinicRepository.findById(id).orElseGet(null);
 
