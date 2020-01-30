@@ -164,7 +164,7 @@ export class ClinicService {
 			);
 	}
 
-	searchClinics(criteria: { name: any; address: any; typeOfExamination: { id: any; }; date: number; }) {
+	searchClinics(criteria: { name: any; address: any; typeOfExamination: any; date: number; }) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`

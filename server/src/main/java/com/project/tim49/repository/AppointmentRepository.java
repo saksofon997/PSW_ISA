@@ -15,5 +15,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "and (appointment.ordination.id = ?1)")
     List<Appointment> getByOrdinationAndNotCompleted(Long ordination_id);
 
+    @Query("select appointment from Appointment appointment where " +
+            "(appointment.completed) = false " +
+            "and (appointment.startingDateAndTime >= ?1) " +
+            "and (appointment.startingDateAndTime < ?2)")
+    List<Appointment> getByTimesAndNotCompleted(long startTimestamp, long endTimestamp);
+
     ArrayList<Appointment> getByClinicAndPatientNullAndDeletedFalse(Clinic clinic);
 }

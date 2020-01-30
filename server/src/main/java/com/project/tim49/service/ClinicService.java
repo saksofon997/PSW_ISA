@@ -1,20 +1,14 @@
 package com.project.tim49.service;
 
-import com.project.tim49.dto.ClinicDTO;
-import com.project.tim49.dto.DoctorDTO;
+import com.project.tim49.dto.*;
 import com.project.tim49.model.*;
-import com.project.tim49.repository.ClinicPatientRepository;
-import com.project.tim49.repository.ClinicRepository;
-import com.project.tim49.repository.PatientRepository;
+import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ClinicService {
@@ -25,6 +19,10 @@ public class ClinicService {
     private ClinicPatientRepository clinicPatientRepository;
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+    @Autowired
+    private TypeOfExaminationRepository examinationRepository;
 
     public ClinicDTO findOneDTO(Long id) {
 
@@ -172,5 +170,65 @@ public class ClinicService {
         }
 
         clinicRepository.save(clinic);
+    }
+
+
+    public List<ClinicsSearchResultDTO> getByQuery(String name, String address, long toe, long startTimestamp) {
+
+        long endTimestamp = startTimestamp + 24 * 60 * 60;
+
+        List<Clinic> clinics = clinicRepository.getByQuery(name, address);
+
+        TypeOfExamination selectedToe = examinationRepository.findById(toe).orElse(null);
+
+        if(selectedToe == null)
+            throw new ValidationException("Selected type of examination does not exist");
+
+        List<ClinicsSearchResultDTO> selected = new ArrayList<>();
+
+        for (Clinic clinic : clinics) {
+            List<Doctor> doctors = clinic.getDoctors();
+            for(Doctor doc : doctors) {
+                if(doc.getSpecialization() == null)
+                    continue;
+
+                if(doc.getSpecialization().getId().equals(selectedToe.getId())) {
+                    List<Appointment> appts = appointmentRepository.getByTimesAndNotCompleted(startTimestamp, endTimestamp);
+
+                    if(appts.isEmpty()) {
+                        ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
+                        sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
+                        selected.add(sel);
+                        return selected;
+                    }
+
+                    List<Appointment> apptsdocs = new ArrayList<>();
+                    for(Appointment appt : appts) {
+                        if(appt.doctors.contains(doc)) {
+                            apptsdocs.add(appt);
+                        }
+                    }
+                    if(apptsdocs.isEmpty()) {
+                        ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
+                        sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
+                        selected.add(sel);
+                        return selected;
+                    }
+
+                    Comparator<Appointment> compareByStart = Comparator.comparingLong(Appointment::getStartingDateAndTime);
+                    apptsdocs.sort(compareByStart);
+
+                    for(int i = 0; i < apptsdocs.size() - 1; i++){
+                        if((apptsdocs.get(i).getEndingDateAndTime() - apptsdocs.get(i+1).getStartingDateAndTime()) >= 600) {
+                            ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
+                            sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
+                            selected.add(sel);
+                        }
+                    }
+                }
+            }
+        }
+
+        return selected;
     }
 }

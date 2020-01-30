@@ -2,6 +2,7 @@ package com.project.tim49.controller;
 
 import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.ClinicDTO;
+import com.project.tim49.dto.DoctorAvailabilityDTO;
 import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.DoctorService;
@@ -116,6 +117,30 @@ public class DoctorController {
             @RequestParam(value = "clinic_id", required = false) Long clinic_id
     ) {
         List<DoctorDTO> doctors = doctorService.getByQuery(name, surname, clinic_id);
+        return new ResponseEntity<>(doctors, HttpStatus.OK);
+    }
+
+    @GetMapping("/searchDoctors")
+    @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('PATIENT')")
+    public ResponseEntity advancedSearch(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "surname", required = false) String surname,
+            @RequestParam(value = "clinic_id", required = true) Long clinic_id,
+            @RequestParam(value = "rating", required = false) long rating,
+            @RequestParam(value = "typeOfExamination", required = false) Long toe,
+            @RequestParam(value = "date", required = false) long date
+    ) {
+        List<DoctorDTO> doctors = doctorService.getByAdvancedQuery(name, surname, clinic_id, rating, toe, date);
+        return new ResponseEntity<>(doctors, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAvailability")
+    @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('PATIENT')")
+    public ResponseEntity getDoctorAvailability(
+            @RequestParam(value = "doctor_id", required = true) Long doctor_id,
+            @RequestParam(value = "date", required = true) long date
+    ) {
+        DoctorAvailabilityDTO doctors = doctorService.getAvailability(doctor_id, date);
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 

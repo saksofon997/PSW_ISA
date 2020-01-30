@@ -18,14 +18,12 @@ export class PatientClinicListingComponent implements OnInit {
 	clinics: any;
 	clinicHeaders = ['Name', 'Address'];
 	typesOfExamination: any
-	
+
 	navigationSubscription: any;
 	sortingOption: any;
 	form: FormGroup;
 	filterForm: FormGroup;
 	submitted = false;
-	dateVar: any;
-	TOEVar: any;
 
 	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 	modalData: {
@@ -36,6 +34,7 @@ export class PatientClinicListingComponent implements OnInit {
 		clinicState: any;
 		clinicDescription: any;
 		location: Number[];
+		rating: any;
 		action: string;
 	};
 
@@ -165,28 +164,14 @@ export class PatientClinicListingComponent implements OnInit {
 	}
 
 	filterClinics(filters) {
-		if(this.notSearched){
-			return this.clinics.filter(clinic =>
-				clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
-				clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
-			);
-		} else {
-			return this.clinicsSearched.filter(clinic =>
-				clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
-				clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
-				&& clinic.type.price.indexOf(filters.price) !== -1
-			);
-		}
+		return this.clinicsSearched.filter(clinic =>
+			clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
+			clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
+			&& clinic.type.price.toString().indexOf(filters.price) !== -1
+		);
 	}
 
 	onSearch() {
-
-		//TESTING
-		this.notSearched = !this.notSearched;
-		this.dateVar = this.form.controls.date.value.getTime();
-		this.TOEVar = this.form.controls.typeOfExamination.value;
-		return;
-		//TESTING
 
 		this.submitted = true;
 
@@ -194,37 +179,47 @@ export class PatientClinicListingComponent implements OnInit {
 			return;
 		}
 
-		this.dateVar = this.form.controls.date.value.getTime() / 1000;
-		this.TOEVar = this.form.controls.typeOfExamination.value;
-
 		var criteria = {
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
 			address: this.form.controls.address.value ? this.form.controls.address.value : "",
-			typeOfExamination: {id: this.form.controls.typeOfExamination.value},
-			date: this.form.controls.date.value.getTime() / 1000
+			typeOfExamination: this.form.controls.typeOfExamination.value,
+			date: this.form.controls.date.value.getTime().toString().substr(0, 10)
 		}
 
-		this.clinicService.searchClinics(criteria).subscribe(
-			(data) => {
-				this.clinicsSearched = data;
-				this.clinicsFiltered = data;
-			},
-			(error) => {
-				alert(error);
-			}
-		)
+		this.searchClinics(criteria).then(() => {
+			this.notSearched = false;
+		}, () => alert("Error searching clinics"))
+
+	}
+
+	searchClinics(criteria: any) {
+		let promise = new Promise((resolve, reject) => {
+			this.clinicService.searchClinics(criteria).subscribe(
+				(data) => {
+					this.clinicsSearched = data;
+					this.clinicsFiltered = data;
+					resolve();
+				},
+				(error) => {
+					alert(error);
+					reject();
+				}
+			);
+		});
+		return promise;
 	}
 
 	//OTHER FUNCTIONS
 
 	showClinicInfo(clinic) {
 		let action = "Opened";
-		let clinicID = clinic.id; //RATING
+		let clinicID = clinic.id;
 		let clinicName = clinic.name;
 		let clinicAddress = clinic.address;
 		let clinicCity = clinic.city;
 		let clinicState = clinic.state;
 		let clinicDescription = clinic.description;
+		let rating = clinic.numberOfStars / clinic.numberOfReviews;
 
 		this.loadClinicLocation(clinicAddress, clinicCity, clinicState).then(() => {
 			let chars: string;
@@ -234,7 +229,7 @@ export class PatientClinicListingComponent implements OnInit {
 			location = [0, 0];
 			location[0] = Number(res[1]);
 			location[1] = Number(res[0]);
-			this.modalData = { clinicID, clinicName, clinicAddress, clinicCity, clinicState, clinicDescription, location, action };
+			this.modalData = { clinicID, clinicName, clinicAddress, clinicCity, clinicState, clinicDescription, location, rating, action };
 			this.modal.open(this.modalContent, { size: 'xl' });
 		}, () => alert("Error loading data"))
 	}
@@ -251,8 +246,8 @@ export class PatientClinicListingComponent implements OnInit {
 
 	showDoctors(clinic) {
 		let clinic_id = clinic.id;
-		let dateP = this.dateVar;
-		let TOEP = this.TOEVar;
+		let dateP = this.form.controls.date.value.getTime().toString().substr(0, 13);
+		let TOEP = this.form.controls.typeOfExamination.value ? this.form.controls.typeOfExamination.value : -1;
 		if (this.router.url.indexOf('clinics') === -1){
 			this.router.navigate([`doctors/${clinic_id}`], { queryParams: { TOE: TOEP, date: dateP }, relativeTo: this.activatedRoute });
 		} else {
@@ -261,7 +256,7 @@ export class PatientClinicListingComponent implements OnInit {
 	}
 
 	showClinicsDoctors(clinic) {
-		let clinic_id = clinic.id; 
+		let clinic_id = clinic.id;
 
 		if (this.router.url.indexOf('clinics') === -1){
 			this.router.navigate([`doctors/${clinic_id}`], {  relativeTo: this.activatedRoute });
@@ -283,6 +278,6 @@ export class PatientClinicListingComponent implements OnInit {
 	}
 
 	ngOnDestroy() {
-		
+
 	}
 }
