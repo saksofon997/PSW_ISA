@@ -111,7 +111,7 @@ public class ClinicService {
         if (id != null) {
             Clinic forDelete = findOne(id);
             if(forDelete != null) {
-                List<Appointment> clinicAppointments = forDelete.getAppointment();
+                List<Appointment> clinicAppointments = forDelete.getAppointments();
                 for (ClinicPatient cp: forDelete.getPatients()){
                     ArrayList<Appointment> pendingApp = new ArrayList<Appointment>();
                     pendingApp.addAll(cp.getPatient().getPendingAppointments());
@@ -124,7 +124,7 @@ public class ClinicService {
                 for (Doctor d: forDelete.getDoctors()) {
                     d.getAppointments().clear();
                 }
-                forDelete.getAppointment().clear();
+                forDelete.getAppointments().clear();
                 clinicRepository.deleteById(id);
                 return;
             }
@@ -199,7 +199,8 @@ public class ClinicService {
                         ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
                         sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
                         selected.add(sel);
-                        return selected;
+                        //return selected;
+                        continue;
                     }
 
                     List<Appointment> apptsdocs = new ArrayList<>();
@@ -212,7 +213,8 @@ public class ClinicService {
                         ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
                         sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
                         selected.add(sel);
-                        return selected;
+                        //return selected;
+                        continue;
                     }
 
                     Comparator<Appointment> compareByStart = Comparator.comparingLong(Appointment::getStartingDateAndTime);

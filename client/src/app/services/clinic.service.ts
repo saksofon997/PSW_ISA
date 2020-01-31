@@ -478,11 +478,13 @@ export class ClinicService {
 	}
 
 	deleteTypeOfExamination(typeOfExamination_id) {
+		let user = JSON.parse(this.cookieService.get('user'));
+    	let clinic_id = user["clinic_id"];
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.delete(`/api/examinationTypes/delete/${typeOfExamination_id}`, { headers: headers, observe: 'response' }).pipe(
+		return this.http.delete(`/api/examinationTypes/delete/${clinic_id}/${typeOfExamination_id}`, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),

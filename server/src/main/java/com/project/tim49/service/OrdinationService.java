@@ -69,7 +69,7 @@ public class OrdinationService {
         if(id != null && clinic_id != null) {
             Optional<Clinic> clinic = clinicRepository.findById(clinic_id);
             if(clinic.isPresent()) {
-                List<Appointment> appts = clinic.get().getAppointment();
+                List<Appointment> appts = clinic.get().getAppointments();
                 for(Appointment appt: appts) {
                     if(!appt.isCompleted())
                         if(appt.getOrdination().getId().equals(id))
@@ -111,7 +111,7 @@ public class OrdinationService {
                 Optional<Clinic> clinic =
                         clinicRepository.findById(ordinationDTO.getClinic_id());
                 if(clinic.isPresent()) {
-                    List<Appointment> appointments = clinic.get().getAppointment();
+                    List<Appointment> appointments = clinic.get().getAppointments();
 
                     for(Appointment appt: appointments)
                         if(appt.getOrdination().getId().equals(ordinationDTO.getId()))

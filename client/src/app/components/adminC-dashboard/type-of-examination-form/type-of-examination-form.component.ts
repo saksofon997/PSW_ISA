@@ -28,17 +28,20 @@ export class TypeOfExaminationFormComponent implements OnInit {
 		var name = "";
 		var price = 0;
 		this.change = 'Add';
+		var operation = false;
 
 		if (typeOfExamination) {
 			this.typeOfExamination_id = typeOfExamination.id;
 			name = typeOfExamination.name;
 			price = typeOfExamination.price;
+			operation = typeOfExamination.operation;
 			this.change = 'Change';
 		}
 
 		this.form = this.formBuilder.group({
 			name: [name, [Validators.required]],
-			price: [price, [Validators.required]]
+			price: [price, [Validators.required]],
+			operation: [operation, ]
 		});
 	}
 
@@ -53,7 +56,8 @@ export class TypeOfExaminationFormComponent implements OnInit {
 			id: this.typeOfExamination_id,
 			name: this.form.controls.name.value,
 			price: this.form.controls.price.value,
-			clinic_id: this.userService.getUser().clinic_id
+			clinic_id: this.userService.getUser().clinic_id,
+			operation: this.form.controls.operation.value
 		}
 
 		if (this.change === 'Change') {
