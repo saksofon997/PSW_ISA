@@ -57,11 +57,18 @@ public class AppointmentService {
     public void createAvailableAppointment(AppointmentDTO appointmentDTO) {
         Appointment appointment = setAppointmentData(appointmentDTO);
         appointment.setPatient(null);
+        List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
+        Set<Doctor> doctors = new HashSet<>();
+        for(DoctorDTO d: doctorDTOS) {
+            Doctor doc = doctorRepository.findById(d.getId()).get();
+            doctors.add(doc);
+        }
+        appointment.setDoctors(doctors);
 
         appointmentRepository.save(appointment);
     }
 
-    private Appointment setAppointmentData(AppointmentDTO appointmentDTO){
+    Appointment setAppointmentData(AppointmentDTO appointmentDTO){
         Appointment appointment = new Appointment();
 
         appointment.setStartingDateAndTime(appointmentDTO.getStartingDateAndTime());
@@ -79,14 +86,6 @@ public class AppointmentService {
 
         Ordination ordination = ordinationRepository.findById(appointmentDTO.getOrdination().getId()).get();
         appointment.setOrdination(ordination);
-
-        List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
-        Set<Doctor> doctors = new HashSet<>();
-        for(DoctorDTO d: doctorDTOS) {
-            Doctor doc = doctorRepository.findById(d.getId()).get();
-            doctors.add(doc);
-        }
-        appointment.setDoctors(doctors);
 
         return appointment;
     }
@@ -128,5 +127,9 @@ public class AppointmentService {
 
     private Appointment getReference(Long id) {
         return appointmentRepository.getOne(id);
+    }
+
+    public Appointment save(Appointment appointment){
+        return appointmentRepository.save(appointment);
     }
 }

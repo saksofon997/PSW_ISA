@@ -31,7 +31,7 @@ export class AppointmentService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('/api/appointment/scheduleNewAppointment', appointment, { headers: headers, observe: 'response' })
+		return this.http.post('/api/appointmentRequest/scheduleNewAppointment', appointment, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -91,7 +91,7 @@ export class AppointmentService {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.get(`/api/appointment/getClinicAppointmentRequests/${clinic_id}`, { headers: headers, observe: 'response' })
+		return this.http.get(`/api/appointmentRequest/getClinicAppointmentRequests/${clinic_id}`, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -104,6 +104,18 @@ export class AppointmentService {
 
 	choseAvailableAppointment(appointment_id, patient_id){
 		return this.http.put(`/api/appointment/choseAvailableAppointment/${appointment_id}/${patient_id}`, {}, { observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
+	approveAppointmentRequest(appointment){
+		return this.http.post(`/api/appointmentRequest/approveAppointmentRequest`, appointment, { observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;

@@ -104,7 +104,7 @@
 <ng-template #modalContent let-close="close">
     <div class="modal-header">
         <h4 class="modal-title">Appointment info</h4>
-        <button type="button" class="close" (click)="close()">
+        <button type="button" class="close" (click)="close()" (click)="closeModal()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -113,61 +113,72 @@
             <div class="col">
                 <div class="card" style="height: 32em;">
                     <div class="card-body text-center">
-                        <p class="card-title"> <b>Doctor</b>: {{modalData.appointment.doctors[0].name}}
-                            {{modalData.appointment.doctors[0].surname}} </p>
-                        <hr style="width:60%">
-                        <p class="card-text"> <b>Patient</b>: {{modalData.appointment.patient.name}}
-                            {{modalData.appointment.patient.surname}} </p>
-                        <hr style="width:60%">
-                        <p class="card-text"> {{modalData.appointment.typeOfExamination.name}} </p>
-                        <hr style="width:50%"><br>
-                        <p class="card-text"> <b>Selected time</b>: {{modalData.appointment.startTimeString}} </p>
-                        <hr style="width:50%">
-                        <p class="card-text"> <b>Selected end time</b>:
-                            {{modalData.appointment.endTimeString ? modalData.appointment.endTimeString : "Not specified"}}
-                        </p>
-                        <hr style="width:50%">
+                        <p class="card-title"> <b>Doctor</b>: 
+                            <div style="text-align: center;">
+                            <div class="col-sm-12 col-lg-12 shadow-sm p-1 mb-1 bg-white rounded" style="width:80%; display: inline-block;">
+                                <ngx-select-dropdown (change)="selectionChangedDoctor($event)" [multiple]="false"
+                                    [config]="config2" [options]="optionsDoctors" [(ngModel)]="selectedDoctor">
+                                </ngx-select-dropdown>
+                            </div>
+                        </div>
+                            <hr style="width:80%">
+                            <p class="card-text"> <b>Patient</b>: {{modalData.appointment.patient.name}}
+                                {{modalData.appointment.patient.surname}} </p>
+                            <hr style="width:60%">
+                            <p class="card-text"> {{modalData.appointment.typeOfExamination.name}} </p>
+                            <hr style="width:50%"><br>
+                            <p class="card-text"> <b>Selected time</b>:
+                                {{modalData.appointment.startTimeString ? modalData.appointment.startTimeString : "Not specified"}}
+                            </p>
+                            <hr style="width:50%">
+                            <p class="card-text"> <b>Selected end time</b>:
+                                {{modalData.appointment.endTimeString ? modalData.appointment.endTimeString : "Not specified"}}
+                            </p>
+                            <hr style="width:50%">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="card" style="height: 32em;">
-                    <div class="card-header text-center text-muted">
-                        <label class="card-text">Availible timeslots</label>
-                    </div>
-                    <div class="card-body text-center" style="overflow-y: scroll">
-                        <table style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th scope="col" *ngFor='let param of timeslotsHeaders'>{{param}}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor='let period of modalData.ordinationData.filteredPeriods; index as i'
-                                    [attr.data-index]="i">
-                                    <td> {{ period.split('-')[0] }} </td>
-                                    <td> {{ period.split('-')[1] }} </td>
-                                    <td>
-                                        <button *ngIf="!getAlreadySelected(i)" class="btn btn-secondary" type="button"
-                                            aria-haspopup="true" (click)="selectTimeslot(period, i)">
-                                            Select
-                                        </button>
-                                        <button *ngIf="getAlreadySelected(i)" class="btn btn-primary" type="button"
-                                            aria-haspopup="true" (click)="deselectTimeslot(i)">
-                                            Selected
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="col">
+                    <div class="card" style="height: 32em;">
+                        <div class="card-header text-center text-muted">
+                            <label class="card-text">Availible timeslots</label>
+                        </div>
+                        <div class="card-body text-center" style="overflow-y: scroll">
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" *ngFor='let param of timeslotsHeaders'>{{param}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor='let period of modalData.ordinationData.filteredPeriods; index as i'
+                                        [attr.data-index]="i">
+                                        <td> {{ period.split('-')[0] }} </td>
+                                        <td> {{ period.split('-')[1] }} </td>
+                                        <td>
+                                            <button *ngIf="!getAlreadySelected(i)" class="btn btn-secondary"
+                                                type="button" aria-haspopup="true" (click)="selectTimeslot(period, i)">
+                                                Select
+                                            </button>
+                                            <button *ngIf="getAlreadySelected(i)" class="btn btn-primary" type="button"
+                                                aria-haspopup="true" (click)="deselectTimeslot(i)">
+                                                Selected
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" (click)="close()" (click)="closeModal()">
-            Close
-        </button>
-    </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="createAppointment()">
+                Create appointment
+            </button>
+            <button type="button" class="btn btn-outline-secondary" (click)="close()" (click)="closeModal()">
+                Close
+            </button>
+        </div>
 </ng-template>

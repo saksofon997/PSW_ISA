@@ -129,10 +129,13 @@ public class OrdinationService {
         throw new ValidationException("Invalid ID!");
     }
 
-    public boolean isAvailable(Long ordination_id, long startingTimeStamp, long duration){
-        Optional<Ordination> ordination = ordinationRepository.findById(ordination_id);
-        if (!ordination.isPresent()){
-            throw new ValidationException("No ordination with that ID!");
+    public boolean isAvailable(Long ordination_id, Ordination ordination, long startingTimeStamp, long duration){
+        if (ordination == null){
+            Optional<Ordination> check = ordinationRepository.findById(ordination_id);
+            if (!check.isPresent()){
+                throw new ValidationException("No ordination with that ID!");
+            }
+            ordination = check.get();
         }
 
         List<Appointment> appointments = appointmentRepository.getByOrdinationAndNotCompleted(ordination_id);
