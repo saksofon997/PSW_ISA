@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping(value = "api/appointment")
+@RequestMapping(value = "api/appointmentRequest")
 public class AppointmentRequestController {
 
     @Autowired
@@ -54,11 +54,11 @@ public class AppointmentRequestController {
         }
 
         try {
-            boolean duringShift = doctorService.isDuringDoctorWorkingHours(appointmentDTO.getDoctors().get(0).getId() ,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            boolean duringShift = doctorService.isDuringDoctorWorkingHours(appointmentDTO.getDoctors().get(0).getId(),null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!duringShift){
                 return new ResponseEntity<>("The selected time does not fall in your working hours", HttpStatus.BAD_REQUEST);
             }
-            boolean doctorAvailable = doctorService.isAvailable(appointmentDTO.getDoctors().get(0).getId() ,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            boolean doctorAvailable = doctorService.isAvailable(appointmentDTO.getDoctors().get(0).getId(), null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!doctorAvailable){
                 return new ResponseEntity<>("You have scheduled appointments at that time", HttpStatus.BAD_REQUEST);
             }
@@ -73,4 +73,25 @@ public class AppointmentRequestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-}
+
+    @PostMapping(path="/approveAppointmentRequest" ,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINC')")
+    public ResponseEntity approveAppointmentRequest(@RequestBody AppointmentDTO appointmentDTO) throws InterruptedException {
+        if (appointmentDTO == null){
+            return new ResponseEntity<>("Invalid appointment", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if(appointmentDTO.getDoctors() == null
+                || appointmentDTO.getStartingDateAndTime() == 0 || appointmentDTO.getDuration() == 0
+                || appointmentDTO.getPatient() == null){
+            return new ResponseEntity<>("Invalid appointment", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            AppointmentDTO returnValue = appointmentRequestService.approveAppointmentRequest(appointmentDTO);
+            return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
+        } catch (ValidationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+    }

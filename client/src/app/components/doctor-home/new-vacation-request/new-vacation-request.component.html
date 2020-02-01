@@ -19,7 +19,7 @@
               </div>
               <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
                       class="fa fa-calendar"></i> </span>
-              <owl-date-time [showSecondsTimer]="true" #dt2></owl-date-time>
+              <owl-date-time [startAt]="now" [stepMinute]="10" [stepSecond]="60" #dt2></owl-date-time>
           </div>
       </div>
 
@@ -36,7 +36,7 @@
             </div>
             <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt22"> <i
                     class="fa fa-calendar"></i> </span>
-            <owl-date-time [showSecondsTimer]="true" #dt22></owl-date-time>
+            <owl-date-time [startAt]="now" [stepMinute]="10" [stepSecond]="60" #dt22></owl-date-time>
         </div>
     </div>
 

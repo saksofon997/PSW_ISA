@@ -54,16 +54,16 @@ public class ExaminationTypesController {
         }
     }
 
-    @DeleteMapping(path="/delete/{id}")
+    @DeleteMapping(path="/delete/{clinic_id}/{type_id}")
     @PreAuthorize("hasAuthority('ADMINC')")
-    public ResponseEntity deleteDiagnosis(@PathVariable("id") Long id) {
+    public ResponseEntity deleteDiagnosis(@PathVariable("clinic_id") Long clinic_id, @PathVariable("type_id") Long type_id) {
 
-        if (id == null)
+        if (type_id == null || clinic_id == null)
             return new ResponseEntity<>("Invalid id", HttpStatus.BAD_REQUEST);
 
         try{
-            examinationTypesService.deleteTypeOfExamination(id);
-            return new ResponseEntity<>(id, HttpStatus.OK);
+            examinationTypesService.deleteTypeOfExamination(clinic_id, type_id);
+            return new ResponseEntity<>(type_id, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }

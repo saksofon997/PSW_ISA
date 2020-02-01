@@ -16,6 +16,7 @@ export class NewVacationRequestComponent implements OnInit {
   doctor: any;
 
   form: FormGroup;
+  now: Date;
 	submitted: boolean;
 	private sub: any;
 	constructor(private formBuilder: FormBuilder,
@@ -25,6 +26,9 @@ export class NewVacationRequestComponent implements OnInit {
 		private vacationService: VacationService) { }
 
   ngOnInit() {
+	let time = 1000 * 60 * 10;
+	let date = new Date();
+	this.now = new Date(Math.round(date.getTime() / time) * time);
     this.createFormGroup();
   }
 

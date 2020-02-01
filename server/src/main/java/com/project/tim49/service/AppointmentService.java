@@ -46,21 +46,36 @@ public class AppointmentService {
 
         Patient patient = patientRepository.findById(appointmentDTO.getPatient().getId()).get();
         appointment.setPatient(patient);
-
+        List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
+        Set<Doctor> doctors = new HashSet<>();
+        for(DoctorDTO d: doctorDTOS) {
+            Doctor doc = doctorRepository.findById(d.getId()).get();
+            doctors.add(doc);
+        }
+        appointment.setDoctors(doctors);
         Appointment saved = appointmentRepository.save(appointment);
 
         patient.getPendingAppointments().add(saved);
         patientRepository.save(patient);
+
         return new AppointmentDTO(saved);
     }
 
     public void createAvailableAppointment(AppointmentDTO appointmentDTO) {
         Appointment appointment = setAppointmentData(appointmentDTO);
         appointment.setPatient(null);
+        List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
+        Set<Doctor> doctors = new HashSet<>();
+        for(DoctorDTO d: doctorDTOS) {
+            Doctor doc = doctorRepository.findById(d.getId()).get();
+            doctors.add(doc);
+        }
+        appointment.setDoctors(doctors);
+
         appointmentRepository.save(appointment);
     }
 
-    private Appointment setAppointmentData(AppointmentDTO appointmentDTO){
+    Appointment setAppointmentData(AppointmentDTO appointmentDTO){
         Appointment appointment = new Appointment();
 
         appointment.setStartingDateAndTime(appointmentDTO.getStartingDateAndTime());
@@ -79,18 +94,10 @@ public class AppointmentService {
         Ordination ordination = ordinationRepository.findById(appointmentDTO.getOrdination().getId()).get();
         appointment.setOrdination(ordination);
 
-        List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
-        Set<Doctor> doctors = new HashSet<>();
-        for(DoctorDTO d: doctorDTOS) {
-            Doctor doc = doctorRepository.findById(d.getId()).get();
-            doctors.add(doc);
-        }
-        appointment.setDoctors(doctors);
-
         return appointment;
     }
 
-    public void choseAvailableAppointment(Long appointment_id, Long patient_id) {
+    public AppointmentDTO choseAvailableAppointment(Long appointment_id, Long patient_id) {
         Optional<Patient> patient = patientRepository.findById(patient_id);
         if (!patient.isPresent()) {
             throw new ValidationException("No patient with that ID!");
@@ -104,6 +111,8 @@ public class AppointmentService {
             Appointment saved = appointmentRepository.save(appointment);
             patient.get().getPendingAppointments().add(saved);
             patientRepository.save(patient.get());
+
+            return new AppointmentDTO(saved);
         } catch (Exception e) {
             throw new NoSuchElementException();
         }
@@ -125,5 +134,9 @@ public class AppointmentService {
 
     private Appointment getReference(Long id) {
         return appointmentRepository.getOne(id);
+    }
+
+    public Appointment save(Appointment appointment){
+        return appointmentRepository.save(appointment);
     }
 }

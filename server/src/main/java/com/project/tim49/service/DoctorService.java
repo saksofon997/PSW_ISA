@@ -154,13 +154,31 @@ public class DoctorService {
         return false;
     }
 
-    public boolean isAvailable(Long doctor_id, long startingTimeStamp, long duration){
-        Optional<Doctor> doctor = doctorRepository.findById(doctor_id);
-        if (!doctor.isPresent()){
-            throw new ValidationException("No doctor with that ID!");
+    public boolean isAvailable(Long doctor_id, Doctor doctor, long startingTimeStamp, long duration){
+        if (doctor == null){
+            Optional<Doctor> check = doctorRepository.findById(doctor_id);
+            if (!check.isPresent()){
+                throw new ValidationException("No doctor with that ID!");
+            }
+            doctor = check.get();
+        }
+        List<Vacation> vacations = doctor.getVacations();
+        for (Vacation vacation: vacations) {
+            if ( startingTimeStamp >= vacation.getStartDate()
+                    && startingTimeStamp + duration/1000 <= vacation.getEndDate()){
+                return false;
+            }
+            if (vacation.getStartDate() >= startingTimeStamp
+                    && vacation.getEndDate() <= startingTimeStamp + duration/1000){
+                return false;
+            }
+            if (vacation.getEndDate() > startingTimeStamp
+                    && vacation.getEndDate() <= startingTimeStamp + duration/1000){
+                return false;
+            }
         }
 
-        Set<Appointment> appointments = doctor.get().getAppointments();
+        Set<Appointment> appointments = doctor.getAppointments();
         for (Appointment appointment: appointments) {
             if (appointment.isCompleted() || appointment.isDeleted()){
                 continue;
@@ -181,10 +199,13 @@ public class DoctorService {
         return true;
     }
 
-    public boolean isDuringDoctorWorkingHours(Long doctor_id, long startingTimeStamp, long duration){
-        Optional<Doctor> doctor = doctorRepository.findById(doctor_id);
-        if (!doctor.isPresent()){
-            throw new ValidationException("No doctor with that ID!");
+    public boolean isDuringDoctorWorkingHours(Long doctor_id, Doctor doctor, long startingTimeStamp, long duration){
+        if (doctor == null){
+            Optional<Doctor> check = doctorRepository.findById(doctor_id);
+            if (!check.isPresent()){
+                throw new ValidationException("No doctor with that ID!");
+            }
+            doctor = check.get();
         }
         Date startDateTime = new Date(startingTimeStamp * 1000);
         Date endDateTime = new Date(startingTimeStamp * 1000 + duration);
@@ -193,7 +214,7 @@ public class DoctorService {
         int shiftStartHour;
         int shiftStartMinute;
         try {
-            int[] shiftStart = getHoursAndMinutesFromString(doctor.get().getShiftStart());
+            int[] shiftStart = getHoursAndMinutesFromString(doctor.getShiftStart());
             shiftStartHour = shiftStart[0];
             shiftStartMinute = shiftStart[1];
         } catch (NumberFormatException e){
@@ -203,7 +224,7 @@ public class DoctorService {
         int shiftEndHour;
         int shiftEndMinute;
         try {
-            int[] shiftEnd = getHoursAndMinutesFromString(doctor.get().getShiftEnd());
+            int[] shiftEnd = getHoursAndMinutesFromString(doctor.getShiftEnd());
             shiftEndHour = shiftEnd[0];
             shiftEndMinute = shiftEnd[1];
         } catch (NumberFormatException e){

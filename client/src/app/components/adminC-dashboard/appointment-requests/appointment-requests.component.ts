@@ -30,10 +30,10 @@ export class AppointmentRequestsComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.activatedRoute.params.subscribe((params) => {
-			this.clinicID = params.id;
-			this.clinicName = params.name;
-		});
+		// this.activatedRoute.params.subscribe((params) => {
+		// 	this.clinicID = params.id;
+		// 	this.clinicName = params.name;
+		// });
 	}
 
 	getAppointmentRequests() {
@@ -50,6 +50,14 @@ export class AppointmentRequestsComponent implements OnInit {
 				alert(error);
 			}
 		);
+	}
+
+	selectOrdination(appointment){
+		if (this.router.url.indexOf('appointment_requests') === -1){
+			this.router.navigate(['ordination_selection'], { relativeTo: this.activatedRoute, state: {data: appointment}});
+		} else {
+			this.router.navigate(['../ordination_selection'], { relativeTo: this.activatedRoute, state: {data: appointment}});
+		}
 	}
 
 	// TODO: povezati sa ordinations_TEMP i izborom sale kao i odbijanje zahteva
@@ -78,8 +86,7 @@ export class AppointmentRequestsComponent implements OnInit {
 		var date = a.getDate();
 		var hour = a.getHours();
 		var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
-		var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
-		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min + ':' + sec;
+		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min;
 		return time;
 	}
 

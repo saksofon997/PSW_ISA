@@ -31,59 +31,85 @@ INSERT INTO public.clinic(
 	VALUES (nextval('clinic_id_seq'), 'Vladimira Iljiča Lenjina/17', 'Beograd', 'Gloria Lenin.', 'Nomino hospitium Lenin.', 3, 14, 'Srbija');
 
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '2000', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3000', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '500', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Ultrazvuk', '1000', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Ultrazvuk', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Laboratorija', '4500', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Laboratorija', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Kardiološki pregled', '1500', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Kardiološki pregled', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '2200', 2);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3300', 3);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '1500', 2);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Ultrazvuk', '1050', 3);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Laboratorija', '4599', 2);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Kardiološki pregled', '1500', 3);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '1900', 4);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3100', 5);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '600', 4);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Ultrazvuk', '1199', 5);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Laboratorija', '4800', 4);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Kardiološki pregled', '1300', 5);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Operacija debelog creva', true);
+
+
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 1, '2000');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 2, '3000');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 3, '500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 4, '1000');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 5, '4500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 6, '1500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 7, '6000');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (2, 1, '2200');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (3, 2, '3300');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (2, 3, '1500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (3, 4, '1050');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (2, 5, '4599');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (3, 6, '1500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (4, 1, '1900');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (5, 2, '3100');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (4, 3, '600');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (5, 4, '1199');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (4, 5, '4800');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (5, 6, '1300');
 
 INSERT INTO public.medical_record(
 	id, alergies, blood_type, diopter, height, sex, weight)
@@ -135,10 +161,10 @@ INSERT INTO public.doctor(
 	VALUES (nextval('users_id_seq'), 'Veljka Petrovića 9', 'Loznica', 'doc1@kcv.rs', 'Rodoljub', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Obilić', '1005990100010', '1', '1', true, true, '12:00', '20:00', 43, 16);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, specialization, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews) /*11*/
-	VALUES (nextval('users_id_seq'), 'Njegoševa 16', 'Šabac', 'doc2@kcv.rs', 'Dragica', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Veričić', '1007990100010', '1', '2', true, true, '7:00', '23:00', 9, 2);
+	VALUES (nextval('users_id_seq'), 'Njegoševa 16', 'Šabac', 'doc2@kcv.rs', 'Dragica', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Veričić', '1007990100010', '1', '2', true, true, '07:00', '23:00', 9, 2);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, specialization, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews) /*12*/
-	VALUES (nextval('users_id_seq'), 'Vuka Karadžića 37', 'Užice', 'doc3@kcv.rs', 'Jovanka', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Danilović', '1005990100010', '2', '3', true, true, '12:00', '20:00', 25, 8);
+	VALUES (nextval('users_id_seq'), 'Vuka Karadžića 37', 'Užice', 'doc3@kcv.rs', 'Jovanka', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Danilović', '1005990100010', '2', '1', true, true, '12:00', '20:00', 25, 8);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, specialization, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews) /*13*/
 	VALUES (nextval('users_id_seq'), 'Bulevar Glavni 17', 'Niš', 'doc4@kcv.rs', 'Dragana', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Filipović', '1007990100010', '2', '4', true, true, '21:00', '05:00', 37, 9);
@@ -383,28 +409,32 @@ INSERT INTO public.ordination(
 
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1578823900, 1578825100, 20 * 60 * 1000, 100, 0, 1, 1, 23, 2, false, false);
+    VALUES (nextval('appointment_id_seq'), 1581336000, 1581337200, 20 * 60 * 1000, 1000, 0, 1, 1, 23, 2, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1578823200 , 1578823800, 10 * 60 * 1000, 100, 0, 1, 1, 23, 1, false, false);
+    VALUES (nextval('appointment_id_seq'), 1581339600 , 1581340200, 10 * 60 * 1000, 1000, 0, 1, 1, 23, 1, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1579388400 , 1579737600, 10 * 60 * 1000, 100, 0, 1, 1, 23, 3, false, false);
+    VALUES (nextval('appointment_id_seq'), 1581951600 , 1581952200, 10 * 60 * 1000, 3000, 0, 1, 1, 23, 2, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1578870000 , 1578963600, 10 * 60 * 1000, 100, 0, 1, 1, 23, 2, false, false);
+    VALUES (nextval('appointment_id_seq'), 1581963600, 1581961800, 20 * 60 * 1000, 2000, 0, 1, 1, 23, 3, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1575730800,1575731400, 10 * 60 * 1000, 100, 0, 1, 1, 23, 3, false, false);
+    VALUES (nextval('appointment_id_seq'), 1581958800, 1581960000, 20 * 60 * 1000, 1000, 0, 1, 1, 23, 3, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1576612800,1576613400, 10 * 60 * 1000, 100, 0, 1, 1, 23, 3, false, false);
+    VALUES (nextval('appointment_id_seq'), 1582027200, 1582027800, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false);
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1576854000,1576854600, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false);
-INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1576854000,1576854600, 10 * 60 * 1000, 100, 0, 1, 1, 23, 4, true, false);
+    VALUES (nextval('appointment_id_seq'), 1582029000, 1582030200, 20 * 60 * 1000, 100, 0, 1, 1, 23, 4, true, false);
+
+INSERT INTO public.appointment_request(
+    id, starting_date_and_time, ending_date_and_time, duration, price, doctor_id, clinic_id, patient_id, type_of_examination_id, approved)
+    VALUES (nextval('appointment_request_id_seq'), 1581292800, 1581293400, 10 * 60 * 1000, 500, 10, 1, 23, 3, false);
+    INSERT INTO public.appointment_request(
+    id, starting_date_and_time, ending_date_and_time, duration, price, doctor_id, clinic_id, patient_id, type_of_examination_id, approved)
+    VALUES (nextval('appointment_request_id_seq'), 1581346800, 1581348000, 20 * 60 * 1000, 2000, 10, 1, 23, 2, false);
 
 INSERT INTO public.patients_pending_appointments(
     patient_id, appointment_id)
@@ -444,9 +474,6 @@ INSERT INTO public.appointment_doctors(
 INSERT INTO public.appointment_doctors(
     appointment_id, doctor_id)
     VALUES (7, 10);
-INSERT INTO public.appointment_doctors(
-    appointment_id, doctor_id)
-    VALUES (8, 10);
 
 INSERT INTO public.clinic_patient(
     clinic_id, patient_id, rated, stars)
@@ -489,20 +516,20 @@ INSERT INTO public.prescription(
 	VALUES (nextval('prescription_id_seq'), 6, 20, 12, 1, false);
 
 INSERT INTO public.vacation(
-	id, approved, end_date, start_date, medical_staff_id)
-	VALUES (nextval('vacation_id_seq'), true, 1575731400, 1575385200, 10);
+	id, approved, start_date, end_date, medical_staff_id)
+	VALUES (nextval('vacation_id_seq'), true, 1575385200, 1575731400, 10);
 INSERT INTO public.vacation(
-	id, approved, end_date, start_date, medical_staff_id)
-	VALUES (nextval('vacation_id_seq'), true, 1581465600, 1582070400, 10);
+	id, approved, start_date, end_date, medical_staff_id)
+	VALUES (nextval('vacation_id_seq'), true, 1581465600, 1581807000, 10);
 INSERT INTO public.vacation(
-	id, approved, end_date, start_date, medical_staff_id)
-	VALUES (nextval('vacation_id_seq'), true, 1583020800, 1583625600, 10);
+	id, approved, start_date, end_date, medical_staff_id)
+	VALUES (nextval('vacation_id_seq'), true, 1583020800, 1583362000, 10);
 INSERT INTO public.vacation(
-	id, approved, end_date, start_date, medical_staff_id)
+	id, approved, start_date, end_date, medical_staff_id)
 	VALUES (nextval('vacation_id_seq'), true, 1575731400, 1575385200, 18);
 INSERT INTO public.vacation(
-	id, approved, end_date, start_date, medical_staff_id)
+	id, approved, start_date, end_date, medical_staff_id)
 	VALUES (nextval('vacation_id_seq'), true, 1581465600, 1582070400, 18);
 INSERT INTO public.vacation(
-	id, approved, end_date, start_date, medical_staff_id)
+	id, approved, start_date, end_date, medical_staff_id)
 	VALUES (nextval('vacation_id_seq'), true, 1583020800, 1583625600, 18);
