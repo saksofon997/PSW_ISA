@@ -31,6 +31,10 @@ public class ExaminationReportService {
     PrescriptionRepository prescriptionRepository;
     @Autowired
     AppointmentRepository appointmentRepository;
+    @Autowired
+    DoctorPatientRepository doctorPatientRepository;
+    @Autowired
+    ClinicPatientRepository clinicPatientRepository;
 
     public void submitReport(ExaminationReportDTO examinationReportDTO,Long patientID,Long appoID){
         if (examinationReportDTO.getPerforms() == null){
@@ -64,8 +68,22 @@ public class ExaminationReportService {
         Appointment savedAppo = appointmentRepository.save(toRemove);
         p.getFinishedAppointments().add(toRemove);
         p.getPendingAppointments().remove(toRemove);
-
         patientRepository.save(p);
+
+        DoctorPatient docPat = doctorPatientRepository.getByDoctorAndPatient(doctor.get().getId(), p.getId());
+        if (docPat == null){
+            docPat = new DoctorPatient();
+            docPat.setDoctor(doctor.get());
+            docPat.setPatient(p);
+            doctorPatientRepository.save(docPat);
+        }
+        ClinicPatient cliPat = clinicPatientRepository.getByClinicAndPatient(clinic.get().getId(), p.getId());
+        if (cliPat == null){
+            cliPat = new ClinicPatient();
+            cliPat.setClinic(clinic.get());
+            cliPat.setPatient(p);
+            clinicPatientRepository.save(cliPat);
+        }
     }
     public void submitBasicInfo(MedicalRecordDTO medicalRecordDTO,Long patientID){
         Optional<Patient> patient = patientRepository.findById(patientID);

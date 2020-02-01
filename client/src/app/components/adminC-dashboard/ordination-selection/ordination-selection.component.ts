@@ -31,9 +31,11 @@ export class OrdinationSelectionComponent implements OnInit {
 	filterForm: FormGroup;
 	submitted = false;
 
-	selectedDoctor: any;
 	clinicDoctors: any;
 	optionsDoctors: any;
+	selectedDoctor: any;
+	optionsAttendingDoctors: any;
+	selectedAttendingDoctors: any;
 	tempDoctors:any;
 	config2 = {
 		displayKey:"fullname", //if objects array passed which key to be displayed defaults to description
@@ -80,6 +82,11 @@ export class OrdinationSelectionComponent implements OnInit {
 						for (let doc of this.optionsDoctors){
 							doc.fullname = doc.name + " " + doc.surname;
 						}
+						this.optionsAttendingDoctors = data;
+						for (let doc of this.optionsAttendingDoctors){
+							doc.fullname = doc.name + " " + doc.surname;
+						}
+						this.optionsAttendingDoctors = this.optionsAttendingDoctors.filter(obj => obj.id !== this.appointment.doctors[0].id);
 					},
 					(error) => {
 						alert(error);
@@ -188,6 +195,7 @@ export class OrdinationSelectionComponent implements OnInit {
 
 		this.selectedDoctor = appointment.doctors[0];
 		this.selectedDoctor.fullname = this.selectedDoctor.name + " " + this.selectedDoctor.surname;
+		this.selectedAttendingDoctors = [];
 		this.modalData = { appointment, ordinationData, action };
 		this.modal.open(this.modalContent, { size: 'lg' });
 	}
@@ -296,9 +304,12 @@ export class OrdinationSelectionComponent implements OnInit {
 		if (event.value){
 			this.modalData.appointment.doctors[0] = event.value;
 			this.optionsDoctors = this.optionsDoctors.filter(obj => obj.id !== this.modalData.appointment.doctors[0].id);
+			this.optionsAttendingDoctors = this.clinicDoctors.filter(obj => obj.id !== this.modalData.appointment.doctors[0].id);
+			this.selectedAttendingDoctors.splice(0, this.selectedAttendingDoctors.length);
 		} else {
 			this.modalData.appointment.doctors[0] = "";
 			this.optionsDoctors = this.clinicDoctors;
+			this.selectedAttendingDoctors.splice(0, this.selectedAttendingDoctors.length);
 		}
 
 		this.setFilteredTimeslots(this.modalData.ordinationData, this.modalData.appointment);
@@ -330,6 +341,11 @@ export class OrdinationSelectionComponent implements OnInit {
 				}
 			}
 		}
+	}
+
+	selectionChangedAttendingDoctor(event){
+		this.modalData.appointment.doctors.splice(1, this.modalData.appointment.doctors.length-1);
+		this.modalData.appointment.doctors.push(...this.selectedAttendingDoctors);
 	}
 
 	createAppointment(){

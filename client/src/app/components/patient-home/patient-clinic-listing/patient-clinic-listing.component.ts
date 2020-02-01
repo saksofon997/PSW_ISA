@@ -265,7 +265,7 @@ export class PatientClinicListingComponent implements OnInit {
 		}
 	}
 
-	showAwailableAppointments(clinic_id) {
+	showAvailableAppointments(clinic_id) {
 		if (this.router.url.indexOf('clinics') === -1){
 			this.router.navigate([`available_appointments/${clinic_id}`], {  relativeTo: this.activatedRoute });
 		} else {
