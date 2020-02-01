@@ -77,11 +77,16 @@ export class PatientDoctorListingComponent implements OnInit {
 		if(!this.clinic_id_param)
 			alert("ERROR, NO CLINIC ID!");
 
-		this.loadData(this.clinic_id_param);
+		this.loadData(this.clinic_id_param).then(() => {
 
 		this.createFormGroups();
 
 		this.onFilterChanges();
+
+		if(this.TOE_param) {
+			this.onSearch();
+		}
+		}, () => alert("Error loading data"))
   	}
 
   	//LOADING METHODS
@@ -206,9 +211,7 @@ export class PatientDoctorListingComponent implements OnInit {
 
 	onRateFilter($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}) {
 		this.starRatingFilter = $event.newValue;
-		this.filterForm.valueChanges.subscribe(filters => {
-			this.doctorsFiltered = this.filterDoctors(filters);
-		});
+		this.filterForm.controls.rating.setValue(this.starRatingFilter); 
 	}
 
     onSearch() {

@@ -23,6 +23,8 @@ public class ClinicService {
     private AppointmentRepository appointmentRepository;
     @Autowired
     private TypeOfExaminationRepository examinationRepository;
+    @Autowired
+    private ClinicTypeOfExaminationRepository clinicTypeOfExaminationRepository;
 
     public ClinicDTO findOneDTO(Long id) {
 
@@ -187,6 +189,12 @@ public class ClinicService {
         List<ClinicsSearchResultDTO> selected = new ArrayList<>();
 
         for (Clinic clinic : clinics) {
+
+            ClinicTypeOfExamination toeInClinic = clinicTypeOfExaminationRepository.getByClinicAndTypeOfExamination(clinic, selectedToe);
+            if(toeInClinic == null) {
+                continue;
+            }
+
             List<Doctor> doctors = clinic.getDoctors();
             for(Doctor doc : doctors) {
                 if(doc.getSpecialization() == null)
@@ -197,9 +205,8 @@ public class ClinicService {
 
                     if(appts.isEmpty()) {
                         ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
-                        sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
+                        sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
                         selected.add(sel);
-                        //return selected;
                         continue;
                     }
 
@@ -211,9 +218,8 @@ public class ClinicService {
                     }
                     if(apptsdocs.isEmpty()) {
                         ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
-                        sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
+                        sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
                         selected.add(sel);
-                        //return selected;
                         continue;
                     }
 
@@ -223,7 +229,7 @@ public class ClinicService {
                     for(int i = 0; i < apptsdocs.size() - 1; i++){
                         if((apptsdocs.get(i).getEndingDateAndTime() - apptsdocs.get(i+1).getStartingDateAndTime()) >= 600) {
                             ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
-                            sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
+                            sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
                             selected.add(sel);
                         }
                     }

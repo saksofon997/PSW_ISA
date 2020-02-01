@@ -147,7 +147,7 @@ export class PatientClinicListingComponent implements OnInit {
 				break;
 			}
 			case "price": {
-				this.clinicsFiltered.sort((a, b) => (a.type.price > b.type.price) ? 1 : -1)
+				this.clinicsFiltered.sort((a, b) => (a.typeOfExamination.price > b.typeOfExamination.price) ? 1 : -1)
 				break;
 			}
 			default: {
@@ -167,7 +167,7 @@ export class PatientClinicListingComponent implements OnInit {
 		return this.clinicsSearched.filter(clinic =>
 			clinic.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 &&
 			clinic.address.toLowerCase().indexOf(filters.address.toLowerCase()) !== -1
-			&& clinic.type.price.toString().indexOf(filters.price) !== -1
+			&& clinic.typeOfExamination.price.toString().indexOf(filters.price) !== -1
 		);
 	}
 
