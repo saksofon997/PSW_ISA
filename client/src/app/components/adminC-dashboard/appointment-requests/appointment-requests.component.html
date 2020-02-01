@@ -12,11 +12,11 @@
     </thead>
     <tbody>
         <tr *ngFor='let appointment of appointments'>
-            <td> {{ appointment.doctors[0] ? appointment.doctors[0].name + " " + appointment.doctors[0].surname : "" }} </td>
-            <td> {{ appointment.patient ? appointment.patient.name + " " + appointment.patient.surname : "" }} </td>
+            <td> {{appointment.doctors[0].name + " " + appointment.doctors[0].surname}} </td>
+            <td> {{appointment.patient.name + " " + appointment.patient.surname }} </td>
             <td> {{appointment.typeOfExamination.name}} </td>
             <td> {{appointment.formatedDateAndTime}} </td>
-            <td> {{appointment.duration / 1000 / 60}} </td>
+            <td> {{appointment.duration ? appointment.duration / 1000 / 60 : "Not specified"}} </td>
             <td>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -24,6 +24,8 @@
                         Options
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" style="cursor: pointer;"
+                            (click)="selectOrdination(appointment)">Select ordination</a>
                         <a class="dropdown-item" style="cursor: pointer;"
                             (click)="rejectRequest(appointment)">Reject</a>
                     </div>

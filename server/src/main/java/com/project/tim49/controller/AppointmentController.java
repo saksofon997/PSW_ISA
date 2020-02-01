@@ -3,6 +3,7 @@ package com.project.tim49.controller;
 import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.model.Appointment;
 import com.project.tim49.service.*;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +26,8 @@ public class AppointmentController {
     private OrdinationService ordinationService;
     @Autowired
     private AppointmentService appointmentService;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping(path="/getClinicAvailableAppointments/{clinic_id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,15 +55,15 @@ public class AppointmentController {
         }
 
         try {
-            boolean duringShift = doctorService.isDuringDoctorWorkingHours(appointmentDTO.getDoctors().get(0).getId() ,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            boolean duringShift = doctorService.isDuringDoctorWorkingHours(appointmentDTO.getDoctors().get(0).getId(),null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!duringShift){
                 return new ResponseEntity<>("Doctor's shift has ended", HttpStatus.BAD_REQUEST);
             }
-            boolean doctorAvailable = doctorService.isAvailable(appointmentDTO.getDoctors().get(0).getId() ,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            boolean doctorAvailable = doctorService.isAvailable(appointmentDTO.getDoctors().get(0).getId(),null, appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!doctorAvailable){
                 return new ResponseEntity<>("Doctor is not available", HttpStatus.BAD_REQUEST);
             }
-            boolean ordinationAvailable = ordinationService.isAvailable(appointmentDTO.getOrdination().getId() ,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            boolean ordinationAvailable = ordinationService.isAvailable(appointmentDTO.getOrdination().getId(),null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!ordinationAvailable){
                 return new ResponseEntity<>("Ordination is not available", HttpStatus.BAD_REQUEST);
             }
@@ -88,15 +91,15 @@ public class AppointmentController {
         }
 
         try {
-            boolean duringShift = doctorService.isDuringDoctorWorkingHours(appointmentDTO.getDoctors().get(0).getId() ,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            boolean duringShift = doctorService.isDuringDoctorWorkingHours(appointmentDTO.getDoctors().get(0).getId(),null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!duringShift){
                 return new ResponseEntity<>("Appointment is not during doctor's working hours", HttpStatus.BAD_REQUEST);
             }
-            boolean doctorAvailable = doctorService.isAvailable(appointmentDTO.getDoctors().get(0).getId() ,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            boolean doctorAvailable = doctorService.isAvailable(appointmentDTO.getDoctors().get(0).getId(), null, appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!doctorAvailable){
                 return new ResponseEntity<>("Doctor is not available", HttpStatus.BAD_REQUEST);
             }
-            boolean ordinationAvailable = ordinationService.isAvailable(appointmentDTO.getOrdination().getId() ,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            boolean ordinationAvailable = ordinationService.isAvailable(appointmentDTO.getOrdination().getId(),null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!ordinationAvailable){
                 return new ResponseEntity<>("Ordination is not available", HttpStatus.BAD_REQUEST);
             }
@@ -133,9 +136,11 @@ public class AppointmentController {
         }
 
         try{
-            appointmentService.choseAvailableAppointment(appointment_id, patient_id);
+            AppointmentDTO appointmentDTO = appointmentService.choseAvailableAppointment(appointment_id, patient_id);
+            this.emailService.sendAvailableAppointmentScheduled(appointmentDTO);
+
             return new ResponseEntity<>(appointment_id, HttpStatus.OK);
-        } catch (ValidationException | NoSuchElementException e) {
+        } catch (ValidationException | NoSuchElementException | InterruptedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }

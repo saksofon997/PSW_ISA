@@ -18,6 +18,7 @@ export class NewAvailableAppointmentPageComponent implements OnInit {
 
 	form: FormGroup;
 	submitted: boolean;
+	now: Date;
 	constructor(private formBuilder: FormBuilder,
 		private userService: UserService,
 		private clinicService: ClinicService,
@@ -26,6 +27,9 @@ export class NewAvailableAppointmentPageComponent implements OnInit {
 		private activatedRoute: ActivatedRoute) { }
 
 	ngOnInit() {
+		let time = 1000 * 60 * 10;
+		let date = new Date();
+		this.now = new Date(Math.round(date.getTime() / time) * time);
 		this.loadData().then(() => {
 			this.createFormGroup();
 		}, () => alert("Error loading data"));
