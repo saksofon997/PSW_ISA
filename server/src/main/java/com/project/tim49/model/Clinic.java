@@ -47,6 +47,9 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<ClinicAdministrator> clinicAdministrator;
 
+   @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL)
+   private Set<ClinicTypeOfExamination> typesOfExaminations = new HashSet<>();
+
 //   @ManyToMany(cascade = CascadeType.DETACH)
 //   @JoinTable(name = "clinics_patients", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
 //   public List<Patient> patients;
@@ -64,10 +67,6 @@ public class Clinic {
    @OnDelete(action = OnDeleteAction.CASCADE)
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Appointment> appointments;
-
-   @OnDelete(action = OnDeleteAction.CASCADE)
-   @OneToMany(mappedBy = "clinic_id", fetch = FetchType.LAZY)
-   public List<TypeOfExamination> typesOfExamination;
 
    @OnDelete(action = OnDeleteAction.CASCADE)
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
@@ -161,6 +160,14 @@ public class Clinic {
       this.clinicAdministrator = clinicAdministrator;
    }
 
+   public Set<ClinicTypeOfExamination> getTypesOfExaminations() {
+      return typesOfExaminations;
+   }
+
+   public void setTypesOfExaminations(Set<ClinicTypeOfExamination> typesOfExaminations) {
+      this.typesOfExaminations = typesOfExaminations;
+   }
+
    public Set<ClinicPatient> getPatients() {
       return patients;
    }
@@ -185,19 +192,13 @@ public class Clinic {
       this.nurses = nurses;
    }
 
-   public List<Appointment> getAppointment() {
+   public List<Appointment> getAppointments() {
       return appointments;
    }
 
-   public void setAppointment(List<Appointment> appointments) {
+   public void setAppointments(List<Appointment> appointments) {
       this.appointments = appointments;
    }
 
-   public List<TypeOfExamination> getTypesOfExamination() {
-      return typesOfExamination;
-   }
 
-   public void setTypesOfExamination(List<TypeOfExamination> typesOfExamination) {
-      this.typesOfExamination = typesOfExamination;
-   }
 }

@@ -31,59 +31,85 @@ INSERT INTO public.clinic(
 	VALUES (nextval('clinic_id_seq'), 'Vladimira Iljiča Lenjina/17', 'Beograd', 'Gloria Lenin.', 'Nomino hospitium Lenin.', 3, 14, 'Srbija');
 
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '2000', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3000', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '500', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Ultrazvuk', '1000', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Ultrazvuk', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Laboratorija', '4500', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Laboratorija', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Kardiološki pregled', '1500', 1);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Kardiološki pregled', false);
 INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '2200', 2);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3300', 3);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '1500', 2);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Ultrazvuk', '1050', 3);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Laboratorija', '4599', 2);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Kardiološki pregled', '1500', 3);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Digitorektalni pregled', '1900', 4);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Snimanje rentgenom', '3100', 5);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Pregled opsta praksa', '600', 4);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Ultrazvuk', '1199', 5);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Laboratorija', '4800', 4);
-INSERT INTO public.type_of_examination(
-	id, name, price, clinic_id_id)
-	VALUES (nextval('type_of_examination_id_seq'), 'Kardiološki pregled', '1300', 5);
+	id, name, operation)
+	VALUES (nextval('type_of_examination_id_seq'), 'Operacija debelog creva', true);
+
+
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 1, '2000');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 2, '3000');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 3, '500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 4, '1000');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 5, '4500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 6, '1500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (1, 7, '6000');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (2, 1, '2200');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (3, 2, '3300');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (2, 3, '1500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (3, 4, '1050');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (2, 5, '4599');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (3, 6, '1500');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (4, 1, '1900');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (5, 2, '3100');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (4, 3, '600');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (5, 4, '1199');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (4, 5, '4800');
+INSERT INTO public.clinic_type_of_examination(
+    clinic_id, type_of_examination_id, price)
+    VALUES (5, 6, '1300');
 
 INSERT INTO public.medical_record(
 	id, alergies, blood_type, diopter, height, sex, weight)
@@ -138,7 +164,7 @@ INSERT INTO public.doctor(
 	VALUES (nextval('users_id_seq'), 'Njegoševa 16', 'Šabac', 'doc2@kcv.rs', 'Dragica', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Veričić', '1007990100010', '1', '2', true, true, '7:00', '23:00', 9, 2);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, specialization, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews) /*12*/
-	VALUES (nextval('users_id_seq'), 'Vuka Karadžića 37', 'Užice', 'doc3@kcv.rs', 'Jovanka', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Danilović', '1005990100010', '2', '3', true, true, '12:00', '20:00', 25, 8);
+	VALUES (nextval('users_id_seq'), 'Vuka Karadžića 37', 'Užice', 'doc3@kcv.rs', 'Jovanka', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Danilović', '1005990100010', '2', '1', true, true, '12:00', '20:00', 25, 8);
 INSERT INTO public.doctor(
 	id, address, city, email, name, password, phone_number, state, surname, upin, clinic_id, specialization, enabled, passwordchanged, shift_start, shift_end, number_of_stars, number_of_reviews) /*13*/
 	VALUES (nextval('users_id_seq'), 'Bulevar Glavni 17', 'Niš', 'doc4@kcv.rs', 'Dragana', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Filipović', '1007990100010', '2', '4', true, true, '21:00', '05:00', 37, 9);

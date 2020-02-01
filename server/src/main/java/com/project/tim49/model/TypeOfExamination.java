@@ -5,6 +5,8 @@ package com.project.tim49.model; /**********************************************
  ***********************************************************************/
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class TypeOfExamination {
@@ -15,12 +17,11 @@ public class TypeOfExamination {
    @Column(name = "name", nullable = false)
    private String name;
 
-   @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-   private Clinic clinic_id;
+   @Column(name = "operation")
+   private boolean operation;
 
-   @Column(name = "price")
-   private float price;
-
+   @OneToMany(mappedBy = "typeOfExamination", cascade = CascadeType.ALL)
+   private Set<ClinicTypeOfExamination> clinics = new HashSet<>();
 
    public Long getId() {
       return id;
@@ -38,19 +39,19 @@ public class TypeOfExamination {
       this.name = name;
    }
 
-   public Clinic getClinic_id() {
-      return clinic_id;
+   public boolean isOperation() {
+      return operation;
    }
 
-   public void setClinic_id(Clinic clinic_id) {
-      this.clinic_id = clinic_id;
+   public void setOperation(boolean operation) {
+      this.operation = operation;
    }
 
-   public float getPrice() {
-      return price;
+   public Set<ClinicTypeOfExamination> getClinics() {
+      return clinics;
    }
 
-   public void setPrice(float price) {
-      this.price = price;
+   public void setClinics(Set<ClinicTypeOfExamination> clinics) {
+      this.clinics = clinics;
    }
 }

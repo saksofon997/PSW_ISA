@@ -1,5 +1,6 @@
 package com.project.tim49.dto;
 
+import com.project.tim49.model.ClinicTypeOfExamination;
 import com.project.tim49.model.TypeOfExamination;
 
 public class TypeOfExaminationDTO {
@@ -11,14 +12,23 @@ public class TypeOfExaminationDTO {
 
     private float price;
 
+    private boolean operation;
+
     public TypeOfExaminationDTO() {
+    }
+
+    public TypeOfExaminationDTO(ClinicTypeOfExamination toe) {
+        this.id = toe.getTypeOfExamination().getId();
+        this.name = toe.getTypeOfExamination().getName();
+        this.operation = toe.getTypeOfExamination().isOperation();
+        this.price = toe.getPrice();
+        this.clinic_id = toe.getClinic().getId();
     }
 
     public TypeOfExaminationDTO(TypeOfExamination toe) {
         this.id = toe.getId();
         this.name = toe.getName();
-        this.price = toe.getPrice();
-        this.clinic_id = toe.getClinic_id().getId();
+        this.operation = toe.isOperation();
     }
 
     public Long getId() {
@@ -51,5 +61,13 @@ public class TypeOfExaminationDTO {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public boolean isOperation() {
+        return operation;
+    }
+
+    public void setOperation(boolean operation) {
+        this.operation = operation;
     }
 }
