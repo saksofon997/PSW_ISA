@@ -1,8 +1,6 @@
 package selenium;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -15,7 +13,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -51,32 +51,74 @@ public class RouterTest {
     }
 
     @Test
-    public void testSearchRouteInvalidInput() {
+    public void testPreDefinedAppointment() {
         browser.navigate().to("http://localhost:4200/#/login");
         browser.findElement(By.name("email")).sendKeys("patient1@kcv.rs");
         browser.findElement(By.name("password")).sendKeys("123456");
         browser.findElement(By.cssSelector(".btn-primary")).click();
-        //browser.navigate().to("http://localhost:4200/#/patient");
+
+
+
+        (new WebDriverWait(browser, 10))
+               .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"dropdown1\"]")));
+        WebElement optionsButton =  browser.findElement(By.xpath("//button[@id=\"dropdown1\"]"));
+        optionsButton.click();
+        WebElement appointmentLink =  browser.findElement(By.xpath("//a[@id=\"appointment1\"]"));
+        appointmentLink.click();
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"appointment6\"]")));
+        browser.findElement(By.xpath("//button[@id=\"appointment6\"]")).click();
+        try{
+            waitForAlert(browser);
+        }catch (InterruptedException e){
+            System.out.println(e);
+        }
+        Alert alert = browser.switchTo().alert();
+        String alertText = alert.getText();
+        alert.dismiss();
+        assertEquals(alertText,
+                   "Successfully selected an appointment");
+
+
+    }
+
+    @Test
+    public void testSearchAndScheduleAppointment() {
+        browser.navigate().to("http://localhost:4200/#/login");
+        browser.findElement(By.name("email")).sendKeys("patient1@kcv.rs");
+        browser.findElement(By.name("password")).sendKeys("123456");
+        browser.findElement(By.cssSelector(".btn-primary")).click();
+
+        browser.navigate().to("http://localhost:4200/#/patient");
         (new WebDriverWait(browser, 10))
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".btn-light")));
         browser.findElement(By.cssSelector(".btn-light")).click();
         (new WebDriverWait(browser, 10))
                 .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//select[@formcontrolname=\"typeOfExamination\"]//preceding::input[2]"))));
         browser.findElement(By.xpath("//select[@formcontrolname=\"typeOfExamination\"]//preceding::input[2]")).sendKeys("Healty living");
+
+        browser.findElement(By.xpath("//select[@formcontrolname=\"typeOfExamination\"]")).click();
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//option[@value=\"1\"]"))));
+        browser.findElement(By.xpath("//option[@value=\"1\"]")).click();
         browser.findElement(By.cssSelector(".btn-primary")).click();
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"optionsButtonSearch1\"]")));
+        browser.findElement(By.xpath("//button[@id=\"optionsButtonSearch1\"]")).click();
+        browser.findElement(By.xpath("//a[@id=\"doctorts1\"]")).click();
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"optionsButtonSearch1\"]")));
+
+        browser.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
 //        searchPage.getInputFrom().sendKeys("Belgerudveien 1 (Oslo)");
 //        searchPage.getInputTo().sendKeys("Bergerveien (Asker)");
-//        //searchPage.getButtonFind().click();
+        //searchPage.getButtonFind().click();
 
 
-       // assertEquals(searchPage.getSpanError().getText(),
-             //   "Invalid stop or name in 'from' field. Make sure you spelled it correctly.");
+        // assertEquals(searchPage.getSpanError().getText(),
+        //   "Invalid stop or name in 'from' field. Make sure you spelled it correctly.");
 
-    }
-
-    @Test
-    public void testSearchRoute() {
         //searchPage.ensureIsDisplayed();
 
 //        searchPage.getInputFrom().sendKeys("Belgerudveien");
@@ -111,5 +153,21 @@ public class RouterTest {
     @AfterMethod
     public void tearDown() {
         browser.close();
+    }
+    private void waitForAlert(WebDriver driver) throws InterruptedException {
+        int i=0;
+        while(i++<5)
+        {
+            try
+            {
+                Alert alert = driver.switchTo().alert();
+                break;
+            }
+            catch(NoAlertPresentException e)
+            {
+                Thread.sleep(1000);
+                continue;
+            }
+        }
     }
 }
