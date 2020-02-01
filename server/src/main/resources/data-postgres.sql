@@ -202,13 +202,13 @@ INSERT INTO public.patient(
 	VALUES (nextval('users_id_seq'), 'Mikloša Švalba 9', 'Subotica', 'patient1@kcv.rs', 'Lajos', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Nagy', '1010997100010', true, true, 1);
 INSERT INTO public.patient(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged, medical_record_id) /*24*/
-	VALUES (nextval('users_id_seq'), 'Gavrila Principa 14', 'Sarajevo', 'patient2@kcv.rs', 'Franc', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'BIH', 'Ferdinand', '1012996100010', true, false, 2);
+	VALUES (nextval('users_id_seq'), 'Gavrila Principa 14', 'Sarajevo', 'patient2@kcv.rs', 'Franc', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'BIH', 'Ferdinand', '1012996100010', true, true, 2);
 INSERT INTO public.patient(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged, medical_record_id) /*25*/
 	VALUES (nextval('users_id_seq'), 'Vuka Karadžića 37', 'Bor', 'patient3@kcv.rs', 'Aleksandar', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Nagy', '1010997100010', true, true, 3);
 INSERT INTO public.patient(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged, medical_record_id) /*26*/
-	VALUES (nextval('users_id_seq'), 'Kralja Petra I 56', 'Gnjilane', 'patient4@kcv.rs', 'Petar', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Ferdinand', '1012996100010', true, false, 4);
+	VALUES (nextval('users_id_seq'), 'Kralja Petra I 56', 'Gnjilane', 'patient4@kcv.rs', 'Petar', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Ferdinand', '1012996100010', true, true, 4);
 INSERT INTO public.patient(
 	id, address, city, email, name, password, phone_number, state, surname, upin, enabled, passwordchanged, medical_record_id) /*27*/
 	VALUES (nextval('users_id_seq'), 'Mikloša Švalba 29', 'Priboj', 'patient5@kcv.rs', 'Mihajlo', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Nagy', '1010997100010', true, true, 5);
@@ -432,9 +432,12 @@ INSERT INTO public.appointment(
 INSERT INTO public.appointment_request(
     id, starting_date_and_time, ending_date_and_time, duration, price, doctor_id, clinic_id, patient_id, type_of_examination_id, approved)
     VALUES (nextval('appointment_request_id_seq'), 1581292800, 1581293400, 10 * 60 * 1000, 500, 10, 1, 23, 3, false);
-    INSERT INTO public.appointment_request(
+INSERT INTO public.appointment_request(
     id, starting_date_and_time, ending_date_and_time, duration, price, doctor_id, clinic_id, patient_id, type_of_examination_id, approved)
     VALUES (nextval('appointment_request_id_seq'), 1581346800, 1581348000, 20 * 60 * 1000, 2000, 10, 1, 23, 2, false);
+INSERT INTO public.appointment_request(
+    id, starting_date_and_time, ending_date_and_time, duration, price, doctor_id, clinic_id, patient_id, type_of_examination_id, approved)
+    VALUES (nextval('appointment_request_id_seq'), 1581346800, 1581348000, 20 * 60 * 1000, 2000, 10, 1, 23, 7, false);
 
 INSERT INTO public.patients_pending_appointments(
     patient_id, appointment_id)
@@ -478,23 +481,10 @@ INSERT INTO public.appointment_doctors(
 INSERT INTO public.clinic_patient(
     clinic_id, patient_id, rated, stars)
     VALUES (1, 23, false, 0);
-INSERT INTO public.clinic_patient(
-    clinic_id, patient_id, rated, stars)
-    VALUES (1, 24, false, 0);
-INSERT INTO public.clinic_patient(
-    clinic_id, patient_id, rated, stars)
-    VALUES (1, 25, false, 0);
-INSERT INTO public.clinic_patient(
-    clinic_id, patient_id, rated, stars)
-    VALUES (1, 26, true, 4);
 
 INSERT INTO public.doctor_patient(
     doctor_id, patient_id, rated, stars)
     VALUES (10, 23, false, 0);
-INSERT INTO public.doctor_patient(
-    doctor_id, patient_id, rated, stars)
-    VALUES (10, 24, true, 5);
-
 
 INSERT INTO public.prescription(
 	id, medication_id, nurse_id, doctor_id, clinic_id, approved)
