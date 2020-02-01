@@ -46,11 +46,18 @@ public class AppointmentService {
 
         Patient patient = patientRepository.findById(appointmentDTO.getPatient().getId()).get();
         appointment.setPatient(patient);
-
+        List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
+        Set<Doctor> doctors = new HashSet<>();
+        for(DoctorDTO d: doctorDTOS) {
+            Doctor doc = doctorRepository.findById(d.getId()).get();
+            doctors.add(doc);
+        }
+        appointment.setDoctors(doctors);
         Appointment saved = appointmentRepository.save(appointment);
 
         patient.getPendingAppointments().add(saved);
         patientRepository.save(patient);
+
         return new AppointmentDTO(saved);
     }
 
