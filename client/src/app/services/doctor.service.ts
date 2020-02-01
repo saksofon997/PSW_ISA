@@ -84,6 +84,21 @@ getDoctor() {
     );
 }
 
+getDoctorWithId(doctorID: any) {
+  let headers = new HttpHeaders({
+    'Authorization': `Bearer ${this.userService.getToken()}`
+  });
+  return this.http.get(`/api/doctor/getDoctor/${doctorID}`, { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+}
+
 searchDoctors(criteria: { clinic_id: any; name: any; surname: any; rating: any; typeOfExamination: any; date: number; }) {
   let headers = new HttpHeaders({
     'Content-Type': 'application/json',

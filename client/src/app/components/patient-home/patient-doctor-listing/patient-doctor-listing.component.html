@@ -86,7 +86,7 @@
                       </div>
                       <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
                               class="fa fa-calendar"></i> </span>
-                      <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+                      <owl-date-time [startAt]="now" [stepMinute]="10" [stepSecond]="60" [pickerType]="'calendar'" #dt2></owl-date-time>
                       <div *ngIf="submitted && form.controls.date.errors" class="invalid-feedback ml-3">
                           <div *ngIf="form.controls.date.errors.required">Please select a date</div>
                       </div>

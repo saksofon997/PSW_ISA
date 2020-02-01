@@ -43,7 +43,7 @@ public class AppointmentRequestController {
 
     @PostMapping(path="/scheduleNewAppointment" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('PATIENT')")
     public ResponseEntity scheduleNewAppointment(@RequestBody AppointmentDTO appointmentDTO) throws InterruptedException{
         if (appointmentDTO == null){
             return new ResponseEntity<>("Invalid appointment", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -56,11 +56,11 @@ public class AppointmentRequestController {
         try {
             boolean duringShift = doctorService.isDuringDoctorWorkingHours(appointmentDTO.getDoctors().get(0).getId(),null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!duringShift){
-                return new ResponseEntity<>("The selected time does not fall in your working hours", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("The selected time does not fall in working hours", HttpStatus.BAD_REQUEST);
             }
             boolean doctorAvailable = doctorService.isAvailable(appointmentDTO.getDoctors().get(0).getId(), null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
             if (!doctorAvailable){
-                return new ResponseEntity<>("You have scheduled appointments at that time", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("There are scheduled appointments at that time", HttpStatus.BAD_REQUEST);
             }
 
             AppointmentDTO returnValue = appointmentRequestService.scheduleNewAppointment(appointmentDTO);

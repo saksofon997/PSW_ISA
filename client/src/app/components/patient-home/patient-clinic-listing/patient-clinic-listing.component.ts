@@ -278,6 +278,6 @@ export class PatientClinicListingComponent implements OnInit {
 	}
 
 	ngOnDestroy() {
-
+		this.modal.dismissAll();
 	}
 }

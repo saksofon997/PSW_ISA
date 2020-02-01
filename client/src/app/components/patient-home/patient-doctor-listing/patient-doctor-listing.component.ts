@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { ClinicService } from 'src/app/services/clinic.service';
 import { PatientService } from 'src/app/services/patient.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DoctorService } from 'src/app/services/doctor.service';
 import { StarRatingComponent } from 'ng-starrating';
@@ -59,6 +59,7 @@ export class PatientDoctorListingComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
 		private userService: UserService,
+		private router: Router,
 		private clinicService: ClinicService,
 		private doctorService: DoctorService,
 		private activatedRoute: ActivatedRoute,
@@ -77,9 +78,9 @@ export class PatientDoctorListingComponent implements OnInit {
 		if(!this.clinic_id_param)
 			alert("ERROR, NO CLINIC ID!");
 
-		this.loadData(this.clinic_id_param).then(() => {
-
 		this.createFormGroups();
+
+		this.loadData(this.clinic_id_param).then(() => {
 
 		this.onFilterChanges();
 
@@ -302,6 +303,17 @@ export class PatientDoctorListingComponent implements OnInit {
 		return promise;
 	}
 
+	showAppointmentPage(timep: any, doctorID: any, clinicID: any) {
+		let datep = this.form.controls.date.value.getTime();
+		let toep = this.form.controls.typeOfExamination.value ? this.form.controls.typeOfExamination.value : -1;
+
+		if (this.router.url.indexOf('clinics') === -1){
+			this.router.navigate([`../../schedule`], { queryParams: { clinic: clinicID, doctor: doctorID, date: datep, time: timep, toe: toep }, relativeTo: this.activatedRoute });
+		} else {
+			this.router.navigate([`../schedule`], { queryParams: { clinic: clinicID, doctor: doctorID, date: datep, time: timep, toe: toep }, relativeTo: this.activatedRoute });
+		}
+	}
+
 	timeConverter(a) {
 		a = new Date(a * 1000)
 		var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -320,6 +332,7 @@ export class PatientDoctorListingComponent implements OnInit {
 	}
 
 	ngOnDestroy() {
+		this.modal.dismissAll();
 	}
 
 }
