@@ -30,7 +30,7 @@ export class PatientService {
         })
       );
   }
-  getPatientById(patient_id) {
+  getPatientById(patient_id: any) {
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.userService.getToken()}`
     });

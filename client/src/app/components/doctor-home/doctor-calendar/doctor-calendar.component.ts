@@ -27,6 +27,7 @@ import {
 } from 'angular-calendar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DoctorService } from 'src/app/services/doctor.service';
+import { UserService } from 'src/app/services/user.service';
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -69,6 +70,7 @@ export class DoctorCalendarComponent implements OnInit{
 
   constructor(private doctorService: DoctorService,
 		private router: Router,
+		private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private modal: NgbModal,
     private cookieService: CookieService){}
@@ -232,11 +234,26 @@ export class DoctorCalendarComponent implements OnInit{
 		var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
 		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min;
 		return time;
-    }
-    startExamination(){
-      this.modal.dismissAll();
-      //TODO
-      //this.router.navigate(['../examination'], { relativeTo: this.activatedRoute, state: {data: clinic}});
+	}
+	
+    startExamination(appointment: any){
+	  this.modal.dismissAll();
+	  
+	  let patientID = appointment.patient.id;
+	  let doctor = JSON.parse(this.cookieService.get('user'));
+	  let doctorID = this.userService.getUser().name +" "+ this.userService.getUser().surname
+	  let type = appointment.typeOfExamination.name;
+	  let typeID = appointment.typeOfExamination.id;
+	  let appointmentP = appointment.id;
+	  let dateTime = appointment.startingDateAndTime;
+		if (this.router.url.indexOf('calendar') === -1){
+			this.router.navigate([`examination`], { queryParams: { patient: patientID, doctor: doctorID, type: type, typeID: typeID, appointment: appointmentP, datetime: dateTime
+		}, relativeTo: this.activatedRoute });
+		} else {
+			this.router.navigate([`../examination`], { queryParams: { patient: patientID, doctor: doctorID, type: type, typeID: typeID, appointment: appointmentP, datetime: dateTime
+			}, relativeTo: this.activatedRoute });
+		}
+
     }
     close(){
       this.modal.dismissAll();
