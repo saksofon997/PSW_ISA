@@ -283,17 +283,15 @@ public class ClinicService {
             if((time - appt.getEndingDateAndTime()*1000) < durWeek ) {
 
                 calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
-                int appointmentEndHour = calendar.get(Calendar.HOUR_OF_DAY);
-                int appointmentEndMinute = calendar.get(Calendar.MINUTE);
-                String apptTime = appointmentEndHour+":"+appointmentEndMinute;
+                int appointmentEndDay = calendar.get(Calendar.DAY_OF_WEEK);
+                String apptTime = appointmentEndDay+"";
                 weekbus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
             }
             if((time - appt.getEndingDateAndTime()*1000) < durMonth ) {
 
                 calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
-                int appointmentEndHour = calendar.get(Calendar.HOUR_OF_DAY);
-                int appointmentEndMinute = calendar.get(Calendar.MINUTE);
-                String apptTime = appointmentEndHour+":"+appointmentEndMinute;
+                int appointmentEndDayM = calendar.get(Calendar.DAY_OF_MONTH);
+                String apptTime = appointmentEndDayM+"";
                 monbus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
             }
         }

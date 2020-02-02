@@ -50,13 +50,11 @@ export class ClinicBusinessComponent implements OnInit {
 
     this.loadData().then(() => {
 
-      for (let i = 0; i < this.data.length; i++) {
-        let period = this.data[i].series;
+        let period = this.data[1].series;
         for (let j = 0; j < period.length; j++) {
 
           this.earningsMonth += parseFloat(period[j].value);
         }
-      }
 
 		}, () => alert("Error loading data"))
   }
