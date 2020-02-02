@@ -9,4 +9,6 @@ import java.util.ArrayList;
 public interface AppointmentRequestRepository extends JpaRepository<AppointmentRequest, Long> {
 
     ArrayList<AppointmentRequest> getByClinicAndApprovedFalse(Clinic clinic);
+
+    ArrayList<AppointmentRequest> getAllByApprovedFalse();
 }

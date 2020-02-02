@@ -50,6 +50,7 @@ const colors: any = {
 })
 export class DoctorCalendarComponent implements OnInit{
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  @ViewChild('modalContentVacation', { static: true }) modalContentVacation: TemplateRef<any>;
 
   view: CalendarView = CalendarView.Month;
 
@@ -146,18 +147,22 @@ export class DoctorCalendarComponent implements OnInit{
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    let appointment = {}
-    this.doctorService.getOneAppointment(event.id).subscribe(
-      (data) => {
-        appointment=data;
-        this.modalData = { appointment, action };
-        this.modal.open(this.modalContent, { size: 'lg' });
-      },
-      (error) => { 
-        alert(error);
-      }
-    );
-    
+    if (event.id){
+      let appointment = {}
+      this.doctorService.getOneAppointment(event.id).subscribe(
+        (data) => {
+          appointment=data;
+          this.modalData = { appointment, action };
+          this.modal.open(this.modalContent, { size: 'lg' });
+        },
+        (error) => { 
+          alert(error);
+        }
+      );
+    } else {
+      this.modalData = { appointment: event, action };
+      this.modal.open(this.modalContentVacation, { size: 'lg' });
+    }
   }
 
   addEvent(): void {

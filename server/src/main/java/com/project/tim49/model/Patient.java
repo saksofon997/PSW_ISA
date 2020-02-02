@@ -22,14 +22,14 @@ public class Patient extends User {
    @JoinTable(name = "patients_finished_appointments", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
    public Set<Appointment> finishedAppointments = new HashSet<Appointment>();
 
-   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Appointment.class)
+   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Appointment.class)
    @JoinTable(name = "patients_pending_appointments", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
    public Set<Appointment> pendingAppointments= new HashSet<Appointment>();
 
-   @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
    private Set<ClinicPatient> clinics = new HashSet<>();
 
-   @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
    private Set<DoctorPatient> doctors = new HashSet<>();
 
    public MedicalRecord getMedicalRecord() {

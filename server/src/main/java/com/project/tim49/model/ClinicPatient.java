@@ -62,13 +62,13 @@ public class ClinicPatient implements Serializable {
 
     public static class ClinicPatientId implements Serializable {
 
-        private Clinic clinic;
-        private Patient patient;
+        private Long clinic;
+        private Long patient;
 
         public ClinicPatientId() {
         }
 
-        public ClinicPatientId(Clinic clinic, Patient patient) {
+        public ClinicPatientId(Long clinic, Long patient) {
             this.clinic = clinic;
             this.patient = patient;
         }
@@ -83,8 +83,8 @@ public class ClinicPatient implements Serializable {
                 return false;
             }
             ClinicPatient cliPat = (ClinicPatient) o;
-            return Objects.equals(clinic, cliPat.getClinic()) &&
-                    Objects.equals(patient, cliPat.getPatient());
+            return Objects.equals(clinic, cliPat.getClinic().getId()) &&
+                    Objects.equals(patient, cliPat.getPatient().getId());
         }
 
         @Override

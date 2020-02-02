@@ -9,6 +9,7 @@ import com.project.tim49.dto.ClinicDTO;
 import com.project.tim49.dto.RegistrationDTO;
 import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.*;
+import com.project.tim49.repository.MedicalRecordRepository;
 import com.project.tim49.repository.PatientRepository;
 import com.project.tim49.repository.RegistrationRequestRepository;
 import com.project.tim49.repository.UserRepository;
@@ -29,19 +30,17 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private AuthorityService authService;
-
     @Autowired
     private RegistrationRequestRepository registrationRequestRepository;
-
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private MedicalRecordRepository medicalRecordRepository;
 
     @Override
     public User findByEmail(String email) throws UsernameNotFoundException {
@@ -88,10 +87,14 @@ public class UserServiceImpl implements UserService {
         List<Authority> auth = authService.findByname("PATIENT");
         patient.setAuthorities(auth);
         patient.setPasswordChanged(true);
-        // karton?
+
+        MedicalRecord medicalRecord = new MedicalRecord();
+        MedicalRecord saved = medicalRecordRepository.save(medicalRecord);
+        patient.setMedicalRecord(saved);
 
         patient = patientRepository.save(patient);
         registrationRequestRepository.delete(req);
+
         // patient DTO
         UserDTO patientDto = new UserDTO(patient);
         return patientDto;

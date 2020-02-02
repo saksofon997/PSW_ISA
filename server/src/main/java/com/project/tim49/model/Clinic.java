@@ -53,7 +53,7 @@ public class Clinic {
 //   @ManyToMany(cascade = CascadeType.DETACH)
 //   @JoinTable(name = "clinics_patients", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
 //   public List<Patient> patients;
-   @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
    private Set<ClinicPatient> patients = new HashSet<>();
 
    @OnDelete(action = OnDeleteAction.CASCADE)

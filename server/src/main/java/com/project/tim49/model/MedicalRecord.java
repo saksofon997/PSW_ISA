@@ -18,22 +18,22 @@ public class MedicalRecord {
    @OneToMany(mappedBy = "medicalRecord", fetch = FetchType.LAZY)
    public List<ExaminationReport> examinationReport;
 
-   @Column(name = "bloodType", nullable = false)
+   @Column(name = "bloodType")
    private String bloodType;
 
-   @Column(name = "diopter", nullable = false)
+   @Column(name = "diopter")
    private String diopter;
 
-   @Column(name = "alergies", nullable = false)
+   @Column(name = "alergies")
    private String alergies;
 
-   @Column(name = "height", nullable = false)
+   @Column(name = "height")
    private String height;
 
-   @Column(name = "weight", nullable = false)
+   @Column(name = "weight")
    private String weight;
 
-   @Column(name = "sex", nullable = false)
+   @Column(name = "sex")
    private String sex;
 /** TO BE FILLED UP IF NECESSARY **/
    public Long getId() {

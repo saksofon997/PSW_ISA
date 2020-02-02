@@ -56,6 +56,7 @@ import { PatientDoctorListingComponent } from './components/patient-home/patient
 import { AdminCHomeComponent } from './components/adminC-dashboard/admin-c-home/admin-c-home.component';
 import { AppointmentRequestsComponent } from './components/adminC-dashboard/appointment-requests/appointment-requests.component';
 import { PatientAvailableAppointmentsComponent } from './components/patient-home/patient-available-appointments/patient-available-appointments.component';
+import { ExaminationDeactivateService } from './guards/examination-deactivate.service';
 import { PatientScheduleAppointmentComponent } from './components/patient-home/patient-schedule-appointment/patient-schedule-appointment.component';
 import { ClinicBusinessComponent } from './components/adminC-dashboard/clinic-business/clinic-business.component';
 
@@ -149,7 +150,7 @@ const routes: Routes = [
 			{path: 'calendar', component: DoctorCalendarComponent},
 			{path: 'patients', component: PatientListingComponent},
 			{path: 'new_appointment/:patient_id', component: NewAppointmentPageComponent},
-			{path: 'examination', component: ExaminationComponent},
+			{path: 'examination', component: ExaminationComponent, canDeactivate: [ExaminationDeactivateService]},
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['DOCTOR']}

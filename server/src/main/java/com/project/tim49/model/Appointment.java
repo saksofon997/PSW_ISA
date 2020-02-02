@@ -8,9 +8,6 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-//@Table
-//@Inheritance( strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name="appointment_type")
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,20 +28,19 @@ public class Appointment {
     @Column(name = "discount", nullable = false)
     private double discount;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "ordination_id")
     public Ordination ordination;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "clinic_id")
     public Clinic clinic;
 
-    // NEEDED?
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     public Patient patient;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "type_of_examination_id", referencedColumnName = "id")
     public TypeOfExamination typeOfExamination;
 

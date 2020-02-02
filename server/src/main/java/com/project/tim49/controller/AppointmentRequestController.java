@@ -89,6 +89,8 @@ public class AppointmentRequestController {
 
         try {
             AppointmentDTO returnValue = appointmentRequestService.approveAppointmentRequest(appointmentDTO);
+            this.emailService.sendAppointmentRequestApproved(returnValue);
+
             return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
         } catch (ValidationException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
