@@ -105,11 +105,11 @@ public class AppointmentRequestService {
             }
             if (!doctorService.isAvailable(null, doctor.get(),
                     newAppointment.getStartingDateAndTime(), newAppointment.getDuration())){
-                throw new ValidationException("Doctor " + doctor.get().getName() + " " + doctor.get().getSurname()  + "is not available at selected time");
+                throw new ValidationException("Doctor " + doctor.get().getName() + " " + doctor.get().getSurname()  + " is not available at selected time");
             }
             if (!doctorService.isDuringDoctorWorkingHours(null,doctor.get(),
                     newAppointment.getStartingDateAndTime(), newAppointment.getDuration())){
-                throw new ValidationException("Selected time is not during doctors working hours");
+                throw new ValidationException("Selected time is not during working hours of doctor " + doctor.get().getName() + " " + doctor.get().getSurname());
             }
             doctors.add(doctor.get());
         }

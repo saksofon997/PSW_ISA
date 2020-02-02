@@ -123,7 +123,7 @@ public class EmailService {
         mail.setSubject("Clinic: New appointment scheduled");
         mail.setText("Dear " + patient.getName() + ",\n\nDoctor " + doctor.getName() + " " + doctor.getSurname() +
                 " has scheduled a new appointment on " + date.toString(DateTimeFormat.forPattern("dd.MM.yyyy.")) +
-                "\n\nYou will receive additional info about this appointment when it gets approved by clinic administrator." +
+                "\n\nYou will receive additional information about this appointment during this day when it gets approved by clinic administrator." +
                 "\n\nBest regards,\nClinical center team\n\n\n\n" +
                 "If you don't know what this is about, then someone has probably" +
                 " entered your email address by mistake and you can ignore this e-mail.");
@@ -148,13 +148,63 @@ public class EmailService {
                 " clinic." +
                 "\n\nAppointment info:" +
                 "\nDoctor: " + doctor.getName() + " " + doctor.getSurname() +
+                "\nType of examination: " + appointmentDTO.getTypeOfExamination().getName() +
                 "\nOrdination name: " + appointmentDTO.getOrdination().getName() + ", Number: " + appointmentDTO.getOrdination().getNumber() +
                 "\nDate and time: " + dateTime.toString(DateTimeFormat.forPattern("dd.MM.yyyy. HH:mm")) +
+                "\nPrice: " + appointmentDTO.getPrice() +
+                "\nDiscount: " + appointmentDTO.getDiscount() +
+                "\nFinal price: " + (appointmentDTO.getPrice() - appointmentDTO.getDiscount()) +
                 "\n\nBest regards,\nClinical center team\n\n\n\n" +
                 "If you don't know what this is about, then someone has probably" +
                 " entered your email address by mistake and you can ignore this e-mail.");
         javaMailSender.send(mail);
 
         System.out.println("Email poslat!");
+    }
+
+    @Async
+    public void sendAppointmentRequestApproved(AppointmentDTO appointmentDTO) throws MailException,
+            InterruptedException {
+        System.out.println("Slanje emaila pacijentu...");
+        PatientDTO patient = appointmentDTO.getPatient();
+        DoctorDTO doctor = appointmentDTO.getDoctors().get(0);
+        DateTime dateTime = new DateTime(appointmentDTO.getStartingDateAndTime()*1000);
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(patient.getEmail());
+        mail.setFrom("noreply@clinic.com");
+        mail.setSubject("Clinic: Appointment scheduled");
+        mail.setText("Dear " + patient.getName() + ",\n\nNew appointment in " + appointmentDTO.getClinic().getName() +
+                " clinic." +
+                "\n\nAppointment info:" +
+                "\n\nDoctor: " + doctor.getName() + " " + doctor.getSurname() +
+                "\nType of appointment: " + appointmentDTO.getTypeOfExamination().getName() +
+                "\nOrdination name: " + appointmentDTO.getOrdination().getName() + ", Number: " + appointmentDTO.getOrdination().getNumber() +
+                "\nDate and time: " + dateTime.toString(DateTimeFormat.forPattern("dd.MM.yyyy. HH:mm")) +
+                "\nPrice: " + appointmentDTO.getPrice() +
+                "\n\nBest regards,\nClinical center team\n\n\n\n" +
+                "If you don't know what this is about, then someone has probably" +
+                " entered your email address by mistake and you can ignore this e-mail.");
+        javaMailSender.send(mail);
+        System.out.println("Email poslat pacijentu!");
+
+        System.out.println("Slanje emaila doktorima...");
+        for (DoctorDTO doc: appointmentDTO.getDoctors()){
+            mail.setTo(doctor.getEmail());
+            mail.setFrom("noreply@clinic.com");
+            mail.setSubject("Clinic: Appointment scheduled");
+            mail.setText("Dear " + doc.getName() + ",\n\nYou have a new appointment" +
+                    "\n\nAppointment info:" +
+                    "\nPatient: " + patient.getName() + " " + patient.getSurname() +
+                    "\nType of examination: " + appointmentDTO.getTypeOfExamination().getName() +
+                    "\nOrdination name: " + appointmentDTO.getOrdination().getName() + ", Number: " + appointmentDTO.getOrdination().getNumber() +
+                    "\nDate and time: " + dateTime.toString(DateTimeFormat.forPattern("dd.MM.yyyy. HH:mm")) +
+                    "\n\nBest regards,\nClinical center team\n\n\n\n" +
+                    "If you don't know what this is about, then someone has probably" +
+                    " entered your email address by mistake and you can ignore this e-mail.");
+            javaMailSender.send(mail);
+        }
+        System.out.println("Email doktoru/doktorima poslat!");
+
     }
 }
