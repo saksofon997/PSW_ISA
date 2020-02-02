@@ -34,14 +34,14 @@ public class Doctor extends User {
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctores", fetch = FetchType.LAZY)
 //    public List<Appointment> appointments = new ArrayList<Appointment>();
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Appointment.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Appointment.class)
     @JoinTable(name = "appointment_doctors", joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"),
             foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
             inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     public Set<Appointment> appointments;
 
-    @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY)
-    public List<Vacation> vacations = new ArrayList<Vacation>();
+    @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.EAGER)
+    public Set<Vacation> vacations = new HashSet<>();
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<DoctorPatient> patients = new HashSet<>();
@@ -52,11 +52,11 @@ public class Doctor extends User {
     @Column(name = "number_of_reviews")
     private int numberOfReviews;
 
-    public List<Vacation> getVacations() {
+    public Set<Vacation> getVacations() {
         return vacations;
     }
 
-    public void setVacations(List<Vacation> vacations) {
+    public void setVacations(Set<Vacation> vacations) {
         this.vacations = vacations;
     }
     public String getShiftStart() {
