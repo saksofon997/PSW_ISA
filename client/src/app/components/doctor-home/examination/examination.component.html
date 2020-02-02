@@ -40,11 +40,11 @@
       <label class="col-sm-3 col-form-label font-weight-bold float-left">Report description:</label>
       <div class="col-sm-10 col-lg-9 shadow-sm p-1 mb-1 bg-white rounded ">
         <div class="input-group mb-3" style="border: 0; height: 7em;">
-          <textarea type="text" class="form-control input-display" style="height: 8em;" formControlName="reportDescription"></textarea>
+          <textarea [ngClass]="{ 'is-invalid': submitted && examinationForm.controls.reportDescription.errors }" type="text" class="form-control input-display" style="height: 8em;" formControlName="reportDescription"></textarea>
           <div *ngIf="submitted && examinationForm.controls.reportDescription.errors" class="invalid-feedback">
             <div *ngIf="examinationForm.controls.reportDescription.errors.required">Report has to have a description!</div>
           </div>
-          <div class="input-group-append">
+          <div class="input-group-append" *ngIf="!submitted">
             <span class="input-group-text" style=" height: 8em;"><img src="assets/images/description.png"
                 style=" width: 1.7em; height: 1.7em;"></span>
           </div>

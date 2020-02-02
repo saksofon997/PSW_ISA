@@ -140,24 +140,28 @@ public class ExaminationReportService {
 
         List<DiagnosisDTO> diagnosisDTOS = examinationReportDTO.getDiagnosis();
         List<DiagnosisDictionary> diagnosis = new ArrayList<>();
-        for(DiagnosisDTO d: diagnosisDTOS) {
-            DiagnosisDictionary dictionary = diagnosisRepository.findById(d.getId()).get();
-            diagnosis.add(dictionary);
+        if (diagnosisDTOS != null) {
+            for(DiagnosisDTO d: diagnosisDTOS) {
+                DiagnosisDictionary dictionary = diagnosisRepository.findById(d.getId()).get();
+                diagnosis.add(dictionary);
+            }
         }
         report.setDiagnosis(diagnosis);
 
         List<MedicationDTO> medicationDTOS = examinationReportDTO.getMedications();
         List<Prescription> prescriptions = new ArrayList<>();
-        for(MedicationDTO m: medicationDTOS) {
-            MedicationDictionary dictionary = medicationsRepository.findOneByCode(m.getCode());
-            Prescription prescription = new Prescription();
-            prescription.setApproved(false);
-            prescription.setClinic(clinic);
-            prescription.setMedication(dictionary);
-            prescription.setApproves(null);
-            prescription.setPerforms(doctor);
-            prescriptions.add(prescription);
-            prescriptionRepository.save(prescription);
+        if (medicationDTOS != null) {
+            for(MedicationDTO m: medicationDTOS) {
+                MedicationDictionary dictionary = medicationsRepository.findOneByCode(m.getCode());
+                Prescription prescription = new Prescription();
+                prescription.setApproved(false);
+                prescription.setClinic(clinic);
+                prescription.setMedication(dictionary);
+                prescription.setApproves(null);
+                prescription.setPerforms(doctor);
+                prescriptions.add(prescription);
+                prescriptionRepository.save(prescription);
+            }
         }
         report.setPrescription(prescriptions);
         return report;
