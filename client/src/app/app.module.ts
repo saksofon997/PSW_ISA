@@ -39,6 +39,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { AngularYandexMapsModule } from 'angular8-yandex-maps';
 import { HttpParameterCodec } from "@angular/common/http";
 import { RatingModule } from 'ng-starrating';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { TypeOfExaminationListingComponent } from './components/adminC-dashboard/type-of-examination-listing/type-of-examination-listing.component';
 import { TypeOfExaminationFormComponent } from './components/adminC-dashboard/type-of-examination-form/type-of-examination-form.component';
@@ -79,6 +80,8 @@ import { TokenInterceptor } from './services/token.interceptor';
 import { AdminCHomeComponent } from './components/adminC-dashboard/admin-c-home/admin-c-home.component';
 import { AppointmentRequestsComponent } from './components/adminC-dashboard/appointment-requests/appointment-requests.component';
 import { PatientAvailableAppointmentsComponent } from './components/patient-home/patient-available-appointments/patient-available-appointments.component';
+import { PatientScheduleAppointmentComponent } from './components/patient-home/patient-schedule-appointment/patient-schedule-appointment.component';
+import { ClinicBusinessComponent } from './components/adminC-dashboard/clinic-business/clinic-business.component';
 
 @NgModule({
   declarations: [
@@ -144,6 +147,8 @@ import { PatientAvailableAppointmentsComponent } from './components/patient-home
     AdminCHomeComponent,
     AppointmentRequestsComponent,
     PatientAvailableAppointmentsComponent,
+    PatientScheduleAppointmentComponent,
+    ClinicBusinessComponent,
     
   ],
   imports: [
@@ -167,7 +172,8 @@ import { PatientAvailableAppointmentsComponent } from './components/patient-home
     FormsModule,
     SelectDropDownModule,
     MatButtonModule,
-    RatingModule
+    RatingModule,
+    NgxChartsModule,
   ],
   exports: [
     MedicalRecordComponent

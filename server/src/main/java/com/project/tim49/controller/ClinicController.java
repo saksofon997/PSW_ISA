@@ -1,5 +1,6 @@
 package com.project.tim49.controller;
 
+import com.project.tim49.dto.ClinicBusinessDTO;
 import com.project.tim49.dto.ClinicsSearchResultDTO;
 import com.project.tim49.dto.OrdinationDTO;
 import com.project.tim49.dto.TypeOfExaminationDTO;
@@ -30,5 +31,14 @@ public class ClinicController {
     ) {
         List<ClinicsSearchResultDTO> clinics = clinicService.getByQuery(name, address, toe_id, date);
         return new ResponseEntity<>(clinics, HttpStatus.OK);
+    }
+
+    @GetMapping("/clinicsBusiness/{id}")
+    @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('ADMINCC')")
+    public ResponseEntity getClinicsBusiness(
+            @PathVariable("id") Long clinic_id
+    ) {
+        List<ClinicBusinessDTO> returnVal = clinicService.getClinicBusiness(clinic_id);
+        return new ResponseEntity<>(returnVal, HttpStatus.OK);
     }
 }

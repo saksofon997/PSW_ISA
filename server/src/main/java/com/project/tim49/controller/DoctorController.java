@@ -43,7 +43,7 @@ public class DoctorController {
 
     @GetMapping(path = "/getDoctor/{doctor_id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('PATIENT')")
     public ResponseEntity getDoctor(@PathVariable Long doctor_id) {
         try {
             DoctorDTO doctor = doctorService.getDoctor(doctor_id);
