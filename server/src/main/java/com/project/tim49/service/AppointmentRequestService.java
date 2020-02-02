@@ -37,6 +37,8 @@ public class AppointmentRequestService {
     private OrdinationService ordinationService;
     @Autowired
     private OrdinationRepository ordinationRepository;
+    @Autowired
+    private EmailService emailService;
 
     public ArrayList<AppointmentDTO> getClinicAppointmentRequests(Long clinic_id){
         Clinic clinic = clinicRepository.findById(clinic_id).orElseGet(null);
@@ -132,7 +134,7 @@ public class AppointmentRequestService {
 
     @Transactional
     @Scheduled(cron = "${appointment.cron}")
-    void systemChooseOrdinationForAllAppointmentRequests(){
+    void systemChooseOrdinationForAllAppointmentRequests() throws InterruptedException {
         ArrayList<AppointmentRequest> appointmentRequests = appointmentRequestRepository.getAllByApprovedFalse();
         for(AppointmentRequest request: appointmentRequests){
             Patient patient = request.getPatient();
@@ -207,6 +209,7 @@ public class AppointmentRequestService {
 
             request.setApproved(true);
             appointmentRequestRepository.delete(request);
+            emailService.sendAppointmentRequestApproved(new AppointmentDTO(saved));
         }
     }
 }
