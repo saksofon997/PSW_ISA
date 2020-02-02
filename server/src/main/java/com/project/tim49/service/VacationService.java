@@ -134,7 +134,7 @@ public class VacationService {
             }
         }
 
-        List<Vacation> vacations = doctor.getVacations();
+        Set<Vacation> vacations = doctor.getVacations();
         for(Vacation vac: vacations) {
             if (vac.getStartDate() > vacationDTO.getStartDate() && vac.getStartDate() < vacationDTO.getEndDate()) {
                 //throw new ValidationException("You already have vacations during that time!"); //pocetak upada u odmor

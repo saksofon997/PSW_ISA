@@ -6,12 +6,17 @@ import com.project.tim49.dto.PatientDTO;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.validation.ValidationException;
 import java.util.*;
 
 @Service
+@PersistenceContext(type = PersistenceContextType.EXTENDED)
 public class AppointmentRequestService {
 
     @Autowired
@@ -30,6 +35,8 @@ public class AppointmentRequestService {
     private AppointmentService appointmentService;
     @Autowired
     private OrdinationService ordinationService;
+    @Autowired
+    private OrdinationRepository ordinationRepository;
 
     public ArrayList<AppointmentDTO> getClinicAppointmentRequests(Long clinic_id){
         Clinic clinic = clinicRepository.findById(clinic_id).orElseGet(null);
@@ -121,5 +128,85 @@ public class AppointmentRequestService {
         appointmentRequestRepository.delete(appointmentRequest.get());
 
         return new AppointmentDTO(saved);
+    }
+
+    @Transactional
+    @Scheduled(cron = "${appointment.cron}")
+    void systemChooseOrdinationForAllAppointmentRequests(){
+        ArrayList<AppointmentRequest> appointmentRequests = appointmentRequestRepository.getAllByApprovedFalse();
+        for(AppointmentRequest request: appointmentRequests){
+            Patient patient = request.getPatient();
+            if (patient == null){
+                throw new ValidationException("Invalid appointment request data: patient is missing");
+            }
+
+            if (request.getEndingDateAndTime() == 0){
+                if (request.getTypeOfExamination().isOperation()){
+                    request.setEndingDateAndTime( request.getStartingDateAndTime() + 60 * 60 );
+                    request.setDuration(60 * 60 * 1000);
+                } else {
+                    request.setEndingDateAndTime( request.getStartingDateAndTime() + 20 * 60 );
+                    request.setDuration(20 * 60 * 1000);
+                }
+            }
+            ArrayList<Ordination> ordinations = ordinationRepository.getAllByClinic(request.getClinic());
+            Ordination selectedOrdination = null;
+            for(int i = 0; i < 500; i++){
+                request.setStartingDateAndTime(request.getStartingDateAndTime() + request.getDuration()/1000 * i );
+                request.setEndingDateAndTime(request.getEndingDateAndTime() + request.getDuration()/1000 * i );
+
+                Doctor doctor = request.getDoctor();
+                if (doctor == null){
+                    throw new ValidationException("Invalid appointment request data: doctor is missing");
+                }
+                if (!doctorService.isAvailable(null, doctor,
+                        request.getStartingDateAndTime(), request.getDuration())){
+                    continue;
+                }
+                if (!doctorService.isDuringDoctorWorkingHours(null,doctor,
+                        request.getStartingDateAndTime(), request.getDuration())){
+                    continue;
+                }
+
+                for(Ordination ordination: ordinations){
+                    if (ordinationService.isAvailable(null, ordination, request.getStartingDateAndTime(), request.getDuration())){
+                        selectedOrdination = ordination;
+                        break;
+                    }
+                }
+                if (selectedOrdination != null){
+                    break;
+                }
+            }
+            if (selectedOrdination == null){
+                System.out.println("Needs administrator's review<");
+                continue;
+            }
+
+            Appointment appointment = new Appointment();
+            appointment.setStartingDateAndTime(request.getStartingDateAndTime());
+            appointment.setEndingDateAndTime(request.getStartingDateAndTime() + request.getDuration()/1000);
+            appointment.setDuration(request.getDuration());
+            appointment.setPrice(request.getPrice());
+            appointment.setCompleted(false);
+            appointment.setTypeOfExamination(request.getTypeOfExamination());
+            appointment.setClinic(request.getClinic());
+            appointment.setOrdination(selectedOrdination);
+            appointment.setPatient(request.getPatient());
+            Set<Doctor> doctors = new HashSet<>();
+            doctors.add(request.getDoctor());
+            appointment.setDoctors(doctors);
+
+            Appointment saved = appointmentService.save(appointment);
+            Optional<Patient> pat = patientRepository.findById(saved.getPatient().getId());
+            if (!pat.isPresent()){
+                throw new ValidationException("Invalid appointment request data: patient is invalid");
+            }
+            pat.get().getPendingAppointments().add(saved);
+            patientRepository.save(pat.get());
+
+            request.setApproved(true);
+            appointmentRequestRepository.delete(request);
+        }
     }
 }
