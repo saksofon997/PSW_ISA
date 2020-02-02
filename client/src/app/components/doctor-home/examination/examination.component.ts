@@ -9,6 +9,7 @@ import { ClinicalCenterService } from 'src/app/services/clinical-center.service'
 import { CookieService } from 'ngx-cookie-service';
 import { DoctorService } from 'src/app/services/doctor.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-examination',
@@ -30,6 +31,7 @@ export class ExaminationComponent implements OnInit {
   reportDescription: any;
   submitted: boolean;
   appointment: any;
+  canExitFlag: boolean = false;
   modalData: {
 		patientID: any;
 		patientName: any;
@@ -70,7 +72,8 @@ export class ExaminationComponent implements OnInit {
               private cookieService: CookieService,
               private router: Router,
               private doctorService: DoctorService,
-              private modal: NgbModal) { }
+              private modal: NgbModal,
+              private confirmationDialogService: DialogService) { }
 
 
   @ViewChild('singleSelect', { read: ElementRef, static: true }) singleSelect: MatSelect;
@@ -159,6 +162,7 @@ export class ExaminationComponent implements OnInit {
     let patientID = this.patient.id;
     this.doctorService.submitReport(report,patientID,this.appointment).subscribe(
       (data) => {
+        this.canExitFlag = true;
         this.router.navigate([`../patients`], {relativeTo: this.activatedRoute });
       },
       (error) => { alert(error);}
@@ -180,4 +184,21 @@ export class ExaminationComponent implements OnInit {
   close(){
     
   }
+  canExit(nextState): boolean {
+		if (this.canExitFlag){
+			return true;
+		} else {
+			this.confirmationDialogService.confirm('Warning', 'You are leaving this page without finishing an appointment. Proceed?', false)
+			.then((confirmed) => {
+				if (confirmed.submited) {
+          this.canExitFlag = true;
+          this.router.navigate([nextState.url], {relativeTo: this.activatedRoute });
+				 	return true;
+				} else {
+          return false;
+        }
+			})
+			.catch(() => {return false;})
+		}
+	}
 }
