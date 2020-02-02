@@ -57,6 +57,7 @@ import { AdminCHomeComponent } from './components/adminC-dashboard/admin-c-home/
 import { AppointmentRequestsComponent } from './components/adminC-dashboard/appointment-requests/appointment-requests.component';
 import { PatientAvailableAppointmentsComponent } from './components/patient-home/patient-available-appointments/patient-available-appointments.component';
 import { PatientScheduleAppointmentComponent } from './components/patient-home/patient-schedule-appointment/patient-schedule-appointment.component';
+import { ClinicBusinessComponent } from './components/adminC-dashboard/clinic-business/clinic-business.component';
 
 const routes: Routes = [
 	{
@@ -116,6 +117,7 @@ const routes: Routes = [
 			{path: 'available_appointments', component: AvailableAppointmentListingComponent},
 			{path: 'new_available_appointment', component: NewAvailableAppointmentPageComponent},
 			{path: 'vacation_requests', component: VacationRequestsComponent},
+			{path: 'business', component: ClinicBusinessComponent},
 
 			{path: 'ordination_selection', component: OrdinationSelectionComponent}, // Za testiranje, uklopiti kasnije kad se odrade appointment requestovi
 

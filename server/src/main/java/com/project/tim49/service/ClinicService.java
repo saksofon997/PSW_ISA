@@ -239,4 +239,67 @@ public class ClinicService {
 
         return selected;
     }
+
+    public List<ClinicBusinessDTO> getClinicBusiness(Long clinic_id) {
+        if (clinic_id == null){
+            throw new ValidationException("Invalid parameters.");
+        }
+        Clinic clinic = clinicRepository.findById(clinic_id).orElse(null);
+        if (clinic == null ) {
+            throw new NoSuchElementException("Clinic does not exist.");
+        }
+
+        List<Appointment> appointments = appointmentRepository.getByClinicAndCompleted(clinic_id);
+
+        Comparator<Appointment> compareByEnd = Comparator.comparingLong(Appointment::getEndingDateAndTime);
+        appointments.sort(compareByEnd);
+
+        List<ClinicBusinessDTO> returnVal = new ArrayList<>();
+        ClinicBusinessDTO daybus = new ClinicBusinessDTO();
+        daybus.setName("Day");
+        ClinicBusinessDTO weekbus = new ClinicBusinessDTO();
+        weekbus.setName("Week");
+        ClinicBusinessDTO monbus = new ClinicBusinessDTO();
+        monbus.setName("Month");
+
+        Calendar calendar = GregorianCalendar.getInstance();
+
+        int durDay = 1000 * 60 * 60 * 24;
+        int durWeek = 1000 * 60 * 60 * 24 * 7;
+        int durMonth = 1000 * 60 * 60 * 24 * 7 * 30;
+
+        Date date= new Date();
+        long time = date.getTime();
+
+        for(Appointment appt : appointments) {
+            if((time - appt.getEndingDateAndTime()*1000) < durDay ) {
+
+                calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
+                int appointmentEndHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int appointmentEndMinute = calendar.get(Calendar.MINUTE);
+                String apptTime = appointmentEndHour+":"+appointmentEndMinute;
+                daybus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
+            }
+            if((time - appt.getEndingDateAndTime()*1000) < durWeek ) {
+
+                calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
+                int appointmentEndHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int appointmentEndMinute = calendar.get(Calendar.MINUTE);
+                String apptTime = appointmentEndHour+":"+appointmentEndMinute;
+                weekbus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
+            }
+            if((time - appt.getEndingDateAndTime()*1000) < durMonth ) {
+
+                calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
+                int appointmentEndHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int appointmentEndMinute = calendar.get(Calendar.MINUTE);
+                String apptTime = appointmentEndHour+":"+appointmentEndMinute;
+                monbus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
+            }
+        }
+        returnVal.add(daybus);
+        returnVal.add(weekbus);
+        returnVal.add(monbus);
+        return returnVal;
+    }
 }
