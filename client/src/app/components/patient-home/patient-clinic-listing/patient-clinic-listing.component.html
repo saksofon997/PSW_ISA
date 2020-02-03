@@ -118,14 +118,14 @@
             <td> {{clinic.address}} </td>
             <td>
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="{{'dropdown'+ clinic.id}}"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Options
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicsDoctors(clinic)">Show clinics doctors</a>
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="showAvailableAppointments(clinic.id)">Schedule appointment quickly</a>
+                        <a class="dropdown-item" id="{{'info'+ clinic.id}}" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
+                        <a class="dropdown-item" id="{{'doctors'+ clinic.id}}" style="cursor: pointer;" (click)="showClinicsDoctors(clinic)">Show clinics doctors</a>
+                        <a class="dropdown-item" id="{{'appointment'+ clinic.id}}" style="cursor: pointer;" (click)="showAvailableAppointments(clinic.id)">Schedule appointment quickly</a>
                     </div>
                 </div>
             </td>
@@ -159,13 +159,13 @@
             <td> {{clinic.typeOfExamination.price}}</td>
             <td>
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="{{'optionsButtonSearch'+ clinic.id}}"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Options
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(clinic)">Show additional info</a>
-                        <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctors(clinic)">Show available doctors</a>
+                        <a class="dropdown-item" id="{{'doctorts'+ clinic.id}}" style="cursor: pointer;" (click)="showDoctors(clinic)">Show available doctors</a>
                     </div>
                 </div>
             </td>

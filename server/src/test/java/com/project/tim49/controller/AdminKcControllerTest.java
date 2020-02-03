@@ -1,56 +1,147 @@
 package com.project.tim49.controller;
 
-import org.junit.jupiter.api.Test;
+import static com.project.tim49.constants.ClinicConstants.*;
+import static org.junit.Assert.assertEquals;
+
+import com.project.tim49.constants.ClinicConstants;
+import com.project.tim49.dto.ClinicDTO;
+import com.project.tim49.dto.LoginDTO;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.DefaultResponseErrorHandler;
+
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+@TestPropertySource("classpath:test.properties")
+public
 class AdminKcControllerTest {
+    private static final String URL_PREFIX = "/api/admin";
 
-    @Test
-    void saveClinic() {
+    private MediaType contentType = new MediaType(
+            MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype(),
+            Charset.forName("utf8"));
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    private String accessToken;
+    HttpHeaders headers = new HttpHeaders();
+    HttpEntity<Object> httpEntity;
+
+    @Before
+    public void login() {
+        ResponseEntity<AuthenticationController.UserState> responseEntity =
+                restTemplate.postForEntity("/auth/login",
+                        new LoginDTO("adminkc1@kcv.rs", "123456"),
+                        AuthenticationController.UserState.class);
+        // preuzmemo token jer ce nam trebati za testiranje REST kontrolera
+        AuthenticationController.UserState userstate = responseEntity.getBody();
+        accessToken = userstate.token.getAccessToken();
+        headers.add("Authorization","Bearer " + accessToken);
+        //kreiramo objekat koji saljemo u sklopu zahteva
+        // objekat nema telo, vec samo zaglavlje, jer je rec o GET zahtevu
+        httpEntity = new HttpEntity<Object>(headers);
+    }
+
+    @PostConstruct
+    public void setup() {
+
     }
 
     @Test
-    void editClinic() {
+    public void saveClinic() {
     }
 
     @Test
-    void deleteClinic() {
+    public void editClinic() {
     }
 
     @Test
-    void rateClinic() {
+    public void deleteClinic() {
     }
 
     @Test
-    void getClinic() {
+    public void rateClinic() {
     }
 
     @Test
-    void getClinicById() {
+    public void getClinic() throws Exception{
+        ResponseEntity<ClinicDTO[]> responseEntity =
+                restTemplate.exchange(URL_PREFIX + "/getClinics", HttpMethod.GET, httpEntity, ClinicDTO[].class);
+        ClinicDTO[] clinics = responseEntity.getBody();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(DB_COUNT, clinics.length);
+        assertEquals(ClinicConstants.DB_ID, clinics[0].getId());
+        assertEquals(DB_NAME, clinics[0].getName());
+        assertEquals(DB_CITY, clinics[0].getCity());
+        assertEquals(DB_ADDRESS, clinics[0].getAddress());
+
     }
 
     @Test
-    void getClinicAdmins() {
+    public void getClinicById() throws Exception {
+
+        ResponseEntity<ClinicDTO> responseEntity =
+                restTemplate.exchange(URL_PREFIX + "/getClinic/"+ClinicConstants.DB_ID, HttpMethod.GET, httpEntity, ClinicDTO.class);
+        ClinicDTO clinic = responseEntity.getBody();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(ClinicConstants.DB_ID, clinic.getId());
+        assertEquals(DB_NAME, clinic.getName());
+        assertEquals(DB_CITY, clinic.getCity());
+        assertEquals(DB_ADDRESS, clinic.getAddress());
     }
 
     @Test
-    void getAdminKc() {
+    public void getClinicAdmins() throws Exception{
+//        mockMvc.perform(get(URL_PREFIX + "/getClinicAdmins/" + ClinicConstants.DB_ID))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(contentType))
+//                .andExpect(jsonPath("$", hasSize(DB_CLINIC_ADMIN_COUNT)))
+//                .andExpect(jsonPath("$.id").value(ClinicConstants.DB_CLINIC_ADMIN_ID.intValue()))
+//                .andExpect(jsonPath("$.[*].name").value(hasItem(DB_CLINIC_ADMIN_NAME)))
+//                .andExpect(jsonPath("$.[*].email").value(hasItem(DB_CLINIC_ADMIN_EMAIL)))
+//                .andExpect(jsonPath("$.[*].upin").value(hasItem(DB_CLINIC_ADMIN_UPIN)));
     }
 
     @Test
-    void modifyAdminKc() {
+    public void getAdminKc() {
     }
 
     @Test
-    void getRegistrationRequests() {
+    public void modifyAdminKc() {
     }
 
     @Test
-    void approveRequest() {
+    public void getRegistrationRequests() {
     }
 
     @Test
-    void deleteRequest() {
+    public void approveRequest() {
+    }
+
+    @Test
+    public void deleteRequest() {
     }
 }

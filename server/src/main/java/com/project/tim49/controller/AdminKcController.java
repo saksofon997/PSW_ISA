@@ -133,23 +133,15 @@ public class AdminKcController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ADMINCC')")
     public ResponseEntity getClinicAdmins(@PathVariable Long id) {
-        Clinic clinic = clinicService.findOne(id);
-
-        if (clinic == null) {
-            return new ResponseEntity<>("No clinic with this id", HttpStatus.NOT_ACCEPTABLE);
+        if (id == null) {
+            return new ResponseEntity<>("Can not resolve clinic id:"+id, HttpStatus.NOT_ACCEPTABLE);
         }
-
-        List<ClinicAdministrator> admins = clinic.getClinicAdministrator();
-
-        List<ClinicAdministratorDTO> adminsDTO = new ArrayList<>();
-        for (ClinicAdministrator admin : admins) {
-            adminsDTO.add(new ClinicAdministratorDTO(admin));
-        }
-
-        if (admins != null) {
+        try{
+            List<ClinicAdministratorDTO> adminsDTO = clinicService.getClinicAdmins(id);
             return new ResponseEntity<>(adminsDTO, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(adminsDTO, HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>("Failed, clinic not found!",
+                    HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping(path="/getAdminKc/{id}" ,

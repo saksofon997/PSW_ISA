@@ -20,7 +20,7 @@
             <td> {{appointment.price}} </td>
             <td> {{appointment.discount}} </td>
             <td>
-                <button type="button" class="btn btn-secondary" (click)="chooseAvailableAppointment(appointment)">Choose</button>
+            <button type="button" id="{{'appointment'+appointment.id}}" class="btn btn-secondary" (click)="chooseAvailableAppointment(appointment)">Choose</button>
             </td>
         </tr>
     </tbody>
