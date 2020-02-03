@@ -54,12 +54,10 @@ public class RouterTest {
 
     @Test
     public void testPreDefinedAppointment() {
-        browser.navigate().to("http://localhost:4200/#/login");
+        browser.navigate().to("http://localhost:8080/#/login");
         browser.findElement(By.name("email")).sendKeys("patient1@kcv.rs");
         browser.findElement(By.name("password")).sendKeys("123456");
         browser.findElement(By.cssSelector(".btn-primary")).click();
-
-
 
         (new WebDriverWait(browser, 10))
                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"dropdown1\"]")));
@@ -81,17 +79,16 @@ public class RouterTest {
         assertEquals(alertText,
                    "Successfully selected an appointment");
 
-
     }
 
     @Test
     public void testSearchAndScheduleAppointment() {
-        browser.navigate().to("http://localhost:4200/#/login");
+        browser.navigate().to("http://localhost:8080/#/login");
         browser.findElement(By.name("email")).sendKeys("patient1@kcv.rs");
         browser.findElement(By.name("password")).sendKeys("123456");
         browser.findElement(By.cssSelector(".btn-primary")).click();
 
-        browser.navigate().to("http://localhost:4200/#/patient");
+        browser.navigate().to("http://localhost:8080/#/patient");
         (new WebDriverWait(browser, 10))
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".btn-light")));
         browser.findElement(By.cssSelector(".btn-light")).click();
@@ -110,11 +107,9 @@ public class RouterTest {
                 .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//a[@id=\"doctorts1\"]"))));
         browser.findElement(By.xpath("//a[@id=\"doctorts1\"]")).click();
 
-        (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"optionsDoctor10\"]")));
-        (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//button[@id=\"optionsDoctor10\"]"))));
         try {
+            (new WebDriverWait(browser, 10))
+                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"optionsDoctor10\"]")));
             WebElement buttonOptions = browser.findElement(By.xpath("//button[@id=\"optionsDoctor10\"]"));
             buttonOptions.click();
         }
