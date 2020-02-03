@@ -65,7 +65,7 @@
                   <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
                       <select formControlName="typeOfExamination" class="m-1 form-control"
                           [ngClass]="{ 'is-invalid': submitted && form.controls.typeOfExamination.errors }" id="typeOfExamination"
-                          style="border: 0; width: 100%;" [(ngModel)]="TOE_param">
+                          style="border: 0; width: 100%;" >
                           <!--<option value=""></option>-->
                           <option *ngFor="let type of typesOfExamination" [value]="type.id">{{type.name}}
                           </option>

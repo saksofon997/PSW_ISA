@@ -2,27 +2,27 @@ package com.project.tim49.dto;
 
 public class ChartDataDTO {
 
-    private String name;
-    private String value;
+    private long name;
+    private int value;
 
-    public ChartDataDTO(String name, String value) {
+    public ChartDataDTO(long name, int value) {
         this.name = name;
         this.value = value;
     }
 
-    public String getName() {
+    public long getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(long name) {
         this.name = name;
     }
 
-    public String getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(int value) {
         this.value = value;
     }
 }

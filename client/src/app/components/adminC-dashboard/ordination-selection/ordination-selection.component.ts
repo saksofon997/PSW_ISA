@@ -355,7 +355,7 @@ export class OrdinationSelectionComponent implements OnInit {
 		}
 		let appointment = this.modalData.appointment;
 
-		if (appointment.startTimeString === '' || appointment.endTimeString === ''){
+		if (appointment.startTimeString === undefined || appointment.endTimeString === undefined || appointment.startTimeString === '' || appointment.endTimeString === ''){
 			alert("Please choose time of appointment");
 			return;
 		}

@@ -1,36 +1,134 @@
 <div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
-  <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
-      <h3 class="display-8">Clinics business</h3>
-      <p class="lead">Here you can see clinics statistics.</p>
-  </div>
+	<div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+		<h3 class="display-8">Clinics business</h3>
+		<p class="lead">Here you can see clinics statistics.</p>
+	</div>
 </div>
-<div class="row">
-  <label class="col-sm-2 col-form-label font-weight-bold" for="code">Earnings this month: </label>
-  <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">{{earningsMonth}}</div>
-  <!-- <label class="col-sm-2 col-form-label font-weight-bold" for="code">Earnings this year: </label>
-  <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">{{earningsYear}}</div>
-  <label class="col-sm-2 col-form-label font-weight-bold" for="code">Earnings so far: </label>
-  <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">{{earningsSoFar}}</div> -->
-</div>
+
 <div class="col-lg-8 col-sm-10">
-  <hr>
+	<hr>
 </div>
-<div>
-  <ngx-charts-line-chart
-    [view]="view"
-    [scheme]="colorScheme"
-    [legend]="legend"
-    [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxis]="xAxis"
-    [yAxis]="yAxis"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    [timeline]="timeline"
-    [results]="data"
-    (select)="onSelect($event)"
-    (activate)="onActivate($event)"
-    (deactivate)="onDeactivate($event)"
-    >
-  </ngx-charts-line-chart>
-</div>
+
+<mat-accordion>
+	<mat-expansion-panel id="">
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				<p class="h3 ">Clinic earnings </p>
+			</mat-panel-title>
+			<mat-panel-description>
+
+			</mat-panel-description>
+		</mat-expansion-panel-header>
+		<form [formGroup]="incomeForm" (ngSubmit)="onSubmitEearningsPeriod()">
+			<div class="form-group row">
+				<label for="periodStart" class="col-sm-2 col-form-label font-weight-bold">Period start: </label>
+				<div class="row col-lg-6 col-sm-10 col-md-6 shadow-sm p-1 mb-1 ml-1 bg-white rounded col">
+					<div class="col-lg-10 col-sm-10 col-md-10">
+						<input type="datetime" formControlName="periodStart" [owlDateTime]="dt1" class="form-control"
+							[ngClass]="{ 'is-invalid': incomeFormSubmitted && incomeForm.controls.periodStart.errors }"
+							id="periodStart" style="border: 0;">
+					</div>
+					<span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt1"> <i
+							class="fa fa-calendar"></i> </span>
+					<owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="periodEnd" class="col-sm-2 col-form-label font-weight-bold">Period end: </label>
+				<div class="row col-lg-6 col-sm-10 col-md-6 shadow-sm p-1 mb-1 ml-1 bg-white rounded col">
+					<div class="col-lg-10 col-sm-10 col-md-10">
+						<input type="datetime" formControlName="periodEnd" [owlDateTime]="dt2" class="form-control"
+							[ngClass]="{ 'is-invalid': incomeFormSubmitted && incomeForm.controls.periodEnd.errors }"
+							id="periodEnd" style="border: 0;">
+					</div>
+					<span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
+							class="fa fa-calendar"></i> </span>
+					<owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+				</div>
+			</div>
+			<mat-action-row>
+				<div style="float: left; width: 90%;" *ngIf="incomeFormSubmitted && incomeDataArrived">
+					<p>Clinic earnings from <b>{{timeConverter(incomeForm.controls.periodStart.value/1000)}}</b> to
+						<b>{{timeConverter(incomeForm.controls.periodEnd.value/1000)}}</b> : </p>
+					<p> <b> {{earnings}} </b> </p>
+				</div>
+				<div>
+					<button class="btn btn-primary" type="submit" mat-button>Show earnings</button>
+				</div>
+			</mat-action-row>
+		</form>
+	</mat-expansion-panel>
+</mat-accordion>
+<mat-accordion class="example-headers-align mt-2 pt-3">
+	<mat-expansion-panel style="margin-top: 0.5em;">
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				<p class="h3">Completed appointments</p>
+			</mat-panel-title>
+			<mat-panel-description>
+
+			</mat-panel-description>
+		</mat-expansion-panel-header>
+
+		<div class="col-12 p-0 m-0 mb-2 ">
+
+			<form [formGroup]="chartForm" (ngSubmit)="onShowChart()">
+				<div class="form-group row">
+					<label for="mode" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Select chart view mode:
+					</label>
+					<div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+						<select formControlName="mode" class="m-1 form-control"
+							[ngClass]="{ 'is-invalid': chartShowSubmitted && chartForm.controls.mode.errors }" id="mode"
+							style="border: 0; width: 100%;">
+							<option value="DAY">Day</option>
+							<option value="WEEK">Week</option>
+							<option value="MONTH">Month</option>
+						</select>
+						<div *ngIf="submitted && chartForm.controls.mode.errors" class="invalid-feedback ml-3">
+							<div *ngIf="chartForm.controls.mode.errors.required">View mode is required</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group row" *ngIf="chartForm.controls.mode.value">
+					<label for="day" *ngIf="chartForm.controls.mode.value === 'DAY'"
+						class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Select day: </label>
+					<label for="day" *ngIf="chartForm.controls.mode.value === 'WEEK'"
+						class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Select day of desired week: </label>
+					<label for="day" *ngIf="chartForm.controls.mode.value === 'MONTH'"
+						class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Select day of desired month: </label>
+					<div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
+						<div class="col-lg-10 col-sm-10 col-md-10">
+							<input type="datetime" formControlName="day" [owlDateTime]="dt3" class="form-control"
+								[ngClass]="{ 'is-invalid': chartShowSubmitted && chartForm.controls.day.errors }"
+								id="day" style="border: 0;">
+						</div>
+						<span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt3"> <i
+								class="fa fa-calendar"></i> </span>
+						<owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+					</div>
+				</div>
+
+				<mat-action-row>
+					<div class="col-lg-10 col-sm-10">
+						<div *ngIf="chartShowSubmitted">
+							<ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme" [results]="data"
+								[gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+								[showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+								[xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+							</ngx-charts-bar-vertical>
+						</div>
+					</div>
+					<div class="col-lg-2 col-sm-2">
+						<button *ngIf="chartForm.controls.day.value" class="btn btn-primary" type="submit"
+							mat-button>Show chart</button>
+					</div>
+
+				</mat-action-row>
+
+			</form>
+
+		</div>
+
+	</mat-expansion-panel>
+</mat-accordion>
