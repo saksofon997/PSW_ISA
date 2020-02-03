@@ -22,6 +22,7 @@ export class ExaminationComponent implements OnInit {
 
   examinationForm: FormGroup;
   patient: any;
+  patientID: any;
   doctor: any;
   type: any;
   typeID: any;
@@ -79,16 +80,18 @@ export class ExaminationComponent implements OnInit {
   @ViewChild('singleSelect', { read: ElementRef, static: true }) singleSelect: MatSelect;
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
-      let patientID = params['patient'];
+      this.patientID = +params['patient'];
       this.doctor = params['doctor'];
       this.type = params['type'];
-      this.typeID = params['typeID'];
-      this.appointment = params['appointment'];
+      this.typeID = +params['typeID'];
+      this.appointment = +params['appointment'];
       this.datetime = Number.parseFloat(params['datetime']);
-      this.loadPatientInfo(patientID)
+      this.loadPatientInfo().then(() => {
+      }, () => alert("Error loading data"))
       this.loadPrescriptions();
       this.loadDiagnoses();
     });
+
     this.examinationForm = this.formBuilder.group({
       reportDescription: [this.reportDescription,[Validators.required]],
       dateAndTime: new FormControl({value:this.timeConverter(this.datetime),disabled:true}),
@@ -97,16 +100,13 @@ export class ExaminationComponent implements OnInit {
       prescriptions:  [],
       typeOfExamination: new FormControl({value:this.type,disabled:true})
     });
-
   }
 
-
-
-  loadPatientInfo(patient_id) {
+  loadPatientInfo() {
     let promise = new Promise((resolve, reject) => {
-      this.patientService.getPatientById(patient_id).subscribe(
+      this.patientService.getPatientById(this.patientID).subscribe(
         (data) => { this.patient = data; resolve(); },
-        (error) => { alert(error); reject(); }
+        (error) => { console.log(error); reject(); }
       );
     });
     return promise;
@@ -115,14 +115,16 @@ export class ExaminationComponent implements OnInit {
 		this.clinicalCenterService.getMedications().subscribe(
 			(data) => {
           this.prescriptions=data;
-			}
+      },
+      (error) => { console.log(error);}
 		);
   }
   loadDiagnoses() {
     this.clinicalCenterService.getDiagnosis().subscribe(
       (data) => {
           this.diagnoses=data;
-      }
+      },
+      (error) => { console.log(error);}
     );
   }
   timeConverter(a) {
