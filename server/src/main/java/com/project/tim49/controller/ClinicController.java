@@ -1,9 +1,6 @@
 package com.project.tim49.controller;
 
-import com.project.tim49.dto.ClinicBusinessDTO;
-import com.project.tim49.dto.ClinicsSearchResultDTO;
-import com.project.tim49.dto.OrdinationDTO;
-import com.project.tim49.dto.TypeOfExaminationDTO;
+import com.project.tim49.dto.*;
 import com.project.tim49.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,12 +30,43 @@ public class ClinicController {
         return new ResponseEntity<>(clinics, HttpStatus.OK);
     }
 
-    @GetMapping("/clinicsBusiness/{id}")
+    @GetMapping("/earnings/{periodStart}/{periodEnd}/{clinic_id}")
     @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('ADMINCC')")
-    public ResponseEntity getClinicsBusiness(
-            @PathVariable("id") Long clinic_id
+    public ResponseEntity getEarnings(
+            @PathVariable("clinic_id") Long clinic_id,
+            @PathVariable("periodStart") long periodStart,
+            @PathVariable("periodEnd") long periodEnd
     ) {
-        List<ClinicBusinessDTO> returnVal = clinicService.getClinicBusiness(clinic_id);
+        float returnVal = clinicService.getClinicEarnings(periodStart, periodEnd, clinic_id);
         return new ResponseEntity<>(returnVal, HttpStatus.OK);
+    }
+
+    @GetMapping("/chartData/{mode}/{periodStart}/{periodEnd}/{clinic_id}")
+    @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('ADMINCC')")
+    public ResponseEntity getChartDayData(
+            @PathVariable("mode") String mode,
+            @PathVariable("clinic_id") Long clinic_id,
+            @PathVariable("periodStart") long periodStart,
+            @PathVariable("periodEnd") long periodEnd
+    ) {
+        if (mode == null){
+            return new ResponseEntity<>(mode, HttpStatus.BAD_REQUEST);
+        }
+        switch (mode){
+            case "DAY": {
+                List<ChartDataDTO> returnVal = clinicService.getDayChartData(periodStart, periodEnd, clinic_id);
+                return new ResponseEntity<>(returnVal, HttpStatus.OK);
+            }
+            case "WEEK": {
+                List<ChartDataDTO> returnVal = clinicService.getWeekChartData(periodStart, periodEnd, clinic_id);
+                return new ResponseEntity<>(returnVal, HttpStatus.OK);
+            }
+            case "MONTH": {
+                List<ChartDataDTO> returnVal = clinicService.getMonthChartData(periodStart, periodEnd, clinic_id);
+                return new ResponseEntity<>(returnVal, HttpStatus.OK);
+            }
+            default:
+                return new ResponseEntity<>(mode, HttpStatus.BAD_REQUEST);
+        }
     }
 }

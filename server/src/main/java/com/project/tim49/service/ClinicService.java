@@ -240,64 +240,85 @@ public class ClinicService {
         return selected;
     }
 
-    public List<ClinicBusinessDTO> getClinicBusiness(Long clinic_id) {
-        if (clinic_id == null){
-            throw new ValidationException("Invalid parameters.");
+    public float getClinicEarnings(long periodStart, long periodEnd, Long clinic_id){
+        Float sum = appointmentRepository.getSumOfPricesInDesiredPeriod(periodStart, periodEnd, clinic_id);
+        if (sum == null) {
+            return 0;
+        } else {
+            return sum;
         }
-        Clinic clinic = clinicRepository.findById(clinic_id).orElse(null);
-        if (clinic == null ) {
-            throw new NoSuchElementException("Clinic does not exist.");
+    }
+
+    public List<ChartDataDTO> getDayChartData(long periodStart, long periodEnd, Long clinic_id) {
+        List<Appointment> appointments = getAndSortAppointments(periodStart, periodEnd, clinic_id);
+
+        List<ChartDataDTO> returnVal = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            returnVal.add(new ChartDataDTO(periodStart + i * 60*60, 0));
         }
 
-        List<Appointment> appointments = appointmentRepository.getByClinicAndCompleted(clinic_id);
+        for (Appointment appointment: appointments){
+            for (int i = 0; i < returnVal.size() - 1; i++ ){
+                ChartDataDTO day = returnVal.get(i);
+                if (appointment.getEndingDateAndTime() >= day.getName()
+                        && appointment.getEndingDateAndTime() <= returnVal.get(i+1).getName()){
+                    returnVal.get(i).setValue(returnVal.get(i).getValue() + 1);
+                    break;
+                }
+            }
+        }
+        return returnVal;
+    }
 
+    public List<ChartDataDTO> getWeekChartData(long periodStart, long periodEnd, Long clinic_id) {
+        List<Appointment> appointments = getAndSortAppointments(periodStart, periodEnd, clinic_id);
+
+        List<ChartDataDTO> returnVal = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            returnVal.add(new ChartDataDTO(periodStart + i * 24*60*60, 0));
+        }
+
+        for (Appointment appointment: appointments){
+            for (int i = 0; i < returnVal.size() - 1; i++ ){
+                ChartDataDTO day = returnVal.get(i);
+                if (appointment.getEndingDateAndTime() >= day.getName()
+                        && appointment.getEndingDateAndTime() <= returnVal.get(i+1).getName()){
+                    returnVal.get(i).setValue(returnVal.get(i).getValue() + 1);
+                    break;
+                }
+            }
+        }
+        return returnVal;
+    }
+
+    public List<ChartDataDTO> getMonthChartData(long periodStart, long periodEnd, Long clinic_id) {
+        List<Appointment> appointments = getAndSortAppointments(periodStart, periodEnd, clinic_id);
+
+        List<ChartDataDTO> returnVal = new ArrayList<>();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(new Date(periodEnd*1000));
+        int monthNumOfDays = calendar.get(Calendar.DAY_OF_MONTH);
+        for (int i = 0; i < monthNumOfDays; i++) {
+            returnVal.add(new ChartDataDTO(periodStart + i * 24*60*60, 0));
+        }
+
+        for (Appointment appointment: appointments){
+            for (int i = 0; i < returnVal.size() - 1; i++ ){
+                ChartDataDTO day = returnVal.get(i);
+                if (appointment.getEndingDateAndTime() >= day.getName()
+                        && appointment.getEndingDateAndTime() <= returnVal.get(i+1).getName()){
+                    returnVal.get(i).setValue(returnVal.get(i).getValue() + 1);
+                    break;
+                }
+            }
+        }
+        return returnVal;
+    }
+
+    private List<Appointment> getAndSortAppointments(long periodStart, long periodEnd, Long clinic_id) {
+        List<Appointment> appointments = appointmentRepository.getCompletedByClinicAndDesiredPeriod(periodStart, periodEnd, clinic_id);
         Comparator<Appointment> compareByEnd = Comparator.comparingLong(Appointment::getEndingDateAndTime);
         appointments.sort(compareByEnd);
-
-        List<ClinicBusinessDTO> returnVal = new ArrayList<>();
-        ClinicBusinessDTO daybus = new ClinicBusinessDTO();
-        daybus.setName("Day");
-        ClinicBusinessDTO weekbus = new ClinicBusinessDTO();
-        weekbus.setName("Week");
-        ClinicBusinessDTO monbus = new ClinicBusinessDTO();
-        monbus.setName("Month");
-
-        Calendar calendar = GregorianCalendar.getInstance();
-
-        int durDay = 1000 * 60 * 60 * 24;
-        int durWeek = 1000 * 60 * 60 * 24 * 7;
-        int durMonth = 1000 * 60 * 60 * 24 * 7 * 30;
-
-        Date date= new Date();
-        long time = date.getTime();
-
-        for(Appointment appt : appointments) {
-            if((time - appt.getEndingDateAndTime()*1000) < durDay ) {
-
-                calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
-                int appointmentEndHour = calendar.get(Calendar.HOUR_OF_DAY);
-                int appointmentEndMinute = calendar.get(Calendar.MINUTE);
-                String apptTime = appointmentEndHour+":"+appointmentEndMinute;
-                daybus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
-            }
-            if((time - appt.getEndingDateAndTime()*1000) < durWeek ) {
-
-                calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
-                int appointmentEndDay = calendar.get(Calendar.DAY_OF_WEEK);
-                String apptTime = appointmentEndDay+"";
-                weekbus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
-            }
-            if((time - appt.getEndingDateAndTime()*1000) < durMonth ) {
-
-                calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
-                int appointmentEndDayM = calendar.get(Calendar.DAY_OF_MONTH);
-                String apptTime = appointmentEndDayM+"";
-                monbus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
-            }
-        }
-        returnVal.add(daybus);
-        returnVal.add(weekbus);
-        returnVal.add(monbus);
-        return returnVal;
+        return appointments;
     }
 }

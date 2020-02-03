@@ -477,23 +477,6 @@ export class ClinicService {
 			);
 	}
 
-	getClinicBusiness() {
-		let user = JSON.parse(this.cookieService.get('user'));
-    	let clinic_id = user["clinic_id"];
-		let headers = new HttpHeaders({
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${this.userService.getToken()}`
-		});
-		return this.http.get(`/api/clinic/clinicsBusiness/${clinic_id}`, { headers: headers, observe: 'response' }).pipe(
-			map(response => {
-				return response.body;
-			}),
-			catchError((response) => {
-				return throwError(response.error);
-			})
-		);
-	  }
-
 	deleteTypeOfExamination(typeOfExamination_id) {
 		let user = JSON.parse(this.cookieService.get('user'));
     	let clinic_id = user["clinic_id"];
@@ -549,6 +532,38 @@ export class ClinicService {
 		var rateParamsString = "";
 		rateParamsString += `clinic_id=${clinic_id}&patient_id=${patient_id}&stars=${stars}`
 		return this.http.put(`/api/admin/rateClinic?${rateParamsString}`, {}, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
+	getClinicEarnings(periodStart, periodEnd) {
+		let user = JSON.parse(this.cookieService.get('user'));
+    	let clinic_id = user["clinic_id"];
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+		});
+		return this.http.get(`/api/clinic/earnings/${periodStart}/${periodEnd}/${clinic_id}`, { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+	}
+
+	getChartData(mode, periodStart, periodEnd) {
+		let user = JSON.parse(this.cookieService.get('user'));
+    	let clinic_id = user["clinic_id"];
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+		});
+		return this.http.get(`/api/clinic/chartData/${mode}/${periodStart}/${periodEnd}/${clinic_id}`, { headers: headers, observe: 'response' }).pipe(
 			map(response => {
 				return response.body;
 			}),
