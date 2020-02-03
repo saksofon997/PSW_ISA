@@ -33,22 +33,12 @@ public class RouterTest {
     public void setUp() {
         // instantiate chrome browser
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
-        //
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setCapability("marionette",true);
 
-        // instantiate firefox browser
-       // System.setProperty("webdriver.gecko.driver","src/test/resources/geckodriver");
-        ChromeOptions firefoxOptions = new ChromeOptions();
-        firefoxOptions.setCapability("marionette",true);
-//        browser = new FirefoxDriver(firefoxOptions);
-
-
-        browser = new ChromeDriver(firefoxOptions);
+        browser = new ChromeDriver(chromeOptions);
         //maximize window
         browser.manage().window().maximize();
-
-        //navigate
-
-        //searchPage = PageFactory.initElements(browser, SearchPage.class);
 
     }
 
@@ -120,14 +110,10 @@ public class RouterTest {
         }
         browser.findElement(By.xpath("//a[@id=\"showDoctor10\"]")).click();
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"select12:12\"]")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"select13:10\"]")));
         browser.findElement(By.xpath("//button[@id=\"select12:12\"]")).click();
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//select[@id=\"duration\"]")));
-        browser.findElement(By.xpath("//select[@id=\"duration\"]")).click();
-        (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//option[@value=\"10\"]"))));
-        browser.findElement(By.xpath("//option[@value=\"10\"]")).click();
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//select[@name=\"formTOE\"]")));
         browser.findElement(By.xpath("//button[@type=\"submit\"]")).click();
         try{
             waitForAlert(browser);
