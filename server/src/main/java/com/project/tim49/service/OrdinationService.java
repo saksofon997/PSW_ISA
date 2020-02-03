@@ -138,7 +138,7 @@ public class OrdinationService {
             ordination = check.get();
         }
 
-        List<Appointment> appointments = appointmentRepository.getByOrdinationAndNotCompleted(ordination_id);
+        List<Appointment> appointments = appointmentRepository.getByOrdinationAndNotCompleted(ordination.getId());
         for (Appointment appointment: appointments) {
             if (appointment.isCompleted() || appointment.isDeleted()){
                 continue;

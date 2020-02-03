@@ -96,12 +96,12 @@ export class PatientDoctorListingComponent implements OnInit {
 	//LOADING METHODS
 
 	createFormGroups() {
-		// let date = new Date();
+		let date = new Date();
 
-		// if(this.date_param) {
-		// 	date = new Date(this.date_param);
-		// 	date.setHours(0, 0, 0, 0);
-		// }
+		if(this.date_param) {
+			this.date = new Date(this.date_param);
+			this.date.setHours(0, 0, 0, 0);
+		}
 
 		this.form = this.formBuilder.group({
 			date: [this.date, [Validators.required,]],
