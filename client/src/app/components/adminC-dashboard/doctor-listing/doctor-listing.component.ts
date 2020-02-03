@@ -11,7 +11,7 @@ import { DialogService } from 'src/app/services/dialog.service';
 	styleUrls: ['./doctor-listing.component.css']
 })
 export class DoctorListingComponent implements OnInit {
-	doctorsHeaders = ['Name', 'Surname', 'Phone Number', 'Shift starts', 'Shift ends', 'Stars', 'Reviews'];
+	doctorsHeaders = ['Name', 'Surname', 'Phone Number', 'Shift starts', 'Shift ends', 'Rating'];
 	doctors: any;
 	navigationSubscription: any;
 	clinicID: any;

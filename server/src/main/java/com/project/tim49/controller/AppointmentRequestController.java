@@ -48,8 +48,8 @@ public class AppointmentRequestController {
         if (appointmentDTO == null){
             return new ResponseEntity<>("Invalid appointment", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        if(appointmentDTO.getStartingDateAndTime() == 0 || appointmentDTO.getDuration() == 0
-                || appointmentDTO.getPatient() == null){
+        if(appointmentDTO.getStartingDateAndTime() == 0 || appointmentDTO.getPatient() == null
+                || appointmentDTO.getDoctors() == null){
             return new ResponseEntity<>("Invalid appointment", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
