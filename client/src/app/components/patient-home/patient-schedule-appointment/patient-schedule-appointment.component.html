@@ -39,9 +39,9 @@
                   <option value="40">40 minutes</option>
                   <option value="50">50 minutes</option>
               </select>
-              <div *ngIf="submitted && form.controls.duration.errors" class="invalid-feedback ml-3">
+              <!-- <div *ngIf="submitted && form.controls.duration.errors" class="invalid-feedback ml-3">
                   <div *ngIf="form.controls.duration.errors.required">Duration is required</div>
-              </div>
+              </div> -->
           </div>
       </div>
   
@@ -141,7 +141,7 @@
       </div>
    
       <div>
-          <button type="submit" class="btn btn-primary" (click)='cancelChanges()'>Send scheduling request</button>
+          <button type="submit" class="btn btn-primary">Send scheduling request</button>
           <button type="button" class="btn btn-outline-primary m-1" (click)='cancelChanges()'>Cancel</button>
       </div>
   </form>
