@@ -111,7 +111,7 @@ export class NewAppointmentPageComponent implements OnInit {
 	createFormGroup() {
 		let date;
 		if (this.startAppointmentNow) {
-			date = new Date();
+			date = this.now;
 		}
 
 		this.form = this.formBuilder.group({

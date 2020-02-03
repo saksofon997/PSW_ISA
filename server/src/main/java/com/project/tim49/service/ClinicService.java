@@ -26,6 +26,8 @@ public class ClinicService {
     private AppointmentRepository appointmentRepository;
     @Autowired
     private TypeOfExaminationRepository examinationRepository;
+    @Autowired
+    private ClinicTypeOfExaminationRepository clinicTypeOfExaminationRepository;
 
     public ClinicDTO findOneDTO(Long id) {
 
@@ -206,6 +208,12 @@ public class ClinicService {
         List<ClinicsSearchResultDTO> selected = new ArrayList<>();
 
         for (Clinic clinic : clinics) {
+
+            ClinicTypeOfExamination toeInClinic = clinicTypeOfExaminationRepository.getByClinicAndTypeOfExamination(clinic, selectedToe);
+            if(toeInClinic == null) {
+                continue;
+            }
+
             List<Doctor> doctors = clinic.getDoctors();
             for(Doctor doc : doctors) {
                 if(doc.getSpecialization() == null)
@@ -216,9 +224,8 @@ public class ClinicService {
 
                     if(appts.isEmpty()) {
                         ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
-                        sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
+                        sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
                         selected.add(sel);
-                        //return selected;
                         continue;
                     }
 
@@ -230,9 +237,8 @@ public class ClinicService {
                     }
                     if(apptsdocs.isEmpty()) {
                         ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
-                        sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
+                        sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
                         selected.add(sel);
-                        //return selected;
                         continue;
                     }
 
@@ -242,7 +248,7 @@ public class ClinicService {
                     for(int i = 0; i < apptsdocs.size() - 1; i++){
                         if((apptsdocs.get(i).getEndingDateAndTime() - apptsdocs.get(i+1).getStartingDateAndTime()) >= 600) {
                             ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
-                            sel.setTypeOfExamination(new TypeOfExaminationDTO(selectedToe));
+                            sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
                             selected.add(sel);
                         }
                     }
@@ -251,5 +257,66 @@ public class ClinicService {
         }
 
         return selected;
+    }
+
+    public List<ClinicBusinessDTO> getClinicBusiness(Long clinic_id) {
+        if (clinic_id == null){
+            throw new ValidationException("Invalid parameters.");
+        }
+        Clinic clinic = clinicRepository.findById(clinic_id).orElse(null);
+        if (clinic == null ) {
+            throw new NoSuchElementException("Clinic does not exist.");
+        }
+
+        List<Appointment> appointments = appointmentRepository.getByClinicAndCompleted(clinic_id);
+
+        Comparator<Appointment> compareByEnd = Comparator.comparingLong(Appointment::getEndingDateAndTime);
+        appointments.sort(compareByEnd);
+
+        List<ClinicBusinessDTO> returnVal = new ArrayList<>();
+        ClinicBusinessDTO daybus = new ClinicBusinessDTO();
+        daybus.setName("Day");
+        ClinicBusinessDTO weekbus = new ClinicBusinessDTO();
+        weekbus.setName("Week");
+        ClinicBusinessDTO monbus = new ClinicBusinessDTO();
+        monbus.setName("Month");
+
+        Calendar calendar = GregorianCalendar.getInstance();
+
+        int durDay = 1000 * 60 * 60 * 24;
+        int durWeek = 1000 * 60 * 60 * 24 * 7;
+        int durMonth = 1000 * 60 * 60 * 24 * 7 * 30;
+
+        Date date= new Date();
+        long time = date.getTime();
+
+        for(Appointment appt : appointments) {
+            if((time - appt.getEndingDateAndTime()*1000) < durDay ) {
+
+                calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
+                int appointmentEndHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int appointmentEndMinute = calendar.get(Calendar.MINUTE);
+                String apptTime = appointmentEndHour+":"+appointmentEndMinute;
+                daybus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
+            }
+            if((time - appt.getEndingDateAndTime()*1000) < durWeek ) {
+
+                calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
+                int appointmentEndDay = calendar.get(Calendar.DAY_OF_WEEK);
+                String apptTime = appointmentEndDay+"";
+                weekbus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
+            }
+            if((time - appt.getEndingDateAndTime()*1000) < durMonth ) {
+
+                calendar.setTime(new Date(appt.getEndingDateAndTime()*1000));
+                int appointmentEndDayM = calendar.get(Calendar.DAY_OF_MONTH);
+                String apptTime = appointmentEndDayM+"";
+                monbus.getSeries().add(new ChartDataDTO(apptTime, appt.getPrice()+""));
+            }
+        }
+        returnVal.add(daybus);
+        returnVal.add(weekbus);
+        returnVal.add(monbus);
+        return returnVal;
     }
 }

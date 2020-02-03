@@ -13,7 +13,8 @@ export class TokenInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const login = /login/gi;
         const yandex = /apikey/gi; 
-        if (request.url.search(login) === -1 && request.url.search(yandex) === -1) {
+        const register = /signup/gi;
+        if (request.url.search(login) === -1 && request.url.search(yandex) === -1 && request.url.search(register) === -1) {
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${this.userService.getToken()}`

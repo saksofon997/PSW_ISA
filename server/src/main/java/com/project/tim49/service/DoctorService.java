@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.print.Doc;
@@ -162,7 +163,7 @@ public class DoctorService {
             }
             doctor = check.get();
         }
-        List<Vacation> vacations = doctor.getVacations();
+        Set<Vacation> vacations = doctor.getVacations();
         for (Vacation vacation: vacations) {
             if ( startingTimeStamp >= vacation.getStartDate()
                     && startingTimeStamp + duration/1000 <= vacation.getEndDate()){

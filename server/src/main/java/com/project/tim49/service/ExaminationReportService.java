@@ -31,6 +31,10 @@ public class ExaminationReportService {
     PrescriptionRepository prescriptionRepository;
     @Autowired
     AppointmentRepository appointmentRepository;
+    @Autowired
+    DoctorPatientRepository doctorPatientRepository;
+    @Autowired
+    ClinicPatientRepository clinicPatientRepository;
 
     public void submitReport(ExaminationReportDTO examinationReportDTO,Long patientID,Long appoID){
         if (examinationReportDTO.getPerforms() == null){
@@ -64,8 +68,22 @@ public class ExaminationReportService {
         Appointment savedAppo = appointmentRepository.save(toRemove);
         p.getFinishedAppointments().add(toRemove);
         p.getPendingAppointments().remove(toRemove);
-
         patientRepository.save(p);
+
+        DoctorPatient docPat = doctorPatientRepository.getByDoctorAndPatient(doctor.get().getId(), p.getId());
+        if (docPat == null){
+            docPat = new DoctorPatient();
+            docPat.setDoctor(doctor.get());
+            docPat.setPatient(p);
+            doctorPatientRepository.save(docPat);
+        }
+        ClinicPatient cliPat = clinicPatientRepository.getByClinicAndPatient(clinic.get().getId(), p.getId());
+        if (cliPat == null){
+            cliPat = new ClinicPatient();
+            cliPat.setClinic(clinic.get());
+            cliPat.setPatient(p);
+            clinicPatientRepository.save(cliPat);
+        }
     }
     public void submitBasicInfo(MedicalRecordDTO medicalRecordDTO,Long patientID){
         Optional<Patient> patient = patientRepository.findById(patientID);
@@ -122,24 +140,28 @@ public class ExaminationReportService {
 
         List<DiagnosisDTO> diagnosisDTOS = examinationReportDTO.getDiagnosis();
         List<DiagnosisDictionary> diagnosis = new ArrayList<>();
-        for(DiagnosisDTO d: diagnosisDTOS) {
-            DiagnosisDictionary dictionary = diagnosisRepository.findById(d.getId()).get();
-            diagnosis.add(dictionary);
+        if (diagnosisDTOS != null) {
+            for(DiagnosisDTO d: diagnosisDTOS) {
+                DiagnosisDictionary dictionary = diagnosisRepository.findById(d.getId()).get();
+                diagnosis.add(dictionary);
+            }
         }
         report.setDiagnosis(diagnosis);
 
         List<MedicationDTO> medicationDTOS = examinationReportDTO.getMedications();
         List<Prescription> prescriptions = new ArrayList<>();
-        for(MedicationDTO m: medicationDTOS) {
-            MedicationDictionary dictionary = medicationsRepository.findOneByCode(m.getCode());
-            Prescription prescription = new Prescription();
-            prescription.setApproved(false);
-            prescription.setClinic(clinic);
-            prescription.setMedication(dictionary);
-            prescription.setApproves(null);
-            prescription.setPerforms(doctor);
-            prescriptions.add(prescription);
-            prescriptionRepository.save(prescription);
+        if (medicationDTOS != null) {
+            for(MedicationDTO m: medicationDTOS) {
+                MedicationDictionary dictionary = medicationsRepository.findOneByCode(m.getCode());
+                Prescription prescription = new Prescription();
+                prescription.setApproved(false);
+                prescription.setClinic(clinic);
+                prescription.setMedication(dictionary);
+                prescription.setApproves(null);
+                prescription.setPerforms(doctor);
+                prescriptions.add(prescription);
+                prescriptionRepository.save(prescription);
+            }
         }
         report.setPrescription(prescriptions);
         return report;

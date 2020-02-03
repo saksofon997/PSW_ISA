@@ -47,8 +47,7 @@
           <td> {{doctor.phoneNumber}} </td>
           <td> {{doctor.shiftStart}} </td>
           <td> {{doctor.shiftEnd}} </td>
-          <td> {{doctor.numberOfStars}} </td>
-          <td> {{doctor.numberOfReviews}} </td>
+          <td> <star-rating value='{{doctor.numberOfStars / doctor.numberOfReviews}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="20px" readonly="true"></star-rating> </td>
           <td>
               <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"

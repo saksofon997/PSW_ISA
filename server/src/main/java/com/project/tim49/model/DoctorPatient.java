@@ -62,13 +62,13 @@ public class DoctorPatient implements Serializable {
 
     public static class DoctorPatientId implements Serializable {
 
-        private Doctor doctor;
-        private Patient patient;
+        private Long doctor;
+        private Long patient;
 
         public DoctorPatientId() {
         }
 
-        public DoctorPatientId(Doctor doctor, Patient patient) {
+        public DoctorPatientId(Long doctor, Long patient) {
             this.doctor = doctor;
             this.patient = patient;
         }
@@ -83,8 +83,8 @@ public class DoctorPatient implements Serializable {
                 return false;
             }
             DoctorPatient docPat = (DoctorPatient) o;
-            return Objects.equals(doctor, docPat.getDoctor()) &&
-                    Objects.equals(patient, docPat.getPatient());
+            return Objects.equals(doctor, docPat.getDoctor().getId()) &&
+                    Objects.equals(patient, docPat.getPatient().getId());
         }
 
         @Override

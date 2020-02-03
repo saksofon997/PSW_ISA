@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "~8.2.13",
     "@angular/router": "~8.2.13",
     "@ng-bootstrap/ng-bootstrap": "^5.1.4",
+    "@swimlane/ngx-charts": "^13.0.2",
     "angular-calendar": "^0.28.2",
     "angular-font-awesome": "^3.1.2",
     "angular8-yandex-maps": "^1.10.3",

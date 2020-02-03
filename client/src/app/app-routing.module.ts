@@ -56,6 +56,9 @@ import { PatientDoctorListingComponent } from './components/patient-home/patient
 import { AdminCHomeComponent } from './components/adminC-dashboard/admin-c-home/admin-c-home.component';
 import { AppointmentRequestsComponent } from './components/adminC-dashboard/appointment-requests/appointment-requests.component';
 import { PatientAvailableAppointmentsComponent } from './components/patient-home/patient-available-appointments/patient-available-appointments.component';
+import { ExaminationDeactivateService } from './guards/examination-deactivate.service';
+import { PatientScheduleAppointmentComponent } from './components/patient-home/patient-schedule-appointment/patient-schedule-appointment.component';
+import { ClinicBusinessComponent } from './components/adminC-dashboard/clinic-business/clinic-business.component';
 
 const routes: Routes = [
 	{
@@ -115,6 +118,7 @@ const routes: Routes = [
 			{path: 'available_appointments', component: AvailableAppointmentListingComponent},
 			{path: 'new_available_appointment', component: NewAvailableAppointmentPageComponent},
 			{path: 'vacation_requests', component: VacationRequestsComponent},
+			{path: 'business', component: ClinicBusinessComponent},
 
 			{path: 'ordination_selection', component: OrdinationSelectionComponent}, // Za testiranje, uklopiti kasnije kad se odrade appointment requestovi
 
@@ -132,6 +136,7 @@ const routes: Routes = [
 			{path: 'doctors/:clinic_id', component: PatientDoctorListingComponent},
 			{path: 'pending_appointments', component: PatientPendingAppointmentsListingComponent},
 			{path: 'available_appointments/:clinic_id', component: PatientAvailableAppointmentsComponent},
+			{path: 'schedule', component: PatientScheduleAppointmentComponent},
 
 		],
 		canActivate: [AuthGuardService],
@@ -145,7 +150,7 @@ const routes: Routes = [
 			{path: 'calendar', component: DoctorCalendarComponent},
 			{path: 'patients', component: PatientListingComponent},
 			{path: 'new_appointment/:patient_id', component: NewAppointmentPageComponent},
-			{path: 'examination', component: ExaminationComponent},
+			{path: 'examination', component: ExaminationComponent, canDeactivate: [ExaminationDeactivateService]},
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['DOCTOR']}
