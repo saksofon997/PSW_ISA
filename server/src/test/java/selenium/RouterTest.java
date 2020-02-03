@@ -1,5 +1,6 @@
 package selenium;
 
+import org.junit.runner.RunWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -8,6 +9,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -19,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.testng.AssertJUnit.assertEquals;
 
-
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RouterTest {
 
     private WebDriver browser;
@@ -102,12 +104,47 @@ public class RouterTest {
                 .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//option[@value=\"1\"]"))));
         browser.findElement(By.xpath("//option[@value=\"1\"]")).click();
         browser.findElement(By.cssSelector(".btn-primary")).click();
-        (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"optionsButtonSearch1\"]")));
+        browser.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         browser.findElement(By.xpath("//button[@id=\"optionsButtonSearch1\"]")).click();
-        browser.findElement(By.xpath("//a[@id=\"doctorts1\"]")).click();
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"optionsButtonSearch1\"]")));
+                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//a[@id=\"doctorts1\"]"))));
+        browser.findElement(By.xpath("//a[@id=\"doctorts1\"]")).click();
+
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"optionsDoctor10\"]")));
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//button[@id=\"optionsDoctor10\"]"))));
+        try {
+            WebElement buttonOptions = browser.findElement(By.xpath("//button[@id=\"optionsDoctor10\"]"));
+            buttonOptions.click();
+        }
+        catch(org.openqa.selenium.StaleElementReferenceException ex)
+        {
+            WebElement buttonOptions = browser.findElement(By.xpath("//button[@id=\"optionsDoctor10\"]"));
+            buttonOptions.click();
+        }
+        browser.findElement(By.xpath("//a[@id=\"showDoctor10\"]")).click();
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"select12:12\"]")));
+        browser.findElement(By.xpath("//button[@id=\"select12:12\"]")).click();
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//select[@id=\"duration\"]")));
+        browser.findElement(By.xpath("//select[@id=\"duration\"]")).click();
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//option[@value=\"10\"]"))));
+        browser.findElement(By.xpath("//option[@value=\"10\"]")).click();
+        browser.findElement(By.xpath("//button[@type=\"submit\"]")).click();
+        try{
+            waitForAlert(browser);
+        }catch (InterruptedException e){
+            System.out.println(e);
+        }
+        Alert alert = browser.switchTo().alert();
+        String alertText = alert.getText();
+        alert.dismiss();
+        assertEquals(alertText,
+                "Appointment request sent");
+
 
         browser.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 

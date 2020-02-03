@@ -128,7 +128,7 @@
                       Options
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" style="cursor: pointer;" (click)="showDoctorInfo(doctor)">Show more</a>
+                      <a class="dropdown-item" id="{{'showDoctor'+ doctor.id}}" style="cursor: pointer;" (click)="showDoctorInfo(doctor)">Show more</a>
                   </div>
               </div>
           </td>
@@ -176,7 +176,7 @@
                                 <td> {{time}} </td>
                                 <td>
                                     <div class="dropdown">
-                                        <button class="btn btn-secondary" type="button" aria-haspopup="true" (click)="showAppointmentPage(time, modalData.doctorID, modalData.clinicID)">
+                                        <button class="btn btn-secondary" id="{{'select'+time}}" type="button" aria-haspopup="true" (click)="showAppointmentPage(time, modalData.doctorID, modalData.clinicID)">
                                             Select
                                         </button>
                                     </div>
