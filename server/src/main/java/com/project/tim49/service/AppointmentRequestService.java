@@ -16,7 +16,7 @@ import javax.validation.ValidationException;
 import java.util.*;
 
 @Service
-@PersistenceContext(type = PersistenceContextType.EXTENDED)
+//@PersistenceContext(type = PersistenceContextType.EXTENDED)
 public class AppointmentRequestService {
 
     @Autowired
@@ -132,7 +132,7 @@ public class AppointmentRequestService {
         return new AppointmentDTO(saved);
     }
 
-    @Transactional
+//    @Transactional
     @Scheduled(cron = "${appointment.cron}")
     void systemChooseOrdinationForAllAppointmentRequests() throws InterruptedException {
         ArrayList<AppointmentRequest> appointmentRequests = appointmentRequestRepository.getAllByApprovedFalse();
@@ -157,15 +157,15 @@ public class AppointmentRequestService {
                 request.setStartingDateAndTime(request.getStartingDateAndTime() + request.getDuration()/1000 * i );
                 request.setEndingDateAndTime(request.getEndingDateAndTime() + request.getDuration()/1000 * i );
 
-                Doctor doctor = request.getDoctor();
-                if (doctor == null){
+                Optional<Doctor> doctor = doctorRepository.findById(request.getDoctor().getId());
+                if (!doctor.isPresent()){
                     throw new ValidationException("Invalid appointment request data: doctor is missing");
                 }
-                if (!doctorService.isAvailable(null, doctor,
+                if (!doctorService.isAvailable(null, doctor.get(),
                         request.getStartingDateAndTime(), request.getDuration())){
                     continue;
                 }
-                if (!doctorService.isDuringDoctorWorkingHours(null,doctor,
+                if (!doctorService.isDuringDoctorWorkingHours(null,doctor.get(),
                         request.getStartingDateAndTime(), request.getDuration())){
                     continue;
                 }

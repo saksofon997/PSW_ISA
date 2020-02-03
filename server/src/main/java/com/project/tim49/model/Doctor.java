@@ -24,7 +24,7 @@ public class Doctor extends User {
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public Clinic clinic;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "specialization", referencedColumnName = "id")
     public TypeOfExamination specialization;
 

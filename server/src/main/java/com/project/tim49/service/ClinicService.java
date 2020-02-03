@@ -25,6 +25,8 @@ public class ClinicService {
     private TypeOfExaminationRepository examinationRepository;
     @Autowired
     private ClinicTypeOfExaminationRepository clinicTypeOfExaminationRepository;
+    @Autowired
+    private DoctorService doctorService;
 
     public ClinicDTO findOneDTO(Long id) {
 
@@ -177,8 +179,6 @@ public class ClinicService {
 
     public List<ClinicsSearchResultDTO> getByQuery(String name, String address, long toe, long startTimestamp) {
 
-        long endTimestamp = startTimestamp + 24 * 60 * 60;
-
         List<Clinic> clinics = clinicRepository.getByQuery(name, address);
 
         TypeOfExamination selectedToe = examinationRepository.findById(toe).orElse(null);
@@ -201,37 +201,11 @@ public class ClinicService {
                     continue;
 
                 if(doc.getSpecialization().getId().equals(selectedToe.getId())) {
-                    List<Appointment> appts = appointmentRepository.getByTimesAndNotCompleted(startTimestamp, endTimestamp);
-
-                    if(appts.isEmpty()) {
+                    List<String> getAvailableTimes = doctorService.getAvailableTimes(doc, startTimestamp);
+                    if (!getAvailableTimes.isEmpty()) {
                         ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
                         sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
                         selected.add(sel);
-                        continue;
-                    }
-
-                    List<Appointment> apptsdocs = new ArrayList<>();
-                    for(Appointment appt : appts) {
-                        if(appt.doctors.contains(doc)) {
-                            apptsdocs.add(appt);
-                        }
-                    }
-                    if(apptsdocs.isEmpty()) {
-                        ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
-                        sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
-                        selected.add(sel);
-                        continue;
-                    }
-
-                    Comparator<Appointment> compareByStart = Comparator.comparingLong(Appointment::getStartingDateAndTime);
-                    apptsdocs.sort(compareByStart);
-
-                    for(int i = 0; i < apptsdocs.size() - 1; i++){
-                        if((apptsdocs.get(i).getEndingDateAndTime() - apptsdocs.get(i+1).getStartingDateAndTime()) >= 600) {
-                            ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
-                            sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
-                            selected.add(sel);
-                        }
                     }
                 }
             }
