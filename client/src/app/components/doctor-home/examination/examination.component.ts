@@ -86,13 +86,11 @@ export class ExaminationComponent implements OnInit {
       this.typeID = +params['typeID'];
       this.appointment = +params['appointment'];
       this.datetime = Number.parseFloat(params['datetime']);
-    });
-
-    this.loadPatientInfo().then(() => {
-    }, () => alert("Error loading data"))
-
-    this.loadPrescriptions();
+      this.loadPatientInfo().then(() => {
+      }, () => alert("Error loading data"))
+      this.loadPrescriptions();
       this.loadDiagnoses();
+    });
 
     this.examinationForm = this.formBuilder.group({
       reportDescription: [this.reportDescription,[Validators.required]],
