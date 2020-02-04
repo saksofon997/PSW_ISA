@@ -16,7 +16,7 @@ INSERT INTO public.authority(
 
 INSERT INTO public.clinic(
 	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Nikole Pašića/13', 'Novi Sad', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Healty living', 13, 56, 'Srbija');
+	VALUES (nextval('clinic_id_seq'), 'Nikole Pasica/13', 'Novi Sad', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Healty living', 13, 56, 'Srbija');
 INSERT INTO public.clinic(
 	id, address, city, description, name, number_of_reviews, number_of_stars, state)
 	VALUES (nextval('clinic_id_seq'), 'Šećer Sokak/25', 'Sremska Mitrovica', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Health city', 16, 45, 'Srbija');

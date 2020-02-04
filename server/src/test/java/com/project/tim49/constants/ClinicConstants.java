@@ -8,7 +8,7 @@ public class ClinicConstants {
     public static final Long DB_ID = 1L;
     public static final String DB_NAME = "Healty living";
     public static final String DB_CITY = "Novi Sad";
-    public static final String DB_ADDRESS = "Nikole Pašića/13";
+    public static final String DB_ADDRESS = "Nikole Pasica/13";
     
     //Clinic administrator
     public static final Long DB_CLINIC_ADMIN_ID = 4L;
