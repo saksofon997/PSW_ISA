@@ -57,7 +57,7 @@ public class ClinicAdministratorService {
 
         adminDTOtoReal(admin, clinicAdministratorDTO);
         admin.setClinic(clinic.get());
-        admin.setAuthorities( authorityService.findByname("ADMINCC") );
+        admin.setAuthorities( authorityService.findByname("ADMINC"));
         admin.setPassword(passwordEncoder.encode("123456"));
         admin.setPasswordChanged(false);
         admin.setEnabled(true);

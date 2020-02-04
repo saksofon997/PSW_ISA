@@ -21,6 +21,10 @@
 			<a class="nav-link" data-toggle="pill" [routerLink]="['./registrationRequests']" href="#v-pills-requests" role="tab" aria-controls="v-pills-home"
 				aria-selected="true">Registration requests</a>
 		</li>
+		<li class="nav-item" *ngIf="currentUser.id === 1">
+			<a class="nav-link" data-toggle="pill" [routerLink]="['./clinicCenterAdmins']" href="#v-pills-requests" role="tab" aria-controls="v-pills-home"
+				aria-selected="true">Administrators</a>
+		</li>
 	</ul>
 
 	<div class="tab-content" style='width: 100%;' id="v-pills-tabContent">

@@ -5,6 +5,7 @@ import com.project.tim49.dto.RegistrationDTO;
 import com.project.tim49.dto.UserDTO;
 import com.project.tim49.model.Clinic;
 import com.project.tim49.model.ClinicAdministrator;
+import com.project.tim49.model.ClinicCenterAdministrator;
 import com.project.tim49.service.ClinicCenterAdminService;
 import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.EmailService;
@@ -150,6 +151,42 @@ public class AdminKcController {
     public ResponseEntity getAdminKc(@PathVariable Long id) {
         UserDTO admin=clinicCenterAdminService.findById(id);
        return new ResponseEntity<>(admin,HttpStatus.OK);
+    }
+
+    @GetMapping(path="/getAdminsKc/{id}" ,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC')")
+    public ResponseEntity getAdminsKc(@PathVariable Long id) {
+        if(id != 1){
+            return new ResponseEntity<>("Not authorized to access this information.", HttpStatus.UNAUTHORIZED);
+        }
+        List<UserDTO> admins=clinicCenterAdminService.findAll();
+        return new ResponseEntity<>(admins,HttpStatus.OK);
+    }
+    @PostMapping(path="/addAdmin" ,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC')")
+    public ResponseEntity addAdmin(@RequestBody UserDTO userDTO) {
+        if(userDTO!= null){
+            try {
+                clinicCenterAdminService.addAdmin(userDTO);
+            } catch (ValidationException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+        }else{
+            return new ResponseEntity<>("Invalid administrator.", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
+    @DeleteMapping(path="/deleteAdmin/{id}/{idToDelete}" ,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMINCC')")
+    public ResponseEntity deleteAdminKc(@PathVariable Long id, @PathVariable Long idToDelete) {
+        if(id != 1 || idToDelete == 1){
+            return new ResponseEntity<>("Not authorized to access this information.", HttpStatus.UNAUTHORIZED);
+        }
+        clinicCenterAdminService.remove(idToDelete);
+        return new ResponseEntity<>(idToDelete,HttpStatus.OK);
     }
 
     @PutMapping(path="/change", consumes = "application/json", produces= "application/json")

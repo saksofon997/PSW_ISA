@@ -1,5 +1,6 @@
 import { ClinicService } from '../../services/clinic.service';
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-admin-profile',
@@ -9,9 +10,11 @@ import { Component, OnInit } from '@angular/core';
 export class AdminProfileComponent implements OnInit {
   clinics: any;
   clinicHeaders = ['Name','Address','City','State','Description'];
-  constructor() { }
+  currentUser:any;
+  constructor(private cookieService: CookieService) { }
 
   ngOnInit() {
+    this.currentUser = JSON.parse(this.cookieService.get('user'));
   }
   loadClinics(){
     

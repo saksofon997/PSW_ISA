@@ -59,6 +59,8 @@ import { PatientAvailableAppointmentsComponent } from './components/patient-home
 import { ExaminationDeactivateService } from './guards/examination-deactivate.service';
 import { PatientScheduleAppointmentComponent } from './components/patient-home/patient-schedule-appointment/patient-schedule-appointment.component';
 import { ClinicBusinessComponent } from './components/adminC-dashboard/clinic-business/clinic-business.component';
+import { ClinicCenterAdminsComponent } from './components/adminCC-dashboard/clinic-center-admins/clinic-center-admins.component';
+import { ClinicCenterAdminsListingComponent } from './components/adminCC-dashboard/clinic-center-admins-listing/clinic-center-admins-listing.component';
 
 const routes: Routes = [
 	{
@@ -71,7 +73,9 @@ const routes: Routes = [
 			{path: 'medication_info', component: MedicationFormComponent},
 			{path: 'diagnoses', component: DiagnosisListingComponent},
 			{path: 'diagnosis_info', component: DiagnosisFormComponent},
-			{path: 'registrationRequests', component: RegistrationListingComponent}
+			{path: 'registrationRequests', component: RegistrationListingComponent},
+			{path: 'addClinicCenterAdmin', component: ClinicCenterAdminsComponent},
+			{path: 'clinicCenterAdmins', component: ClinicCenterAdminsListingComponent}
 		],
 		canActivate: [AuthGuardService],
 		data: { roles: ['ADMINCC']}
@@ -201,17 +205,6 @@ const routes: Routes = [
 		canActivate: [AuthGuardService],
 		data: { roles: ['NURSE']}
 	},
-	// {
-	// 	path: 'doctorHome',
-	// 	component: PatientHomeComponent,
-	// 	children:[
-	// 		{path: '', component: PatientPersonalProfileComponent},
-	// 		{path: 'profile', component: PatientPersonalProfileComponent},
-
-	// 	],
-	// 	canActivate: [AuthGuardService],
-	// 	data: { roles: ['DOCTOR']}
-	// },
 	{
 		path: 'login',
 		component: LoginComponent
