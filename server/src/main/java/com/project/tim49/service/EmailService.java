@@ -113,16 +113,22 @@ public class EmailService {
     }
 
     @Async
-    public void sendNewAppointmentScheduled(UserDTO patient, DoctorDTO doctor, DateTime date) throws MailException,
+    public void sendNewAppointmentScheduled(String role, UserDTO patient, DoctorDTO doctor, DateTime date) throws MailException,
             InterruptedException {
         System.out.println("Slanje emaila...");
+        String roleMessage;
+        if (role.equals("doctor")){
+            roleMessage = ",\n\nDoctor " + doctor.getName() + " " + doctor.getSurname() + " has scheduled a new appointment on " + date.toString(DateTimeFormat.forPattern("dd.MM.yyyy."));
+        } else {
+            roleMessage = ",\n\nYou have successfully scheduled a new appointment on " + date.toString(DateTimeFormat.forPattern("dd.MM.yyyy."));
+        }
 
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(patient.getEmail());
         mail.setFrom("noreply@clinic.com");
         mail.setSubject("Clinic: New appointment scheduled");
-        mail.setText("Dear " + patient.getName() + ",\n\nDoctor " + doctor.getName() + " " + doctor.getSurname() +
-                " has scheduled a new appointment on " + date.toString(DateTimeFormat.forPattern("dd.MM.yyyy.")) +
+        mail.setText("Dear " + patient.getName() +
+                roleMessage +
                 "\n\nYou will receive additional information about this appointment during this day when it gets approved by clinic administrator." +
                 "\n\nBest regards,\nClinical center team\n\n\n\n" +
                 "If you don't know what this is about, then someone has probably" +
@@ -206,5 +212,33 @@ public class EmailService {
         }
         System.out.println("Email doktoru/doktorima poslat!");
 
+    }
+
+    @Async
+    public void sendAppointmentRequestRejected(AppointmentDTO appointmentDTO,String message) throws MailException, InterruptedException {
+        System.out.println("Slanje emaila...");
+
+        PatientDTO patient = appointmentDTO.getPatient();
+        DoctorDTO doctor = appointmentDTO.getDoctors().get(0);
+        DateTime dateTime = new DateTime(appointmentDTO.getStartingDateAndTime()*1000);
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(patient.getEmail());
+        mail.setFrom("noreply@clinical.center.com");
+        mail.setSubject("Clinical center: Registration request denied");
+        mail.setText("Dear " + patient.getName() + ",\n\nWe are sorry to inform you that your appointment request at our clinical center has" +
+                " been denied.\n" +
+                "Here is an explanation from our team:\n\n" +
+                ""+message+
+                "\n\nAppointment info:" +
+                "\n\nDoctor: " + doctor.getName() + " " + doctor.getSurname() +
+                "\nType of appointment: " + appointmentDTO.getTypeOfExamination().getName() +
+                "\nDate and time: " + dateTime.toString(DateTimeFormat.forPattern("dd.MM.yyyy. HH:mm")) +
+                "\n\nPlease contact our support for further assistance.\n\nBest regards,\nClinical center team\n\n\n\n" +
+                "If you don't know what this is about, then someone has probably" +
+                " entered your email address by mistake and you can ignore this e-mail. Sorry about that.");
+        javaMailSender.send(mail);
+
+        System.out.println("Email poslat!");
     }
 }

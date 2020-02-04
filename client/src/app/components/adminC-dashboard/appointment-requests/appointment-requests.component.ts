@@ -60,23 +60,21 @@ export class AppointmentRequestsComponent implements OnInit {
 		}
 	}
 
-	// TODO: povezati sa ordinations_TEMP i izborom sale kao i odbijanje zahteva
-
-	// rejectRequest(appointment) {
-	// 	this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to delete available appointment: ' + appointment.doctors[0].name + ' ' + appointment.doctors[0].surname + ' ' + appointment.ordination.name + '?', false)
-	// 		.then((confirmed) => {
-	// 			if (confirmed.submited) {
-	// 				this.appointmentService.deleteAvailableAppointment(appointment.id).subscribe(
-	// 					(data) => {
-	// 						this.getAppointmentRequests();
-	// 					},
-	// 					(error) => {
-	// 						alert(error);
-	// 					}
-	// 				)
-	// 			}
-	// 		});
-	// }
+	rejectRequest(appointment) {
+		this.confirmationDialogService.confirm('Please confirm', 'Are you sure you want to reject this appointment request?', true)
+			.then((confirmed) => {
+				if (confirmed.submited) {
+					this.appointmentService.rejectAppointmentRequest(appointment.id, confirmed.explanation).subscribe(
+						(data) => {
+							this.getAppointmentRequests();
+						},
+						(error) => {
+							alert(error);
+						}
+					)
+				}
+			});
+	}
 
 	timeConverter(UNIX_timestamp) {
 		var a = new Date(UNIX_timestamp * 1000);

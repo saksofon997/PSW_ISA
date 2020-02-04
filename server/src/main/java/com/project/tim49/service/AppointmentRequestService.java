@@ -132,6 +132,21 @@ public class AppointmentRequestService {
         return new AppointmentDTO(saved);
     }
 
+    public AppointmentDTO rejectRequest(Long id) {
+        Optional<AppointmentRequest> request = appointmentRequestRepository.findById(id);
+        if (!request.isPresent()) {
+            throw new NoSuchElementException();
+        }
+        if (request.get().isApproved()) {
+            throw new SecurityException();
+        }
+
+        AppointmentRequest req = request.get();
+        appointmentRequestRepository.delete(req);
+        AppointmentDTO requestDto = new AppointmentDTO(req);
+        return requestDto;
+    }
+
 //    @Transactional
     @Scheduled(cron = "${appointment.cron}")
     void systemChooseOrdinationForAllAppointmentRequests() throws InterruptedException {
