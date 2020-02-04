@@ -8,6 +8,8 @@ import com.project.tim49.repository.DoctorRepository;
 import com.project.tim49.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.MethodNotAllowedException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
@@ -137,12 +139,15 @@ public class PatientService {
 
         return medicalRecordDTO;
     }
-    public AppointmentDTO cancelAppointment(Long patientID, Long appointmentID){
+    public AppointmentDTO cancelAppointment(Long patientID, Long appointmentID,Long currentTime){
         Patient patient = patientRepository.getOne(patientID);
         Set<Appointment> appointments = patient.getPendingAppointments();
         Appointment appointment = appointmentRepository.getOne(appointmentID);
         if (appointment.getPatient() == null) {
-            throw new ValidationException("Appointment already taken");
+            throw new ValidationException("Appointment has no patient set.");
+        }
+        if ((appointment.getStartingDateAndTime()-currentTime)<86400){
+            throw new ValidationException("Appointment can be canceled only at least 24h ahead.");
         }
         appointment.setPatient(null);
         patient.getPendingAppointments().remove(appointment);

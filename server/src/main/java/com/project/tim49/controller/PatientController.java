@@ -98,16 +98,22 @@ public class PatientController {
         return new ResponseEntity<>(patientDTOS, HttpStatus.OK);
     }
 
-    @DeleteMapping("/cancelAppointment/{patientID}/{appID}")
+    @DeleteMapping("/cancelAppointment/{patientID}/{appID}/{currentTime}")
     @PreAuthorize("hasAuthority('PATIENT') or hasAuthority('DOCTOR')")
-    public ResponseEntity cancelAppointment(@PathVariable Long patientID, @PathVariable Long appID) {
+    public ResponseEntity cancelAppointment(@PathVariable Long patientID, @PathVariable Long appID,@PathVariable Long currentTime) {
         if (patientID == null){
             return new ResponseEntity<>("Invalid patient id.", HttpStatus.BAD_REQUEST);
         }
         if (appID == null){
             return new ResponseEntity<>("Invalid appointment.", HttpStatus.BAD_REQUEST);
         }
-        AppointmentDTO appointmentDTO = patientService.cancelAppointment(patientID,appID);
-        return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
+        try{
+            AppointmentDTO appointmentDTO = patientService.cancelAppointment(patientID,appID,currentTime);
+            return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
+        }catch (ValidationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+
     }
 }

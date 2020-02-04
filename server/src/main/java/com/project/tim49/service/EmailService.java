@@ -38,7 +38,7 @@ public class EmailService {
         mail.setTo(user.getEmail());
         mail.setFrom(env.getProperty("spring.mail.username"));
         mail.setSubject("Clinical center: Finish your registration");
-        mail.setText("Hello " + user.getName() + ",\n\nyour registration request at our clinical center has" +
+        mail.setText("Hello " + user.getName() + ",\n\nyour registration request at our clinical center has " +
                 "been approved!\n\n" +
                 "To confirm your email address, please click on the link below:\n\n" +
                 "http://picici.herokuapp.com/auth/confirm_registration/"+user.getId()+

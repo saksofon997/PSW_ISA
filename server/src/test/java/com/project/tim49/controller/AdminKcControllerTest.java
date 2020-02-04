@@ -50,6 +50,7 @@ class AdminKcControllerTest {
 
     @Before
     public void login() {
+
         ResponseEntity<AuthenticationController.UserState> responseEntity =
                 restTemplate.postForEntity("/auth/login",
                         new LoginDTO("adminkc1@kcv.rs", "123456"),
@@ -96,7 +97,6 @@ class AdminKcControllerTest {
         assertEquals(DB_NAME, clinics[0].getName());
         assertEquals(DB_CITY, clinics[0].getCity());
         assertEquals(DB_ADDRESS, clinics[0].getAddress());
-
     }
 
     @Test

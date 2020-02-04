@@ -110,13 +110,14 @@ export class PatientService {
       );
   }
   cancelAppointment(appointment){
+    let dateTime = new Date()
     let user = JSON.parse(this.cookieService.get('user'));
     let id = user["id"];
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.delete(`/api/patient/cancelAppointment/${id}/${appointment.id}`, { headers: headers, observe: 'response' })
+    return this.http.delete(`/api/patient/cancelAppointment/${id}/${appointment.id}/${dateTime}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
