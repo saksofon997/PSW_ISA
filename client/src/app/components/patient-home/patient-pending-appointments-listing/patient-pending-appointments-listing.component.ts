@@ -104,4 +104,13 @@ export class PatientPendingAppointmentsListingComponent implements OnInit {
 	showClinicInfo(info: any){
 		//to do
 	}
+	cancelAppointment(appointment){
+		this.patientService.cancelAppointment(appointment).subscribe((data) => {
+			alert("Appointment "+appointment.typeOfExamination.name+" canceled");
+			this.getPendingAppointments();
+		},
+		(error) => {
+			alert(error);
+		});
+	}
 }
