@@ -168,6 +168,35 @@ public class RouterTest {
 
     }
 
+    @Test
+    public void testReserveOrdination() {
+        browser.navigate().to("http://localhost:8080/#/login");
+        browser.findElement(By.name("email")).sendKeys("adminc1@kcv.rs");
+        browser.findElement(By.name("password")).sendKeys("123456");
+        browser.findElement(By.cssSelector(".btn-primary")).click();
+
+//        (new WebDriverWait(browser, 10))
+//                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"dropdown1\"]")));
+//        WebElement optionsButton =  browser.findElement(By.xpath("//button[@id=\"dropdown1\"]"));
+//        optionsButton.click();
+//        WebElement appointmentLink =  browser.findElement(By.xpath("//a[@id=\"appointment1\"]"));
+//        appointmentLink.click();
+//        (new WebDriverWait(browser, 10))
+//                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"appointment6\"]")));
+//        browser.findElement(By.xpath("//button[@id=\"appointment6\"]")).click();
+//        try{
+//            waitForAlert(browser);
+//        }catch (InterruptedException e){
+//            System.out.println(e);
+//        }
+//        Alert alert = browser.switchTo().alert();
+//        String alertText = alert.getText();
+//        alert.dismiss();
+//        assertEquals(alertText,
+//                "Successfully selected an appointment");
+
+    }
+
     @AfterMethod
     public void tearDown() {
         browser.close();

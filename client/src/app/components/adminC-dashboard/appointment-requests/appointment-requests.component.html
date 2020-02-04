@@ -19,7 +19,7 @@
             <td> {{appointment.duration ? appointment.duration / 1000 / 60 : "Not specified"}} </td>
             <td>
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="{{'dropdownMenuButton'+appointment.id}}"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Options
                     </button>
