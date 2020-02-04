@@ -97,4 +97,17 @@ public class PatientController {
         List<PatientDTO> patientDTOS = patientService.getByQuery(name, surname, upin, clinicID);
         return new ResponseEntity<>(patientDTOS, HttpStatus.OK);
     }
+
+    @DeleteMapping("/cancelAppointment/{patientID}/{appID}")
+    @PreAuthorize("hasAuthority('PATIENT') or hasAuthority('DOCTOR')")
+    public ResponseEntity cancelAppointment(@PathVariable Long patientID, @PathVariable Long appID) {
+        if (patientID == null){
+            return new ResponseEntity<>("Invalid patient id.", HttpStatus.BAD_REQUEST);
+        }
+        if (appID == null){
+            return new ResponseEntity<>("Invalid appointment.", HttpStatus.BAD_REQUEST);
+        }
+        AppointmentDTO appointmentDTO = patientService.cancelAppointment(patientID,appID);
+        return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
+    }
 }

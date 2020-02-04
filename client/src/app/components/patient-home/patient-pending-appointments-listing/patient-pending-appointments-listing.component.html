@@ -33,7 +33,11 @@
                 <td> {{appointment.formatedDateAndTime}} </td>
                 <td> {{appointment.duration / 1000 / 60}} </td>
                 <td> {{appointment.price - appointment.discount}} </td>
-                <td></td>
+                <td>
+                    <button class="btn btn-sm btn-secondary " type="button" (click)="cancelAppointment(appointment)">
+                        Cancel
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>

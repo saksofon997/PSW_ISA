@@ -2,6 +2,7 @@ package com.project.tim49.service;
 
 import com.project.tim49.dto.*;
 import com.project.tim49.model.*;
+import com.project.tim49.repository.AppointmentRepository;
 import com.project.tim49.repository.ClinicRepository;
 import com.project.tim49.repository.DoctorRepository;
 import com.project.tim49.repository.PatientRepository;
@@ -25,6 +26,9 @@ public class PatientService {
 
     @Autowired
     ClinicRepository clinicRepository;
+
+    @Autowired
+    AppointmentRepository appointmentRepository;
 
     public UserDTO findById(Long id) {
 
@@ -132,5 +136,18 @@ public class PatientService {
         MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO(medicalRecord);
 
         return medicalRecordDTO;
+    }
+    public AppointmentDTO cancelAppointment(Long patientID, Long appointmentID){
+        Patient patient = patientRepository.getOne(patientID);
+        Set<Appointment> appointments = patient.getPendingAppointments();
+        Appointment appointment = appointmentRepository.getOne(appointmentID);
+        if (appointment.getPatient() == null) {
+            throw new ValidationException("Appointment already taken");
+        }
+        appointment.setPatient(null);
+        patient.getPendingAppointments().remove(appointment);
+        patientRepository.save(patient);
+        return new AppointmentDTO(appointmentRepository.save(appointment));
+
     }
 }
