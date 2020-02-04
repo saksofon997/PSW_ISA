@@ -88,7 +88,7 @@
                 </div>
             </td> -->
             <td *ngIf="ordination.available">
-                <button class="btn btn-light" type="button" (click)="showAvailableTimeslots(ordination)">
+            <button class="btn btn-light" id="{{'showAvailable'+ordination.number}}" type="button" (click)="showAvailableTimeslots(ordination)">
                     Show available timeslots
                 </button>
                 <!-- <button class="btn btn-light" type="button" data-toggle="collapse"
@@ -104,7 +104,7 @@
 <ng-template #modalContent let-close="close">
     <div class="modal-header">
         <h4 class="modal-title">Appointment info</h4>
-        <button type="button" class="close" (click)="close()" (click)="closeModal()">
+        <button type="button" class="close" (click)="closeModal()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -114,7 +114,7 @@
                 <div class="card" style="height: 32em;">
                     <div class="card-body text-center">
                         <p class="card-title"> <b>Doctor</b>: </p>
-                        <div style="text-align: center;">
+                    <div id="{{'modal'+modalData.appointment.id}}" style="text-align: center;">
                             <div class="col-sm-12 col-lg-12 shadow-sm p-1 mb-1 bg-white rounded"
                                 style="width:80%; display: inline-block;">
                                 <ngx-select-dropdown (change)="selectionChangedDoctor($event)" [multiple]="false"
@@ -186,10 +186,10 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="createAppointment()">
+        <button type="button" class="btn btn-primary" id="btnCreateAppointment" (click)="createAppointment()">
             Create appointment
         </button>
-        <button type="button" class="btn btn-outline-secondary" (click)="close()" (click)="closeModal()">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">
             Close
         </button>
     </div>
