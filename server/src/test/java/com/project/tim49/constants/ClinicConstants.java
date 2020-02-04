@@ -15,6 +15,10 @@ public class ClinicConstants {
     public static final String DB_CLINIC_ADMIN_NAME = "Jagoda";
     public static final String DB_CLINIC_ADMIN_EMAIL = "adminc1@kcv.rs";
     public static final Long DB_CLINIC_ADMIN_UPIN = 1011990100010L;
+
+    //AvailableAppointment
+    public static final Long DB_AVAILABLE_APPOINTMENT_ID = 6L;
+    public static final Long DB_PATIENT_ID = 23L;
     
     //id of a student who is referenced by other entities
     public static final Long DB_ID_REFERENCED = 1L; 
