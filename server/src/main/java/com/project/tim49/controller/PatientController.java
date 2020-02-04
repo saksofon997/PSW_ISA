@@ -91,9 +91,10 @@ public class PatientController {
     public ResponseEntity getAllByQuery(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "surname", required = false) String surname,
-            @RequestParam(value = "upin", required = false) String upin
+            @RequestParam(value = "upin", required = false) String upin,
+            @RequestParam(value = "clinicid", required = true) Long clinicID
     ) {
-        List<PatientDTO> patientDTOS = patientService.getByQuery(name, surname, upin);
+        List<PatientDTO> patientDTOS = patientService.getByQuery(name, surname, upin, clinicID);
         return new ResponseEntity<>(patientDTOS, HttpStatus.OK);
     }
 }

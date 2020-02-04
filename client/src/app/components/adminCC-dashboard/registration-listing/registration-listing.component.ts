@@ -9,7 +9,7 @@ import { DialogService } from 'src/app/services/dialog.service';
   styleUrls: ['./registration-listing.component.css']
 })
 export class RegistrationListingComponent implements OnInit {
-  requestsHeaders = ['Name', 'Surname', 'City', 'State', 'Phone Number'];
+  requestsHeaders = ['Name', 'Surname', 'City', 'State', 'Phone Number', 'Email'];
   navigationSubscription: any;
   requests: any;
 
@@ -64,8 +64,5 @@ export class RegistrationListingComponent implements OnInit {
         }
       })
       .catch(() => this.router.navigate(['../registrationRequests'], { relativeTo: this.activatedRoute }))
-  }
-  showRequestInfo(info: any) {
-    //to do 
   }
 }

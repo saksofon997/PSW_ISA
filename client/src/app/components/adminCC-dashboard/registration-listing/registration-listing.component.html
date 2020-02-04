@@ -17,6 +17,7 @@
           <td> {{request.city}} </td>
           <td> {{request.state}} </td>
           <td> {{request.phoneNumber}} </td>
+          <td> {{request.email}} </td>
           <td>
               <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -26,8 +27,6 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <a class="dropdown-item" style="cursor: pointer;" (click)="approveRequest(request)" >Approve</a> <!-- [routerLink]="['./clinicAdmins']" -->
                       <a class="dropdown-item" style="cursor: pointer;" (click)="deleteRequest(request)">Delete</a>
-                      <a class="dropdown-item" style="cursor: pointer;" (click)="showRequestInfo(request)">Show info</a>
-
                   </div>
               </div>
           </td>

@@ -57,6 +57,11 @@
                 </div>
 
                 <div class="form-group row">
+                    <label class="col-sm-2 col-form-label font-weight-bold" for="rating">Rating: </label>
+                    <star-rating value='{{starRatingSearch}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="22px" readonly="false" (rate)="onRateSearch($event)"></star-rating>
+                  </div>
+
+                <div class="form-group row">
                     <label for="typeOfExamination" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Type of
                         examination: </label>
                     <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
@@ -115,7 +120,7 @@
     <tbody>
         <tr *ngFor='let clinic of clinicsFiltered'>
             <td> {{clinic.name}} </td>
-            <td> {{clinic.address}} </td>
+            <td> {{clinic.address}}, {{clinic.city}}, {{clinic.state}} </td>
             <td>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -147,6 +152,7 @@
                         <a class="dropdown-item" style="cursor: pointer;" (click)="sortName()" >Name</a>
                         <a class="dropdown-item" style="cursor: pointer;" (click)="sortAddress()">Address</a>
                         <a class="dropdown-item" style="cursor: pointer;" (click)="sortPrice()">Price</a>
+                        <a class="dropdown-item" style="cursor: pointer;" (click)="sortRating()">Rating</a>
                     </div>
                 </div>
             </th>
@@ -155,7 +161,8 @@
     <tbody>
         <tr *ngFor='let clinic of clinicsFiltered'>
             <td> {{clinic.name}} </td>
-            <td> {{clinic.address}} </td>
+            <td> {{clinic.address}}, {{clinic.city}}, {{clinic.state}} </td>
+            <td> <star-rating value='{{clinic.numberOfStars/clinic.numberOfReviews}}' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="20px" readonly="true"></star-rating> </td>
             <td> {{clinic.typeOfExamination.price}}</td>
             <td>
                 <div class="dropdown">

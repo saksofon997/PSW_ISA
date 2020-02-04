@@ -164,13 +164,13 @@ export class ClinicService {
 			);
 	}
 
-	searchClinics(criteria: { name: any; address: any; typeOfExamination: any; date: number; }) {
+	searchClinics(criteria: { name: any; address: any; typeOfExamination: any; rating: any; date: number; }) {
 		let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
 		var searchParamsString = "";
-		searchParamsString += `name=${criteria.name}&address=${criteria.address}&typeOfExamination=${criteria.typeOfExamination}&date=${criteria.date}`
+		searchParamsString += `name=${criteria.name}&address=${criteria.address}&typeOfExamination=${criteria.typeOfExamination}&rating=${criteria.rating}&date=${criteria.date}`
 		return this.http.get(`/api/clinic/searchClinics?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(

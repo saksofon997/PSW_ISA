@@ -16,6 +16,7 @@ export class PatientListingComponent implements OnInit {
 	patients: any;
 	filteredPatients: any;
 	navigationSubscription: any;
+	sortingOption: any;
 
 	modalData: {
 		patientID: any;
@@ -59,6 +60,40 @@ export class PatientListingComponent implements OnInit {
 				alert(error);
 			}
 		)
+	}
+
+	sortName() {
+		this.sortingOption = "name";
+		this.sortClinics();
+	}
+	sortSurname() {
+		this.sortingOption = "surname";
+		this.sortClinics();
+	}
+	sortUpin() {
+		this.sortingOption = "upin";
+		this.sortClinics();
+	}
+
+	sortClinics() {
+		switch(this.sortingOption) {
+			case "name": {
+				this.filteredPatients.sort((a, b) => (a.name > b.name) ? 1 : -1)
+				break;
+			}
+			case "surname": {
+				this.filteredPatients.sort((a, b) => (a.surname > b.surname) ? 1 : -1)
+				break;
+			}
+			case "upin": {
+				this.filteredPatients.sort((a, b) => (a.upin > b.upin) ? 1 : -1)
+				break;
+			}
+			default: {
+				this.filteredPatients.sort((a, b) => (a.id > b.id) ? 1 : -1)
+				break;
+			}
+		}
 	}
 
 	onSearch() {

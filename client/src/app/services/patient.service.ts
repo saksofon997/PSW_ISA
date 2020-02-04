@@ -148,9 +148,11 @@ export class PatientService {
     let headers = new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.userService.getToken()}`
-		});
+    });
+    let user = JSON.parse(this.cookieService.get('user'));
+    let clinic_id = user["clinic_id"];
 		var searchParamsString = "";
-		searchParamsString += `name=${patient.name}&surname=${patient.surname}&upin=${patient.upin}`
+		searchParamsString += `name=${patient.name}&surname=${patient.surname}&upin=${patient.upin}&clinicid=${clinic_id}`
 		return this.http.get(`/api/patient/search_patients?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
