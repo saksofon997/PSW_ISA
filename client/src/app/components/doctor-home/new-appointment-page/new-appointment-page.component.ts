@@ -175,7 +175,7 @@ export class NewAppointmentPageComponent implements OnInit {
 				(error) => { alert(error); }
 			);
 		} else {
-			this.appointmentService.scheduleNewAppointment(appointment).subscribe(
+			this.appointmentService.scheduleNewAppointment(appointment, 'doctor').subscribe(
 				(data: any) => { 
 					alert("Appointment request created");
 					this.notifyParent.emit();
