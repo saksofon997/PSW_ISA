@@ -80,7 +80,7 @@ export class MedicalRecordComponent implements OnInit {
 	ngOnInit() {
 		this.getMedicalRecord();
 		this.changeReport = true;
-		this.currentUser = this.userService.getUser;
+		this.currentUser = JSON.parse(this.cookieService.get('user'));
 		this.basicInfoForm.controls.bloodType.disable();
 		this.basicInfoForm.controls.diopter.disable();
 		this.basicInfoForm.controls.height.disable();

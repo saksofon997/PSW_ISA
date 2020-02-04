@@ -270,7 +270,7 @@
                   </div>
                 </fieldset>
                 <mat-action-row>
-                  <button mat-button *ngIf="editable && changeReport && examination.performs.name===currentUser.id"
+                  <button mat-button *ngIf="editable && changeReport && examination.performs.id===currentUser.id"
                     (click)="enableReportEdit(examination)">Edit</button>
                   <button mat-button color="warn" *ngIf="!changeReport"
                     (click)="cancelReportEdit(examination.dateAndTime)">Cancel</button>
