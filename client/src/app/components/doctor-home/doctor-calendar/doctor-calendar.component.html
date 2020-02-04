@@ -159,7 +159,7 @@
     <button type="button" class="btn btn-outline-secondary" (click)="close()">
       Cancel
     </button>
-    <button *ngIf="!modalData?.appointment.completed" type="button" class="btn btn-outline-success" (click)="startExamination(modalData?.appointment)">
+    <button *ngIf="modalData?.appointment.patient && !modalData?.appointment.completed" type="button" class="btn btn-outline-success" (click)="startExamination(modalData?.appointment)">
       Start examination
     </button>
   </div>

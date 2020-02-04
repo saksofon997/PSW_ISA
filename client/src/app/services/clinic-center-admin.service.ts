@@ -32,6 +32,36 @@ export class ClinicCenterAdminService {
         })
       );
   }
+  getAdminsKc() {
+    let user = JSON.parse(this.cookieService.get('user'));
+    let id = user["id"];
+    let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+    return this.http.get(`/api/admin/getAdminsKc/${id}`, { headers: headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
+  addAdmin(adminCC){
+    let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+		return this.http.post('/api/admin/addAdmin', JSON.stringify(adminCC), { headers: headers, observe: 'response' }).pipe(
+			map(response => {
+				return response.body;
+			}),
+			catchError((response) => {
+				return throwError(response.error);
+			})
+		);
+  }
   changeAdminKc(admin) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -53,6 +83,22 @@ export class ClinicCenterAdminService {
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
     return this.http.delete(`/api/clinicAdmin/delete/${admin.id}`, { headers: headers, observe: 'response' })
+    .pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+  }
+  deleteClinicCenterAdmin(admin){
+    let user = JSON.parse(this.cookieService.get('user'));
+    let id = user["id"];
+    let headers = new HttpHeaders({
+			'Authorization': `Bearer ${this.userService.getToken()}`
+		});
+    return this.http.delete(`/api/admin/deleteAdmin/${id}/${admin.id}`, { headers: headers, observe: 'response' })
     .pipe(
       map(response => {
         return response.body;

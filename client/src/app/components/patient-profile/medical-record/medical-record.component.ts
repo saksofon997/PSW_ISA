@@ -28,6 +28,7 @@ export class MedicalRecordComponent implements OnInit {
 	allergies: any;
 	tempDiagnosis:any;
 	optionsDiagnosis:any;
+	currentUser:any;
 	config1 = {
 		displayKey:"code", //if objects array passed which key to be displayed defaults to description
 		search:true, //true/false for the search functionlity defaults to false,
@@ -79,7 +80,7 @@ export class MedicalRecordComponent implements OnInit {
 	ngOnInit() {
 		this.getMedicalRecord();
 		this.changeReport = true;
-
+		this.currentUser = JSON.parse(this.cookieService.get('user'));
 		this.basicInfoForm.controls.bloodType.disable();
 		this.basicInfoForm.controls.diopter.disable();
 		this.basicInfoForm.controls.height.disable();

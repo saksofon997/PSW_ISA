@@ -82,6 +82,8 @@ import { AppointmentRequestsComponent } from './components/adminC-dashboard/appo
 import { PatientAvailableAppointmentsComponent } from './components/patient-home/patient-available-appointments/patient-available-appointments.component';
 import { PatientScheduleAppointmentComponent } from './components/patient-home/patient-schedule-appointment/patient-schedule-appointment.component';
 import { ClinicBusinessComponent } from './components/adminC-dashboard/clinic-business/clinic-business.component';
+import { ClinicCenterAdminsComponent } from './components/adminCC-dashboard/clinic-center-admins/clinic-center-admins.component';
+import { ClinicCenterAdminsListingComponent } from './components/adminCC-dashboard/clinic-center-admins-listing/clinic-center-admins-listing.component';
 
 @NgModule({
   declarations: [
@@ -149,6 +151,8 @@ import { ClinicBusinessComponent } from './components/adminC-dashboard/clinic-bu
     PatientAvailableAppointmentsComponent,
     PatientScheduleAppointmentComponent,
     ClinicBusinessComponent,
+    ClinicCenterAdminsComponent,
+    ClinicCenterAdminsListingComponent
     
   ],
   imports: [

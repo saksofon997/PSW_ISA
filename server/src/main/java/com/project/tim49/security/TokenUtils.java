@@ -23,7 +23,7 @@ public class TokenUtils {
     @Value("picici")
     public String SECRET;
 
-    @Value("300000")
+    @Value("5000000")
     private int EXPIRES_IN;
 
     @Value("Authorization")

@@ -10,7 +10,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 export class PatientPendingAppointmentsListingComponent implements OnInit {
 
 	appointments: any;
-	appointmentHeaders = ['Clinic', 'Ordination name', 'Ord. number', 'Type', 'Date and time', 'Duration (minutes)'];
+	appointmentHeaders = ['Clinic', 'Ordination', 'Doctor', 'Type', 'Date & time', 'Duration (min)','Price'];
 	navigationSubscription: any;
 	sortingOption: any;
 
@@ -92,8 +92,7 @@ export class PatientPendingAppointmentsListingComponent implements OnInit {
 		var date = a.getDate();
 		var hour = a.getHours();
 		var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
-		var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
-		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min + ':' + sec;
+		var time = date + '. ' + month + ' ' + year + '. ' + hour + ':' + min;
 		return time;
 	}
 

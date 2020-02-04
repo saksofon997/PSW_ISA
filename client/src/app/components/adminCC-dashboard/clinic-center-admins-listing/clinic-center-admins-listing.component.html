@@ -1,0 +1,38 @@
+<div class="jumbotron jumbotron-fluid" style="max-height: 6em; margin-top:0.5em; padding-top: 0.5em; ">
+  <div class="container-fluid" style="max-height: 2em; margin-bottom: 0.5em;">
+      <h3 class="display-8">Clinical center administrators</h3>
+      <p class="lead">Here you can see a list of existing administrators, change them, or add a new one.</p>
+  </div>
+</div>
+<table class="table">
+  <thead>
+      <tr>
+          <th scope="col" *ngFor='let param of clinicAdminHeaders'>{{param}}</th>
+          <th scope="col">
+              <button type="button" class="btn btn-light" (click)='addAdministrator()'>Add</button>
+          </th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor='let admin of admins'>
+          <td> {{admin.name}} </td>
+          <td> {{admin.surname}} </td>
+          <td> {{admin.email}} </td>
+          <td> {{admin.address}} </td>
+          <td> {{admin.city}} </td>
+          <td> {{admin.state}} </td>
+          <td> {{admin.phoneNumber}} </td>
+          <td>
+              <div class="dropdown" *ngIf="currentUser.id != admin.id">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Options
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" style="cursor: pointer;" (click)='deleteAdmin(admin)'>Delete</a>
+                  </div>
+              </div>
+          </td>
+      </tr>
+  </tbody>
+</table>

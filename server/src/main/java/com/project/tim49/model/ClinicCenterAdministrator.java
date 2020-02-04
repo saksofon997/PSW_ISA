@@ -8,5 +8,4 @@ import javax.persistence.*;
 
 @Entity
 public class ClinicCenterAdministrator extends User {
-
 }
