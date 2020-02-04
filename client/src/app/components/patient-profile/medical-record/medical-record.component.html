@@ -122,6 +122,28 @@
     <div class="col-12 p-0 m-0 mb-2 " *ngIf="medicalRecord">
 
       <mat-accordion class="example-headers-align">
+        <mat-action-row>
+          <div class="dropdown">
+            <button class="dropdown-toggle" mat-button type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort by
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <span class="dropdown-item">
+                Type
+                <i class="fa fa-arrow-down ml-1" (click)="sortByTypeDesc()" aria-hidden="true" style="cursor: pointer;"></i>
+                <i class="fa fa-arrow-up ml-1" (click)="sortByTypeAsc()" aria-hidden="true" style="cursor: pointer;"></i>
+              </span>
+              <span class="dropdown-item">
+                Date
+                <i class="fa fa-arrow-down ml-1" (click)="sortByDateDesc()" aria-hidden="true" style="cursor: pointer;"></i>
+                <i class="fa fa-arrow-up ml-1" (click)="sortByDateAsc()" aria-hidden="true" style="cursor: pointer;"></i>
+              </span>
+
+            </div>
+        </div>
+          <!-- <button type="submit" mat-button  (click)="submitReportEdit(examination)">Sort</button> -->
+        </mat-action-row> 
         <ul style="list-style-type:none;">
           <li *ngFor='let examination of medicalRecord.examinationReport'>
             <form (keydown.enter)="$event.target.tagName == 'TEXTAREA'" (ngSubmit)="submitBasicInfo()">

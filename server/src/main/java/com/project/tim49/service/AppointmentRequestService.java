@@ -67,7 +67,7 @@ public class AppointmentRequestService {
 
         appointmentRequest.setApproved(false);
         appointmentRequest.setStartingDateAndTime(appointmentDTO.getStartingDateAndTime());
-        appointmentRequest.setEndingDateAndTime(appointmentDTO.getStartingDateAndTime() + appointmentDTO.getDuration()/1000);
+        appointmentRequest.setEndingDateAndTime(appointmentDTO.getEndingDateAndTime());
         appointmentRequest.setDuration(appointmentDTO.getDuration());
         appointmentRequest.setPrice(appointmentDTO.getPrice());
 

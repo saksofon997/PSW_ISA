@@ -82,6 +82,7 @@ export class OrdinationSelectionComponent implements OnInit {
 						for (let doc of this.optionsDoctors){
 							doc.fullname = doc.name + " " + doc.surname;
 						}
+						this.optionsDoctors = this.optionsDoctors.filter(obj => obj.id !== this.appointment.doctors[0].id);
 						this.optionsAttendingDoctors = data;
 						for (let doc of this.optionsAttendingDoctors){
 							doc.fullname = doc.name + " " + doc.surname;

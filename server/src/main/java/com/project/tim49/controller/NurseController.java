@@ -92,7 +92,7 @@ public class NurseController {
             nurseService.deleteNurse(id);
 
             return new ResponseEntity<>(id, HttpStatus.OK);
-        } catch (ValidationException e) {
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
