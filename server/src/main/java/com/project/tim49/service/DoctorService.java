@@ -574,7 +574,7 @@ public class DoctorService {
                 continue;
             }
             if ( startingTimeStamp >= appointment.getStartingDateAndTime()
-                    && startingTimeStamp + 600 <= appointment.getEndingDateAndTime()){
+                    && startingTimeStamp + 600 < appointment.getEndingDateAndTime()){
                 return false;
             }
             if (appointment.getStartingDateAndTime() >= startingTimeStamp
