@@ -236,6 +236,7 @@ public class ClinicService {
                         ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
                         sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
                         selected.add(sel);
+                        break;
                     }
                 }
             }

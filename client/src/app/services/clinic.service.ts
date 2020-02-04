@@ -405,7 +405,7 @@ export class ClinicService {
 		});
 		var searchParamsString = "";
 		searchParamsString += `name=${nurse.name}&surname=${nurse.surname}&clinic_id=${nurse.clinic_id}`
-		return this.http.get(`/api/nurse/search_nurse?${searchParamsString}`,
+		return this.http.get(`/api/nurse/search_nurses?${searchParamsString}`,
 							{ headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {

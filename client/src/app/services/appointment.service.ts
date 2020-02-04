@@ -27,11 +27,11 @@ export class AppointmentService {
 			);
 	}
 
-	scheduleNewAppointment(appointment) {
+	scheduleNewAppointment(appointment, role) {
 		let headers = new HttpHeaders({
 			'Authorization': `Bearer ${this.userService.getToken()}`
 		});
-		return this.http.post('/api/appointmentRequest/scheduleNewAppointment', appointment, { headers: headers, observe: 'response' })
+		return this.http.post(`/api/appointmentRequest/scheduleNewAppointment/${role}`, appointment, { headers: headers, observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;
@@ -116,6 +116,18 @@ export class AppointmentService {
 
 	approveAppointmentRequest(appointment){
 		return this.http.post(`/api/appointmentRequest/approveAppointmentRequest`, appointment, { observe: 'response' })
+			.pipe(
+				map(response => {
+					return response.body;
+				}),
+				catchError((response) => {
+					return throwError(response.error);
+				})
+			);
+	}
+
+	rejectAppointmentRequest(appointment_id, message){
+		return this.http.put(`/api/appointmentRequest/rejectAppointmentRequest/${appointment_id}`, JSON.stringify(message), { observe: 'response' })
 			.pipe(
 				map(response => {
 					return response.body;

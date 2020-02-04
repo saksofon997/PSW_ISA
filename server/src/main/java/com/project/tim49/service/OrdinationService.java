@@ -202,9 +202,9 @@ public class OrdinationService {
         for (Appointment app : allAppointments) {
             if (app.getStartingDateAndTime() >= dateStartTimestamp && app.getEndingDateAndTime() <= dateEndTimestamp) {
                 selectedAppointmentsByDate.add(app);
-            } else if (app.getStartingDateAndTime() < dateStartTimestamp && app.getEndingDateAndTime() >= dateStartTimestamp) {
+            } else if (app.getStartingDateAndTime() <= dateStartTimestamp && app.getEndingDateAndTime() >= dateStartTimestamp) {
                 selectedAppointmentsByDate.add(app);
-            } else if (app.getStartingDateAndTime() < dateEndTimestamp && app.getEndingDateAndTime() >= dateEndTimestamp) {
+            } else if (app.getStartingDateAndTime() <= dateEndTimestamp && app.getEndingDateAndTime() >= dateEndTimestamp) {
                 selectedAppointmentsByDate.add(app);
             }
         }
@@ -212,6 +212,11 @@ public class OrdinationService {
         selectedAppointmentsByDate.sort(compareByStart);
 
         if (selectedAppointmentsByDate.isEmpty()) {
+            if (firstAvailableDateFlag){
+                ordinationDTO.setFirstAvailableDateTimestamp(dateStartTimestamp);
+                ordinationDTO.getAvailablePeriods().add("00:00");
+                return;
+            }
             ordinationDTO.setAvailable(true);
             long periodStart = dateStartTimestamp;
             long periodEnd = periodStart + 10 * 60;
@@ -270,12 +275,13 @@ public class OrdinationService {
             }
         }
 
-        if (firstAvailableDateFlag && ordinationDTO.getAvailablePeriods().size() != 0){
-            if (selectedAppointmentsByDate.get(0).getStartingDateAndTime() > dateStartTimestamp){
-                ordinationDTO.setFirstAvailableDateTimestamp(selectedAppointmentsByDate.get(0).getStartingDateAndTime());
-            } else {
-                ordinationDTO.setFirstAvailableDateTimestamp(selectedAppointmentsByDate.get(0).getEndingDateAndTime());
-            }
+        if (firstAvailableDateFlag && !ordinationDTO.getAvailablePeriods().isEmpty()){
+            ordinationDTO.setFirstAvailableDateTimestamp(dateStartTimestamp);
+//            if (selectedAppointmentsByDate.get(0).getStartingDateAndTime() > dateStartTimestamp){
+//                ordinationDTO.setFirstAvailableDateTimestamp(selectedAppointmentsByDate.get(0).getStartingDateAndTime());
+//            } else {
+//                ordinationDTO.setFirstAvailableDateTimestamp(selectedAppointmentsByDate.get(0).getEndingDateAndTime());
+//            }
         }
     }
 }

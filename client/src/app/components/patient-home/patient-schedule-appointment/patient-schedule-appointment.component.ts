@@ -148,7 +148,8 @@ export class PatientScheduleAppointmentComponent implements OnInit {
 		let appointment = {
 			id: null,
 			startingDateAndTime: this.form.controls.dateAndTime.value.getTime().toString().substr(0, 10),
-			duration: null, //this.form.controls.duration.value * 60 * 1000,
+			endingDateAndTime: 0,
+			duration: 0, //this.form.controls.duration.value * 60 * 1000,
 			typeOfExamination: { id: this.form.controls.typeOfExamination.value },
 			ordination: null,
 			price: this.price,
@@ -157,7 +158,7 @@ export class PatientScheduleAppointmentComponent implements OnInit {
 			doctors: [{ id: this.doctorID }]
 		}
 
-		this.appointmentService.scheduleNewAppointment(appointment).subscribe(
+		this.appointmentService.scheduleNewAppointment(appointment, 'patient').subscribe(
 			(data: any) => {
 				alert("Appointment request sent");
 				this.router.navigate([`../pending_appointments`], { relativeTo: this.activatedRoute });

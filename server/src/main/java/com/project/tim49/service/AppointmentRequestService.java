@@ -67,7 +67,7 @@ public class AppointmentRequestService {
 
         appointmentRequest.setApproved(false);
         appointmentRequest.setStartingDateAndTime(appointmentDTO.getStartingDateAndTime());
-        appointmentRequest.setEndingDateAndTime(appointmentDTO.getStartingDateAndTime() + appointmentDTO.getDuration()/1000);
+        appointmentRequest.setEndingDateAndTime(appointmentDTO.getEndingDateAndTime());
         appointmentRequest.setDuration(appointmentDTO.getDuration());
         appointmentRequest.setPrice(appointmentDTO.getPrice());
 
@@ -130,6 +130,21 @@ public class AppointmentRequestService {
         appointmentRequestRepository.delete(appointmentRequest.get());
 
         return new AppointmentDTO(saved);
+    }
+
+    public AppointmentDTO rejectRequest(Long id) {
+        Optional<AppointmentRequest> request = appointmentRequestRepository.findById(id);
+        if (!request.isPresent()) {
+            throw new NoSuchElementException();
+        }
+        if (request.get().isApproved()) {
+            throw new SecurityException();
+        }
+
+        AppointmentRequest req = request.get();
+        appointmentRequestRepository.delete(req);
+        AppointmentDTO requestDto = new AppointmentDTO(req);
+        return requestDto;
     }
 
 //    @Transactional

@@ -185,7 +185,7 @@ public class DoctorService {
                 continue;
             }
             if ( startingTimeStamp >= appointment.getStartingDateAndTime()
-                    && startingTimeStamp + duration/1000 <= appointment.getEndingDateAndTime()){
+                    && startingTimeStamp + duration/1000 < appointment.getEndingDateAndTime()){
                 return false;
             }
             if (appointment.getStartingDateAndTime() >= startingTimeStamp
@@ -496,10 +496,12 @@ public class DoctorService {
         }
         if(date != -1) {
             //if hes available for at least 10 minutes that day, times wont be empty, so he stays in the list
-            for(Doctor doc : selected) {
+            Iterator<Doctor> iter = selected.iterator();
+            while(iter.hasNext()) {
+                Doctor doc = iter.next();
                 List<String> times = getAvailableTimes(doc, date);
                 if(times.isEmpty()){
-                    selected.remove(doc);
+                    iter.remove();
                 }
             }
         }
@@ -543,7 +545,7 @@ public class DoctorService {
 
         for(long iter = startingTimeStamp; iter < endingTimeStamp; iter+=duration) {
             //thanks mihajlo
-            if(isAvailableVer(appointments, iter) && isDuringDoctorWorkingHoursVer(doctor, iter)) {
+            if(isAvailableVer(appointments, iter, doctor) && isDuringDoctorWorkingHoursVer(doctor, iter)) {
                 times.add(String.valueOf(iter));
             }
         }
@@ -551,13 +553,28 @@ public class DoctorService {
         return times;
     }
 
-    public boolean isAvailableVer(List<Appointment> appointments, long startingTimeStamp){
+    public boolean isAvailableVer(List<Appointment> appointments, long startingTimeStamp, Doctor doctor){
+        Set<Vacation> vacations = doctor.getVacations();
+        for (Vacation vacation: vacations) {
+            if ( startingTimeStamp >= vacation.getStartDate()
+                    && startingTimeStamp + 600 <= vacation.getEndDate()){
+                return false;
+            }
+            if (vacation.getStartDate() >= startingTimeStamp
+                    && vacation.getEndDate() <= startingTimeStamp + 600){
+                return false;
+            }
+            if (vacation.getEndDate() > startingTimeStamp
+                    && vacation.getEndDate() <= startingTimeStamp + 600){
+                return false;
+            }
+        }
         for (Appointment appointment: appointments) {
             if (appointment.isCompleted() || appointment.isDeleted()){
                 continue;
             }
             if ( startingTimeStamp >= appointment.getStartingDateAndTime()
-                    && startingTimeStamp + 600 <= appointment.getEndingDateAndTime()){
+                    && startingTimeStamp + 600 < appointment.getEndingDateAndTime()){
                 return false;
             }
             if (appointment.getStartingDateAndTime() >= startingTimeStamp
