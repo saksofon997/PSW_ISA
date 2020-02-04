@@ -10,7 +10,7 @@
                 <th scope="col" *ngFor='let param of appointmentHeaders'>{{param}}</th>
                 <th scope="col">
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Sort by
                         </button>
@@ -28,22 +28,12 @@
             <tr *ngFor='let appointment of appointments'>
                 <td> {{appointment.clinic.name}} </td>
                 <td> {{appointment.ordination.name}} </td>
-                <td> {{appointment.ordination.number}} </td>
+                <td> {{appointment.doctors[0].name + " " + appointment.doctors[0].surname}} </td>
                 <td> {{appointment.typeOfExamination.name}} </td>
                 <td> {{appointment.formatedDateAndTime}} </td>
                 <td> {{appointment.duration / 1000 / 60}} </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Options
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" style="cursor: pointer;" (click)="showClinicInfo(appointment)">Show info</a>
-    
-                        </div>
-                    </div>
-                </td>
+                <td> {{appointment.price - appointment.discount}} </td>
+                <td></td>
             </tr>
         </tbody>
     </table>
