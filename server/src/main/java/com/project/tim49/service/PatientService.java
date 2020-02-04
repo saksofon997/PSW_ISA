@@ -152,6 +152,8 @@ public class PatientService {
         appointment.setPatient(null);
         patient.getPendingAppointments().remove(appointment);
         patientRepository.save(patient);
+
+
         return new AppointmentDTO(appointmentRepository.save(appointment));
 
     }
