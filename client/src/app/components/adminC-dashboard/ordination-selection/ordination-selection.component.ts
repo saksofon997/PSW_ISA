@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { element } from 'protractor';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { DoctorService } from 'src/app/services/doctor.service';
 
 @Component({
 	selector: 'app-ordination-selection',
@@ -31,6 +32,7 @@ export class OrdinationSelectionComponent implements OnInit {
 	filterForm: FormGroup;
 	submitted = false;
 
+	selectedDoctorAvailability: any;
 	clinicDoctors: any;
 	optionsDoctors: any;
 	selectedDoctor: any;
@@ -54,6 +56,7 @@ export class OrdinationSelectionComponent implements OnInit {
 	constructor(private clinicService: ClinicService,
 		private router: Router,
 		private appointmentService: AppointmentService,
+		private doctorService: DoctorService,
 		private activatedRoute: ActivatedRoute,
 		private userService: UserService,
 		private formBuilder: FormBuilder,
@@ -82,6 +85,7 @@ export class OrdinationSelectionComponent implements OnInit {
 						for (let doc of this.optionsDoctors){
 							doc.fullname = doc.name + " " + doc.surname;
 						}
+						this.optionsDoctors = this.optionsDoctors.filter(obj => obj.id !== this.appointment.doctors[0].id);
 						this.optionsAttendingDoctors = data;
 						for (let doc of this.optionsAttendingDoctors){
 							doc.fullname = doc.name + " " + doc.surname;
@@ -191,11 +195,10 @@ export class OrdinationSelectionComponent implements OnInit {
 		let appointment = this.appointment;
 		let ordinationData = ordination;
 
-		this.setFilteredTimeslots(ordinationData, appointment);
-
 		this.selectedDoctor = appointment.doctors[0];
 		this.selectedDoctor.fullname = this.selectedDoctor.name + " " + this.selectedDoctor.surname;
 		this.selectedAttendingDoctors = [];
+		this.setFilteredTimeslots(ordinationData, appointment);
 		this.modalData = { appointment, ordinationData, action };
 		this.modal.open(this.modalContent, { size: 'lg' });
 	}
@@ -260,9 +263,11 @@ export class OrdinationSelectionComponent implements OnInit {
 
 	selectTimeslot(period, i) {
 		if (this.selectedTimeslots.length !== 0) {
-			if (this.selectedTimeslots[0].index === i + 1) {
+			if (this.selectedTimeslots[0].index === i + 1
+						&& period.split(' - ')[1] === this.selectedTimeslots[0].period.split(' - ')[0]) {
 				this.selectedTimeslots.unshift({ period, index: i });
-			} else if (this.selectedTimeslots[this.selectedTimeslots.length - 1].index === i - 1) {
+			} else if (this.selectedTimeslots[this.selectedTimeslots.length - 1].index === i - 1 
+						&& period.split(' - ')[0] === this.selectedTimeslots[this.selectedTimeslots.length - 1].period.split(' - ')[1]) {
 				this.selectedTimeslots.push({ period, index: i });
 			}
 		} else {
@@ -320,26 +325,52 @@ export class OrdinationSelectionComponent implements OnInit {
 		this.selectedTimeslots = [];
 		let doctor = appointment.doctors[0];
 		if (doctor){
-			if (doctor.shiftStart.split(':')[0] > doctor.shiftEnd.split(':')[0]) {
-				doctor.shiftStart = '00:00';
-			}
-			if (doctor.shiftEnd.split(':')[0] < doctor.shiftStart.split(':')[0]) {
-				doctor.shiftEnd = '24:00';
-			}
-			let lastPeriod = ordinationData.availablePeriods[ordinationData.availablePeriods.length-1];
-			if (lastPeriod.split(' - ')[1].split(':')[0] === '00'){
-				ordinationData.availablePeriods[ordinationData.availablePeriods.length-1] = lastPeriod.split(' - ')[0] + " - 24:00";
-			}
-	
-			let i = 0;
-			for (let period of ordinationData.availablePeriods) {
-				if (this.periodIsInsideDoctorShift(period, doctor.shiftStart, doctor.shiftEnd)) {
-					ordinationData.filteredPeriods.push(period);
-					if (this.appointment.endTimeString && this.isPeriodInsideChosenTime(period))
-						this.selectedTimeslots.push({ period, index: i });
-					i++
+			this.doctorService.getAvailability(this.selectedDoctor.id, this.date.getTime()/1000).subscribe(
+				(data) => {
+					this.selectedDoctorAvailability = data;
+					if (this.selectedDoctorAvailability.availableTimes.length === 0){
+						alert("Doctor has no available timeslots!");
+						return;
+					}
+					for (let i = 0; i < this.selectedDoctorAvailability.availableTimes.length; i++) {
+						this.selectedDoctorAvailability.availableTimes[i] = this.timeConverterHourMin(this.selectedDoctorAvailability.availableTimes[i]);
+					}
+
+					if (doctor.shiftStart.split(':')[0] > doctor.shiftEnd.split(':')[0]) {
+						doctor.shiftStart = '00:00';
+					}
+					if (doctor.shiftEnd.split(':')[0] < doctor.shiftStart.split(':')[0]) {
+						doctor.shiftEnd = '24:00';
+					}
+					let lastPeriod = ordinationData.availablePeriods[ordinationData.availablePeriods.length-1];
+					if (lastPeriod.split(' - ')[1].split(':')[0] === '00'){
+						ordinationData.availablePeriods[ordinationData.availablePeriods.length-1] = lastPeriod.split(' - ')[0] + " - 24:00";
+					}
+			
+					let i = 0;
+					let period;
+					for (let j = 0; j < ordinationData.availablePeriods.length; j++) {
+						period = ordinationData.availablePeriods[j];
+						if (this.selectedDoctorAvailability.availableTimes.indexOf(period.split(' - ')[0]) === -1){
+							ordinationData.availablePeriods.splice(j, 1);
+							continue;
+						}
+
+						if (this.periodIsInsideDoctorShift(period, doctor.shiftStart, doctor.shiftEnd)) {
+							ordinationData.filteredPeriods.push(period);
+							if (this.appointment.endTimeString && this.isPeriodInsideChosenTime(period))
+								this.selectedTimeslots.push({ period, index: i });
+							i++
+						}
+					}
+
+				},
+				(error) => {
+					alert(error);
 				}
-			}
+			);
+
+			
 		}
 	}
 
@@ -394,6 +425,14 @@ export class OrdinationSelectionComponent implements OnInit {
 		var month = months[a.getMonth()];
 		var date = a.getDate();
 		var time = date + '. ' + month + ' ' + year + '.';
+		return time;
+	}
+
+	timeConverterHourMin(a) {
+		a = new Date(a * 1000)
+		var hour = a.getHours();
+		var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
+		var time = hour + ':' + min;
 		return time;
 	}
 

@@ -177,6 +177,18 @@ export class MedicalRecordComponent implements OnInit {
 			(error) => { alert(error); }
 		);
 	}
+	sortByTypeDesc(){
+		this.medicalRecord.examinationReport.sort((a, b) => (a.typeOfExamination.name > b.typeOfExamination.name) ? 1 : -1)
+	}
+	sortByDateDesc(){
+		this.medicalRecord.examinationReport.sort((a, b) => (a.dateAndTime > b.dateAndTime) ? 1 : -1)
+	}
+	sortByTypeAsc(){
+		this.medicalRecord.examinationReport.sort((a, b) => (a.typeOfExamination.name > b.typeOfExamination.name) ? -1 : 1)
+	}
+	sortByDateAsc(){
+		this.medicalRecord.examinationReport.sort((a, b) => (a.dateAndTime > b.dateAndTime) ? -1 : 1)
+	}
 	onHovering(e) {
 		if (this.editBasicInfo) {
 			e.srcElement.lastElementChild.hidden = false;

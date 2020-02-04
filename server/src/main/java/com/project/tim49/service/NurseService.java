@@ -38,7 +38,7 @@ public class NurseService {
         if (clinic_id == null) {
             throw new ValidationException("Invalid clinic ID!");
         }
-        Clinic clinic = clinicRepository.getOne(clinic_id);
+        Clinic clinic = clinicRepository.findById(clinic_id).orElse(null);
         if (clinic== null){
             throw new ValidationException("Clinic does not exist!");
         }
@@ -46,8 +46,10 @@ public class NurseService {
         List<NurseDTO> nurseDTOS = new ArrayList<>();
 
         for (Nurse nurse: nurses) {
-            NurseDTO nurseDTO = new NurseDTO(nurse);
-            nurseDTOS.add(nurseDTO);
+            if (nurse.isEnabled()){
+                NurseDTO nurseDTO = new NurseDTO(nurse);
+                nurseDTOS.add(nurseDTO);
+            }
         }
 
         return nurseDTOS;
@@ -114,12 +116,14 @@ public class NurseService {
     }
 
     public void deleteNurse(Long id){
-        Optional<Nurse> nurse = nurseRepository.findById(id);
-        if (!nurse.isPresent()){
-            throw new ValidationException("No nurse with that ID!");
+        Nurse nurse = nurseRepository.getOne(id);
+        try {
+            nurse.setEnabled(false);
+            nurse.setEmail(nurse.getId() + "DELETED");
+            nurseRepository.save(nurse);
+        } catch (Exception e){
+            throw new NoSuchElementException("No nurse with that ID!");
         }
-
-        nurseRepository.delete(nurse.get());
     }
 
     public Nurse nurseDTOtoReal(NurseDTO dto){
