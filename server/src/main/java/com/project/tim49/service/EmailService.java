@@ -41,7 +41,7 @@ public class EmailService {
         mail.setText("Hello " + user.getName() + ",\n\nyour registration request at our clinical center has" +
                 "been approved!\n\n" +
                 "To confirm your email address, please click on the link below:\n\n" +
-                "http://localhost:8080/auth/confirm_registration/"+user.getId()+
+                "http://picici.herokuapp.com/auth/confirm_registration/"+user.getId()+
                 "\n\nThank you for registering at our clinical center!\n\n\n\n" +
                 "If you don't know what this is about, then someone has probably" +
                 " entered your email address by mistake and you can ignore this e-mail. Sorry about that.");
