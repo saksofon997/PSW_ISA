@@ -1,6 +1,7 @@
 package com.project.tim49.service;
 
 import com.project.tim49.dto.*;
+import com.project.tim49.model.ClinicAdministrator;
 import com.project.tim49.model.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class EmailService {
@@ -38,7 +40,7 @@ public class EmailService {
         mail.setTo(user.getEmail());
         mail.setFrom(env.getProperty("spring.mail.username"));
         mail.setSubject("Clinical center: Finish your registration");
-        mail.setText("Hello " + user.getName() + ",\n\nyour registration request at our clinical center has" +
+        mail.setText("Hello " + user.getName() + ",\n\nyour registration request at our clinical center has " +
                 "been approved!\n\n" +
                 "To confirm your email address, please click on the link below:\n\n" +
                 "http://picici.herokuapp.com/auth/confirm_registration/"+user.getId()+
@@ -240,5 +242,28 @@ public class EmailService {
         javaMailSender.send(mail);
 
         System.out.println("Email poslat!");
+    }
+
+    @Async
+    public void sendAppointmentCanceled(List<ClinicAdministratorDTO> e_mails, AppointmentDTO appointmentDTO) throws MailException{
+        System.out.println("Slanje emaila administratorima...");
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom("noreply@clinic.com");
+        mail.setSubject("Clinic: Appointment scheduled");
+        mail.setText("Dear administrator, \n\nAn appointment in your clinic has been canceled."+
+                "\n\nAppointment info:" +
+                "\nType of appointment: " + appointmentDTO.getTypeOfExamination().getName() +
+                "\nOrdination name: " + appointmentDTO.getOrdination().getName() + ", Number: " + appointmentDTO.getOrdination().getNumber() +
+                "\nDate and time: " + appointmentDTO.getStartingDateAndTime() +
+                "\nPrice: " + appointmentDTO.getPrice() +
+                "\n\nBest regards,\nClinical center team\n\n\n\n" +
+                "If you don't know what this is about, then someone has probably" +
+                " entered your email address by mistake and you can ignore this e-mail.");
+        for (ClinicAdministratorDTO adminDTO: e_mails) {
+            mail.setTo(adminDTO.getEmail());
+            javaMailSender.send(mail);
+        }
+        System.out.println("Email poslat administratorima!");
+
     }
 }

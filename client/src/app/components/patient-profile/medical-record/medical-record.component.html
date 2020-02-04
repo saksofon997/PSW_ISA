@@ -78,7 +78,7 @@
             </div>
             <div class="overflow-auto border rounded" style="max-height: 11.4em;">
               <ul class="list-group rounded">
-                <li class="list-group-item" *ngFor='let alergie of allergies.split(",")'
+                <li class="list-group-item" *ngFor='let alergie of allergies?.split(",")'
                   (mouseenter)="onHovering($event)" (mouseleave)="onUnovering($event)">
                   <span class="float-left" *ngIf="alergie!==''">{{alergie}}</span>
                   <button type="button" class="btn float-right" *ngIf="alergie!==''" (click)="deleteAllergie(alergie)"
