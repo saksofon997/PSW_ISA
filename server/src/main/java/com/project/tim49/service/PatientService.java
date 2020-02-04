@@ -98,12 +98,21 @@ public class PatientService {
     }
 
 
-    public List<PatientDTO> getByQuery(String name, String surname, String upin) {
+    public List<PatientDTO> getByQuery(String name, String surname, String upin, Long clinicID) {
+        if(clinicID == null) {
+            throw new ValidationException("Clinic id is missing!");
+        }
         List<Patient> patients = patientRepository.getByQuery(name, surname, upin);
         List<PatientDTO> patientDTOS = new ArrayList<>();
+
         for(Patient p: patients) {
-            PatientDTO patientDTO = new PatientDTO(p);
-            patientDTOS.add(patientDTO);
+            Set<ClinicPatient> patientsClinics = p.getClinics();
+            for(ClinicPatient cp : patientsClinics) {
+                if(cp.clinic.getId().equals(clinicID)) {
+                    PatientDTO patientDTO = new PatientDTO(p);
+                    patientDTOS.add(patientDTO);
+                }
+            }
         }
         return patientDTOS;
     }

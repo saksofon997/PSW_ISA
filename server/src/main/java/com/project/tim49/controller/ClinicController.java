@@ -24,9 +24,10 @@ public class ClinicController {
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "address", required = false) String address,
             @RequestParam(value = "typeOfExamination", required = true) long toe_id,
+            @RequestParam(value = "rating", required = false) long rating,
             @RequestParam(value = "date", required = true) long date
     ) {
-        List<ClinicsSearchResultDTO> clinics = clinicService.getByQuery(name, address, toe_id, date);
+        List<ClinicsSearchResultDTO> clinics = clinicService.getByQuery(name, address, toe_id, rating, date);
         return new ResponseEntity<>(clinics, HttpStatus.OK);
     }
 

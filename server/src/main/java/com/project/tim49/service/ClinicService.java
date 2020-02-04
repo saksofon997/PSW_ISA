@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class ClinicService {
@@ -196,7 +198,7 @@ public class ClinicService {
     }
 
 
-    public List<ClinicsSearchResultDTO> getByQuery(String name, String address, long toe, long startTimestamp) {
+    public List<ClinicsSearchResultDTO> getByQuery(String name, String address, long toe, long rating, long startTimestamp) {
 
         List<Clinic> clinics = clinicRepository.getByQuery(name, address);
 
@@ -206,6 +208,15 @@ public class ClinicService {
             throw new ValidationException("Selected type of examination does not exist");
 
         List<ClinicsSearchResultDTO> selected = new ArrayList<>();
+
+        if(rating != -1) {
+            Predicate<Clinic> byRating = clinic -> (clinic.getNumberOfStars()/clinic.getNumberOfReviews()) >= rating;
+
+            clinics = clinics.stream().filter(byRating).collect(Collectors.toList());
+
+            if(clinics.isEmpty())
+                return selected;
+        }
 
         for (Clinic clinic : clinics) {
 

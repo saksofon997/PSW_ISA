@@ -55,9 +55,9 @@
     <div class="form-group row">
       <label for="Description" class="col-sm-2 col-form-label font-weight-bold">Description</label>
       <div class="col-sm-10 col-lg-6 shadow-sm p-1 mb-1 bg-white rounded">
-        <input type="text" class="form-control"
+        <textarea class="form-control"
           [ngClass]="{ 'is-invalid': submitted && clinicForm.controls.description.errors }" id="Description"
-          formControlName="description" style="border: 0;" />
+          formControlName="description" style="border: 0;" ></textarea>
         <div *ngIf="submitted && clinicForm.controls.description.errors" class="invalid-feedback">
           <div *ngIf="clinicForm.controls.description.errors.required">Description is required</div>
         </div>
@@ -83,4 +83,33 @@
 </form>
 <button type="button" class="btn btn-outline-primary" *ngIf='formDisabled' (click)='enableChangeInfo()'>Change
   information</button>
+<button type="button" class="btn btn-outline-primary" (click)='showMapModal(clinic)'>Show location on map</button>
 <br><br>
+
+<ng-template #modalContent let-close="close">
+  <div class="modal-header">
+      <h4 class="modal-title">Location on maps</h4>
+      <button type="button" class="close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+              <div class="card" style="height: 32em;">
+                  <div class="card-body text-center">
+                      <div style="height: 25em; width: 100%;">
+                          <angular-yandex-map [center]="modalData.location" [zoom]="16">
+                              <angular-yandex-placemark [geometry]="modalData.location"></angular-yandex-placemark>
+                          </angular-yandex-map>
+                      </div>
+                  </div>
+                  <div class="card-footer text-center text-muted">
+                      <label class="card-text">Location on maps</label>
+                  </div>
+              </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">
+          Close
+      </button>
+  </div>
+</ng-template>

@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClinicalCenterService } from 'src/app/services/clinical-center.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { resolve } from 'url';
+import { StarRatingComponent } from 'ng-starrating';
 
 @Component({
   selector: 'app-patient-clinic-listing',
@@ -24,6 +25,7 @@ export class PatientClinicListingComponent implements OnInit {
 	form: FormGroup;
 	filterForm: FormGroup;
 	submitted = false;
+	starRatingSearch = 0;
 
 	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 	modalData: {
@@ -43,7 +45,7 @@ export class PatientClinicListingComponent implements OnInit {
 	locationModal: any;
 
 	clinicsSearched: any;
-	clinicsSearchedHeaders = ['Name', 'Address', 'Price'];
+	clinicsSearchedHeaders = ['Name', 'Address', 'Rating', 'Price'];
 
 	notSearched = true;
 
@@ -78,6 +80,7 @@ export class PatientClinicListingComponent implements OnInit {
 			name: [""],
 			typeOfExamination: [, [Validators.required,]],
 			address: [""],
+			rating: [""],
 		});
 		this.filterForm = this.formBuilder.group({
 			name: [""],
@@ -130,9 +133,16 @@ export class PatientClinicListingComponent implements OnInit {
 		this.sortingOption = "address";
 		this.sortClinics();
 	}
-
+	sortCity() {
+		this.sortingOption = "city";
+		this.sortClinics();
+	}
 	sortPrice() {
 		this.sortingOption = "price";
+		this.sortClinics();
+	}
+	sortRating() {
+		this.sortingOption = "rating";
 		this.sortClinics();
 	}
 
@@ -146,8 +156,16 @@ export class PatientClinicListingComponent implements OnInit {
 				this.clinicsFiltered.sort((a, b) => (a.address > b.address) ? 1 : -1)
 				break;
 			}
+			case "city": {
+				this.clinicsFiltered.sort((a, b) => (a.city > b.city) ? 1 : -1)
+				break;
+			}
 			case "price": {
 				this.clinicsFiltered.sort((a, b) => (a.typeOfExamination.price > b.typeOfExamination.price) ? 1 : -1)
+				break;
+			}
+			case "rating": {
+				this.clinicsFiltered.sort((a, b) => ((a.numberOfStars / a.numberOfReviews) < (b.numberOfStars / b.numberOfReviews)) ? 1 : -1)
 				break;
 			}
 			default: {
@@ -183,6 +201,7 @@ export class PatientClinicListingComponent implements OnInit {
 			name: this.form.controls.name.value ? this.form.controls.name.value : "",
 			address: this.form.controls.address.value ? this.form.controls.address.value : "",
 			typeOfExamination: this.form.controls.typeOfExamination.value,
+			rating: this.starRatingSearch ? this.starRatingSearch : -1,
 			date: this.form.controls.date.value.getTime().toString().substr(0, 10)
 		}
 
@@ -210,6 +229,10 @@ export class PatientClinicListingComponent implements OnInit {
 	}
 
 	//OTHER FUNCTIONS
+
+	onRateSearch($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
+		this.starRatingSearch = $event.newValue;
+	}
 
 	showClinicInfo(clinic) {
 		let action = "Opened";
