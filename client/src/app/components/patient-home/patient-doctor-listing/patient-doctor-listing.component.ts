@@ -295,7 +295,7 @@ export class PatientDoctorListingComponent implements OnInit {
 
 	getAvailableTimes(id: any, date: any) {
 		let promise = new Promise((resolve, reject) => {
-			this.doctorService.getAvailability(id, date).subscribe(
+			this.doctorService.getAvailability(id, date, "patient").subscribe(
 				(data) => {
 					this.availability = data;
 					resolve();

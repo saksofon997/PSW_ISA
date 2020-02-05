@@ -5,6 +5,7 @@ import com.project.tim49.model.Appointment;
 import com.project.tim49.service.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -139,9 +140,11 @@ public class AppointmentController {
             AppointmentDTO appointmentDTO = appointmentService.choseAvailableAppointment(appointment_id, patient_id);
             this.emailService.sendAvailableAppointmentScheduled(appointmentDTO);
 
-            return new ResponseEntity<>(appointment_id, HttpStatus.OK);
+            return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
         } catch (ValidationException | NoSuchElementException | InterruptedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (PessimisticLockingFailureException e) {
+            return new ResponseEntity<>("This appointment has already been taken", HttpStatus.CONFLICT);
         }
     }
 }

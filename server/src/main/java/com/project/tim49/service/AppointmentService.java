@@ -6,7 +6,11 @@ import com.project.tim49.dto.PatientDTO;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
 import java.util.*;
@@ -97,25 +101,31 @@ public class AppointmentService {
         return appointment;
     }
 
-    public AppointmentDTO choseAvailableAppointment(Long appointment_id, Long patient_id) {
+    // readOnly = false -- modifikujemo appointment jer mu dodajemo pacijenta
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    // isolation = read_committed -- resava i unrepeatable read jer se za objekat cuva u L1 memoriji pri queriju istog objekta
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+    public AppointmentDTO choseAvailableAppointment(Long appointment_id, Long patient_id) throws PessimisticLockingFailureException {
         Optional<Patient> patient = patientRepository.findById(patient_id);
         if (!patient.isPresent()) {
             throw new ValidationException("No patient with that ID!");
         }
-        Appointment appointment = appointmentRepository.getOne(appointment_id);
+        Appointment appointment = appointmentRepository.findOneByIdAndLock(appointment_id);
+        if (appointment == null) {
+            throw new ValidationException("Appointment does not exist");
+        }
         if (appointment.getPatient() != null) {
             throw new ValidationException("Appointment already taken");
         }
-        try {
-            appointment.setPatient(patient.get());
-            Appointment saved = appointmentRepository.save(appointment);
-            patient.get().getPendingAppointments().add(saved);
-            patientRepository.save(patient.get());
+        // Za testiranje konkurentnog pristupa
+        // try { Thread.sleep(7000); } catch (InterruptedException e) { }
 
-            return new AppointmentDTO(saved);
-        } catch (Exception e) {
-            throw new NoSuchElementException();
-        }
+        appointment.setPatient(patient.get());
+        Appointment saved = appointmentRepository.save(appointment);
+        patient.get().getPendingAppointments().add(saved);
+        patientRepository.save(patient.get());
+
+        return new AppointmentDTO(saved);
     }
 
     public void deleteAppointment(Long id) {

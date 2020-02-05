@@ -8,8 +8,8 @@ import org.springframework.test.context.jdbc.Sql;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        AdminKcControllerTest.class
-
+        AdminKcControllerTest.class,
+        RouterTest.class
 })
 public class ClinicCenterSuite {
 }

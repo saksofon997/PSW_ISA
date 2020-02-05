@@ -84,8 +84,8 @@
                               [ngClass]="{ 'is-invalid': submitted && form.controls.date.errors }" id="date"
                               style="border: 0;">
                       </div>
-                      <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
-                              class="fa fa-calendar"></i> </span>
+                      <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> 
+                        <ion-icon size="large" name="calendar" style="cursor: pointer;"></ion-icon> </span>
                       <owl-date-time [startAt]="" [stepMinute]="10" [stepSecond]="60" [pickerType]="'calendar'" #dt2></owl-date-time>
                       <div *ngIf="submitted && form.controls.date.errors" class="invalid-feedback ml-3">
                           <div *ngIf="form.controls.date.errors.required">Please select a date</div>

@@ -3,12 +3,21 @@ package com.project.tim49.repository;
 import com.project.tim49.model.Appointment;
 import com.project.tim49.model.Clinic;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.util.ArrayList;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select appointment from Appointment appointment where appointment.id = ?1")
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
+    Appointment findOneByIdAndLock(Long id);
 
     @Query("select appointment from Appointment appointment where " +
             "(appointment.completed) = false " +

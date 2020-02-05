@@ -28,8 +28,8 @@
 							[ngClass]="{ 'is-invalid': incomeFormSubmitted && incomeForm.controls.periodStart.errors }"
 							id="periodStart" style="border: 0;">
 					</div>
-					<span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt1"> <i
-							class="fa fa-calendar"></i> </span>
+					<span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt1"> 
+						<ion-icon size="large" name="calendar" style="cursor: pointer;"></ion-icon> </span>
 					<owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
 				</div>
 			</div>
@@ -41,8 +41,8 @@
 							[ngClass]="{ 'is-invalid': incomeFormSubmitted && incomeForm.controls.periodEnd.errors }"
 							id="periodEnd" style="border: 0;">
 					</div>
-					<span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
-							class="fa fa-calendar"></i> </span>
+					<span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> 
+						<ion-icon size="large" name="calendar" style="cursor: pointer;"></ion-icon> </span>
 					<owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
 				</div>
 			</div>
@@ -103,8 +103,8 @@
 								[ngClass]="{ 'is-invalid': chartShowSubmitted && chartForm.controls.day.errors }"
 								id="day" style="border: 0;">
 						</div>
-						<span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt3"> <i
-								class="fa fa-calendar"></i> </span>
+						<span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt3"> 
+							<ion-icon size="large" name="calendar" style="cursor: pointer;"></ion-icon> </span>
 						<owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
 					</div>
 				</div>

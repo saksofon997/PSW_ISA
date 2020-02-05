@@ -231,7 +231,7 @@ public class ClinicService {
                     continue;
 
                 if(doc.getSpecialization().getId().equals(selectedToe.getId())) {
-                    List<String> getAvailableTimes = doctorService.getAvailableTimes(doc, startTimestamp);
+                    List<String> getAvailableTimes = doctorService.getAvailableTimes(doc, startTimestamp, "patient");
                     if (!getAvailableTimes.isEmpty()) {
                         ClinicsSearchResultDTO sel = new ClinicsSearchResultDTO(clinic);
                         sel.setTypeOfExamination(new TypeOfExaminationDTO(toeInClinic));
