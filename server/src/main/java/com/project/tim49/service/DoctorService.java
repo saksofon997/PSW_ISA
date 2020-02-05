@@ -40,6 +40,8 @@ public class DoctorService {
     @Autowired
     private AppointmentRepository appointmentRepository;
     @Autowired
+    private AppointmentRequestRepository appointmentRequestRepository;
+    @Autowired
     private AuthorityService authorityService;
     @Lazy
     @Autowired
@@ -499,7 +501,7 @@ public class DoctorService {
             Iterator<Doctor> iter = selected.iterator();
             while(iter.hasNext()) {
                 Doctor doc = iter.next();
-                List<String> times = getAvailableTimes(doc, date);
+                List<String> times = getAvailableTimes(doc, date, "patient");
                 if(times.isEmpty()){
                     iter.remove();
                 }
@@ -508,13 +510,13 @@ public class DoctorService {
         return returnListDTO(selected);
     }
 
-    public DoctorAvailabilityDTO getAvailability(Long doctor_id, long date) {
+    public DoctorAvailabilityDTO getAvailability(Long doctor_id, long date, String role) {
         Doctor doctor = doctorRepository.findById(doctor_id).orElse(null);
         if (doctor == null){
             throw new NoSuchElementException("Doctor with given id not found.");
         }
 
-        List<String> times = getAvailableTimes(doctor, date);
+        List<String> times = getAvailableTimes(doctor, date, role);
 
         DoctorAvailabilityDTO doctorAvailabilityDTO = new DoctorAvailabilityDTO(doctor_id, true, times);
 
@@ -525,12 +527,25 @@ public class DoctorService {
     }
 
     //Returns list of timestamps with doctors availability during 24h
-    public List<String> getAvailableTimes(Doctor doctor, long startingTimeStamp){
+    public List<String> getAvailableTimes(Doctor doctor, long startingTimeStamp, String role){
         long duration = 600;
         long endingTimeStamp = startingTimeStamp + 24*60*60;
 
         //all appointments that day
         List<Appointment> appointments = appointmentRepository.getByTimesAndNotCompleted(startingTimeStamp, endingTimeStamp);
+
+        if (role.equals("patient")){
+            List<AppointmentRequest> requests = appointmentRequestRepository.getByTimesAndDoctor(startingTimeStamp, endingTimeStamp, doctor.getId());
+            for (AppointmentRequest request: requests) {
+                Appointment tempApp = new Appointment();
+                tempApp.setStartingDateAndTime(request.getStartingDateAndTime());
+                tempApp.setEndingDateAndTime(request.getEndingDateAndTime());
+                Set<Doctor> docs = new HashSet<>();
+                docs.add(request.getDoctor());
+                tempApp.setDoctors(docs);
+                appointments.add(tempApp);
+            }
+        }
 
         Predicate<Appointment> byDoc = appt -> appt.getDoctors().contains(doctor);
 

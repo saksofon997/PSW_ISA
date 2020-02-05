@@ -70,8 +70,13 @@ public class AppointmentRequestService {
 
         appointmentRequest.setApproved(false);
         appointmentRequest.setStartingDateAndTime(appointmentDTO.getStartingDateAndTime());
-        appointmentRequest.setEndingDateAndTime(appointmentDTO.getEndingDateAndTime());
-        appointmentRequest.setDuration(appointmentDTO.getDuration());
+        if (appointmentDTO.getDuration() == 0){
+            appointmentRequest.setEndingDateAndTime(appointmentDTO.getStartingDateAndTime() + 10 * 60);
+            appointmentRequest.setDuration(10 * 60 * 1000);
+        } else {
+            appointmentRequest.setEndingDateAndTime(appointmentDTO.getEndingDateAndTime());
+            appointmentRequest.setDuration(appointmentDTO.getDuration());
+        }
         appointmentRequest.setPrice(appointmentDTO.getPrice());
 
         TypeOfExamination type = typeOfExaminationRepository.findById(appointmentDTO.getTypeOfExamination().getId()).get();

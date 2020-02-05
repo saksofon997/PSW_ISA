@@ -138,9 +138,13 @@ public class DoctorController {
     @PreAuthorize("hasAuthority('ADMINC') or hasAuthority('PATIENT')")
     public ResponseEntity getDoctorAvailability(
             @RequestParam(value = "doctor_id", required = true) Long doctor_id,
-            @RequestParam(value = "date", required = true) long date
+            @RequestParam(value = "date", required = true) long date,
+            @RequestParam(value = "role", required = true) String role
     ) {
-        DoctorAvailabilityDTO doctors = doctorService.getAvailability(doctor_id, date);
+        if (role == null || (!role.equals("patient") && !role.equals("admin")) ){
+            return new ResponseEntity<>("Invalid request", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        DoctorAvailabilityDTO doctors = doctorService.getAvailability(doctor_id, date, role);
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 

@@ -325,7 +325,7 @@ export class OrdinationSelectionComponent implements OnInit {
 		this.selectedTimeslots = [];
 		let doctor = appointment.doctors[0];
 		if (doctor){
-			this.doctorService.getAvailability(this.selectedDoctor.id, this.date.getTime()/1000).subscribe(
+			this.doctorService.getAvailability(this.selectedDoctor.id, this.date.getTime()/1000, "admin").subscribe(
 				(data) => {
 					this.selectedDoctorAvailability = data;
 					if (this.selectedDoctorAvailability.availableTimes.length === 0){
