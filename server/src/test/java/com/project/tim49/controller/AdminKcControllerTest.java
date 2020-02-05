@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
@@ -31,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public
 class AdminKcControllerTest {
     private static final String URL_PREFIX = "/api/admin";
@@ -44,13 +47,16 @@ class AdminKcControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private Environment env;
+
     private String accessToken;
     HttpHeaders headers = new HttpHeaders();
     HttpEntity<Object> httpEntity;
 
     @Before
     public void login() {
-
+        System.out.println(env);
         ResponseEntity<AuthenticationController.UserState> responseEntity =
                 restTemplate.postForEntity("/auth/login",
                         new LoginDTO("adminkc1@kcv.rs", "123456"),

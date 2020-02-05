@@ -9,6 +9,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+<<<<<<< Updated upstream:server/src/test/java/selenium/RouterTest.java
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -17,11 +18,29 @@ import org.testng.annotations.Test;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
+=======
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import selenium.SearchPage;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
+>>>>>>> Stashed changes:server/src/test/java/com/project/tim49/RouterTest.java
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.AssertJUnit.assertEquals;
 
+<<<<<<< Updated upstream:server/src/test/java/selenium/RouterTest.java
 @RunWith(SpringJUnit4ClassRunner.class)
+=======
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+@TestPropertySource("classpath:application-test.properties")
+>>>>>>> Stashed changes:server/src/test/java/com/project/tim49/RouterTest.java
 public class RouterTest {
 
     private WebDriver browser;
