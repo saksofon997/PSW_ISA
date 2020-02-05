@@ -27,7 +27,7 @@ In the following sections we provided a set of instructions on how to run the ap
 For development purposes one can build frontend and backend separately. Instructions on how to achieve this are contained in the next two subsections.
 ### Running Frontend
 The frontend can be run as a separate instance during development, which would enable changes in code to result in real-time changes in a browser. This can be achieved using following commands:
-- * **Note** commands are to be excecuted from the root of the project.
+- **Note** *commands are to be excecuted from the root of the project.*
 ```
 # Navigate to the frontend
 cd client
