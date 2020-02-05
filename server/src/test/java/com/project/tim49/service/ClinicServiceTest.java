@@ -58,7 +58,7 @@ public class ClinicServiceTest {
         assertEquals(doctorDTOS.size(), 3);
     }
 
-    @Test(expected = java.lang.NullPointerException.class) //negative
+    @Test(expected = NoSuchElementException.class) //negative
     public void getClinicDoctorsTestFail() throws Exception {
         Long clinicID = 10L;
 

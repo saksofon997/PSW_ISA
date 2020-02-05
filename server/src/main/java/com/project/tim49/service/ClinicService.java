@@ -77,7 +77,7 @@ public class ClinicService {
     public List<DoctorDTO> getClinicDoctors(Long id){
         Optional<Clinic> clinic = clinicRepository.findById(id);
 
-        if (clinic.get() == null){
+        if (!clinic.isPresent()){
             throw new NoSuchElementException();
         }
 

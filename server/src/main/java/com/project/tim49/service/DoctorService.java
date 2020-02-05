@@ -47,15 +47,15 @@ public class DoctorService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<DoctorDTO> getDoctors(Long id){
+    public List<DoctorDTO> getDoctors(Long id){ //
         if (id == null) {
             throw new ValidationException("Invalid clinic ID!");
         }
-        Clinic clinic = clinicRepository.getOne(id);
-        if (clinic== null){
+        Optional<Clinic> clinic = clinicRepository.findById(id);
+        if (!clinic.isPresent()){
             throw new ValidationException("Clinic does not exist!");
         }
-        List<Doctor> doctors = clinic.getDoctors();
+        List<Doctor> doctors = clinic.get().getDoctors();
         List<DoctorDTO> doctorDTOS = new ArrayList<>();
 
         for (Doctor doctor: doctors) {
@@ -309,12 +309,12 @@ public class DoctorService {
         return real;
     }
 
-    public List<AppointmentDTO> getAppointments(Long id){
-        Doctor doctor = doctorRepository.findById(id).orElse(null);
+    public List<AppointmentDTO> getAppointments(Long id){ //
+        Optional<Doctor> doctor = doctorRepository.findById(id);
         Set<Appointment> appointments = new HashSet<>();
         List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
-        if (doctor!= null){
-            appointments = doctor.getAppointments();
+        if (doctor.isPresent()){
+            appointments = doctor.get().getAppointments();
             for (Appointment a: appointments) {
                 if (!a.isDeleted()){
                     appointmentDTOS.add(new AppointmentDTO(a));
@@ -327,13 +327,13 @@ public class DoctorService {
     }
 
     public AppointmentDTO getOneAppointment(Long id, Long appID){
-        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        Optional<Doctor> doctor = doctorRepository.findById(id);
         Set<Appointment> appointments = new HashSet<>();
         AppointmentDTO appointmentDTO = null;
-        if (doctor== null){
+        if (!doctor.isPresent()){
             throw new ValidationException("Doctor not found.");
         }else{
-            appointments = doctor.getAppointments();
+            appointments = doctor.get().getAppointments();
             for (Appointment a: appointments) {
                 if (a.getId().equals(appID)){
                     appointmentDTO = new AppointmentDTO(a);
@@ -344,20 +344,20 @@ public class DoctorService {
     }
 
     public DoctorDTO getDoctor(Long id){
-        Doctor doctor = doctorRepository.findById(id).orElse(null);
-        if (doctor != null){
-            return new DoctorDTO(doctor);
+        Optional<Doctor> doctor = doctorRepository.findById(id);
+        if (doctor.isPresent()){
+            return new DoctorDTO(doctor.get());
         }
         throw new NoSuchElementException("Doctor with given id not found.");
     }
 
     public boolean canViewPatientMedicalRecord(Long patient_id, Long doctor_id){
-        Patient patient = patientRepository.findById(patient_id).orElse(null);
-        if (patient == null){
+        Optional<Patient> patient = patientRepository.findById(patient_id);
+        if (!patient.isPresent()){
             throw new NoSuchElementException("Patient with given id not found.");
         }
 
-        for (Appointment appointment: patient.getFinishedAppointments()){
+        for (Appointment appointment: patient.get().getFinishedAppointments()){
             for (Doctor doctor: appointment.getDoctors()){
                 if (doctor.getId().equals(doctor_id)){
                     return true;
@@ -510,7 +510,7 @@ public class DoctorService {
         return returnListDTO(selected);
     }
 
-    public DoctorAvailabilityDTO getAvailability(Long doctor_id, long date, String role) {
+    public DoctorAvailabilityDTO getAvailability(Long doctor_id, long date, String role) { //
         Doctor doctor = doctorRepository.findById(doctor_id).orElse(null);
         if (doctor == null){
             throw new NoSuchElementException("Doctor with given id not found.");

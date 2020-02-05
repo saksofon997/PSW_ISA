@@ -6,6 +6,7 @@ import com.project.tim49.controller.AppointmentRequestControllerTest;
 import com.project.tim49.service.AppointmentRequestServiceTest;
 import com.project.tim49.service.AppointmentServiceTest;
 import com.project.tim49.service.ClinicServiceTest;
+import com.project.tim49.service.DoctorServiceTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.test.context.jdbc.Sql;
         AppointmentRequestServiceTest.class,
         AppointmentServiceTest.class,
         ClinicServiceTest.class,
+        DoctorServiceTest.class,
         //Other tests
         RouterTest.class
 })
