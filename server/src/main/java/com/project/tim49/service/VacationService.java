@@ -6,6 +6,8 @@ import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
 import java.util.*;
@@ -22,58 +24,68 @@ public class VacationService {
     @Autowired
     ClinicRepository clinicRepository;
 
+    // readOnly = false -- modifikujemo vacation
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public UserDTO approveVacationRequest(Long vacation_id) {
         if(vacation_id == null)
             throw new ValidationException("Invalid vacation ID!");
 
         Vacation vacation = vacationRepository.getOne(vacation_id);
-
-        if(vacation == null)
-            throw new ValidationException("No vacation with that ID!");
-
+        try {
+            vacation.setApproved(vacation.isApproved());
+        } catch (Exception e){
+            throw new NoSuchElementException("No vacation request with that ID!");
+        }
         Optional<Doctor> doctor = doctorRepository.findById(vacation.getMedicalStaff().getId());
         Optional<Nurse> nurse = nurseRepository.findById(vacation.getMedicalStaff().getId());
 
         if(!doctor.isPresent() && !nurse.isPresent()) {
             throw new NoSuchElementException("No staff with that ID!");
         }
-
         UserDTO userDTO;
         userDTO = doctor.map(UserDTO::new).orElseGet(() -> new UserDTO(nurse.get()));
 
+        if (vacation.isApproved()){
+            throw new ValidationException("This vacation request has already been approved");
+        }
         vacation.setApproved(true);
         vacationRepository.save(vacation);
-
+        // Za testiranje konkurentnog pristupa
+         try { Thread.sleep(5000); } catch (InterruptedException e) { }
         return userDTO;
     }
 
+    // readOnly = false -- modifikujemo doktora
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public UserDTO denyVacationRequest(Long vacation_id) {
         if(vacation_id == null)
             throw new ValidationException("Invalid vacation ID!");
 
-        Vacation vacation = vacationRepository.getOne(vacation_id);
+        Optional<Vacation> vacation = vacationRepository.findById(vacation_id);
+        if (!vacation.isPresent()){
+            throw new NoSuchElementException("No vacation request with that ID!");
+        }
+        if (vacation.get().isApproved()){
+            throw new ValidationException("This vacation request has already been approved");
+        }
 
-        if(vacation == null)
-            throw new ValidationException("No vacation with that ID!");
-
-        Optional<Doctor> doctor = doctorRepository.findById(vacation.getMedicalStaff().getId());
-        Optional<Nurse> nurse = nurseRepository.findById(vacation.getMedicalStaff().getId());
+        Optional<Doctor> doctor = doctorRepository.findById(vacation.get().getMedicalStaff().getId());
+        Optional<Nurse> nurse = nurseRepository.findById(vacation.get().getMedicalStaff().getId());
 
         if(!doctor.isPresent() && !nurse.isPresent()) {
             throw new NoSuchElementException("No staff with that ID!");
         }
 
         UserDTO userDTO;
-
         if(doctor.isPresent())
             userDTO = new UserDTO(doctor.get());
         else
             userDTO = new UserDTO(nurse.get());
 
-        vacationRepository.deleteById(vacation_id);
-
+        vacationRepository.delete(vacation.get());
         return userDTO;
-
     }
 
     public VacationDTO createVacationRequest(VacationDTO vacationDTO) {

@@ -554,20 +554,23 @@ INSERT INTO public.prescription(
 	VALUES (nextval('prescription_id_seq'), 6, 20, 12, 1, false);
 
 INSERT INTO public.vacation(
-	id, approved, start_date, end_date, medical_staff_id)
-	VALUES (nextval('vacation_id_seq'), true, 1575385200, 1575731400, 10);
+	id, approved, start_date, end_date, medical_staff_id, version)
+	VALUES (nextval('vacation_id_seq'), true, 1575385200, 1575731400, 10, 0);
 INSERT INTO public.vacation(
-	id, approved, start_date, end_date, medical_staff_id)
-	VALUES (nextval('vacation_id_seq'), true, 1581465600, 1581807000, 10);
+	id, approved, start_date, end_date, medical_staff_id, version)
+	VALUES (nextval('vacation_id_seq'), true, 1581465600, 1581807000, 10, 0);
 INSERT INTO public.vacation(
-	id, approved, start_date, end_date, medical_staff_id)
-	VALUES (nextval('vacation_id_seq'), true, 1583020800, 1583362000, 10);
+	id, approved, start_date, end_date, medical_staff_id, version)
+	VALUES (nextval('vacation_id_seq'), true, 1583020800, 1583362000, 10, 0);
 INSERT INTO public.vacation(
-	id, approved, start_date, end_date, medical_staff_id)
-	VALUES (nextval('vacation_id_seq'), true, 1575731400, 1575385200, 18);
+	id, approved, start_date, end_date, medical_staff_id, version)
+	VALUES (nextval('vacation_id_seq'), true, 1575731400, 1575385200, 18, 0);
 INSERT INTO public.vacation(
-	id, approved, start_date, end_date, medical_staff_id)
-	VALUES (nextval('vacation_id_seq'), true, 1581465600, 1582070400, 18);
+	id, approved, start_date, end_date, medical_staff_id, version)
+	VALUES (nextval('vacation_id_seq'), true, 1581465600, 1582070400, 18, 0);
 INSERT INTO public.vacation(
-	id, approved, start_date, end_date, medical_staff_id)
-	VALUES (nextval('vacation_id_seq'), true, 1583020800, 1583625600, 18);
+	id, approved, start_date, end_date, medical_staff_id, version)
+	VALUES (nextval('vacation_id_seq'), true, 1583020800, 1583625600, 18, 0);
+INSERT INTO public.vacation(
+	id, approved, start_date, end_date, medical_staff_id, version)
+	VALUES (nextval('vacation_id_seq'), false, 1584745200, 1584918000, 10, 0);
