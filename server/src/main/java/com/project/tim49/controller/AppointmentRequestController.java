@@ -58,23 +58,18 @@ public class AppointmentRequestController {
         }
 
         try {
-            boolean duringShift = doctorService.isDuringDoctorWorkingHours(appointmentDTO.getDoctors().get(0).getId(),null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
-            if (!duringShift){
-                return new ResponseEntity<>("The selected time does not fall in working hours", HttpStatus.BAD_REQUEST);
-            }
-            boolean doctorAvailable = doctorService.isAvailable(appointmentDTO.getDoctors().get(0).getId(), null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
-            if (!doctorAvailable){
-                return new ResponseEntity<>("There are scheduled appointments at that time", HttpStatus.BAD_REQUEST);
-            }
-
             AppointmentDTO returnValue = appointmentRequestService.scheduleNewAppointment(appointmentDTO);
             this.emailService.sendNewAppointmentScheduled(role, returnValue.getPatient(), returnValue.getDoctors().get(0), new DateTime(appointmentDTO.getStartingDateAndTime()*1000));
 
             return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
-        } catch (ValidationException e) {
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (NumberFormatException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (PessimisticLockingFailureException e) {
+            return new ResponseEntity<>("This time slot has already been taken by somebody else.", HttpStatus.CONFLICT);
         }
     }
 

@@ -57,7 +57,31 @@ public class AppointmentRequestService {
         return appointmentDTOs;
     }
 
+    // readOnly = false -- modifikujemo appointment jer mu dodajemo pacijenta
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    // isolation = read_committed -- resava i unrepeatable read jer se za objekat cuva u L1 memoriji pri queriju istog objekta
+    // javax.persistence.lock.timeout je jednak 0 iako bi bilo bolje da se moze staviti vise, u slucaju greske, ovako moze da nervira korisnika
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public AppointmentDTO scheduleNewAppointment(AppointmentDTO appointmentDTO) {
+        Doctor doctor = doctorRepository.findOneByIdAndLock(appointmentDTO.getDoctors().get(0).getId());
+        if (doctor == null){
+            throw new NoSuchElementException("Invalid doctors data");
+        }
+        // Za testiranje konkurentnog pristupa
+        // try { Thread.sleep(5000); } catch (InterruptedException e) { }
+        try {
+            boolean duringShift = doctorService.isDuringDoctorWorkingHours(null, doctor, appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            if (!duringShift){
+                throw new ValidationException("The selected time does not fall in working hours");
+            }
+            boolean doctorAvailable = doctorService.isAvailable(null, doctor, appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            if (!doctorAvailable){
+                throw new ValidationException("There are scheduled appointments at that time");
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+
         AppointmentRequest appointmentRequest = setAppointmentRequestData(appointmentDTO);
 
         AppointmentRequest saved = appointmentRequestRepository.save(appointmentRequest);
@@ -115,11 +139,11 @@ public class AppointmentRequestService {
         Set<Doctor> doctors = new HashSet<>();
         for(DoctorDTO d: doctorDTOS) {
             Doctor doctor = doctorRepository.findOneByIdAndLock(d.getId());
-            // Za testiranje konkurentnog pristupa
-            // try { Thread.sleep(2000); } catch (InterruptedException e) { }
             if (doctor == null){
                 throw new ValidationException("Invalid doctors data");
             }
+            // Za testiranje konkurentnog pristupa
+            // try { Thread.sleep(2000); } catch (InterruptedException e) { }
             if (!doctorService.isAvailable(null, doctor,
                     newAppointment.getStartingDateAndTime(), newAppointment.getDuration())){
                 throw new ValidationException("Doctor " + doctor.getName() + " " + doctor.getSurname()  + " is not available at selected time");

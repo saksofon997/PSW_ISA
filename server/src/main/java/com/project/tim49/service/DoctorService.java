@@ -161,7 +161,7 @@ public class DoctorService {
         if (doctor == null){
             Optional<Doctor> check = doctorRepository.findById(doctor_id);
             if (!check.isPresent()){
-                throw new ValidationException("No doctor with that ID!");
+                throw new NoSuchElementException("No doctor with that ID!");
             }
             doctor = check.get();
         }
@@ -206,7 +206,7 @@ public class DoctorService {
         if (doctor == null){
             Optional<Doctor> check = doctorRepository.findById(doctor_id);
             if (!check.isPresent()){
-                throw new ValidationException("No doctor with that ID!");
+                throw new NoSuchElementException("No doctor with that ID!");
             }
             doctor = check.get();
         }
