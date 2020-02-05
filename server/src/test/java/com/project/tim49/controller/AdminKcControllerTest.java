@@ -27,8 +27,7 @@ import java.nio.charset.Charset;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
-public
-class AdminKcControllerTest {
+public class AdminKcControllerTest {
     private static final String URL_PREFIX = "/api/admin";
 
     private MediaType contentType = new MediaType(

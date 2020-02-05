@@ -23,6 +23,16 @@ public class TypeOfExamination {
    @OneToMany(mappedBy = "typeOfExamination", cascade = CascadeType.ALL)
    private Set<ClinicTypeOfExamination> clinics = new HashSet<>();
 
+   public TypeOfExamination(){
+      super();
+   }
+
+   public TypeOfExamination(String name, boolean operation, Set<ClinicTypeOfExamination> clinics) {
+      this.name = name;
+      this.operation = operation;
+      this.clinics = clinics;
+   }
+
    public Long getId() {
       return id;
    }

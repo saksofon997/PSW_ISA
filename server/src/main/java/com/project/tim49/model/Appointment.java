@@ -59,6 +59,23 @@ public class Appointment {
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
+    public Appointment(){
+        super();
+    }
+    public Appointment(long startingDateAndTime, long endingDateAndTime, long duration, double price, double discount, Ordination ordination, Clinic clinic, Patient patient, TypeOfExamination typeOfExamination, boolean completed, Set<Doctor> doctors, boolean deleted) {
+        this.startingDateAndTime = startingDateAndTime;
+        this.endingDateAndTime = endingDateAndTime;
+        this.duration = duration;
+        this.price = price;
+        this.discount = discount;
+        this.ordination = ordination;
+        this.clinic = clinic;
+        this.patient = patient;
+        this.typeOfExamination = typeOfExamination;
+        this.completed = completed;
+        this.doctors = doctors;
+        this.deleted = deleted;
+    }
 
     public Long getId() {
         return id;
