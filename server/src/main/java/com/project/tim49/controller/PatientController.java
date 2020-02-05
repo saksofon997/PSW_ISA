@@ -5,11 +5,13 @@ import com.project.tim49.model.Appointment;
 import com.project.tim49.model.Doctor;
 import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.DoctorService;
+import com.project.tim49.service.EmailService;
 import com.project.tim49.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,12 @@ import java.util.NoSuchElementException;
 public class PatientController {
     @Autowired
     PatientService patientService;
+
+    @Autowired
+    ClinicService clinicService;
+
+    @Autowired
+    EmailService emailService;
 
     @GetMapping(path="/{id}" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -98,16 +106,30 @@ public class PatientController {
         return new ResponseEntity<>(patientDTOS, HttpStatus.OK);
     }
 
-    @DeleteMapping("/cancelAppointment/{patientID}/{appID}")
+    @DeleteMapping("/cancelAppointment/{patientID}/{appID}/{currentTime}")
     @PreAuthorize("hasAuthority('PATIENT') or hasAuthority('DOCTOR')")
-    public ResponseEntity cancelAppointment(@PathVariable Long patientID, @PathVariable Long appID) {
+    public ResponseEntity cancelAppointment(@PathVariable Long patientID, @PathVariable Long appID,@PathVariable Long currentTime) {
         if (patientID == null){
             return new ResponseEntity<>("Invalid patient id.", HttpStatus.BAD_REQUEST);
         }
         if (appID == null){
             return new ResponseEntity<>("Invalid appointment.", HttpStatus.BAD_REQUEST);
         }
-        AppointmentDTO appointmentDTO = patientService.cancelAppointment(patientID,appID);
+        AppointmentDTO appointmentDTO = new AppointmentDTO();
+        try{
+            appointmentDTO = patientService.cancelAppointment(patientID,appID,currentTime);
+
+
+
+        }catch (ValidationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        try {
+            List<ClinicAdministratorDTO> admins =  clinicService.getClinicAdmins(appointmentDTO.getClinic().getId());
+            emailService.sendAppointmentCanceled(admins, appointmentDTO);
+        }catch (MailException e){
+            System.out.println("Slanje emaila administratorima nije uspelo.");
+        }
         return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
     }
 }

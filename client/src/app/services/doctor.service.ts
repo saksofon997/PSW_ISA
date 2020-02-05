@@ -118,13 +118,13 @@ searchDoctors(criteria: { clinic_id: any; name: any; surname: any; rating: any; 
     );
 }
 
-getAvailability(id: any, date: any) {
+getAvailability(id: any, date: any, role) {
   let headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${this.userService.getToken()}`
   });
   var searchParamsString = "";
-  searchParamsString += `doctor_id=${id}&date=${date}`
+  searchParamsString += `doctor_id=${id}&date=${date}&role=${role}`
   return this.http.get(`/api/doctor/getAvailability?${searchParamsString}`,
             { headers: headers, observe: 'response' })
     .pipe(

@@ -78,7 +78,7 @@
             </div>
             <div class="overflow-auto border rounded" style="max-height: 11.4em;">
               <ul class="list-group rounded">
-                <li class="list-group-item" *ngFor='let alergie of allergies.split(",")'
+                <li class="list-group-item" *ngFor='let alergie of allergies?.split(",")'
                   (mouseenter)="onHovering($event)" (mouseleave)="onUnovering($event)">
                   <span class="float-left" *ngIf="alergie!==''">{{alergie}}</span>
                   <button type="button" class="btn float-right" *ngIf="alergie!==''" (click)="deleteAllergie(alergie)"
@@ -130,14 +130,18 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <span class="dropdown-item">
-                Type
-                <i class="fa fa-arrow-down ml-1" (click)="sortByTypeDesc()" aria-hidden="true" style="cursor: pointer;"></i>
-                <i class="fa fa-arrow-up ml-1" (click)="sortByTypeAsc()" aria-hidden="true" style="cursor: pointer;"></i>
+                Type 
+                <ion-icon class="ml-1 mt-1" name="arrow-round-down" (click)="sortByTypeDesc()" aria-hidden="true" style="cursor: pointer;"></ion-icon>
+                <ion-icon class="ml-1 mt-1" name="arrow-round-up" (click)="sortByTypeAsc()" aria-hidden="true" style="cursor: pointer;"></ion-icon>
+                <!-- <i class="fa fa-arrow-down ml-1" (click)="sortByTypeDesc()" aria-hidden="true" style="cursor: pointer;"></i>
+                <i class="fa fa-arrow-up ml-1" (click)="sortByTypeAsc()" aria-hidden="true" style="cursor: pointer;"></i> -->
               </span>
               <span class="dropdown-item">
                 Date
-                <i class="fa fa-arrow-down ml-1" (click)="sortByDateDesc()" aria-hidden="true" style="cursor: pointer;"></i>
-                <i class="fa fa-arrow-up ml-1" (click)="sortByDateAsc()" aria-hidden="true" style="cursor: pointer;"></i>
+                <ion-icon class="ml-1 mt-1" name="arrow-round-down" (click)="sortByTypeDesc()" aria-hidden="true" style="cursor: pointer;"></ion-icon>
+                <ion-icon class="ml-1 mt-1" name="arrow-round-up" (click)="sortByTypeAsc()" aria-hidden="true" style="cursor: pointer;"></ion-icon>
+                <!-- <i class="fa fa-arrow-down ml-1" (click)="sortByDateDesc()" aria-hidden="true" style="cursor: pointer;"></i>
+                <i class="fa fa-arrow-up ml-1" (click)="sortByDateAsc()" aria-hidden="true" style="cursor: pointer;"></i> -->
               </span>
 
             </div>

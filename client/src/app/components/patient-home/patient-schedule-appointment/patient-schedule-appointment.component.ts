@@ -158,7 +158,7 @@ export class PatientScheduleAppointmentComponent implements OnInit {
 			doctors: [{ id: this.doctorID }]
 		}
 
-		this.appointmentService.scheduleNewAppointment(appointment).subscribe(
+		this.appointmentService.scheduleNewAppointment(appointment, 'patient').subscribe(
 			(data: any) => {
 				alert("Appointment request sent");
 				this.router.navigate([`../pending_appointments`], { relativeTo: this.activatedRoute });

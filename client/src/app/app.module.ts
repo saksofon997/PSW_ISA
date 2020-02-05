@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -179,6 +179,7 @@ import { ClinicCenterAdminsListingComponent } from './components/adminCC-dashboa
     RatingModule,
     NgxChartsModule,
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   exports: [
     MedicalRecordComponent
   ],

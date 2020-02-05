@@ -7,6 +7,7 @@ import com.project.tim49.service.DoctorService;
 import com.project.tim49.service.EmailService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,12 +42,15 @@ public class AppointmentRequestController {
         }
     }
 
-    @PostMapping(path="/scheduleNewAppointment" ,
+    @PostMapping(path="/scheduleNewAppointment/{role}" ,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('PATIENT')")
-    public ResponseEntity scheduleNewAppointment(@RequestBody AppointmentDTO appointmentDTO) throws InterruptedException{
+    public ResponseEntity scheduleNewAppointment(@PathVariable String role,@RequestBody AppointmentDTO appointmentDTO) throws InterruptedException{
         if (appointmentDTO == null){
             return new ResponseEntity<>("Invalid appointment", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if (role == null || (!role.equals("doctor") && !role.equals("patient")) ){
+            return new ResponseEntity<>("Invalid request", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         if(appointmentDTO.getStartingDateAndTime() == 0 || appointmentDTO.getPatient() == null
                 || appointmentDTO.getDoctors() == null){
@@ -54,23 +58,18 @@ public class AppointmentRequestController {
         }
 
         try {
-            boolean duringShift = doctorService.isDuringDoctorWorkingHours(appointmentDTO.getDoctors().get(0).getId(),null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
-            if (!duringShift){
-                return new ResponseEntity<>("The selected time does not fall in working hours", HttpStatus.BAD_REQUEST);
-            }
-            boolean doctorAvailable = doctorService.isAvailable(appointmentDTO.getDoctors().get(0).getId(), null,appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
-            if (!doctorAvailable){
-                return new ResponseEntity<>("There are scheduled appointments at that time", HttpStatus.BAD_REQUEST);
-            }
-
             AppointmentDTO returnValue = appointmentRequestService.scheduleNewAppointment(appointmentDTO);
-            this.emailService.sendNewAppointmentScheduled(returnValue.getPatient(), returnValue.getDoctors().get(0), new DateTime(appointmentDTO.getStartingDateAndTime()*1000));
+            this.emailService.sendNewAppointmentScheduled(role, returnValue.getPatient(), returnValue.getDoctors().get(0), new DateTime(appointmentDTO.getStartingDateAndTime()*1000));
 
             return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
-        } catch (ValidationException e) {
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (NumberFormatException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (PessimisticLockingFailureException e) {
+            return new ResponseEntity<>("This time slot has already been taken by somebody else.", HttpStatus.CONFLICT);
         }
     }
 
@@ -94,6 +93,27 @@ public class AppointmentRequestController {
             return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
         } catch (ValidationException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (PessimisticLockingFailureException e) {
+            return new ResponseEntity<>("This request might been already approved, please reload page with all requests", HttpStatus.CONFLICT);
         }
     }
+
+    @PutMapping(path = "/rejectAppointmentRequest/{id}")
+    @PreAuthorize("hasAuthority('ADMINC')")
+    public ResponseEntity rejectAppointmentRequest(@PathVariable Long id,@RequestBody String message) {
+        AppointmentDTO deleted = new AppointmentDTO();
+        try{
+            deleted = appointmentRequestService.rejectRequest(id);
+            this.emailService.sendAppointmentRequestRejected(deleted, message);
+        }catch(NoSuchElementException e){
+            return new ResponseEntity<>("Appointment request deletion failed, request not found!",
+                    HttpStatus.NOT_FOUND);
+        }catch(SecurityException e){
+            return new ResponseEntity<>("Appointment request already approved!",
+                    HttpStatus.NOT_ACCEPTABLE);
+        }catch(InterruptedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
+}

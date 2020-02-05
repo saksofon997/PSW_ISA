@@ -156,12 +156,17 @@ export class OrdinationSelectionComponent implements OnInit {
 				this.ordinations = data;
 				for (let i = 0; i < this.ordinations.length; i++) {
 					let ordination = this.ordinations[i];
+					this.ordinations[i].backupPeriods = [];
+					for (let period of this.ordinations[i].availablePeriods) {
+						this.ordinations[i].backupPeriods.push(period);
+					}
 					for (let j = 0; j < ordination.availablePeriods.length; j++) {
 
 						let startTime = new Date(ordination.availablePeriods[j].split(':')[0] * 1000);
 						let endTime = new Date(ordination.availablePeriods[j].split(':')[1] * 1000);
 
 						this.ordinations[i].availablePeriods[j] = ("0" + startTime.getHours()).slice(-2) + ":" + ("0" + startTime.getMinutes()).slice(-2) + " - " + ("0" + endTime.getHours()).slice(-2) + ":" + ("0" + endTime.getMinutes()).slice(-2);
+						this.ordinations[i].backupPeriods[j] = ("0" + startTime.getHours()).slice(-2) + ":" + ("0" + startTime.getMinutes()).slice(-2) + " - " + ("0" + endTime.getHours()).slice(-2) + ":" + ("0" + endTime.getMinutes()).slice(-2);
 					}
 					if (!ordination.available) {
 						this.ordinations[i].firstAvailableDate = this.timeConverter(ordination.firstAvailableDateTimestamp);
@@ -201,35 +206,6 @@ export class OrdinationSelectionComponent implements OnInit {
 		this.setFilteredTimeslots(ordinationData, appointment);
 		this.modalData = { appointment, ordinationData, action };
 		this.modal.open(this.modalContent, { size: 'lg' });
-	}
- 
-	periodIsInsideDoctorShift(period, shiftStart, shiftEnd) {
-		let shiftStartHour = shiftStart.split(':')[0];
-		let shiftStartMinute = shiftStart.split(':')[1];
-
-		let shiftEndHour = shiftEnd.split(':')[0];
-		let shiftEndMinute = shiftEnd.split(':')[1];
-
-		let periodStart = period.split(' - ')[0];
-		let periodStartHour = periodStart.split(':')[0];
-		let periodStartMinute = periodStart.split(':')[1];
-
-		let periodEnd = period.split(' - ')[1];
-		let periodEndHour = periodEnd.split(':')[0];
-		let periodEndMinute = periodEnd.split(':')[1];
-
-		if (periodStartHour >= shiftStartHour && periodStartHour <= shiftEndHour
-			&& periodEndHour >= shiftStartHour && periodEndHour <= shiftEndHour) {
-			if (periodStartHour == shiftStartHour && periodStartMinute < shiftStartMinute) {
-				return false;
-			}
-			if (periodEndHour == shiftEndHour && periodEndMinute > shiftEndMinute) {
-				return false;
-			}
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	isPeriodInsideChosenTime(period){
@@ -308,7 +284,7 @@ export class OrdinationSelectionComponent implements OnInit {
 	selectionChangedDoctor(event){
 		if (event.value){
 			this.modalData.appointment.doctors[0] = event.value;
-			this.optionsDoctors = this.optionsDoctors.filter(obj => obj.id !== this.modalData.appointment.doctors[0].id);
+			this.optionsDoctors = this.clinicDoctors.filter(obj => obj.id !== this.modalData.appointment.doctors[0].id);
 			this.optionsAttendingDoctors = this.clinicDoctors.filter(obj => obj.id !== this.modalData.appointment.doctors[0].id);
 			this.selectedAttendingDoctors.splice(0, this.selectedAttendingDoctors.length);
 		} else {
@@ -322,20 +298,26 @@ export class OrdinationSelectionComponent implements OnInit {
 
 	setFilteredTimeslots(ordinationData, appointment){
 		ordinationData.filteredPeriods = [];
+		ordinationData.availablePeriods = [];
+		for (let period of ordinationData.backupPeriods) {
+			ordinationData.availablePeriods.push(period);
+		}
 		this.selectedTimeslots = [];
+		this.selectedDoctorAvailability = [];
 		let doctor = appointment.doctors[0];
 		if (doctor){
-			this.doctorService.getAvailability(this.selectedDoctor.id, this.date.getTime()/1000).subscribe(
+			this.doctorService.getAvailability(this.selectedDoctor.id, this.date.getTime()/1000, "admin").subscribe(
 				(data) => {
 					this.selectedDoctorAvailability = data;
 					if (this.selectedDoctorAvailability.availableTimes.length === 0){
 						alert("Doctor has no available timeslots!");
 						return;
 					}
+
 					for (let i = 0; i < this.selectedDoctorAvailability.availableTimes.length; i++) {
 						this.selectedDoctorAvailability.availableTimes[i] = this.timeConverterHourMin(this.selectedDoctorAvailability.availableTimes[i]);
 					}
-
+					
 					if (doctor.shiftStart.split(':')[0] > doctor.shiftEnd.split(':')[0]) {
 						doctor.shiftStart = '00:00';
 					}
@@ -346,31 +328,27 @@ export class OrdinationSelectionComponent implements OnInit {
 					if (lastPeriod.split(' - ')[1].split(':')[0] === '00'){
 						ordinationData.availablePeriods[ordinationData.availablePeriods.length-1] = lastPeriod.split(' - ')[0] + " - 24:00";
 					}
-			
+					
 					let i = 0;
 					let period;
 					for (let j = 0; j < ordinationData.availablePeriods.length; j++) {
 						period = ordinationData.availablePeriods[j];
 						if (this.selectedDoctorAvailability.availableTimes.indexOf(period.split(' - ')[0]) === -1){
 							ordinationData.availablePeriods.splice(j, 1);
+							j--;
 							continue;
 						}
-
-						if (this.periodIsInsideDoctorShift(period, doctor.shiftStart, doctor.shiftEnd)) {
-							ordinationData.filteredPeriods.push(period);
-							if (this.appointment.endTimeString && this.isPeriodInsideChosenTime(period))
-								this.selectedTimeslots.push({ period, index: i });
-							i++
+						ordinationData.filteredPeriods.push(period);
+						if (this.appointment.endTimeString && this.isPeriodInsideChosenTime(period)){
+							this.selectedTimeslots.push({ period, index: i });
 						}
+						i++
 					}
-
 				},
 				(error) => {
 					alert(error);
 				}
 			);
-
-			
 		}
 	}
 
@@ -433,6 +411,9 @@ export class OrdinationSelectionComponent implements OnInit {
 		var hour = a.getHours();
 		var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
 		var time = hour + ':' + min;
+		if (time.length == 4){
+			time = '0' + time;
+		}
 		return time;
 	}
 

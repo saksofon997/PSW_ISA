@@ -6,8 +6,11 @@ import com.project.tim49.dto.PatientDTO;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceContext;
@@ -54,7 +57,31 @@ public class AppointmentRequestService {
         return appointmentDTOs;
     }
 
+    // readOnly = false -- modifikujemo appointment jer mu dodajemo pacijenta
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    // isolation = read_committed -- resava i unrepeatable read jer se za objekat cuva u L1 memoriji pri queriju istog objekta
+    // javax.persistence.lock.timeout je jednak 0 iako bi bilo bolje da se moze staviti vise, u slucaju greske, ovako moze da nervira korisnika
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public AppointmentDTO scheduleNewAppointment(AppointmentDTO appointmentDTO) {
+        Doctor doctor = doctorRepository.findOneByIdAndLock(appointmentDTO.getDoctors().get(0).getId());
+        if (doctor == null){
+            throw new NoSuchElementException("Invalid doctors data");
+        }
+        // Za testiranje konkurentnog pristupa
+        // try { Thread.sleep(5000); } catch (InterruptedException e) { }
+        try {
+            boolean duringShift = doctorService.isDuringDoctorWorkingHours(null, doctor, appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            if (!duringShift){
+                throw new ValidationException("The selected time does not fall in working hours");
+            }
+            boolean doctorAvailable = doctorService.isAvailable(null, doctor, appointmentDTO.getStartingDateAndTime(), appointmentDTO.getDuration());
+            if (!doctorAvailable){
+                throw new ValidationException("There are scheduled appointments at that time");
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+
         AppointmentRequest appointmentRequest = setAppointmentRequestData(appointmentDTO);
 
         AppointmentRequest saved = appointmentRequestRepository.save(appointmentRequest);
@@ -67,8 +94,13 @@ public class AppointmentRequestService {
 
         appointmentRequest.setApproved(false);
         appointmentRequest.setStartingDateAndTime(appointmentDTO.getStartingDateAndTime());
-        appointmentRequest.setEndingDateAndTime(appointmentDTO.getEndingDateAndTime());
-        appointmentRequest.setDuration(appointmentDTO.getDuration());
+        if (appointmentDTO.getDuration() == 0){
+            appointmentRequest.setEndingDateAndTime(appointmentDTO.getStartingDateAndTime() + 10 * 60);
+            appointmentRequest.setDuration(10 * 60 * 1000);
+        } else {
+            appointmentRequest.setEndingDateAndTime(appointmentDTO.getEndingDateAndTime());
+            appointmentRequest.setDuration(appointmentDTO.getDuration());
+        }
         appointmentRequest.setPrice(appointmentDTO.getPrice());
 
         TypeOfExamination type = typeOfExaminationRepository.findById(appointmentDTO.getTypeOfExamination().getId()).get();
@@ -92,7 +124,12 @@ public class AppointmentRequestService {
         return appointmentRequest;
     }
 
-    public AppointmentDTO approveAppointmentRequest(AppointmentDTO appointmentDTO) throws ValidationException {
+    // readOnly = false -- modifikujemo appointment jer mu dodajemo pacijenta
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    // isolation = read_committed -- resava i unrepeatable read jer se za objekat cuva u L1 memoriji pri queriju istog objekta
+    // javax.persistence.lock.timeout je jednak 0 iako bi bilo bolje da se moze staviti vise, u slucaju greske, ovako moze da nervira korisnika
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+    public AppointmentDTO approveAppointmentRequest(AppointmentDTO appointmentDTO) throws PessimisticLockingFailureException {
         Optional<AppointmentRequest> appointmentRequest = appointmentRequestRepository.findById(appointmentDTO.getId());
         if (!appointmentRequest.isPresent()){
             throw new NoSuchElementException("Appointment request has already been approved or rejected");
@@ -101,21 +138,28 @@ public class AppointmentRequestService {
         List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
         Set<Doctor> doctors = new HashSet<>();
         for(DoctorDTO d: doctorDTOS) {
-            Optional<Doctor> doctor = doctorRepository.findById(d.getId());
-            if (!doctor.isPresent()){
+            Doctor doctor = doctorRepository.findOneByIdAndLock(d.getId());
+            if (doctor == null){
                 throw new ValidationException("Invalid doctors data");
             }
-            if (!doctorService.isAvailable(null, doctor.get(),
+            // Za testiranje konkurentnog pristupa
+            // try { Thread.sleep(2000); } catch (InterruptedException e) { }
+            if (!doctorService.isAvailable(null, doctor,
                     newAppointment.getStartingDateAndTime(), newAppointment.getDuration())){
-                throw new ValidationException("Doctor " + doctor.get().getName() + " " + doctor.get().getSurname()  + " is not available at selected time");
+                throw new ValidationException("Doctor " + doctor.getName() + " " + doctor.getSurname()  + " is not available at selected time");
             }
-            if (!doctorService.isDuringDoctorWorkingHours(null,doctor.get(),
+            if (!doctorService.isDuringDoctorWorkingHours(null,doctor,
                     newAppointment.getStartingDateAndTime(), newAppointment.getDuration())){
-                throw new ValidationException("Selected time is not during working hours of doctor " + doctor.get().getName() + " " + doctor.get().getSurname());
+                throw new ValidationException("Selected time is not during working hours of doctor " + doctor.getName() + " " + doctor.getSurname());
             }
-            doctors.add(doctor.get());
+            doctors.add(doctor);
         }
-        if (!ordinationService.isAvailable(null, newAppointment.getOrdination(),newAppointment.getStartingDateAndTime(), newAppointment.getDuration())){
+
+        Ordination ordination = ordinationRepository.findOneByIdAndLock(newAppointment.getOrdination().getId());
+        if (ordination == null) {
+            throw new ValidationException("Invalid ordination data");
+        }
+        if (!ordinationService.isAvailable(null, ordination,newAppointment.getStartingDateAndTime(), newAppointment.getDuration())){
             throw new ValidationException("Ordination is not available at selected time");
         }
         Optional<Patient> patient = patientRepository.findById(appointmentDTO.getPatient().getId());
@@ -130,6 +174,21 @@ public class AppointmentRequestService {
         appointmentRequestRepository.delete(appointmentRequest.get());
 
         return new AppointmentDTO(saved);
+    }
+
+    public AppointmentDTO rejectRequest(Long id) {
+        Optional<AppointmentRequest> request = appointmentRequestRepository.findById(id);
+        if (!request.isPresent()) {
+            throw new NoSuchElementException();
+        }
+        if (request.get().isApproved()) {
+            throw new SecurityException();
+        }
+
+        AppointmentRequest req = request.get();
+        appointmentRequestRepository.delete(req);
+        AppointmentDTO requestDto = new AppointmentDTO(req);
+        return requestDto;
     }
 
 //    @Transactional
