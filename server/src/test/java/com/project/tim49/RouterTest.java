@@ -6,7 +6,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
@@ -16,14 +15,14 @@ import org.junit.Before;
 import org.junit.Test;
 import selenium.SearchPage;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.AssertJUnit.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public class RouterTest {
     @LocalServerPort
     private int port;
@@ -187,6 +186,8 @@ public class RouterTest {
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"dropdownMenuButton1\"]")));
         WebElement optionsButton =  browser.findElement(By.xpath("//button[@id=\"dropdownMenuButton1\"]"));
         optionsButton.click();
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//a[@id=\"selectOrd1\"]"))));
         browser.findElement(By.xpath("//a[@id=\"selectOrd1\"]")).click();
         (new WebDriverWait(browser, 10))
                 .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"showAvailable62\"]")));
