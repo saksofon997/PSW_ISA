@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,56 +37,38 @@ class AppointmentRequestControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
-    private String accessTokenPat;
-    private String accessTokenAdminC;
-    HttpHeaders headersPat = new HttpHeaders();
-    HttpHeaders headersAdminC = new HttpHeaders();
     HttpEntity<Object> httpEntity;
 
-    @Before
-    public void login() {
+    @Test //positive
+    public void scheduleAppointment() throws Exception{
+
         ResponseEntity<AuthenticationController.UserState> responseEntity =
                 restTemplate.postForEntity("/auth/login",
                         new LoginDTO("patient1@kcv.rs", "123456"),
                         AuthenticationController.UserState.class);
-
         AuthenticationController.UserState userstatePatient = responseEntity.getBody();
+        String accessToken = userstatePatient.token.getAccessToken();
+        HttpHeaders header = new HttpHeaders();
+        header.add("Authorization","Bearer " + accessToken);
+        header.add("Content-Type", "application/json");
 
-        responseEntity =
-                restTemplate.postForEntity("/auth/login",
-                        new LoginDTO("adminc1@kcv.rs", "123456"),
-                        AuthenticationController.UserState.class);
-
-        AuthenticationController.UserState userStateAdminC = responseEntity.getBody();
-
-        accessTokenPat = userstatePatient.token.getAccessToken();
-        accessTokenAdminC = userStateAdminC.token.getAccessToken();
-        headersPat.add("Authorization","Bearer " + accessTokenPat);
-        headersAdminC.add("Authorization","Bearer " + accessTokenAdminC);
-        headersPat.add("Content-Type", "application/json");
-        headersAdminC.add("Content-Type", "application/json;charset=UTF-8");
-    }
-
-    @Test //positive
-    public void scheduleAppointment() throws Exception{
         AppointmentDTO apptSend = new AppointmentDTO();
         apptSend.setId(null);
-        apptSend.setStartingDateAndTime(1582027900);
-        apptSend.setEndingDateAndTime(1582028800);
+        apptSend.setStartingDateAndTime(1580886000);
+        apptSend.setEndingDateAndTime(0);
         apptSend.setDuration(0);
         TypeOfExaminationDTO toedto = new TypeOfExaminationDTO();
         toedto.setId(2L);
         apptSend.setTypeOfExamination(toedto);
         OrdinationDTO orddto = new OrdinationDTO();
-        orddto.setId(1L);
+        orddto.setId(null);
         apptSend.setOrdination(orddto);
         apptSend.setPrice(3000);
         ClinicDTO cdto = new ClinicDTO();
         cdto.setId(1L);
         apptSend.setClinic(cdto);
         PatientDTO pdto = new PatientDTO();
-        pdto.setId(24L);
+        pdto.setId(23L);
         apptSend.setPatient(pdto);
         DoctorDTO ddto = new DoctorDTO();
         ddto.setId(11L);
@@ -95,30 +78,42 @@ class AppointmentRequestControllerTest {
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
-        httpEntity = new HttpEntity<>(ow.writeValueAsString(apptSend), headersPat);
+        httpEntity = new HttpEntity<>(ow.writeValueAsString(apptSend), header);
 
-        ResponseEntity<AppointmentDTO> responseEntity =
+        ResponseEntity<AppointmentDTO> responseEntityAppointment =
                 restTemplate.exchange(URL_PREFIX + "/scheduleNewAppointment", HttpMethod.POST, httpEntity, AppointmentDTO.class);
 
         //checks if starting appointment id equals return appointment id
-        AppointmentDTO appt = responseEntity.getBody();
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(ClinicConstants.DB_ID, appt.getClinic().getId());
+        AppointmentDTO appt = responseEntityAppointment.getBody();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test //positive
     public void approveAppointmentRequest() throws Exception{
 
+        ResponseEntity<AuthenticationController.UserState> responseEntity =
+                restTemplate.postForEntity("/auth/login",
+                        new LoginDTO("adminc1@kcv.rs", "123456"),
+                        AuthenticationController.UserState.class);
+        AuthenticationController.UserState userstatePatient = responseEntity.getBody();
+        String accessToken = userstatePatient.token.getAccessToken();
+        HttpHeaders header = new HttpHeaders();
+        header.add("Authorization","Bearer " + accessToken);
+        header.add("Content-Type", "application/json");
+
         AppointmentDTO apptSend = new AppointmentDTO();
         apptSend.setId(1L);
-        apptSend.setStartingDateAndTime(1581292800);
-        apptSend.setEndingDateAndTime(1581293400);
-        apptSend.setDuration(10 * 60 * 1000);
+        apptSend.setCompleted(false);
+        apptSend.setDiscount(0);
+        apptSend.setStartingDateAndTime(1581346800);
+        apptSend.setEndingDateAndTime(1581347400);
+        apptSend.setDuration(600000);
+
         TypeOfExaminationDTO toedto = new TypeOfExaminationDTO();
         toedto.setId(3L);
         apptSend.setTypeOfExamination(toedto);
         OrdinationDTO orddto = new OrdinationDTO();
-        orddto.setId(3L);
+        orddto.setId(1L);
         apptSend.setOrdination(orddto);
         apptSend.setPrice(500);
         ClinicDTO cdto = new ClinicDTO();
@@ -135,14 +130,14 @@ class AppointmentRequestControllerTest {
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
-        httpEntity = new HttpEntity<>(ow.writeValueAsString(apptSend), headersAdminC);
+        httpEntity = new HttpEntity<>(ow.writeValueAsString(apptSend), header);
 
-        ResponseEntity<AppointmentDTO> responseEntity =
+        ResponseEntity<AppointmentDTO> responseEntityAppointment =
                 restTemplate.exchange(URL_PREFIX + "/approveAppointmentRequest", HttpMethod.POST, httpEntity, AppointmentDTO.class);
 
         //checks if starting appointment id equals return appointment id
-        AppointmentDTO appt = responseEntity.getBody();
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        AppointmentDTO appt = responseEntityAppointment.getBody();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(ClinicConstants.DB_ID, appt.getClinic().getId());
     }
 }

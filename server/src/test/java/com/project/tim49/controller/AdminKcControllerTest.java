@@ -62,27 +62,6 @@ class AdminKcControllerTest {
         httpEntity = new HttpEntity<Object>(headers);
     }
 
-    @PostConstruct
-    public void setup() {
-
-    }
-
-    @Test
-    public void saveClinic() {
-    }
-
-    @Test
-    public void editClinic() {
-    }
-
-    @Test
-    public void deleteClinic() {
-    }
-
-    @Test
-    public void rateClinic() {
-    }
-
     @Test
     public void getClinic() throws Exception{
         ResponseEntity<ClinicDTO[]> responseEntity =
@@ -109,25 +88,5 @@ class AdminKcControllerTest {
         assertEquals(DB_NAME, clinic.getName());
         assertEquals(DB_CITY, clinic.getCity());
         assertEquals(DB_ADDRESS, clinic.getAddress());
-    }
-
-    @Test
-    public void getAdminKc() {
-    }
-
-    @Test
-    public void modifyAdminKc() {
-    }
-
-    @Test
-    public void getRegistrationRequests() {
-    }
-
-    @Test
-    public void approveRequest() {
-    }
-
-    @Test
-    public void deleteRequest() {
     }
 }
