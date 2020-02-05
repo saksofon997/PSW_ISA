@@ -1,5 +1,5 @@
 # PSW_ISA
-PSW/ISA projekat
+
 
 # Prerequisites: 
 
@@ -13,9 +13,15 @@ Ensure you have this installed before proceeding further
 ---
 # About
 This project is done as a part of two courses at Faculty of technical sciences in Novi Sad, Serbia.
-It is developed as a two-part application consisting of Angular-based frontend and Spring-boot based backend, hosted on Heroku.
-# Getting started
+It is developed as a two-part application consisting of Angular-based frontend and Spring-boot based backend, hosted on [Heroku](https://picici.herokuapp.com/).
 
+#### Authors
+- @saksofon997
+- @coperope
+- @mihajlo-perendija
+
+# Getting started
+In the following sections we provided a set of instructions on how to run the application during development (as two separate instances: fronted & backend) or production (as an independent, deployment-ready instance).
 ## Development
 For development purposes one can build frontend and backend separately. Instructions on how to achieve this are contained in the next two subsections.
 ### Running Frontend
