@@ -66,3 +66,5 @@ npm install
 npm build
 ```
 ### Build backend
+After frontend is built we can excecute the same commands used during development to access the application as a whole.
+Please refer to the *[Building backend](https://github.com/saksofon997/PSW_ISA/blob/master/README.md#building-backend-spring-boot-java--starting-the-api-and-webui-server)* section under **Development**.
