@@ -21,6 +21,7 @@ public class DoctorDTO extends UserDTO{
     private TypeOfExaminationDTO specialization;
     private int numberOfStars;
     private int numberOfReviews;
+    private Long version;
 
     public DoctorDTO() {
     }
@@ -46,6 +47,7 @@ public class DoctorDTO extends UserDTO{
         for (GrantedAuthority auth: doctor.getAuthorities()) {
             this.roles.add(auth.getAuthority());
         }
+        this.version = doctor.getVersion();
     }
 
     public Long getId() {
@@ -166,5 +168,13 @@ public class DoctorDTO extends UserDTO{
 
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

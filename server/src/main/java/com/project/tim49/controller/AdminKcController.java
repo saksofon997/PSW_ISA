@@ -107,8 +107,14 @@ public class AdminKcController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (EntityNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (StaleObjectStateException e){
-            return new ResponseEntity<>("Try again", HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (Exception e){
+            int i=1;
+            for(Throwable t=(Throwable)e; t!=null; t=t.getCause()){
+                if(t instanceof StaleObjectStateException)
+                    return new ResponseEntity<>("Try again", HttpStatus.SERVICE_UNAVAILABLE);
+                i++;
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

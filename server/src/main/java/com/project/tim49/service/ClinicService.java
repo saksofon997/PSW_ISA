@@ -166,7 +166,7 @@ public class ClinicService {
     // readOnly = false -- modifikujemo kliniku
     // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public void rateClinic(Long clinic_id, Long patient_id, int stars) throws StaleObjectStateException {
+    public void rateClinic(Long clinic_id, Long patient_id, int stars) {
         if (clinic_id == null || patient_id == null || stars == 0 || stars < 0 || stars > 5){
             throw new ValidationException("Invalid parameters.");
         }
@@ -192,7 +192,6 @@ public class ClinicService {
         if (clinicPatient == null){
             throw new EntityNotFoundException("Database error");
         }
-        System.out.println(clinicPatient.isRated());
         if (clinicPatient.isRated()){
             clinic.setNumberOfStars(clinic.getNumberOfStars() - clinicPatient.getStars() + stars);
             clinicPatient.setStars(stars);

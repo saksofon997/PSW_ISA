@@ -6,6 +6,7 @@ import com.project.tim49.dto.DoctorAvailabilityDTO;
 import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.DoctorService;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.OptimisticLockException;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -208,6 +210,14 @@ public class DoctorController {
         } catch (ValidationException | NoSuchElementException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e){
+            int i=1;
+            for(Throwable t=(Throwable)e; t!=null; t=t.getCause()){
+                if(t instanceof StaleObjectStateException)
+                    return new ResponseEntity<>("Try again", HttpStatus.SERVICE_UNAVAILABLE);
+                i++;
+            }
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

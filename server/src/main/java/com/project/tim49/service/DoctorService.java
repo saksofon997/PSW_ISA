@@ -6,13 +6,16 @@ import com.project.tim49.dto.DoctorAvailabilityDTO;
 import com.project.tim49.dto.DoctorDTO;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.OptimisticLockException;
 import javax.print.Doc;
 import javax.validation.ValidationException;
 import java.lang.reflect.Type;
@@ -367,6 +370,9 @@ public class DoctorService {
         return false;
     }
 
+    // readOnly = false -- modifikujemo doktora
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void rateDoctor(Long doctor_id, Long patient_id, int stars){
         if (doctor_id == null || patient_id == null || stars == 0 || stars < 0 || stars > 5){
             throw new ValidationException("Invalid parameters.");
@@ -406,6 +412,8 @@ public class DoctorService {
         }
 
         doctorRepository.save(doctor);
+        // Za testiranje konkurentnog pristupa
+        // try { Thread.sleep(5000); } catch (InterruptedException e) { }
     }
 
     public boolean shiftValid(String shiftStart, String shiftEnd){

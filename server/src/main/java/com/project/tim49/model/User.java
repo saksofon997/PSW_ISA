@@ -60,6 +60,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
 
+    @Version
+    private Long version;
+
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
     }
@@ -183,5 +186,13 @@ public class User implements UserDetails {
 
     public void setPasswordChanged(boolean passwordChanged) {
         this.passwordChanged = passwordChanged;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
