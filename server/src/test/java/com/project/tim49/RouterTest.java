@@ -186,6 +186,8 @@ public class RouterTest {
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"dropdownMenuButton1\"]")));
         WebElement optionsButton =  browser.findElement(By.xpath("//button[@id=\"dropdownMenuButton1\"]"));
         optionsButton.click();
+        (new WebDriverWait(browser, 10))
+                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//a[@id=\"selectOrd1\"]"))));
         browser.findElement(By.xpath("//a[@id=\"selectOrd1\"]")).click();
         (new WebDriverWait(browser, 10))
                 .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"showAvailable62\"]")));
