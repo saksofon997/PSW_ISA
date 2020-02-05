@@ -34,12 +34,14 @@ public class PatientService {
 
     public UserDTO findById(Long id) {
 
-        User user = patientRepository.findById(id).orElse(null);
-        UserDTO userDTO=null;
-        if(user!= null){
-            userDTO = new UserDTO(user);
+        Optional<Patient> user = patientRepository.findById(id);
+
+        if(user.isPresent()){
+            UserDTO userDTO = new UserDTO(user.get());
+            return userDTO;
+        } else {
+            throw new ValidationException("Patient does not exist");
         }
-        return userDTO;
     }
     public void changePatient(UserDTO userDTO){
         User admin = patientRepository.getOne(userDTO.getId());

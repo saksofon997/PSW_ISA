@@ -72,4 +72,15 @@ public class DoctorServiceTest {
         //doctors ids should match
         assertEquals(doctorDTO.getId(), docID);
     }
+
+    @Test
+    @Transactional
+    public void getByAdvancedQueryTest() throws Exception {
+        Long clinicID = 1L;
+        Long toeID = 1L;
+        long date = 1580933757;
+
+        List<DoctorDTO> docsDto = doctorService.getByAdvancedQuery("", "", clinicID, -1, toeID, date);
+        assertNotEquals(docsDto.size(), 0);
+    }
 }
