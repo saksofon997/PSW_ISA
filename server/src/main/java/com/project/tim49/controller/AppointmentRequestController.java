@@ -7,6 +7,7 @@ import com.project.tim49.service.DoctorService;
 import com.project.tim49.service.EmailService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -97,6 +98,8 @@ public class AppointmentRequestController {
             return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
         } catch (ValidationException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (PessimisticLockingFailureException e) {
+            return new ResponseEntity<>("This request might been already approved, please reload page with all requests", HttpStatus.CONFLICT);
         }
     }
 
