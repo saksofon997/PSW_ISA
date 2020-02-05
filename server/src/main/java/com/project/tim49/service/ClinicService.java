@@ -3,13 +3,18 @@ package com.project.tim49.service;
 import com.project.tim49.dto.*;
 import com.project.tim49.model.*;
 import com.project.tim49.repository.*;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.OptimisticLockException;
 import javax.validation.ValidationException;
 import java.util.*;
 import java.util.function.Predicate;
@@ -158,7 +163,10 @@ public class ClinicService {
         throw new ValidationException("Clinic ID has null value!");
     }
 
-    public void rateClinic(Long clinic_id, Long patient_id, int stars){
+    // readOnly = false -- modifikujemo kliniku
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public void rateClinic(Long clinic_id, Long patient_id, int stars) throws StaleObjectStateException {
         if (clinic_id == null || patient_id == null || stars == 0 || stars < 0 || stars > 5){
             throw new ValidationException("Invalid parameters.");
         }
@@ -184,6 +192,7 @@ public class ClinicService {
         if (clinicPatient == null){
             throw new EntityNotFoundException("Database error");
         }
+        System.out.println(clinicPatient.isRated());
         if (clinicPatient.isRated()){
             clinic.setNumberOfStars(clinic.getNumberOfStars() - clinicPatient.getStars() + stars);
             clinicPatient.setStars(stars);
@@ -195,6 +204,8 @@ public class ClinicService {
         }
 
         clinicRepository.save(clinic);
+        // Za testiranje konkurentnog pristupa
+        // try { Thread.sleep(5000); } catch (InterruptedException e) { }
     }
 
 

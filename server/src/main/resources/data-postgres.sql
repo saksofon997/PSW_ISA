@@ -15,20 +15,20 @@ INSERT INTO public.authority(
     VALUES (nextval('authority_id_seq'), 'PATIENT'); /*5*/
 
 INSERT INTO public.clinic(
-	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Nikole Pasica/13', 'Novi Sad', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Healty living', 13, 56, 'Srbija');
+	id, address, city, description, name, number_of_reviews, number_of_stars, state, version)
+	VALUES (nextval('clinic_id_seq'), 'Nikole Pasica/13', 'Novi Sad', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Healty living', 13, 56, 'Srbija', 0);
 INSERT INTO public.clinic(
-	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Šećer Sokak/25', 'Sremska Mitrovica', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Health city', 16, 45, 'Srbija');
+	id, address, city, description, name, number_of_reviews, number_of_stars, state, version)
+	VALUES (nextval('clinic_id_seq'), 'Šećer Sokak/25', 'Sremska Mitrovica', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Health city', 16, 45, 'Srbija', 0);
 INSERT INTO public.clinic(
-	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Bulevar Cara Dušana/1', 'Kraljevo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Medify', 3, 13, 'Srbija');
+	id, address, city, description, name, number_of_reviews, number_of_stars, state, version)
+	VALUES (nextval('clinic_id_seq'), 'Bulevar Cara Dušana/1', 'Kraljevo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Medify', 3, 13, 'Srbija', 0);
 INSERT INTO public.clinic(
-	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Konstantinova/118', 'Niš', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Niš general hospital', 6, 21, 'Srbija');
+	id, address, city, description, name, number_of_reviews, number_of_stars, state, version)
+	VALUES (nextval('clinic_id_seq'), 'Konstantinova/118', 'Niš', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Niš general hospital', 6, 21, 'Srbija', 0);
 INSERT INTO public.clinic(
-	id, address, city, description, name, number_of_reviews, number_of_stars, state)
-	VALUES (nextval('clinic_id_seq'), 'Vladimira Iljiča Lenjina/17', 'Beograd', 'Gloria Lenin.', 'Nomino hospitium Lenin.', 3, 14, 'Srbija');
+	id, address, city, description, name, number_of_reviews, number_of_stars, state, version)
+	VALUES (nextval('clinic_id_seq'), 'Vladimira Iljiča Lenjina/17', 'Beograd', 'Gloria Lenin.', 'Nomino hospitium Lenin.', 3, 14, 'Srbija', 0);
 
 INSERT INTO public.type_of_examination(
 	id, name, operation)
@@ -519,13 +519,20 @@ INSERT INTO public.appointment_doctors(
 INSERT INTO public.appointment_doctors(
     appointment_id, doctor_id)
     VALUES (11, 11);
+
 INSERT INTO public.clinic_patient(
     clinic_id, patient_id, rated, stars)
     VALUES (1, 23, false, 0);
+INSERT INTO public.clinic_patient(
+    clinic_id, patient_id, rated, stars)
+    VALUES (1, 24, false, 0);
 
 INSERT INTO public.doctor_patient(
     doctor_id, patient_id, rated, stars)
     VALUES (10, 23, false, 0);
+INSERT INTO public.doctor_patient(
+    doctor_id, patient_id, rated, stars)
+    VALUES (11, 24, false, 0);
 
 INSERT INTO public.prescription(
 	id, medication_id, nurse_id, doctor_id, clinic_id, approved)

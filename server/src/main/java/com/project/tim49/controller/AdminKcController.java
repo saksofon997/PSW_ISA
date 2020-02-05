@@ -10,6 +10,7 @@ import com.project.tim49.service.ClinicCenterAdminService;
 import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.EmailService;
 import com.project.tim49.service.UserService;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.OptimisticLockException;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +107,8 @@ public class AdminKcController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (EntityNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (StaleObjectStateException e){
+            return new ResponseEntity<>("Try again", HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
 

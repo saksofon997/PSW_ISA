@@ -91,10 +91,10 @@ public class AppointmentRequestController {
             this.emailService.sendAppointmentRequestApproved(returnValue);
 
             return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
-        } catch (ValidationException e){
+        } catch (ValidationException | NoSuchElementException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (PessimisticLockingFailureException e) {
-            return new ResponseEntity<>("This request might been already approved, please reload page with all requests", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("This request might have been already approved, please reload the page with all requests", HttpStatus.CONFLICT);
         }
     }
 

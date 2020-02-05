@@ -12,6 +12,7 @@ public class ClinicDTO {
     private String description;
     private int numberOfStars;
     private int numberOfReviews;
+    private Long version;
 
     public ClinicDTO(){
 
@@ -26,6 +27,7 @@ public class ClinicDTO {
         this.description = clinic.getDescription();
         this.numberOfStars = clinic.getNumberOfStars();
         this.numberOfReviews = clinic.getNumberOfReviews();
+        this.version = clinic.getVersion();
     }
 
     public Long getId() {
@@ -90,5 +92,13 @@ public class ClinicDTO {
 
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
