@@ -38,8 +38,8 @@
                             [ngClass]="{ 'is-invalid': submitted && searchForm.controls.date.errors }" id="date"
                             style="border: 0;">
                     </div>
-                    <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
-                            class="fa fa-calendar"></i> </span>
+                    <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> 
+                        <ion-icon size="large" name="calendar" style="cursor: pointer;"></ion-icon> </span>
                     <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
                 </div>
             </div>

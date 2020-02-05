@@ -17,8 +17,8 @@
                     <div *ngIf="form.controls.dateAndTime.errors.required">Date and time is required</div>
                 </div>
             </div>
-            <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> <i
-                    class="fa fa-calendar"></i> </span>
+            <span class="m-1 float-right col-lg-1 col-sm-2 col-md-2" [owlDateTimeTrigger]="dt2"> 
+                <ion-icon size="large" name="calendar" style="cursor: pointer;"></ion-icon> </span>
             <owl-date-time [startAt]="now" [stepMinute]="10" [stepSecond]="60" #dt2></owl-date-time>
         </div>
     </div>
