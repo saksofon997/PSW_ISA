@@ -26,7 +26,8 @@ In the following sections we provided a set of instructions on how to run the ap
 ## Development
 For development purposes one can build frontend and backend separately. Instructions on how to achieve this are contained in the next two subsections.
 ### Running Frontend
-The frontend can be run as a separate instance during development, which would enable changes in code to result in real-time changes in a browser. This can be achieved using following commands (which are to be excecuted from the root of the project).
+The frontend can be run as a separate instance during development, which would enable changes in code to result in real-time changes in a browser. This can be achieved using following commands:
+- * **Note** commands are to be excecuted from the root of the project.
 ```
 # Navigate to the frontend
 cd client
@@ -42,7 +43,7 @@ Now you should be able to access http://localhost:4200
 - *All requests to the server side of the application are relative. The frontend is using a proxy that defaults to http://localhost:8080. In order to change this behaviour modify the **target** property in **proxy.conf.json** file.*
 
 ### Building backend (Spring boot Java) & starting the API and WebUI server
-The server side of the application can be built using maven as a server build tool. Make sure your port 8080 is not used, or change it *(port and other configurations for API server is in [./server/src/main/resources/application.properties](/server/src/main/resources/application.properties) file).*
+The server side of the application can be built using maven as a server build tool. Make sure your port 8080 is not used, or change it *(port and other configurations for API server are in [./server/src/main/resources/application.properties](/server/src/main/resources/application.properties) file).*
 ```
 # Navigate to the backend
 cd server
