@@ -1,15 +1,5 @@
 # PSW_ISA
 
-
-# Prerequisites: 
-
-Ensure you have this installed before proceeding further
-
-- Java 8
-- Node ^10.15
-- npm ^6.4
-- maven ^3.6
-- Angular cli
 ---
 # About
 This project is done as a part of two courses at Faculty of technical sciences in Novi Sad, Serbia.
@@ -21,6 +11,17 @@ It is developed as a two-part application consisting of Angular-based frontend a
 - @mihajlo-perendija
 
 # Getting started
+
+## Prerequisites: 
+
+Ensure you have this installed before proceeding further
+
+- Java 8
+- Node ^10.15
+- npm ^6.4
+- maven ^3.6
+- Angular cli
+---
 In the following sections we provided a set of instructions on how to run the application during development (as two separate instances: fronted & backend) or production (as an independent, deployment-ready instance).
 ## Development
 For development purposes one can build frontend and backend separately. Instructions on how to achieve this are contained in the next two subsections.
