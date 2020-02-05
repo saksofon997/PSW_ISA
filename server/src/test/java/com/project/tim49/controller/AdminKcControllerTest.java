@@ -112,18 +112,6 @@ class AdminKcControllerTest {
     }
 
     @Test
-    public void getClinicAdmins() throws Exception{
-//        mockMvc.perform(get(URL_PREFIX + "/getClinicAdmins/" + ClinicConstants.DB_ID))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(contentType))
-//                .andExpect(jsonPath("$", hasSize(DB_CLINIC_ADMIN_COUNT)))
-//                .andExpect(jsonPath("$.id").value(ClinicConstants.DB_CLINIC_ADMIN_ID.intValue()))
-//                .andExpect(jsonPath("$.[*].name").value(hasItem(DB_CLINIC_ADMIN_NAME)))
-//                .andExpect(jsonPath("$.[*].email").value(hasItem(DB_CLINIC_ADMIN_EMAIL)))
-//                .andExpect(jsonPath("$.[*].upin").value(hasItem(DB_CLINIC_ADMIN_UPIN)));
-    }
-
-    @Test
     public void getAdminKc() {
     }
 
