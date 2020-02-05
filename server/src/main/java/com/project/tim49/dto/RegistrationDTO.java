@@ -14,6 +14,7 @@ public class RegistrationDTO {
     private String state;
     private String phoneNumber;
     private String upin;
+    private Long version;
     public RegistrationDTO(){
 
     }
@@ -29,6 +30,7 @@ public class RegistrationDTO {
         this.phoneNumber = request.getPhoneNumber();
         this.upin = request.getUpin();
         this.id = request.getId();
+        this.version = request.getVersion();
     }
 
     public String getEmail() {
@@ -105,5 +107,13 @@ public class RegistrationDTO {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

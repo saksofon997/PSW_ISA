@@ -574,3 +574,7 @@ INSERT INTO public.vacation(
 INSERT INTO public.vacation(
 	id, approved, start_date, end_date, medical_staff_id, version)
 	VALUES (nextval('vacation_id_seq'), false, 1584745200, 1584918000, 10, 0);
+
+INSERT INTO public.registration_request(
+	id, address, city, email, name, password, phone_number, state, surname, upin, approved, version)
+	VALUES (nextval('registration_request_id_seq'), 'Bulevar Oslobodjenja 9', 'Novi Sad', 'patienttest@kcv.rs', 'Marko', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Ivanovic', '1010997100010', false, 0);

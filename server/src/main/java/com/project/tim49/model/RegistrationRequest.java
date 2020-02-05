@@ -42,6 +42,9 @@ public class RegistrationRequest {
     @Column(name = "approved", nullable = false)
     private boolean approved;
 
+    @Version
+    private Long version;
+
     public Long getId() {
         return id;
     }
@@ -128,5 +131,13 @@ public class RegistrationRequest {
 
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

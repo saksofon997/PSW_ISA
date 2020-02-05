@@ -21,6 +21,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.MethodNotAllowedException;
 
 import javax.validation.ValidationException;
@@ -136,18 +138,28 @@ public class UserServiceImpl implements UserService {
         return registrationDTOS;
     }
 
+    // readOnly = false -- modifikujemo registration request
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
     public RegistrationDTO approveRegistrationRequest(RegistrationDTO registrationDTO) {
         RegistrationRequest request = this.registrationRequestRepository.findOneByEmail(registrationDTO.getEmail());
-        if (request != null) {
-            request.setApproved(true);
-            RegistrationRequest saved=this.registrationRequestRepository.save(request);
-            return new RegistrationDTO(saved);
+        if (request == null) {
+            throw new ValidationException("Registration request with provided e-mail does not exist!");
         }
-        throw new ValidationException("Registration request with provided e-mail does not " +
-                "exist!");
+        if (request.isApproved()){
+            throw new ValidationException("Registration request has already been approved!");
+        }
+        request.setApproved(true);
+        RegistrationRequest saved=this.registrationRequestRepository.save(request);
+        // Za testiranje konkurentnog pristupa
+        // try { Thread.sleep(5000); } catch (InterruptedException e) { }
+        return new RegistrationDTO(saved);
     }
 
+    // readOnly = false -- modifikujemo vacation
+    // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
     public RegistrationDTO deleteRegistrationRequest(Long id) {
         Optional<RegistrationRequest> request = registrationRequestRepository.findById(id);

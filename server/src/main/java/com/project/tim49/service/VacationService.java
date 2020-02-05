@@ -52,11 +52,11 @@ public class VacationService {
         vacation.setApproved(true);
         vacationRepository.save(vacation);
         // Za testiranje konkurentnog pristupa
-         try { Thread.sleep(5000); } catch (InterruptedException e) { }
+        // try { Thread.sleep(5000); } catch (InterruptedException e) { }
         return userDTO;
     }
 
-    // readOnly = false -- modifikujemo doktora
+    // readOnly = false -- modifikujemo vacation
     // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public UserDTO denyVacationRequest(Long vacation_id) {
@@ -85,6 +85,7 @@ public class VacationService {
             userDTO = new UserDTO(nurse.get());
 
         vacationRepository.delete(vacation.get());
+        // try { Thread.sleep(5000); } catch (InterruptedException e) { }
         return userDTO;
     }
 
