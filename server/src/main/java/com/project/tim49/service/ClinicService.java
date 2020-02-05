@@ -35,14 +35,15 @@ public class ClinicService {
 
     public ClinicDTO findOneDTO(Long id) {
 
-        Clinic c = clinicRepository.findById(id).orElseGet(null);
+        Optional<Clinic> c = clinicRepository.findById(id);
 
-        if(c != null) {
-            ClinicDTO dto = new ClinicDTO(c);
+        if(c.isPresent()) {
+            ClinicDTO dto = new ClinicDTO(c.get());
             return dto;
         }
-        else
+        else {
             throw new ValidationException("Clinic does not exist!");
+        }
     }
 
     public Clinic findOne(Long id) {

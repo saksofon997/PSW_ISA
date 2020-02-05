@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public
 class AppointmentRequestControllerTest {
     private static final String URL_PREFIX = "/api/appointmentRequest";

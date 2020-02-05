@@ -3,12 +3,14 @@ package com.project.tim49.controller;
 import com.project.tim49.constants.ClinicConstants;
 import com.project.tim49.dto.AppointmentDTO;
 import com.project.tim49.dto.LoginDTO;
+import com.project.tim49.model.Appointment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,7 +22,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public
 class AppointmentControllerTest {
     private static final String URL_PREFIX = "/api/appointment";
@@ -29,6 +31,9 @@ class AppointmentControllerTest {
             MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
+
+    @Autowired
+    private Environment env;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -62,12 +67,12 @@ class AppointmentControllerTest {
 
     @Test //positive
     public void choseAvailableAppointment() throws Exception{
-        ResponseEntity<Long> responseEntity =
-                restTemplate.exchange(URL_PREFIX + "/choseAvailableAppointment/"+ClinicConstants.DB_AVAILABLE_APPOINTMENT_ID+"/"+ClinicConstants.DB_PATIENT_ID, HttpMethod.PUT, httpEntity, Long.class, Long.class);
+        ResponseEntity<AppointmentDTO> responseEntity =
+                restTemplate.exchange(URL_PREFIX + "/choseAvailableAppointment/"+ClinicConstants.DB_AVAILABLE_APPOINTMENT_ID+"/"+ClinicConstants.DB_PATIENT_ID, HttpMethod.PUT, httpEntity, AppointmentDTO.class);
 
         //checks if starting id equals return id
-        Long apptID = responseEntity.getBody();
+        AppointmentDTO appt = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(ClinicConstants.DB_AVAILABLE_APPOINTMENT_ID, apptID);
+        assertEquals(ClinicConstants.DB_AVAILABLE_APPOINTMENT_ID, appt.getId());
     }
 }

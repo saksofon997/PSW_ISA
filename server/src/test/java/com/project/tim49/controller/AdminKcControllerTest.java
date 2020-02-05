@@ -48,7 +48,7 @@ class AdminKcControllerTest {
 
     @Before
     public void login() {
-        System.out.println(env);
+        //System.out.println(env);
         ResponseEntity<AuthenticationController.UserState> responseEntity =
                 restTemplate.postForEntity("/auth/login",
                         new LoginDTO("adminkc1@kcv.rs", "123456"),

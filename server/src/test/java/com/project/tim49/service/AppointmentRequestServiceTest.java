@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -16,7 +15,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public class AppointmentRequestServiceTest {
     @Autowired
     AppointmentRequestService appointmentRequestService;
@@ -53,7 +52,7 @@ public class AppointmentRequestServiceTest {
         assertNotNull(apptResp);
     }
 
-    @Test
+    @Test //positive
     @Transactional
     public void approveAppointmentRequest() throws Exception {
         AppointmentDTO apptSend = new AppointmentDTO();
