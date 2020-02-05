@@ -48,7 +48,14 @@ public class ClinicService {
 
     public Clinic findOne(Long id) {
 
-        return clinicRepository.findById(id).orElseGet(null);
+        Optional<Clinic> c = clinicRepository.findById(id);
+
+        if(c.isPresent()) {
+            return c.get();
+        }
+        else {
+            throw new ValidationException("Clinic does not exist!");
+        }
     }
 
     public List<ClinicAdministratorDTO> getClinicAdmins(Long id) {
@@ -68,13 +75,13 @@ public class ClinicService {
 
     }
     public List<DoctorDTO> getClinicDoctors(Long id){
-        Clinic clinic = clinicRepository.findById(id).orElseGet(null);
+        Optional<Clinic> clinic = clinicRepository.findById(id);
 
-        if (clinic == null){
+        if (clinic.get() == null){
             throw new NoSuchElementException();
         }
 
-        List<Doctor> doctors = clinic.getDoctors();
+        List<Doctor> doctors = clinic.get().getDoctors();
         List<DoctorDTO> doctorDTOS = new ArrayList<>();
 
         for (Doctor doctor: doctors) {
