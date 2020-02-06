@@ -47,7 +47,7 @@ public class AdminKcControllerTest {
 
     @Before
     public void login() {
-        System.out.println(env);
+        //System.out.println(env);
         ResponseEntity<AuthenticationController.UserState> responseEntity =
                 restTemplate.postForEntity("/auth/login",
                         new LoginDTO("adminkc1@kcv.rs", "123456"),
@@ -59,27 +59,6 @@ public class AdminKcControllerTest {
         //kreiramo objekat koji saljemo u sklopu zahteva
         // objekat nema telo, vec samo zaglavlje, jer je rec o GET zahtevu
         httpEntity = new HttpEntity<Object>(headers);
-    }
-
-    @PostConstruct
-    public void setup() {
-
-    }
-
-    @Test
-    public void saveClinic() {
-    }
-
-    @Test
-    public void editClinic() {
-    }
-
-    @Test
-    public void deleteClinic() {
-    }
-
-    @Test
-    public void rateClinic() {
     }
 
     @Test
@@ -108,37 +87,5 @@ public class AdminKcControllerTest {
         assertEquals(DB_NAME, clinic.getName());
         assertEquals(DB_CITY, clinic.getCity());
         assertEquals(DB_ADDRESS, clinic.getAddress());
-    }
-
-    @Test
-    public void getClinicAdmins() throws Exception{
-//        mockMvc.perform(get(URL_PREFIX + "/getClinicAdmins/" + ClinicConstants.DB_ID))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(contentType))
-//                .andExpect(jsonPath("$", hasSize(DB_CLINIC_ADMIN_COUNT)))
-//                .andExpect(jsonPath("$.id").value(ClinicConstants.DB_CLINIC_ADMIN_ID.intValue()))
-//                .andExpect(jsonPath("$.[*].name").value(hasItem(DB_CLINIC_ADMIN_NAME)))
-//                .andExpect(jsonPath("$.[*].email").value(hasItem(DB_CLINIC_ADMIN_EMAIL)))
-//                .andExpect(jsonPath("$.[*].upin").value(hasItem(DB_CLINIC_ADMIN_UPIN)));
-    }
-
-    @Test
-    public void getAdminKc() {
-    }
-
-    @Test
-    public void modifyAdminKc() {
-    }
-
-    @Test
-    public void getRegistrationRequests() {
-    }
-
-    @Test
-    public void approveRequest() {
-    }
-
-    @Test
-    public void deleteRequest() {
     }
 }
