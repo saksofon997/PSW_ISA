@@ -419,6 +419,7 @@ export class OrdinationSelectionComponent implements OnInit {
 
 	closeModal(){
 		this.selectedTimeslots = [];
+		this.modal.dismissAll();
 	}
 
 	ngOnDestroy() {
