@@ -72,6 +72,28 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Prescription> prescriptions;
 
+   public Clinic(){
+      super();
+   }
+
+   public Clinic(String name, String address, String city, String state, String description, int numberOfStars, int numberOfReviews, List<Ordination> ordination, List<ClinicAdministrator> clinicAdministrator, Set<ClinicTypeOfExamination> typesOfExaminations, Set<ClinicPatient> patients, List<Doctor> doctors, List<Nurse> nurses, List<Appointment> appointments, List<Prescription> prescriptions) {
+      this.name = name;
+      this.address = address;
+      this.city = city;
+      this.state = state;
+      this.description = description;
+      this.numberOfStars = numberOfStars;
+      this.numberOfReviews = numberOfReviews;
+      this.ordination = ordination;
+      this.clinicAdministrator = clinicAdministrator;
+      this.typesOfExaminations = typesOfExaminations;
+      this.patients = patients;
+      this.doctors = doctors;
+      this.nurses = nurses;
+      this.appointments = appointments;
+      this.prescriptions = prescriptions;
+   }
+
    public List<Prescription> getPrescriptions() {
       return prescriptions;
    }
