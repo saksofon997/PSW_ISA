@@ -1,3 +1,7 @@
+-- noinspection SqlDialectInspectionForFile
+
+-- noinspection SqlNoDataSourceInspectionForFile
+
 INSERT INTO public.authority(
     id, name)
     VALUES (nextval('authority_id_seq'), 'ADMINCC'); /*1*/
