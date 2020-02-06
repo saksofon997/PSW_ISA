@@ -45,6 +45,22 @@ public class AppointmentRequest {
     @JoinColumn(name = "type_of_examination_id", referencedColumnName = "id")
     public TypeOfExamination typeOfExamination;
 
+    public AppointmentRequest(){
+        super();
+    }
+
+    public AppointmentRequest(boolean approved, long startingDateAndTime, long endingDateAndTime, long duration, double price, Clinic clinic, Patient patient, Doctor doctor, TypeOfExamination typeOfExamination) {
+        this.approved = approved;
+        this.startingDateAndTime = startingDateAndTime;
+        this.endingDateAndTime = endingDateAndTime;
+        this.duration = duration;
+        this.price = price;
+        this.clinic = clinic;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.typeOfExamination = typeOfExamination;
+    }
+
     public Long getId() {
         return id;
     }

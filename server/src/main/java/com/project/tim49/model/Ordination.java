@@ -21,6 +21,16 @@ public class Ordination {
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public Clinic clinic;
 
+    public Ordination(){
+        super();
+    }
+
+    public Ordination(String name, String number, Clinic clinic) {
+        this.name = name;
+        this.number = number;
+        this.clinic = clinic;
+    }
+
     public Long getId() {
         return id;
     }
