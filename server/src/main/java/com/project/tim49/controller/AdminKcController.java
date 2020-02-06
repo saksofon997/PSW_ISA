@@ -10,6 +10,7 @@ import com.project.tim49.service.ClinicCenterAdminService;
 import com.project.tim49.service.ClinicService;
 import com.project.tim49.service.EmailService;
 import com.project.tim49.service.UserService;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.OptimisticLockException;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +106,14 @@ public class AdminKcController {
         } catch (ValidationException | NoSuchElementException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e){
+            int i=1;
+            for(Throwable t=(Throwable)e; t!=null; t=t.getCause()){
+                if(t instanceof StaleObjectStateException)
+                    return new ResponseEntity<>("Try again", HttpStatus.SERVICE_UNAVAILABLE);
+                i++;
+            }
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -216,8 +226,17 @@ public class AdminKcController {
         RegistrationDTO registrationDTO = new RegistrationDTO();
         try {
             registrationDTO =  userService.approveRegistrationRequest(regDTO);
+            registrationDTO.setPassword(null);
         }catch (ValidationException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e){
+            int i=1;
+            for(Throwable t=(Throwable)e; t!=null; t=t.getCause()){
+                if(t instanceof StaleObjectStateException)
+                    return new ResponseEntity<>("This registration request has already been approved or rejected", HttpStatus.CONFLICT);
+                i++;
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
             this.emailService.sendConfirmationEmail(regDTO);
@@ -237,10 +256,18 @@ public class AdminKcController {
             return new ResponseEntity<>("Registration request deletion failed, request not found!",
                     HttpStatus.NOT_FOUND);
         }catch(SecurityException e){
-            return new ResponseEntity<>("Registration request already approved!",
+            return new ResponseEntity<>("Registration request has already been approved!",
                     HttpStatus.NOT_ACCEPTABLE);
         }catch(InterruptedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }catch (Exception e){
+            int i=1;
+            for(Throwable t=(Throwable)e; t!=null; t=t.getCause()){
+                if(t instanceof StaleObjectStateException)
+                    return new ResponseEntity<>("This registration request has already been approved or rejected", HttpStatus.CONFLICT);
+                i++;
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(deleted, HttpStatus.OK);
     }

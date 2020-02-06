@@ -253,8 +253,20 @@ export class MedicalRecordComponent implements OnInit {
         alert("Clinic successfully rated!");
       },
       (error) => {
-        alert(error);
-        this.getMedicalRecord();
+		if (error === "Try again") {
+			this.clinicService.rateClinic(clinic_id, user_id, $event.newValue).subscribe(
+				(data) => {
+				  alert("Clinic successfully rated!");
+				},
+				(error) => {
+				  alert(error);
+				  this.getMedicalRecord();
+				}
+			  )
+		} else {
+			alert(error);
+			this.getMedicalRecord();
+		}
       }
     )
   }
@@ -266,8 +278,20 @@ export class MedicalRecordComponent implements OnInit {
         alert("Doctor successfully rated!");
       },
       (error) => {
-        alert(error);
-        this.getMedicalRecord();
+        if (error === "Try again") {
+			this.doctorService.rateDoctor(doctor_id, user_id, $event.newValue).subscribe(
+				(data) => {
+				  alert("Doctor successfully rated!");
+				},
+				(error) => {
+				  alert(error);
+				  this.getMedicalRecord();
+				}
+			  )
+		} else {
+			alert(error);
+			this.getMedicalRecord();
+		}
       }
     )
   }

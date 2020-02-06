@@ -57,7 +57,7 @@ public class AppointmentRequestService {
         return appointmentDTOs;
     }
 
-    // readOnly = false -- modifikujemo appointment jer mu dodajemo pacijenta
+    // readOnly = false -- kreiramo appointment request
     // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
     // isolation = read_committed -- resava i unrepeatable read jer se za objekat cuva u L1 memoriji pri queriju istog objekta
     // javax.persistence.lock.timeout je jednak 0 iako bi bilo bolje da se moze staviti vise, u slucaju greske, ovako moze da nervira korisnika
@@ -124,7 +124,7 @@ public class AppointmentRequestService {
         return appointmentRequest;
     }
 
-    // readOnly = false -- modifikujemo appointment jer mu dodajemo pacijenta
+    // readOnly = false -- dodajemo appointment doktoru
     // propagation = requires_new -- za svaki poziv metode se pokrece nova transakcija
     // isolation = read_committed -- resava i unrepeatable read jer se za objekat cuva u L1 memoriji pri queriju istog objekta
     // javax.persistence.lock.timeout je jednak 0 iako bi bilo bolje da se moze staviti vise, u slucaju greske, ovako moze da nervira korisnika

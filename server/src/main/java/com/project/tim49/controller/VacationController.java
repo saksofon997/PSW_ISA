@@ -4,6 +4,7 @@ import com.project.tim49.dto.UserDTO;
 import com.project.tim49.dto.VacationDTO;
 import com.project.tim49.service.EmailService;
 import com.project.tim49.service.VacationService;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -64,10 +66,22 @@ public class VacationController {
     public ResponseEntity<Object> approveVacationRequest(@PathVariable("id") Long vacation_id) throws InterruptedException {
         if(vacation_id == null)
             return new ResponseEntity<>("Invalid input data", HttpStatus.UNPROCESSABLE_ENTITY);
-        UserDTO user = vacationService.approveVacationRequest(vacation_id);
-        this.emailService.sendVacationRequestApprovedEmail(user);
+        try {
+            UserDTO user = vacationService.approveVacationRequest(vacation_id);
+            this.emailService.sendVacationRequestApprovedEmail(user);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (ValidationException | NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            int i=1;
+            for(Throwable t=(Throwable)e; t!=null; t=t.getCause()){
+                if(t instanceof StaleObjectStateException)
+                    return new ResponseEntity<>("This vacation request has already been approved or rejected", HttpStatus.CONFLICT);
+                i++;
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping(path="/deny/{id}")
@@ -80,8 +94,16 @@ public class VacationController {
             this.emailService.sendVacationRequestDeniedEmail(denied, message);
 
             return new ResponseEntity<>("", HttpStatus.OK);
-        }catch(InterruptedException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }catch (ValidationException | NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            int i=1;
+            for(Throwable t=(Throwable)e; t!=null; t=t.getCause()){
+                if(t instanceof StaleObjectStateException)
+                    return new ResponseEntity<>("This vacation request has already been approved or rejected", HttpStatus.CONFLICT);
+                i++;
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -72,6 +72,9 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", fetch = FetchType.LAZY)
    public List<Prescription> prescriptions;
 
+    @Version
+    private Long version;
+
    public Clinic(){
       super();
    }
@@ -222,5 +225,11 @@ public class Clinic {
       this.appointments = appointments;
    }
 
+   public Long getVersion() {
+      return version;
+   }
 
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 }

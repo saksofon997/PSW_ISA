@@ -8,7 +8,7 @@ public class Vacation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "medicalStaff_id", referencedColumnName = "id")
     private User medicalStaff;
 
@@ -20,6 +20,9 @@ public class Vacation {
 
     @Column(name = "approved", nullable = false)
     private boolean approved;
+
+    @Version
+    private Long version;
 
     public boolean isApproved() {
         return approved;
@@ -59,5 +62,13 @@ public class Vacation {
 
     public void setEndDate(Long endDate) {
         this.endDate = endDate;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
