@@ -32,12 +32,12 @@ public class AppointmentService {
     private PatientRepository patientRepository;
 
     public ArrayList<AppointmentDTO> getClinicAvailableAppointments(Long clinic_id){
-        Clinic clinic = clinicRepository.findById(clinic_id).orElseGet(null);
-        if (clinic == null){
+        Optional<Clinic> clinic = clinicRepository.findById(clinic_id);
+        if (!clinic.isPresent()){
             throw new NoSuchElementException();
         }
 
-        ArrayList<Appointment> appointments = appointmentRepository.getByClinicAndPatientNullAndDeletedFalse(clinic);
+        ArrayList<Appointment> appointments = appointmentRepository.getByClinicAndPatientNullAndDeletedFalse(clinic.get());
         ArrayList<AppointmentDTO> appointmentDTOs = new ArrayList<>();
         for (Appointment app: appointments){
             appointmentDTOs.add(new AppointmentDTO(app));
@@ -48,19 +48,22 @@ public class AppointmentService {
     public AppointmentDTO startAppointment(AppointmentDTO appointmentDTO) {
         Appointment appointment = setAppointmentData(appointmentDTO);
 
-        Patient patient = patientRepository.findById(appointmentDTO.getPatient().getId()).get();
-        appointment.setPatient(patient);
+        Optional<Patient> patient = patientRepository.findById(appointmentDTO.getPatient().getId());
+        if(!patient.isPresent()){
+            throw new ValidationException("Invalid data, patient not found");
+        }
+        appointment.setPatient(patient.get());
         List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
         Set<Doctor> doctors = new HashSet<>();
         for(DoctorDTO d: doctorDTOS) {
-            Doctor doc = doctorRepository.findById(d.getId()).get();
-            doctors.add(doc);
+            Optional<Doctor> doc = doctorRepository.findById(d.getId());
+            doc.ifPresent(doctors::add);
         }
         appointment.setDoctors(doctors);
         Appointment saved = appointmentRepository.save(appointment);
 
-        patient.getPendingAppointments().add(saved);
-        patientRepository.save(patient);
+        patient.get().getPendingAppointments().add(saved);
+        patientRepository.save(patient.get());
 
         return new AppointmentDTO(saved);
     }
@@ -71,8 +74,8 @@ public class AppointmentService {
         List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
         Set<Doctor> doctors = new HashSet<>();
         for(DoctorDTO d: doctorDTOS) {
-            Doctor doc = doctorRepository.findById(d.getId()).get();
-            doctors.add(doc);
+            Optional<Doctor> doc = doctorRepository.findById(d.getId());
+            doc.ifPresent(doctors::add);
         }
         appointment.setDoctors(doctors);
 
@@ -89,14 +92,14 @@ public class AppointmentService {
         appointment.setDiscount(appointmentDTO.getDiscount());
         appointment.setCompleted(false);
 
-        TypeOfExamination type = typeOfExaminationRepository.findById(appointmentDTO.getTypeOfExamination().getId()).get();
-        appointment.setTypeOfExamination(type);
+        Optional<TypeOfExamination> type = typeOfExaminationRepository.findById(appointmentDTO.getTypeOfExamination().getId());
+        type.ifPresent(appointment::setTypeOfExamination);
 
-        Clinic clinic = clinicRepository.findById(appointmentDTO.getClinic().getId()).get();
-        appointment.setClinic(clinic);
+        Optional<Clinic> clinic = clinicRepository.findById(appointmentDTO.getClinic().getId());
+        clinic.ifPresent(appointment::setClinic);
 
-        Ordination ordination = ordinationRepository.findById(appointmentDTO.getOrdination().getId()).get();
-        appointment.setOrdination(ordination);
+        Optional<Ordination> ordination = ordinationRepository.findById(appointmentDTO.getOrdination().getId());
+        ordination.ifPresent(appointment::setOrdination);
 
         return appointment;
     }

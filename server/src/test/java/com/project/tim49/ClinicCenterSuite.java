@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+
         //Service tests
         AppointmentRequestServiceTest.class,
         AppointmentServiceTest.class,
@@ -28,6 +29,8 @@ import org.springframework.test.context.jdbc.Sql;
         AppointmentRepositoryTest.class,
         //Other tests
         //RouterTest.class
+        AppointmentServiceUnitTest.class,
+
 })
 public class ClinicCenterSuite {
 }

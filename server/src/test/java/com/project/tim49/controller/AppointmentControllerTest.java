@@ -28,7 +28,6 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
-@FixMethodOrder(MethodSorters.JVM)
 public
 class AppointmentControllerTest {
     private static final String URL_PREFIX = "/api/appointment";
