@@ -5,10 +5,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +19,13 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
-public class AppointmentRequestServiceTest {
+public class AppointmentRequestServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
     @Autowired
     AppointmentRequestService appointmentRequestService;
 
     @Test //positive, tests setAppointmentRequestData also
     @Transactional
+    @Rollback(true)
     public void scheduleNewAppointmentTest() throws Exception {
         AppointmentDTO apptSend = new AppointmentDTO();
         apptSend.setId(null);
@@ -55,6 +58,7 @@ public class AppointmentRequestServiceTest {
 
     @Test(expected = ValidationException.class) //negative
     @Transactional
+    @Rollback(true)
     public void scheduleNewAppointmentDoctorNotAvailableTest() throws Exception {
         AppointmentDTO apptSend = new AppointmentDTO();
         apptSend.setId(null);
@@ -87,6 +91,7 @@ public class AppointmentRequestServiceTest {
 
     @Test(expected = ValidationException.class) //negative
     @Transactional
+    @Rollback(true)
     public void scheduleNewAppointmentNotDuringWorkingHoursTest() throws Exception {
         AppointmentDTO apptSend = new AppointmentDTO();
         apptSend.setId(null);
@@ -119,9 +124,10 @@ public class AppointmentRequestServiceTest {
 
     @Test //positive
     @Transactional
+    @Rollback(true)
     public void approveAppointmentRequest() throws Exception {
         AppointmentDTO apptSend = new AppointmentDTO();
-        apptSend.setId(2L);
+        apptSend.setId(4L);
         apptSend.setStartingDateAndTime(1582028500);
         apptSend.setEndingDateAndTime(1582029100);
         apptSend.setDuration(10*60*100);
@@ -151,6 +157,7 @@ public class AppointmentRequestServiceTest {
 
     @Test(expected = ValidationException.class) //negative
     @Transactional
+    @Rollback(true)
     public void approveAppointmentRequestOrdinationNotAvailable() throws Exception {
         AppointmentDTO apptSend = new AppointmentDTO();
         apptSend.setId(3L);
