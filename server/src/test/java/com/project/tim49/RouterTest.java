@@ -193,7 +193,7 @@ public class RouterTest {
                 .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"showAvailable62\"]")));
         browser.findElement(By.xpath("//button[@id=\"showAvailable62\"]")).click();
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//div[@id=\"modal1\"]")));
+                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//div[@id=\"modal2\"]")));
         browser.findElement(By.xpath("//button[@class='btn btn-secondary']//self::button[1]")).click();
         browser.findElement(By.xpath("//button[@id='btnCreateAppointment']")).click();
         try{
