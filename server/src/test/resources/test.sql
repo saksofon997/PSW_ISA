@@ -1,16 +1,16 @@
-CREATE SEQUENCE authority_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE clinic_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE type_of_examination_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE medical_record_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE medication_dictionary_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE prescription_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE vacation_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE appointment_request_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE appointment_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE examination_report_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE ordination_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE diagnosis_dictionary_id_seq START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE registration_request_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS authority_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS clinic_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS type_of_examination_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS medical_record_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS medication_dictionary_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS prescription_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS vacation_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS appointment_request_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS appointment_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS examination_report_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS ordination_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS diagnosis_dictionary_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS registration_request_id_seq START WITH 1 INCREMENT BY 1;
 
 INSERT INTO public.authority(
     id, name)
@@ -457,6 +457,9 @@ INSERT INTO public.appointment(
 INSERT INTO public.appointment(
     id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
     VALUES (nextval('appointment_id_seq'), 1581603000, 1581603600, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false);
+INSERT INTO public.appointment(
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
+    VALUES (nextval('appointment_id_seq'), 1581603000, 1581603600, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false);
 
 INSERT INTO public.appointment_request(
     id, starting_date_and_time, ending_date_and_time, duration, price, doctor_id, clinic_id, patient_id, type_of_examination_id, approved)
@@ -539,6 +542,9 @@ INSERT INTO public.appointment_doctors(
 INSERT INTO public.appointment_doctors(
     appointment_id, doctor_id)
     VALUES (12, 11);
+INSERT INTO public.appointment_doctors(
+    appointment_id, doctor_id)
+    VALUES (13, 11);
 
 INSERT INTO public.clinic_patient(
     clinic_id, patient_id, rated, stars)

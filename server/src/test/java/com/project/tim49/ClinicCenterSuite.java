@@ -29,8 +29,10 @@ import org.springframework.test.context.jdbc.Sql;
         AppointmentRepositoryTest.class,
         //Other tests
         //RouterTest.class
-        AppointmentServiceUnitTest.class,
 
+        //Pokretati zasebno
+        AppointmentServiceUnitTest.class,
+        AppointmentRequestServiceUnitTest.class
 })
 public class ClinicCenterSuite {
 }
