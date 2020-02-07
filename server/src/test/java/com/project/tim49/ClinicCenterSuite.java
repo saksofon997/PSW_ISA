@@ -1,9 +1,6 @@
 package com.project.tim49;
 
-import com.project.tim49.controller.AdminKcControllerTest;
-import com.project.tim49.controller.AppointmentController;
-import com.project.tim49.controller.AppointmentControllerTest;
-import com.project.tim49.controller.AppointmentRequestControllerTest;
+import com.project.tim49.controller.*;
 import com.project.tim49.service.*;
 import com.project.tim49.repository.AppointmentRepositoryTest;
 import org.junit.runner.RunWith;
@@ -28,11 +25,7 @@ import org.springframework.test.context.jdbc.Sql;
         //Repository tests
         AppointmentRepositoryTest.class,
         //Other tests
-        //RouterTest.class
-
-        //Pokretati zasebno
-        AppointmentServiceUnitTest.class,
-        AppointmentRequestServiceUnitTest.class
+        RouterTest.class
 })
 public class ClinicCenterSuite {
 }
