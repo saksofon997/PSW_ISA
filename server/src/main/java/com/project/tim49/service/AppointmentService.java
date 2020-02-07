@@ -118,7 +118,7 @@ public class AppointmentService {
             throw new ValidationException("Appointment already taken");
         }
         // Za testiranje konkurentnog pristupa
-        // try { Thread.sleep(7000); } catch (InterruptedException e) { }
+        //try { Thread.sleep(5000); } catch (InterruptedException e) { }
 
         appointment.setPatient(patient.get());
         Appointment saved = appointmentRepository.save(appointment);

@@ -15,6 +15,7 @@ public class PatientDTO extends UserDTO{
     private String state;
     private String phoneNumber;
     private String upin;
+    private Long version;
 
 
     public PatientDTO() {
@@ -33,6 +34,8 @@ public class PatientDTO extends UserDTO{
         for (GrantedAuthority auth: patient.getAuthorities()) {
             this.roles.add(auth.getAuthority());
         }
+        this.version = patient.getVersion();
+
     }
 
     public Long getId() {
@@ -105,5 +108,13 @@ public class PatientDTO extends UserDTO{
 
     public void setUpin(String upin) {
         this.upin = upin;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

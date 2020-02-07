@@ -9,6 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.*;
@@ -26,8 +27,8 @@ public class AppointmentRequestServiceTest {
         AppointmentDTO apptSend = new AppointmentDTO();
         apptSend.setId(null);
         apptSend.setStartingDateAndTime(1582027900);
-        apptSend.setEndingDateAndTime(1582028800);
-        apptSend.setDuration(0);
+        apptSend.setEndingDateAndTime(1582028500);
+        apptSend.setDuration(10*60*100);
         TypeOfExaminationDTO toedto = new TypeOfExaminationDTO();
         toedto.setId(2L);
         apptSend.setTypeOfExamination(toedto);
@@ -52,14 +53,78 @@ public class AppointmentRequestServiceTest {
         assertNotNull(apptResp);
     }
 
+    @Test(expected = ValidationException.class) //negative
+    @Transactional
+    public void scheduleNewAppointmentDoctorNotAvailableTest() throws Exception {
+        AppointmentDTO apptSend = new AppointmentDTO();
+        apptSend.setId(null);
+        apptSend.setStartingDateAndTime(1581336000);
+        apptSend.setEndingDateAndTime(1581336600);
+        apptSend.setDuration(10*60*100);
+        TypeOfExaminationDTO toedto = new TypeOfExaminationDTO();
+        toedto.setId(2L);
+        apptSend.setTypeOfExamination(toedto);
+        OrdinationDTO orddto = new OrdinationDTO();
+        orddto.setId(1L);
+        apptSend.setOrdination(orddto);
+        apptSend.setPrice(3000);
+        ClinicDTO cdto = new ClinicDTO();
+        cdto.setId(1L);
+        apptSend.setClinic(cdto);
+        PatientDTO pdto = new PatientDTO();
+        pdto.setId(24L);
+        apptSend.setPatient(pdto);
+        DoctorDTO ddto = new DoctorDTO();
+        ddto.setId(10L);
+        List<DoctorDTO> doclist = new ArrayList<>();
+        doclist.add(ddto);
+        apptSend.setDoctors(doclist);
+
+        //successful if apptResp is not null
+        AppointmentDTO apptResp = appointmentRequestService.scheduleNewAppointment(apptSend);
+        assertNotNull(apptResp);
+    }
+
+    @Test(expected = ValidationException.class) //negative
+    @Transactional
+    public void scheduleNewAppointmentNotDuringWorkingHoursTest() throws Exception {
+        AppointmentDTO apptSend = new AppointmentDTO();
+        apptSend.setId(null);
+        apptSend.setStartingDateAndTime(1581498000);
+        apptSend.setEndingDateAndTime(1581498600);
+        apptSend.setDuration(10*60*100);
+        TypeOfExaminationDTO toedto = new TypeOfExaminationDTO();
+        toedto.setId(2L);
+        apptSend.setTypeOfExamination(toedto);
+        OrdinationDTO orddto = new OrdinationDTO();
+        orddto.setId(1L);
+        apptSend.setOrdination(orddto);
+        apptSend.setPrice(3000);
+        ClinicDTO cdto = new ClinicDTO();
+        cdto.setId(1L);
+        apptSend.setClinic(cdto);
+        PatientDTO pdto = new PatientDTO();
+        pdto.setId(24L);
+        apptSend.setPatient(pdto);
+        DoctorDTO ddto = new DoctorDTO();
+        ddto.setId(10L);
+        List<DoctorDTO> doclist = new ArrayList<>();
+        doclist.add(ddto);
+        apptSend.setDoctors(doclist);
+
+        //successful if apptResp is not null
+        AppointmentDTO apptResp = appointmentRequestService.scheduleNewAppointment(apptSend);
+        assertNotNull(apptResp);
+    }
+
     @Test //positive
     @Transactional
     public void approveAppointmentRequest() throws Exception {
         AppointmentDTO apptSend = new AppointmentDTO();
-        apptSend.setId(null);
-        apptSend.setStartingDateAndTime(1582027900);
-        apptSend.setEndingDateAndTime(1582028800);
-        apptSend.setDuration(0);
+        apptSend.setId(1L);
+        apptSend.setStartingDateAndTime(1582028500);
+        apptSend.setEndingDateAndTime(1582029100);
+        apptSend.setDuration(10*60*100);
         TypeOfExaminationDTO toedto = new TypeOfExaminationDTO();
         toedto.setId(2L);
         apptSend.setTypeOfExamination(toedto);
@@ -80,7 +145,39 @@ public class AppointmentRequestServiceTest {
         apptSend.setDoctors(doclist);
 
         //successful if apptResp is not null
-        AppointmentDTO apptResp = appointmentRequestService.scheduleNewAppointment(apptSend);
+        AppointmentDTO apptResp = appointmentRequestService.approveAppointmentRequest(apptSend);
+        assertNotNull(apptResp);
+    }
+
+    @Test(expected = ValidationException.class) //negative
+    @Transactional
+    public void approveAppointmentRequestOrdinationNotAvailable() throws Exception {
+        AppointmentDTO apptSend = new AppointmentDTO();
+        apptSend.setId(2L);
+        apptSend.setStartingDateAndTime(1581519600);
+        apptSend.setEndingDateAndTime(1581520200);
+        apptSend.setDuration(10*60*100);
+        TypeOfExaminationDTO toedto = new TypeOfExaminationDTO();
+        toedto.setId(2L);
+        apptSend.setTypeOfExamination(toedto);
+        OrdinationDTO orddto = new OrdinationDTO();
+        orddto.setId(1L);
+        apptSend.setOrdination(orddto);
+        apptSend.setPrice(3000);
+        ClinicDTO cdto = new ClinicDTO();
+        cdto.setId(1L);
+        apptSend.setClinic(cdto);
+        PatientDTO pdto = new PatientDTO();
+        pdto.setId(24L);
+        apptSend.setPatient(pdto);
+        DoctorDTO ddto = new DoctorDTO();
+        ddto.setId(12L);
+        List<DoctorDTO> doclist = new ArrayList<>();
+        doclist.add(ddto);
+        apptSend.setDoctors(doclist);
+
+        //successful if apptResp is not null
+        AppointmentDTO apptResp = appointmentRequestService.approveAppointmentRequest(apptSend);
         assertNotNull(apptResp);
     }
 }

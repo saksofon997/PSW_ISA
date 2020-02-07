@@ -13,20 +13,21 @@ import org.springframework.test.context.jdbc.Sql;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        //Controller tests
-        AdminKcControllerTest.class,
-        AppointmentControllerTest.class,
-        AppointmentRequestControllerTest.class,
         //Service tests
         AppointmentRequestServiceTest.class,
         AppointmentServiceTest.class,
         ClinicServiceTest.class,
         DoctorServiceTest.class,
         PatientServiceTest.class,
+        //Controller tests
+        AdminKcControllerTest.class,
+        AppointmentControllerTest.class,
+        AppointmentRequestControllerTest.class,
+
         //Repository tests
         AppointmentRepositoryTest.class,
         //Other tests
-        RouterTest.class
+        //RouterTest.class
 })
 public class ClinicCenterSuite {
 }

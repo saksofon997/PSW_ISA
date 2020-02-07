@@ -102,7 +102,7 @@ class AppointmentRequestControllerTest {
         header.add("Content-Type", "application/json");
 
         AppointmentDTO apptSend = new AppointmentDTO();
-        apptSend.setId(1L);
+        apptSend.setId(2L);
         apptSend.setCompleted(false);
         apptSend.setDiscount(0);
         apptSend.setStartingDateAndTime(1581346800);
