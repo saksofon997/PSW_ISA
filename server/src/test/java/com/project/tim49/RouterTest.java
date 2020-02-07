@@ -63,8 +63,8 @@ public class RouterTest {
         WebElement appointmentLink =  browser.findElement(By.xpath("//a[@id=\"appointment1\"]"));
         appointmentLink.click();
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"appointment6\"]")));
-        browser.findElement(By.xpath("//button[@id=\"appointment6\"]")).click();
+                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"appointment13\"]")));
+        browser.findElement(By.xpath("//button[@id=\"appointment13\"]")).click();
         try{
             waitForAlert(browser);
         }catch (InterruptedException e){
@@ -183,8 +183,8 @@ public class RouterTest {
         browser.findElement(By.cssSelector(".btn-primary")).click();
 
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"dropdownMenuButton1\"]")));
-        WebElement optionsButton =  browser.findElement(By.xpath("//button[@id=\"dropdownMenuButton1\"]"));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"dropdownMenuButton2\"]")));
+        WebElement optionsButton =  browser.findElement(By.xpath("//button[@id=\"dropdownMenuButton2\"]"));
         optionsButton.click();
         (new WebDriverWait(browser, 10))
                 .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//a[@id=\"selectOrd1\"]"))));
