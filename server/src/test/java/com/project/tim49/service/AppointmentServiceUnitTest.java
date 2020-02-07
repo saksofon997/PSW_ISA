@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:application-test.properties")
+@TestPropertySource("classpath:unit-test.properties")
 public class AppointmentServiceUnitTest {
 
     @MockBean

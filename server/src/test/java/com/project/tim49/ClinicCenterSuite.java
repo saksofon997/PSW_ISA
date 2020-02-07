@@ -10,7 +10,14 @@ import org.springframework.test.context.jdbc.Sql;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+        //Unit
+        //controller
+        AppointmentControllerUnitTest.class,
+        //service
+        AppointmentServiceUnitTest.class,
+        AppointmentRequestServiceUnitTest.class,
 
+        //Integration
         //Service tests
         AppointmentRequestServiceTest.class,
         AppointmentServiceTest.class,

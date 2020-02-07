@@ -15,6 +15,7 @@ import org.mockito.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,6 +28,7 @@ import java.util.Set;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 
+@TestPropertySource("classpath:unit-test.properties")
 public class AppointmentControllerUnitTest extends ControllerUnitTest {
 
     private static final String URL_PREFIX = "/api/appointment";
