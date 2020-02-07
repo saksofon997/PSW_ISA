@@ -121,7 +121,7 @@ public class AppointmentRequestServiceTest {
     @Transactional
     public void approveAppointmentRequest() throws Exception {
         AppointmentDTO apptSend = new AppointmentDTO();
-        apptSend.setId(1L);
+        apptSend.setId(2L);
         apptSend.setStartingDateAndTime(1582028500);
         apptSend.setEndingDateAndTime(1582029100);
         apptSend.setDuration(10*60*100);
@@ -153,7 +153,7 @@ public class AppointmentRequestServiceTest {
     @Transactional
     public void approveAppointmentRequestOrdinationNotAvailable() throws Exception {
         AppointmentDTO apptSend = new AppointmentDTO();
-        apptSend.setId(2L);
+        apptSend.setId(3L);
         apptSend.setStartingDateAndTime(1581519600);
         apptSend.setEndingDateAndTime(1581520200);
         apptSend.setDuration(10*60*100);
