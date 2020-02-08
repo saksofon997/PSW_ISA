@@ -43,7 +43,7 @@ public class EmailService {
         mail.setText("Hello " + user.getName() + ",\n\nyour registration request at our clinical center has " +
                 "been approved!\n\n" +
                 "To confirm your email address, please click on the link below:\n\n" +
-                "http://picici.herokuapp.com/auth/confirm_registration/"+user.getId()+
+                "http://oettinger.herokuapp.com/auth/confirm_registration/"+user.getId()+
                 "\n\nThank you for registering at our clinical center!\n\n\n\n" +
                 "If you don't know what this is about, then someone has probably" +
                 " entered your email address by mistake and you can ignore this e-mail. Sorry about that.");
@@ -214,6 +214,36 @@ public class EmailService {
         }
         System.out.println("Email doktoru/doktorima poslat!");
 
+    }
+
+    @Async
+    public void sendAppointmentRequestApprovedPatientConfirmation(AppointmentDTO appointmentDTO) throws MailException,
+            InterruptedException {
+        System.out.println("Slanje emaila pacijentu...");
+        PatientDTO patient = appointmentDTO.getPatient();
+        DoctorDTO doctor = appointmentDTO.getDoctors().get(0);
+        DateTime dateTime = new DateTime(appointmentDTO.getStartingDateAndTime()*1000);
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(patient.getEmail());
+        mail.setFrom("noreply@clinic.com");
+        mail.setSubject("Clinic: Appointment scheduled");
+        mail.setText("Dear " + patient.getName() + ",\n\nDate or time of your appointment request at " + appointmentDTO.getClinic().getName() +
+                " clinic was changed." +
+                "\nPlease confirm your presence." +
+                "\n\nAppointment info:" +
+                "\n\nDoctor: " + doctor.getName() + " " + doctor.getSurname() +
+                "\nType of appointment: " + appointmentDTO.getTypeOfExamination().getName() +
+                "\nOrdination name: " + appointmentDTO.getOrdination().getName() + ", Number: " + appointmentDTO.getOrdination().getNumber() +
+                "\nDate and time: " + dateTime.toString(DateTimeFormat.forPattern("dd.MM.yyyy. HH:mm")) +
+                "\nPrice: " + appointmentDTO.getPrice() +
+                "\n\nClick to confirm: http://localhost:8080/api/appointmentRequest/confirm_appointment/"+ appointmentDTO.getId()+"\"" +
+                "\nClick to reject: http://localhost:8080/api/appointmentRequest/reject_appointment/"+ appointmentDTO.getId()+"\"" +
+                "\n\nBest regards,\nClinical center team\n\n\n\n" +
+                "If you don't know what this is about, then someone has probably" +
+                " entered your email address by mistake and you can ignore this e-mail.");
+        javaMailSender.send(mail);
+        System.out.println("Email poslat pacijentu!");
     }
 
     @Async

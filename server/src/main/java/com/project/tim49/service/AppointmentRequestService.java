@@ -168,6 +168,11 @@ public class AppointmentRequestService {
         }
         newAppointment.setPatient(patient.get());
         newAppointment.setDoctors(doctors);
+
+        if (newAppointment.getStartingDateAndTime() != appointmentRequest.get().getStartingDateAndTime()){
+            newAppointment.setConfirmed(false);
+        }
+
         Appointment saved = appointmentService.save(newAppointment);
         saved.getPatient().getPendingAppointments().add(saved);
         patientRepository.save(saved.getPatient());

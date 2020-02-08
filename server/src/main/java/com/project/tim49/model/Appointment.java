@@ -53,9 +53,8 @@ public class Appointment {
             inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     public Set<Doctor> doctors;
 
-//    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Patient.class)
-//    @JoinTable(name = "patients_pending_appointments", inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
-//    public Set<Patient> patients;
+    @Column(name = "confirmed", nullable = false)
+    public boolean confirmed = true;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
@@ -179,5 +178,13 @@ public class Appointment {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 }

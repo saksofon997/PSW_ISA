@@ -8,6 +8,7 @@ import com.project.tim49.service.EmailService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -24,7 +27,7 @@ import java.util.NoSuchElementException;
 public class AppointmentRequestController {
 
     @Autowired
-    private DoctorService doctorService;
+    private AppointmentService appointmentService;
     @Autowired
     private AppointmentRequestService appointmentRequestService;
     @Autowired
@@ -88,13 +91,56 @@ public class AppointmentRequestController {
 
         try {
             AppointmentDTO returnValue = appointmentRequestService.approveAppointmentRequest(appointmentDTO);
-            this.emailService.sendAppointmentRequestApproved(returnValue);
+            if (returnValue.isConfirmed()){
+                this.emailService.sendAppointmentRequestApproved(returnValue);
+            } else {
+                this.emailService.sendAppointmentRequestApprovedPatientConfirmation(returnValue);
+            }
 
             return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
         } catch (ValidationException | NoSuchElementException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (PessimisticLockingFailureException e) {
             return new ResponseEntity<>("This request might have been already approved, please reload the page with all requests", HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping(path = "/confirm_appointment/{appointment_id}")
+    public ResponseEntity patientConfirmAppointment(@PathVariable Long appointment_id) throws InterruptedException{
+        try {
+            AppointmentDTO appointment = this.appointmentService.patientConfirmAppointment(appointment_id);
+            this.emailService.sendAppointmentRequestApproved(appointment);
+
+            String myUrl = "http://localhost:4200/#/";
+            URI myURI = new URI(myUrl);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(myURI);
+            return new ResponseEntity<>("redirect:http://localhost:4200/#/" , headers, HttpStatus.PERMANENT_REDIRECT);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Appointment not found" , HttpStatus.NOT_FOUND);
+        } catch (SecurityException e) {
+            return new ResponseEntity<>(e.getMessage() , HttpStatus.FORBIDDEN);
+        } catch (URISyntaxException e) {
+            return new ResponseEntity<>("Uri not valid" , HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/reject_appointment/{appointment_id}")
+    public ResponseEntity patientRejectAppointment(@PathVariable Long appointment_id) {
+        try {
+            AppointmentDTO appointment = this.appointmentService.patientRejectAppointment(appointment_id);
+
+            String myUrl = "http://localhost:4200/#/";
+            URI myURI = new URI(myUrl);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(myURI);
+            return new ResponseEntity<>("redirect:http://localhost:4200/#/" , headers, HttpStatus.PERMANENT_REDIRECT);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Appointment not found" , HttpStatus.NOT_FOUND);
+        } catch (SecurityException e) {
+            return new ResponseEntity<>(e.getMessage() , HttpStatus.FORBIDDEN);
+        } catch (URISyntaxException e) {
+            return new ResponseEntity<>("Uri not valid" , HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
