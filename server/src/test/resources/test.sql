@@ -422,44 +422,44 @@ INSERT INTO public.ordination(
 	VALUES (nextval('ordination_id_seq'), 'Ordinacija 51', '67', 5);
 
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581336000, 1581337200, 20 * 60 * 1000, 1000, 0, 1, 1, 23, 2, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted,confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581336000, 1581337200, 20 * 60 * 1000, 1000, 0, 1, 1, 23, 2, false, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581339600 , 1581340200, 10 * 60 * 1000, 1000, 0, 1, 1, 23, 1, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581339600 , 1581340200, 10 * 60 * 1000, 1000, 0, 1, 1, 23, 1, false, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581951600 , 1581952200, 10 * 60 * 1000, 3000, 0, 1, 1, 23, 2, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581951600 , 1581952200, 10 * 60 * 1000, 3000, 0, 1, 1, 23, 2, false, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581961800, 1581963600, 20 * 60 * 1000, 2000, 0, 1, 1, 23, 3, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581961800, 1581963600, 20 * 60 * 1000, 2000, 0, 1, 1, 23, 3, false, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581958800, 1581960000, 20 * 60 * 1000, 1000, 0, 1, 1, 23, 3, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581958800, 1581960000, 20 * 60 * 1000, 1000, 0, 1, 1, 23, 3, false, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1582027200, 1582027800, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1582027200, 1582027800, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1580742000, 1580743200, 20 * 60 * 1000, 1600, 0, 1, 1, 23, 4, true, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1580742000, 1580743200, 20 * 60 * 1000, 1600, 0, 1, 1, 23, 4, true, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1580745600, 1580746200, 10 * 60 * 1000, 2200, 0, 3, 1, 23, 1, true, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1580745600, 1580746200, 10 * 60 * 1000, 2200, 0, 3, 1, 23, 1, true, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581004800, 1581005400, 10 * 60 * 1000, 1000, 0, 2, 1, 23, 5, true, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581004800, 1581005400, 10 * 60 * 1000, 1000, 0, 2, 1, 23, 5, true, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581462000, 1581548399, 24 * 60 * 60 * 1000, 1000, 0, 1, 1, 24, 5, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581462000, 1581548399, 24 * 60 * 60 * 1000, 1000, 0, 1, 1, 24, 5, false, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581602400, 1581603000, 10 * 60 * 1000, 1000, 0, 1, 1, 24, 5, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581602400, 1581603000, 10 * 60 * 1000, 1000, 0, 1, 1, 24, 5, false, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581603000, 1581603600, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581603000, 1581603600, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false, true);
 INSERT INTO public.appointment(
-    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted)
-    VALUES (nextval('appointment_id_seq'), 1581603000, 1581603600, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false);
+    id, starting_date_and_time,ending_date_and_time, duration, price, discount, ordination_id, clinic_id, patient_id, type_of_examination_id, completed, deleted, confirmed)
+    VALUES (nextval('appointment_id_seq'), 1581603000, 1581603600, 10 * 60 * 1000, 100, 20, 1, 1, null, 2, false, false, true);
 
 INSERT INTO public.appointment_request(
     id, starting_date_and_time, ending_date_and_time, duration, price, doctor_id, clinic_id, patient_id, type_of_examination_id, approved)

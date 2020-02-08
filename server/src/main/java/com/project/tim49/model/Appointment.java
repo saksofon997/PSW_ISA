@@ -61,7 +61,7 @@ public class Appointment {
     public Appointment(){
         super();
     }
-    public Appointment(long startingDateAndTime, long endingDateAndTime, long duration, double price, double discount, Ordination ordination, Clinic clinic, Patient patient, TypeOfExamination typeOfExamination, boolean completed, Set<Doctor> doctors, boolean deleted) {
+    public Appointment(long startingDateAndTime, long endingDateAndTime, long duration, double price, double discount, Ordination ordination, Clinic clinic, Patient patient, TypeOfExamination typeOfExamination, boolean completed, Set<Doctor> doctors, boolean deleted, boolean confirmed) {
         this.startingDateAndTime = startingDateAndTime;
         this.endingDateAndTime = endingDateAndTime;
         this.duration = duration;
@@ -74,6 +74,7 @@ public class Appointment {
         this.completed = completed;
         this.doctors = doctors;
         this.deleted = deleted;
+        this.confirmed = confirmed;
     }
 
     public Long getId() {

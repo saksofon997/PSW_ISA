@@ -45,7 +45,7 @@ public class AppointmentRepositoryTest {
         TypeOfExamination typeOfExamination = new TypeOfExamination("TestType",false,cTOE);
         this.entityManager.persist(typeOfExamination);
         Appointment appointment = new Appointment(1581339000,1581341000,10*60*1000,
-                1000,0,ordination,clinic,null,typeOfExamination,false,null,false);
+                1000,0,ordination,clinic,null,typeOfExamination,false,null,false,true);
 
         Appointment appointment1 = this.entityManager.persist(appointment);
         Appointment appointment2 = this.appointmentRepository.findOneByIdAndLock(appointment1.getId());
@@ -72,7 +72,7 @@ public class AppointmentRepositoryTest {
         TypeOfExamination typeOfExamination = new TypeOfExamination("TestType",false,cTOE);
         this.entityManager.persist(typeOfExamination);
         this.entityManager.persist(new Appointment(1581339000,1581341000,10*60*1000,
-                1000,0,ordination,clinic,null,typeOfExamination,false,null,false));
+                1000,0,ordination,clinic,null,typeOfExamination,false,null,false,true));
         ArrayList<Appointment> result = appointmentRepository.getByClinicAndPatientNullAndDeletedFalse(clinic);
         assertEquals(result.get(0).getStartingDateAndTime(),1581339000);
     }
@@ -96,7 +96,7 @@ public class AppointmentRepositoryTest {
         TypeOfExamination typeOfExamination = new TypeOfExamination("TestType",false,cTOE);
         this.entityManager.persist(typeOfExamination);
         Appointment appointment = new Appointment(1581339000,1581341000,10*60*1000,
-                1000,0,ordination,clinic,null,typeOfExamination,false,null,false);
+                1000,0,ordination,clinic,null,typeOfExamination,false,null,false,true);
         Appointment appointment1 = this.appointmentRepository.save(appointment);
         assertEquals(appointment1.getId(),this.entityManager.getId(appointment1));
     }
