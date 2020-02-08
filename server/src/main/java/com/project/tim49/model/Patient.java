@@ -22,7 +22,7 @@ public class Patient extends User {
    @JoinTable(name = "patients_finished_appointments", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
    public Set<Appointment> finishedAppointments = new HashSet<Appointment>();
 
-   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Appointment.class)
+   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Appointment.class)
    @JoinTable(name = "patients_pending_appointments", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
    public Set<Appointment> pendingAppointments= new HashSet<Appointment>();
 

@@ -168,6 +168,11 @@ public class AppointmentRequestService {
         }
         newAppointment.setPatient(patient.get());
         newAppointment.setDoctors(doctors);
+
+        if (newAppointment.getStartingDateAndTime() != appointmentRequest.get().getStartingDateAndTime()){
+            newAppointment.setConfirmed(false);
+        }
+
         Appointment saved = appointmentService.save(newAppointment);
         saved.getPatient().getPendingAppointments().add(saved);
         patientRepository.save(saved.getPatient());
@@ -191,16 +196,15 @@ public class AppointmentRequestService {
         return requestDto;
     }
 
-//    @Transactional
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @Scheduled(cron = "${appointment.cron}")
-    void systemChooseOrdinationForAllAppointmentRequests() throws InterruptedException {
+    public void systemChooseOrdinationForAllAppointmentRequests() throws InterruptedException {
         ArrayList<AppointmentRequest> appointmentRequests = appointmentRequestRepository.getAllByApprovedFalse();
         for(AppointmentRequest request: appointmentRequests){
             Patient patient = request.getPatient();
             if (patient == null){
                 throw new ValidationException("Invalid appointment request data: patient is missing");
             }
-
             if (request.getEndingDateAndTime() == 0){
                 if (request.getTypeOfExamination().isOperation()){
                     request.setEndingDateAndTime( request.getStartingDateAndTime() + 60 * 60 );
@@ -216,20 +220,22 @@ public class AppointmentRequestService {
                 request.setStartingDateAndTime(request.getStartingDateAndTime() + request.getDuration()/1000 * i );
                 request.setEndingDateAndTime(request.getEndingDateAndTime() + request.getDuration()/1000 * i );
 
-                Optional<Doctor> doctor = doctorRepository.findById(request.getDoctor().getId());
-                if (!doctor.isPresent()){
+                Doctor doctor = doctorRepository.findOneByIdAndLock(request.getDoctor().getId());
+
+                if (doctor == null){
                     throw new ValidationException("Invalid appointment request data: doctor is missing");
                 }
-                if (!doctorService.isAvailable(null, doctor.get(),
+                if (!doctorService.isAvailable(null, doctor,
                         request.getStartingDateAndTime(), request.getDuration())){
                     continue;
                 }
-                if (!doctorService.isDuringDoctorWorkingHours(null,doctor.get(),
+                if (!doctorService.isDuringDoctorWorkingHours(null,doctor,
                         request.getStartingDateAndTime(), request.getDuration())){
                     continue;
                 }
 
-                for(Ordination ordination: ordinations){
+                for(Ordination o: ordinations){
+                    Ordination ordination = ordinationRepository.findOneByIdAndLock(o.getId());
                     if (ordinationService.isAvailable(null, ordination, request.getStartingDateAndTime(), request.getDuration())){
                         selectedOrdination = ordination;
                         break;
@@ -240,7 +246,7 @@ public class AppointmentRequestService {
                 }
             }
             if (selectedOrdination == null){
-                System.out.println("Needs administrator's review<");
+                System.out.println("Needs administrator's review <Appointment request id: " + request.getId() + ">");
                 continue;
             }
 

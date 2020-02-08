@@ -128,6 +128,46 @@ public class AppointmentService {
         return new AppointmentDTO(saved);
     }
 
+    public AppointmentDTO patientConfirmAppointment(Long id){
+        Appointment appointment = appointmentRepository.getOne(id);
+
+        try {
+            if (appointment.isDeleted()){
+                throw new SecurityException("Not allowed");
+            }
+            if (appointment.isConfirmed()){
+                throw new SecurityException("Already confirmed");
+            }
+            appointment.setConfirmed(true);
+            Appointment saved = appointmentRepository.save(appointment);
+            return new AppointmentDTO(saved);
+        } catch (Exception e) {
+            if (e instanceof SecurityException){
+                throw e;
+            }
+            throw new NoSuchElementException();
+        }
+    }
+
+    public AppointmentDTO patientRejectAppointment(Long id){
+        Appointment appointment = appointmentRepository.getOne(id);
+
+        try {
+            if (appointment.isConfirmed() || appointment.isDeleted()){
+                throw new SecurityException("Not allowed");
+            }
+            appointment.setConfirmed(false);
+            appointment.setDeleted(true);
+            Appointment saved = appointmentRepository.save(appointment);
+            return new AppointmentDTO(saved);
+        } catch (Exception e) {
+            if (e instanceof SecurityException){
+                throw e;
+            }
+            throw new NoSuchElementException();
+        }
+    }
+
     public void deleteAppointment(Long id) {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
         if (!appointment.isPresent()) {

@@ -21,6 +21,7 @@ public class AppointmentDTO {
     private TypeOfExaminationDTO typeOfExamination;
     private List<DoctorDTO> doctors;
     private boolean completed;
+    private boolean confirmed = true;
 
     public AppointmentDTO() {
     }
@@ -43,6 +44,7 @@ public class AppointmentDTO {
             this.doctors.add(new DoctorDTO(doctor));
         }
         this.completed = appointment.isCompleted();
+        this.confirmed = appointment.isConfirmed();
     }
 
     public AppointmentDTO(AppointmentRequest appointment){
@@ -154,16 +156,15 @@ public class AppointmentDTO {
         this.doctors = doctors;
     }
 
-//    public void setDoctorDTOs(DoctorDTO[] doctorDTOs) {
-//        this.doctorDTOs = new ArrayList<>();
-//        for (int i = 0; i < doctorDTOs.length; i++){
-//            this.doctorDTOs.add(doctorDTOs[i]);
-//        }
-//
-//    }
-
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
 
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
 }
