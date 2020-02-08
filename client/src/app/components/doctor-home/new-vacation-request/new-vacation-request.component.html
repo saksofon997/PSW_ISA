@@ -10,7 +10,7 @@
           <label for="startingDateAndTime" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Starting date and time</label>
           <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
               <div class="col-lg-10 col-sm-10 col-md-10">
-                  <input type="datetime" formControlName="startingDateAndTime" [owlDateTime]="dt2" class="form-control"
+                  <input type="datetime" formControlName="startingDateAndTime" [owlDateTime]="dt2" [min]="now" class="form-control"
                       [ngClass]="{ 'is-invalid': submitted && form.controls.startingDateAndTime.errors }" id="startingDateAndTime"
                       style="border: 0;">
                   <div *ngIf="submitted && form.controls.startingDateAndTime.errors" class="invalid-feedback">
@@ -27,7 +27,7 @@
         <label for="endingDateAndTime" class="col-sm-2 col-lg-3 col-form-label font-weight-bold">Ending date and time</label>
         <div class="row col-lg-4 col-sm-8 col-md-6 shadow-sm p-1 mb-1 bg-white rounded col">
             <div class="col-lg-10 col-sm-10 col-md-10">
-                <input type="datetime" formControlName="endingDateAndTime" [owlDateTime]="dt22" class="form-control"
+                <input type="datetime" formControlName="endingDateAndTime" [owlDateTime]="dt22" [min]="now" class="form-control"
                     [ngClass]="{ 'is-invalid': submitted && form.controls.endingDateAndTime.errors }" id="endingDateAndTime"
                     style="border: 0;">
                 <div *ngIf="submitted && form.controls.endingDateAndTime.errors" class="invalid-feedback">
