@@ -9,10 +9,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 import selenium.SearchPage;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
@@ -23,7 +25,7 @@ import static org.testng.AssertJUnit.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
-public class RouterTest {
+public class RouterTest extends AbstractTransactionalJUnit4SpringContextTests {
     @LocalServerPort
     private int port;
     private WebDriver browser;
@@ -47,6 +49,7 @@ public class RouterTest {
     }
 
     @Test
+    @Transactional
     public void testPreDefinedAppointment() {
         System.out.println(this.base);
         browser.navigate().to(base+"/#/login");
@@ -63,8 +66,8 @@ public class RouterTest {
         WebElement appointmentLink =  browser.findElement(By.xpath("//a[@id=\"appointment1\"]"));
         appointmentLink.click();
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"appointment6\"]")));
-        browser.findElement(By.xpath("//button[@id=\"appointment6\"]")).click();
+                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"appointment13\"]")));
+        browser.findElement(By.xpath("//button[@id=\"appointment13\"]")).click();
         try{
             waitForAlert(browser);
         }catch (InterruptedException e){
@@ -79,6 +82,7 @@ public class RouterTest {
     }
 
     @Test
+    @Transactional
     public void testSearchAndScheduleAppointment() {
         browser.navigate().to(base+"/#/login");
         browser.findElement(By.name("email")).sendKeys("patient1@kcv.rs");
@@ -176,6 +180,7 @@ public class RouterTest {
     }
 
     @Test
+    @Transactional
     public void testReserveOrdination() {
         browser.navigate().to(base+"/#/login");
         browser.findElement(By.name("email")).sendKeys("adminc1@kcv.rs");
@@ -183,17 +188,17 @@ public class RouterTest {
         browser.findElement(By.cssSelector(".btn-primary")).click();
 
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"dropdownMenuButton1\"]")));
-        WebElement optionsButton =  browser.findElement(By.xpath("//button[@id=\"dropdownMenuButton1\"]"));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id=\"dropdownMenuButton2\"]")));
+        WebElement optionsButton =  browser.findElement(By.xpath("//button[@id=\"dropdownMenuButton2\"]"));
         optionsButton.click();
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//a[@id=\"selectOrd1\"]"))));
-        browser.findElement(By.xpath("//a[@id=\"selectOrd1\"]")).click();
+                .until(ExpectedConditions.visibilityOf( browser.findElement(By.xpath("//a[@id=\"selectOrd2\"]"))));
+        browser.findElement(By.xpath("//a[@id=\"selectOrd2\"]")).click();
         (new WebDriverWait(browser, 10))
                 .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//button[@id=\"showAvailable62\"]")));
         browser.findElement(By.xpath("//button[@id=\"showAvailable62\"]")).click();
         (new WebDriverWait(browser, 10))
-                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//div[@id=\"modal1\"]")));
+                .until(ExpectedConditions.presenceOfElementLocated( By.xpath("//div[@id=\"modal2\"]")));
         browser.findElement(By.xpath("//button[@class='btn btn-secondary']//self::button[1]")).click();
         browser.findElement(By.xpath("//button[@id='btnCreateAppointment']")).click();
         try{

@@ -44,12 +44,12 @@ public class AppointmentRequestService {
     private EmailService emailService;
 
     public ArrayList<AppointmentDTO> getClinicAppointmentRequests(Long clinic_id){
-        Clinic clinic = clinicRepository.findById(clinic_id).orElseGet(null);
-        if (clinic == null){
+        Optional<Clinic> clinic = clinicRepository.findById(clinic_id);
+        if (!clinic.isPresent()){
             throw new NoSuchElementException();
         }
 
-        ArrayList<AppointmentRequest> appointmentRequests = appointmentRequestRepository.getByClinicAndApprovedFalse(clinic);
+        ArrayList<AppointmentRequest> appointmentRequests = appointmentRequestRepository.getByClinicAndApprovedFalse(clinic.get());
         ArrayList<AppointmentDTO> appointmentDTOs = new ArrayList<>();
         for (AppointmentRequest app: appointmentRequests){
             appointmentDTOs.add(new AppointmentDTO(app));
@@ -103,22 +103,22 @@ public class AppointmentRequestService {
         }
         appointmentRequest.setPrice(appointmentDTO.getPrice());
 
-        TypeOfExamination type = typeOfExaminationRepository.findById(appointmentDTO.getTypeOfExamination().getId()).get();
-        appointmentRequest.setTypeOfExamination(type);
+        Optional<TypeOfExamination> type = typeOfExaminationRepository.findById(appointmentDTO.getTypeOfExamination().getId());
+        type.ifPresent(appointmentRequest::setTypeOfExamination);
 
-        Clinic clinic = clinicRepository.findById(appointmentDTO.getClinic().getId()).get();
-        appointmentRequest.setClinic(clinic);
+        Optional<Clinic> clinic = clinicRepository.findById(appointmentDTO.getClinic().getId());
+        clinic.ifPresent(appointmentRequest::setClinic);
 
         List<DoctorDTO> doctorDTOS = appointmentDTO.getDoctors();
         if (doctorDTOS.size() != 0){
-            Doctor doc = doctorRepository.findById(doctorDTOS.get(0).getId()).get();
-            appointmentRequest.setDoctor(doc);
+            Optional<Doctor> doc = doctorRepository.findById(doctorDTOS.get(0).getId());
+            doc.ifPresent(appointmentRequest::setDoctor);
         }
 
         PatientDTO patientDTO = appointmentDTO.getPatient();
         if (patientDTO != null){
-            Patient patient = patientRepository.findById(patientDTO.getId()).get();
-            appointmentRequest.setPatient(patient);
+            Optional<Patient> patient = patientRepository.findById(patientDTO.getId());
+            patient.ifPresent(appointmentRequest::setPatient);
         }
 
         return appointmentRequest;

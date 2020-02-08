@@ -19,6 +19,7 @@ public class UserDTO {
     protected String phoneNumber;
     protected String upin;
     protected ArrayList<String> roles = new ArrayList<>();
+    protected Long version;
 
     public UserDTO() {
 
@@ -82,5 +83,13 @@ public class UserDTO {
 
     public void setRoles(ArrayList<String>  roles) {
         this.roles = roles;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

@@ -16,6 +16,7 @@ public class ClinicAdministratorDTO extends UserDTO{
     private String upin;
     private String role;
     private Long clinic_id;
+    private Long version;
 
     public ClinicAdministratorDTO() {
 
@@ -35,6 +36,7 @@ public class ClinicAdministratorDTO extends UserDTO{
         for (GrantedAuthority auth: admin.getAuthorities()) {
             this.roles.add(auth.getAuthority());
         }
+        this.version = admin.getVersion();
     }
 
     public ClinicAdministratorDTO(Long id, String email, String name, String surname, String address, String city, String state, String phoneNumber, String upin, String role, Long clinic_id) {
@@ -137,5 +139,13 @@ public class ClinicAdministratorDTO extends UserDTO{
 
     public void setClinic_id(Long clinic_id) {
         this.clinic_id = clinic_id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

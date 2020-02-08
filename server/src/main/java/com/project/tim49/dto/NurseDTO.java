@@ -18,6 +18,7 @@ public class NurseDTO extends UserDTO{
     private String shiftStart;
     private String shiftEnd;
     private Long clinic_id;
+    private Long version;
 
     public NurseDTO() {
     }
@@ -38,6 +39,7 @@ public class NurseDTO extends UserDTO{
         for (GrantedAuthority auth: nurse.getAuthorities()) {
             this.roles.add(auth.getAuthority());
         }
+        this.version = nurse.getVersion();
     }
 
     @Override
@@ -143,5 +145,13 @@ public class NurseDTO extends UserDTO{
 
     public void setClinic_id(Long clinic_id) {
         this.clinic_id = clinic_id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
