@@ -21,7 +21,7 @@ public class AppointmentDTO {
     private TypeOfExaminationDTO typeOfExamination;
     private List<DoctorDTO> doctors;
     private boolean completed;
-    private boolean confirmed = false;
+    private boolean confirmed = true;
 
     public AppointmentDTO() {
     }
