@@ -28,7 +28,8 @@ export class PatientDoctorListingComponent implements OnInit {
 	TOE_param: number;
 	date_param: any;
 	date: any;
-
+	min:any;
+	
 	navigationSubscription: any;
 	sortingOption: any;
 	form: FormGroup;
@@ -69,6 +70,8 @@ export class PatientDoctorListingComponent implements OnInit {
 	ngOnInit() {
 		this.date = new Date();
 		this.date.setHours(0, 0, 0, 0);
+		this.min = new Date();
+		this.min.setHours(0, 0, 0, 0);
 		this.sub = this.activatedRoute.params.subscribe(params => {
 			this.clinic_id_param = +params['clinic_id'];
 		});

@@ -207,18 +207,16 @@ public class AppointmentRequestService {
             if (patient == null){
                 throw new ValidationException("Invalid appointment request data: patient is missing");
             }
-            if (request.getEndingDateAndTime() == 0){
-                if (request.getTypeOfExamination().isOperation()){
-                    request.setEndingDateAndTime( request.getStartingDateAndTime() + 60 * 60 );
-                    request.setDuration(60 * 60 * 1000);
-                } else {
-                    request.setEndingDateAndTime( request.getStartingDateAndTime() + 20 * 60 );
-                    request.setDuration(20 * 60 * 1000);
-                }
+            if (request.getTypeOfExamination().isOperation()){
+                request.setEndingDateAndTime( request.getStartingDateAndTime() + 60 * 60 );
+                request.setDuration(60 * 60 * 1000);
+            } else {
+                request.setEndingDateAndTime( request.getStartingDateAndTime() + 20 * 60 );
+                request.setDuration(20 * 60 * 1000);
             }
             ArrayList<Ordination> ordinations = ordinationRepository.getAllByClinic(request.getClinic());
             Ordination selectedOrdination = null;
-            for(int i = 0; i < 500; i++){
+            for(int i = 0; i < 1000; i++){
                 request.setStartingDateAndTime(request.getStartingDateAndTime() + request.getDuration()/1000 * i );
                 request.setEndingDateAndTime(request.getEndingDateAndTime() + request.getDuration()/1000 * i );
 
@@ -268,6 +266,13 @@ public class AppointmentRequestService {
             doctors.add(request.getDoctor());
             appointment.setDoctors(doctors);
 
+            Optional<AppointmentRequest> timeChangeCheck = appointmentRequestRepository.findById(request.getId());
+            if (!timeChangeCheck.isPresent()){
+                throw new ValidationException("Invalid appointment request data: request is invalid");
+            }
+            if (timeChangeCheck.get().getStartingDateAndTime() != appointment.getStartingDateAndTime()){
+                appointment.setConfirmed(false);
+            }
             Appointment saved = appointmentService.save(appointment);
             for (Doctor doctor: doctors){
                 doctorRepository.save(doctor);
@@ -281,7 +286,11 @@ public class AppointmentRequestService {
 
             request.setApproved(true);
             appointmentRequestRepository.delete(request);
-            emailService.sendAppointmentRequestApproved(new AppointmentDTO(saved));
+            if (saved.isConfirmed()){
+                emailService.sendAppointmentRequestApproved(new AppointmentDTO(saved));
+            } else {
+                emailService.sendAppointmentRequestApprovedPatientConfirmation(new AppointmentDTO(saved));
+            }
         }
     }
 }

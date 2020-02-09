@@ -117,7 +117,7 @@ export class PatientService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.userService.getToken()}`
     });
-    return this.http.delete(`/api/patient/cancelAppointment/${id}/${appointment.id}/${dateTime}`, { headers: headers, observe: 'response' })
+    return this.http.delete(`/api/patient/cancelAppointment/${id}/${appointment.id}/${dateTime.getTime().toString().substr(0, 10)}`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;

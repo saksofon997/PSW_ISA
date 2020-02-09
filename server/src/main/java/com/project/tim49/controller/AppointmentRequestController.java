@@ -111,11 +111,11 @@ public class AppointmentRequestController {
             AppointmentDTO appointment = this.appointmentService.patientConfirmAppointment(appointment_id);
             this.emailService.sendAppointmentRequestApproved(appointment);
 
-            String myUrl = "http://localhost:4200/#/";
+            String myUrl = "http://oettinger.herokuapp.com/#/";
             URI myURI = new URI(myUrl);
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(myURI);
-            return new ResponseEntity<>("redirect:http://localhost:4200/#/" , headers, HttpStatus.PERMANENT_REDIRECT);
+            return new ResponseEntity<>("redirect:http://oettinger.herokuapp.com/#/" , headers, HttpStatus.PERMANENT_REDIRECT);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>("Appointment not found" , HttpStatus.NOT_FOUND);
         } catch (SecurityException e) {
@@ -130,11 +130,11 @@ public class AppointmentRequestController {
         try {
             AppointmentDTO appointment = this.appointmentService.patientRejectAppointment(appointment_id);
 
-            String myUrl = "http://localhost:4200/#/";
+            String myUrl = "http://oettinger.herokuapp.com/#/";
             URI myURI = new URI(myUrl);
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(myURI);
-            return new ResponseEntity<>("redirect:http://localhost:4200/#/" , headers, HttpStatus.PERMANENT_REDIRECT);
+            return new ResponseEntity<>("redirect:http://oettinger.herokuapp.com/#/" , headers, HttpStatus.PERMANENT_REDIRECT);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>("Appointment not found" , HttpStatus.NOT_FOUND);
         } catch (SecurityException e) {

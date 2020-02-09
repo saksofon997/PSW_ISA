@@ -122,11 +122,11 @@ public class AuthenticationController {
         try {
             UserDTO userDTO = this.userService.createPatient(id);
 
-            String myUrl = "http://localhost:4200/#/login";
+            String myUrl = "http://oettinger.herokuapp.com/#/login";
             URI myURI = new URI(myUrl);
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(myURI);
-            return new ResponseEntity<>("redirect:http://localhost:4200/#/login" , headers, HttpStatus.PERMANENT_REDIRECT);
+            return new ResponseEntity<>("redirect:http://oettinger.herokuapp.com/#/login" , headers, HttpStatus.PERMANENT_REDIRECT);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>("Registration request not found" , HttpStatus.NOT_FOUND);
         } catch (SecurityException e) {

@@ -124,6 +124,7 @@ public class AppointmentService {
         //try { Thread.sleep(5000); } catch (InterruptedException e) { }
 
         appointment.setPatient(patient.get());
+        appointment.setConfirmed(true);
         Appointment saved = appointmentRepository.save(appointment);
         patient.get().getPendingAppointments().add(saved);
         patientRepository.save(patient.get());

@@ -84,6 +84,7 @@ import { PatientScheduleAppointmentComponent } from './components/patient-home/p
 import { ClinicBusinessComponent } from './components/adminC-dashboard/clinic-business/clinic-business.component';
 import { ClinicCenterAdminsComponent } from './components/adminCC-dashboard/clinic-center-admins/clinic-center-admins.component';
 import { ClinicCenterAdminsListingComponent } from './components/adminCC-dashboard/clinic-center-admins-listing/clinic-center-admins-listing.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -152,7 +153,8 @@ import { ClinicCenterAdminsListingComponent } from './components/adminCC-dashboa
     PatientScheduleAppointmentComponent,
     ClinicBusinessComponent,
     ClinicCenterAdminsComponent,
-    ClinicCenterAdminsListingComponent
+    ClinicCenterAdminsListingComponent,
+    HomeComponent
     
   ],
   imports: [
