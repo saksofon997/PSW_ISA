@@ -13,10 +13,7 @@ import org.springframework.web.server.MethodNotAllowedException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PatientService {
@@ -158,5 +155,35 @@ public class PatientService {
 
         return new AppointmentDTO(appointmentRepository.save(appointment));
 
+    }
+
+    public boolean isAvailable(Long doctor_id, Patient patient, long startingTimeStamp, long duration){
+        if (patient == null){
+            Optional<Patient> check = patientRepository.findById(doctor_id);
+            if (!check.isPresent()){
+                throw new NoSuchElementException("No doctor with that ID!");
+            }
+            patient = check.get();
+        }
+
+        Set<Appointment> appointments = patient.getPendingAppointments();
+        for (Appointment appointment: appointments) {
+            if (appointment.isCompleted() || appointment.isDeleted()){
+                continue;
+            }
+            if ( startingTimeStamp >= appointment.getStartingDateAndTime()
+                    && startingTimeStamp + duration/1000 < appointment.getEndingDateAndTime()){
+                return false;
+            }
+            if (appointment.getStartingDateAndTime() >= startingTimeStamp
+                    && appointment.getStartingDateAndTime() <= startingTimeStamp + duration/1000){
+                return false;
+            }
+            if (appointment.getEndingDateAndTime() > startingTimeStamp
+                    && appointment.getEndingDateAndTime() <= startingTimeStamp + duration/1000){
+                return false;
+            }
+        }
+        return true;
     }
 }

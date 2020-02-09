@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.print.Doc;
 import javax.validation.ValidationException;
 import java.util.*;
 
@@ -36,6 +37,8 @@ public class AppointmentRequestService {
     private DoctorService doctorService;
     @Autowired
     private AppointmentService appointmentService;
+    @Autowired
+    private PatientService patientService;
     @Autowired
     private OrdinationService ordinationService;
     @Autowired
@@ -196,7 +199,6 @@ public class AppointmentRequestService {
         return requestDto;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @Scheduled(cron = "${appointment.cron}")
     public void systemChooseOrdinationForAllAppointmentRequests() throws InterruptedException {
         ArrayList<AppointmentRequest> appointmentRequests = appointmentRequestRepository.getAllByApprovedFalse();
@@ -220,22 +222,24 @@ public class AppointmentRequestService {
                 request.setStartingDateAndTime(request.getStartingDateAndTime() + request.getDuration()/1000 * i );
                 request.setEndingDateAndTime(request.getEndingDateAndTime() + request.getDuration()/1000 * i );
 
-                Doctor doctor = doctorRepository.findOneByIdAndLock(request.getDoctor().getId());
-
-                if (doctor == null){
+                if (!patientService.isAvailable(patient.getId(), null,
+                        request.getStartingDateAndTime(), request.getDuration())){
+                    continue;
+                }
+                Optional<Doctor> doctor = doctorRepository.findById(request.getDoctor().getId());
+                if (!doctor.isPresent()){
                     throw new ValidationException("Invalid appointment request data: doctor is missing");
                 }
-                if (!doctorService.isAvailable(null, doctor,
+                if (!doctorService.isAvailable(null, doctor.get(),
                         request.getStartingDateAndTime(), request.getDuration())){
                     continue;
                 }
-                if (!doctorService.isDuringDoctorWorkingHours(null,doctor,
+                if (!doctorService.isDuringDoctorWorkingHours(null, doctor.get(),
                         request.getStartingDateAndTime(), request.getDuration())){
                     continue;
                 }
 
-                for(Ordination o: ordinations){
-                    Ordination ordination = ordinationRepository.findOneByIdAndLock(o.getId());
+                for(Ordination ordination: ordinations){
                     if (ordinationService.isAvailable(null, ordination, request.getStartingDateAndTime(), request.getDuration())){
                         selectedOrdination = ordination;
                         break;
@@ -265,6 +269,9 @@ public class AppointmentRequestService {
             appointment.setDoctors(doctors);
 
             Appointment saved = appointmentService.save(appointment);
+            for (Doctor doctor: doctors){
+                doctorRepository.save(doctor);
+            }
             Optional<Patient> pat = patientRepository.findById(saved.getPatient().getId());
             if (!pat.isPresent()){
                 throw new ValidationException("Invalid appointment request data: patient is invalid");
