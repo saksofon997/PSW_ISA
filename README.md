@@ -32,7 +32,7 @@ The database can be created:
 # Run from postresql root /bin folder
 createdb project-database
 ```
-via UI using provided PgAdmin.
+- via UI using provided PgAdmin.
 
 Please refer to the [Postresql documentation](https://www.postgresql.org/docs/10/tutorial-createdb.html) for detailed instructions.
 
