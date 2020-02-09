@@ -3,7 +3,7 @@
 ---
 # About
 This project is done as a part of two courses at Faculty of technical sciences in Novi Sad, Serbia.
-It is developed as a two-part application consisting of Angular-based frontend and Spring-boot based backend, hosted on [Heroku](https://picici.herokuapp.com/).
+It is developed as a two-part application consisting of Angular-based frontend and Spring-boot based backend, hosted on [Heroku](https://oettinger.herokuapp.com/).
 
 #### Authors
 - @saksofon997
@@ -24,6 +24,18 @@ Ensure you have this installed before proceeding further
 - PostgreSQL ^10
 ---
 In the following sections we provided a set of instructions on how to run the application during development (as two separate instances: fronted & backend) or production (as an independent, deployment-ready instance).
+## Create the database
+In order for the application to run, it will need a database. The default database name is set as `project-database`, running on port `5432`. 
+The database can be created:
+- via CLI using psql commands:
+```
+# Run from postresql root /bin folder
+createdb project-database
+```
+via UI using provided PgAdmin.
+
+Please refer to the [Postresql documentation](https://www.postgresql.org/docs/10/tutorial-createdb.html) for detailed instructions.
+
 ## Development
 For development purposes one can build frontend and backend separately. Instructions on how to achieve this are contained in the next two subsections.
 ### Running Frontend
