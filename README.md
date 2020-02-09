@@ -71,7 +71,7 @@ cd client
 npm install
 
 # Build the frontend code -> default location is server/src/main/resources/static
-npm build
+npm run-script build
 ```
 ### Build backend
 After frontend is built we can excecute the same commands used during development to access the application as a whole.
