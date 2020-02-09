@@ -26,6 +26,7 @@ export class PatientClinicListingComponent implements OnInit {
 	filterForm: FormGroup;
 	submitted = false;
 	starRatingSearch = 0;
+	min: any;
 
 	@ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 	modalData: {
@@ -61,6 +62,8 @@ export class PatientClinicListingComponent implements OnInit {
 
 	ngOnInit() {
 		this.notSearched = true;
+		this.min = new Date();
+		this.min.setHours(0, 0, 0, 0);
 
 		this.loadData();
 

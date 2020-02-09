@@ -237,8 +237,8 @@ public class EmailService {
                 "\nOrdination name: " + appointmentDTO.getOrdination().getName() + ", Number: " + appointmentDTO.getOrdination().getNumber() +
                 "\nDate and time: " + dateTime.toString(DateTimeFormat.forPattern("dd.MM.yyyy. HH:mm")) +
                 "\nPrice: " + appointmentDTO.getPrice() +
-                "\n\nClick to confirm: http://localhost:8080/api/appointmentRequest/confirm_appointment/"+ appointmentDTO.getId()+"\"" +
-                "\nClick to reject: http://localhost:8080/api/appointmentRequest/reject_appointment/"+ appointmentDTO.getId()+"\"" +
+                "\n\nClick to confirm: http://oettinger.herokuapp.com/api/appointmentRequest/confirm_appointment/"+ appointmentDTO.getId() +
+                "\nClick to reject: http://oettinger.herokuapp.com/api/appointmentRequest/reject_appointment/"+ appointmentDTO.getId() +
                 "\n\nBest regards,\nClinical center team\n\n\n\n" +
                 "If you don't know what this is about, then someone has probably" +
                 " entered your email address by mistake and you can ignore this e-mail.");

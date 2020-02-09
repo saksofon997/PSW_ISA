@@ -16,8 +16,8 @@ public interface AppointmentRequestRepository extends JpaRepository<AppointmentR
 
     ArrayList<AppointmentRequest> getByClinicAndApprovedFalse(Clinic clinic);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
     ArrayList<AppointmentRequest> getAllByApprovedFalse();
 
     @Query("select request from AppointmentRequest request where " +

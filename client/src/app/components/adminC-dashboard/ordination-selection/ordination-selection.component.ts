@@ -18,6 +18,7 @@ export class OrdinationSelectionComponent implements OnInit {
 	modalData: any;
 	selectedTimeslots = [];
 	date: any;
+	min: any;
 
 	appointment: any;
 	ordinationsHeaders = ['Name', 'Number', 'Status'];
@@ -65,6 +66,8 @@ export class OrdinationSelectionComponent implements OnInit {
 		this.navigationSubscription = this.router.events.subscribe((e: any) => {
 			if (e instanceof NavigationEnd) {
 				this.clinicID = this.userService.getUser().clinic_id;
+				this.min = new Date();
+				this.min.setHours(0, 0, 0, 0);
 				//this.getOrdinations();
 				this.appointment = history.state.data;
 				let startTime = new Date(this.appointment.startingDateAndTime * 1000);

@@ -84,4 +84,9 @@ export class VacationRequestsComponent implements OnInit {
 		return time;
 	}
 
+	ngOnDestroy() {
+		if (this.navigationSubscription) {
+			this.navigationSubscription.unsubscribe();
+		}
+	}
 }
