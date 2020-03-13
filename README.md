@@ -89,3 +89,7 @@ npm run-script build
 ### Build backend
 After frontend is built we can excecute the same commands used during development to access the application as a whole.
 Please refer to the *[Building backend](https://github.com/saksofon997/PSW_ISA/blob/master/README.md#building-backend-spring-boot-java--starting-the-api-and-webui-server)* section under **Development**.
+
+### DevOps (micro) flow
+Jenkins server has been set up to activate tests, triger a build and deploy the project on every pull request to this repository.
+The link where one can access administration of Jenkins server is dynamically created, and current one is [this link](http://8b37064a.ngrok.io). For credentials, please contact the project contributors.
