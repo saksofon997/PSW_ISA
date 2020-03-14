@@ -92,4 +92,4 @@ Please refer to the *[Building backend](https://github.com/saksofon997/PSW_ISA/b
 
 ### DevOps (micro) flow
 Jenkins server has been set up to activate tests, triger a build and deploy the project on every pull request to this repository.
-The link where one can access administration of Jenkins server is dynamically created, and current one is [this link](http://8b37064a.ngrok.io). For credentials, please contact the project contributors.
+The link where one can access administration of Jenkins server is dynamically created, and current one is [this link](http://13bf6b29.ngrok.io). For credentials, please contact the project contributors.
